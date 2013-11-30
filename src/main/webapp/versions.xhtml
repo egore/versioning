@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.versions}" />
+	</ui:define>
+
+	<rich:dataTable value="#{versionList.list}" var="version"
+		rows="#{versionList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.version_project}" />
+			</f:facet>
+			<h:outputText value="#{version.project.name}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.version_vcsTag}" />
+			</f:facet>
+			<h:link outcome="version" value="#{version.vcsTag}">
+				<f:param name="id" value="#{version.id}" />
+			</h:link>
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/version.xhtml" value="#{messages.add}" />
+</ui:composition>

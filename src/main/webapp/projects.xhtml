@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.projects}" />
+	</ui:define>
+
+	<rich:dataTable value="#{projectList.list}" var="project"
+		rows="#{projectList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.project_name}" />
+			</f:facet>
+			<h:link outcome="project" value="#{project.name}">
+				<f:param name="id" value="#{project.id}" />
+			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.project_vcsHost}" />
+			</f:facet>
+			<h:outputText value="#{project.vcsHost.name}" />
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/project.xhtml" value="#{messages.add}" />
+</ui:composition>

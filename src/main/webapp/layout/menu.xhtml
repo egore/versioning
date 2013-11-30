@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<rich:toolbar id="navigationbar">
+		<rich:dropDownMenu mode="ajax" id="core_menu">
+			<f:facet name="label">
+				<h:outputText value="#{messages.core}" />
+			</f:facet>
+			<rich:menuItem label="#{messages.versions}" action="/versions.xthml"
+				id="administration_menu_versions" />
+		</rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" id="administration_menu">
+			<f:facet name="label">
+				<h:outputText value="#{messages.administration}" />
+			</f:facet>
+			<rich:menuItem label="#{messages.vcshosts}" action="/vcshosts.xthml"
+				id="administration_menu_vcshosts" />
+			<rich:menuItem label="#{messages.projects}" action="/projects.xthml"
+				id="administration_menu_projects" />
+			<rich:menuItem label="#{messages.servers}" action="/servers.xthml"
+				id="administration_menu_servers" />
+		</rich:dropDownMenu>
+	</rich:toolbar>
+</ui:composition>

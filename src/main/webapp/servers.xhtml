@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.servers}" />
+	</ui:define>
+
+	<rich:dataTable value="#{serverList.list}" var="server"
+		rows="#{serverList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.server_name}" />
+			</f:facet>
+			<h:link outcome="server" value="#{server.name}">
+				<f:param name="id" value="#{server.id}" />
+			</h:link>
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/server.xhtml" value="#{messages.add}" />
+</ui:composition>

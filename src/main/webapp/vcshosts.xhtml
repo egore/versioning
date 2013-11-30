@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.vcshosts}" />
+	</ui:define>
+
+	<rich:dataTable value="#{vcshostList.list}" var="vcshost"
+		rows="#{vcshostList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.vcshost_name}" />
+			</f:facet>
+			<h:link outcome="vcshost" value="#{vcshost.name}">
+				<f:param name="id" value="#{vcshost.id}" />
+			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.vcshost_vcs}" />
+			</f:facet>
+			<h:outputText value="#{vcshost.vcs}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.vcshost_uri}" />
+			</f:facet>
+			<h:outputText value="#{vcshost.uri}" />
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/vcshost.xhtml" value="#{messages.add}" />
+</ui:composition>
