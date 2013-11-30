@@ -27,6 +27,14 @@
 			</f:facet>
 			<h:outputText value="#{project.vcsHost.name}" />
 		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.project_configuredServers}" />
+			</f:facet>
+			<a4j:repeat value="#{project.configuredServers}" var="server">
+				<h:outputText value="#{server.name} " />
+			</a4j:repeat>
+		</rich:column>
 	</rich:dataTable>
 
 	<h:commandLink action="/project.xhtml" value="#{messages.add}" />

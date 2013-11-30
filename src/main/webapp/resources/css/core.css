@@ -3,3 +3,7 @@ html {
 	color: #222222;
 	font: 13px/1.5 arial,sans-serif;
 }
+
+table#main\:navigationbar {
+	margin-bottom: 20px;
+}
