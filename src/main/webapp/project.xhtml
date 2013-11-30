@@ -18,14 +18,17 @@
 	</ui:define>
 
 	<h:outputText value="#{messages.project_name}" />
-	<h:inputText value="#{projectDetail.instance.name}" id="project_name"
-		disabled="#{projectDetail.managed}" />
+	<h:inputText value="#{projectDetail.instance.name}" id="project_name" />
 
 	<h:outputText value="#{messages.project_vcsHost}" />
 	<h:selectOneMenu value="#{projectDetail.instance.vcsHost}"
 		id="project_vcsHost" converter="vcshostConverter">
 		<f:selectItems value="#{projectDetail.vcshostSelectItems}" />
 	</h:selectOneMenu>
+
+	<h:outputText value="#{messages.project_vcsPath}" />
+	<h:inputText value="#{projectDetail.instance.vcsPath}"
+		id="project_vcsPath" disabled="#{projectDetail.managed}" />
 
 	<h:outputText value="#{messages.project_configuredServers}" />
 	<h:selectManyMenu value="#{projectDetail.instance.configuredServers}"

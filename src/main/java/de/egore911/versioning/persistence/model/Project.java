@@ -74,8 +74,9 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 		this.vcsHost = vcsHost;
 	}
 
-	@Column(nullable = true, length = 255)
-	@Size(max = 255)
+	@Column(nullable = false, length = 255)
+	@NotNull
+	@Size(min = 1, max = 255)
 	public String getVcsPath() {
 		return vcsPath;
 	}

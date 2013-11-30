@@ -29,6 +29,12 @@
 		</rich:column>
 		<rich:column>
 			<f:facet name="header">
+				<h:outputText value="#{messages.project_vcsPath}" />
+			</f:facet>
+			<h:outputText value="#{project.vcsPath}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
 				<h:outputText value="#{messages.project_configuredServers}" />
 			</f:facet>
 			<a4j:repeat value="#{project.configuredServers}" var="server">
