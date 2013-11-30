@@ -5,6 +5,10 @@
 
 	<display-name>versioning</display-name>
 
+	<listener>
+		<listener-class>de.egore911.versioning.util.listener.StartupListener</listener-class>
+	</listener>
+
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>

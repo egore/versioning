@@ -35,7 +35,7 @@ import de.egore911.versioning.util.EntityManagerUtil;
  */
 public class EntityManagerFilter implements Filter {
 
-	private EntityManagerFactory entityManagerFactory;
+	public EntityManagerFactory entityManagerFactory;
 
 	@Override
 	public void init(FilterConfig filterConfig) {
