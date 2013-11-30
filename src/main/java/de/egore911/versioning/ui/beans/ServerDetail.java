@@ -16,6 +16,7 @@
  */
 package de.egore911.versioning.ui.beans;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -47,10 +48,16 @@ public class ServerDetail extends AbstractDetail<Server> {
 	}
 
 	public List<Version> getDeployedVersions() {
+		if (!isManaged()) {
+			return Collections.emptyList();
+		}
 		return new DeploymentCalculator().getDeployedVersions(instance);
 	}
 
 	public List<Version> getDeployableVersions() {
+		if (!isManaged()) {
+			return Collections.emptyList();
+		}
 		return new DeploymentCalculator().getDeployableVersions(instance);
 	}
 
