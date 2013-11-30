@@ -7,6 +7,8 @@
 	<artifactId>versioning</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<name>${project.artifactId}</name>
+	<description>Simple web-application to track when a software was deployed to a server</description>
 
 	<build>
 		<plugins>
