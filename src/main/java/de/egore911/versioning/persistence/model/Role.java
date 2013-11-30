@@ -30,6 +30,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
@@ -71,6 +73,13 @@ public class Role extends IntegerDbObject {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public boolean hasPermission(Permission permission) {
+		if (CollectionUtils.isEmpty(permissions)) {
+			return false;
+		}
+		return permissions.contains(permission);
 	}
 
 }
