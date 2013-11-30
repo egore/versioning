@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.login}" />
+	</ui:define>
+
+	<h:outputText value="#{messages.user_login}" />
+	<h:inputText value="#{loginBean.login}" id="user_login" />
+
+	<h:outputText value="#{messages.user_password}" />
+	<h:inputSecret value="#{loginBean.password}" id="user_password" />
+
+	<h:commandButton value="#{messages.login}"
+		action="#{loginBean.performLogin}" />
+
+</ui:composition>
