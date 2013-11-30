@@ -27,7 +27,7 @@ import de.egore911.versioning.persistence.model.Server;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@FacesConverter(forClass = Server.class, value = "serverConverter")
+@FacesConverter("serverConverter")
 public class ServerConverter implements Converter {
 
 	@Override

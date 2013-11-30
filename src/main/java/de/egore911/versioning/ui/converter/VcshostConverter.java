@@ -27,7 +27,7 @@ import de.egore911.versioning.persistence.model.VcsHost;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@FacesConverter(forClass = VcsHost.class, value = "vcshostConverter")
+@FacesConverter("vcshostConverter")
 public class VcshostConverter implements Converter {
 
 	@Override

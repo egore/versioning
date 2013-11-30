@@ -21,20 +21,20 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import de.egore911.versioning.persistence.dao.ProjectDao;
-import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.dao.RoleDao;
+import de.egore911.versioning.persistence.model.Role;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@FacesConverter("projectConverter")
-public class ProjectConverter implements Converter {
+@FacesConverter("roleConverter")
+public class RoleConverter implements Converter {
 
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return new ProjectDao().findById(Integer.valueOf(value));
+			return new RoleDao().findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}
@@ -43,9 +43,9 @@ public class ProjectConverter implements Converter {
 	@Override
 	public String getAsString(FacesContext context, UIComponent component,
 			Object value) {
-		Project project = (Project) value;
-		return project != null && project.getId() != null ? project.getId()
-				.toString() : null;
+		Role role = (Role) value;
+		return role != null && role.getId() != null ? role.getId().toString()
+				: null;
 	}
 
 }
