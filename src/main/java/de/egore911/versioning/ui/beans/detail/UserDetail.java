@@ -29,16 +29,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.RoleDao;
 import de.egore911.versioning.persistence.dao.UserDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Role;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.UserUtil;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "userDetail")
 @RequestScoped
+@RequiresPermission(Permission.ADMIN_USERS)
 public class UserDetail extends AbstractDetail<User> {
 
 	private final SessionUtil sessionUtil = new SessionUtil();

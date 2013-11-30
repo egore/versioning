@@ -22,13 +22,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "vcshostList")
 @RequestScoped
+@RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostList extends AbstractList<VcsHost> {
 
 	@Override

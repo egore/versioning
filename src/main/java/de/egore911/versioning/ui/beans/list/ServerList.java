@@ -22,13 +22,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "serverList")
 @RequestScoped
+@RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerList extends AbstractList<Server> {
 
 	@Override

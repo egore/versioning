@@ -23,12 +23,14 @@ import javax.faces.model.SelectItem;
 import de.egore911.versioning.persistence.dao.RoleDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Role;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "roleDetail")
 @RequestScoped
+@RequiresPermission(Permission.ADMIN_USERS)
 public class RoleDetail extends AbstractDetail<Role> {
 
 	@Override

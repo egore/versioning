@@ -82,6 +82,14 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 		}
 	}
 
+	public T reattach(T entity) {
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		if (!em.contains(entity)) {
+			entity = em.merge(entity);
+		}
+		return entity;
+	}
+
 	protected abstract Class<T> getEntityClass();
 
 	protected abstract AbstractSelector<T> createSelector();

@@ -21,14 +21,17 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Vcs;
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "vcshostDetail")
 @RequestScoped
+@RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostDetail extends AbstractDetail<VcsHost> {
 
 	@Override

@@ -22,13 +22,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "projectList")
 @RequestScoped
+@RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ProjectList extends AbstractList<Project> {
 
 	@Override

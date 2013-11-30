@@ -22,13 +22,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import de.egore911.versioning.persistence.dao.VersionDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "versionList")
 @RequestScoped
+@RequiresPermission(Permission.USE)
 public class VersionList extends AbstractList<Version> {
 
 	@Override

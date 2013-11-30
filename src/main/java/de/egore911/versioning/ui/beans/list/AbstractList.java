@@ -20,11 +20,13 @@ import java.util.List;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
+import de.egore911.versioning.ui.beans.AbstractBean;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractList<T extends IntegerDbObject> {
+public abstract class AbstractList<T extends IntegerDbObject> extends
+		AbstractBean {
 
 	private static final int DEFAULT_LIMIT = 20;
 

@@ -25,15 +25,18 @@ import javax.faces.model.SelectItem;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "projectDetail")
 @RequestScoped
+@RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ProjectDetail extends AbstractDetail<Project> {
 
 	@Override

@@ -18,11 +18,13 @@ package de.egore911.versioning.ui.beans.detail;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
+import de.egore911.versioning.ui.beans.AbstractBean;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractDetail<T extends IntegerDbObject> {
+public abstract class AbstractDetail<T extends IntegerDbObject> extends
+		AbstractBean {
 
 	protected T instance;
 
