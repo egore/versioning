@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jcraft.jsch.JSch;
 
-import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.Project;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -44,16 +44,11 @@ public class GitProvider extends Provider {
 		JSch.setLogger(new JschToSlf4j());
 	}
 
-	private final VcsHost vcsHost;
-
-	public GitProvider(VcsHost vcsHost) {
-		this.vcsHost = vcsHost;
-	}
-
 	@Override
-	public boolean tagExistsImpl(String tagName) {
+	public boolean tagExistsImpl(Project project, String tagName) {
 		DfsRepositoryDescription repoDesc = new DfsRepositoryDescription(
-				"git - " + vcsHost.getName());
+				"git - " + project.getName() + " on "
+						+ project.getVcsHost().getName());
 		InMemoryRepository repo = new InMemoryRepository(repoDesc) {
 			@Override
 			public org.eclipse.jgit.util.FS getFS() {
@@ -65,7 +60,8 @@ public class GitProvider extends Provider {
 			}
 		};
 		StoredConfig config = repo.getConfig();
-		config.setString("remote", "origin", "url", vcsHost.getUri());
+		config.setString("remote", "origin", "url",
+				project.getCompleteVcsPath());
 		LsRemoteCommand command = new LsRemoteCommand(repo);
 		command.setTags(true);
 		try {

@@ -24,7 +24,7 @@ import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
-import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.Project;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -34,16 +34,11 @@ public class SvnProvider extends Provider {
 	private static final Logger log = LoggerFactory
 			.getLogger(SvnProvider.class);
 
-	private final VcsHost vcsHost;
-
-	public SvnProvider(VcsHost vcsHost) {
-		this.vcsHost = vcsHost;
-	}
-
 	@Override
-	public boolean tagExistsImpl(String tagName) {
+	public boolean tagExistsImpl(Project project, String tagName) {
 		try {
-			SVNURL svnurl = SVNURL.parseURIEncoded(vcsHost.getUri());
+			SVNURL svnurl = SVNURL
+					.parseURIEncoded(project.getCompleteVcsPath());
 			SVNRepository repo = SVNRepositoryFactory.create(svnurl);
 			SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
 					repo.getLatestRevision());

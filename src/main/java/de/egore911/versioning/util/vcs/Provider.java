@@ -27,6 +27,8 @@ import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.egore911.versioning.persistence.model.Project;
+
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
@@ -34,12 +36,12 @@ public abstract class Provider {
 
 	private static final Logger log = LoggerFactory.getLogger(Provider.class);
 
-	boolean tagExists(final String tagName) {
+	public boolean tagExists(final Project project, final String tagName) {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<Boolean> future = executor.submit(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {
-				return tagExistsImpl(tagName);
+				return tagExistsImpl(project, tagName);
 			}
 		});
 		try {
@@ -52,6 +54,6 @@ public abstract class Provider {
 		}
 	}
 
-	protected abstract boolean tagExistsImpl(String tagName);
+	protected abstract boolean tagExistsImpl(Project project, String tagName);
 
 }

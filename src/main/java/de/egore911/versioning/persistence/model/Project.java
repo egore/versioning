@@ -28,9 +28,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.apache.commons.lang3.StringUtils;
+
+import de.egore911.versioning.util.vcs.GitProvider;
+import de.egore911.versioning.util.vcs.Provider;
+import de.egore911.versioning.util.vcs.SvnProvider;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -41,6 +48,7 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	private String name;
 	private VcsHost vcsHost;
+	private String vcsPath;
 	private List<Server> configuredServers = new ArrayList<>(0);
 	private List<Version> versions = new ArrayList<>(0);
 
@@ -64,6 +72,16 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	public void setVcsHost(VcsHost vcsHost) {
 		this.vcsHost = vcsHost;
+	}
+
+	@Column(nullable = true, length = 255)
+	@Size(max = 255)
+	public String getVcsPath() {
+		return vcsPath;
+	}
+
+	public void setVcsPath(String vcsPath) {
+		this.vcsPath = vcsPath;
 	}
 
 	@ManyToMany
@@ -91,4 +109,30 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 		return getName().compareTo(o.getName());
 	}
 
+	@Transient
+	public String getCompleteVcsPath() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(getVcsHost().getUri());
+		if (StringUtils.isNotEmpty(getVcsPath())) {
+			builder.append(getVcsPath());
+		} else {
+			builder.append(getName());
+		}
+		return builder.toString();
+	}
+
+	@Transient
+	public Provider getProvider() {
+		if (getVcsHost() == null || getVcsHost().getVcs() == null) {
+			throw new IllegalArgumentException("VCS type not set");
+		}
+		switch (getVcsHost().getVcs()) {
+		case git:
+			return new GitProvider();
+		case svn:
+			return new SvnProvider();
+		default:
+			throw new RuntimeException("not implemented yet");
+		}
+	}
 }

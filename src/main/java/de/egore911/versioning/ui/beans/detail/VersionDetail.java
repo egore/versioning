@@ -17,15 +17,20 @@
 package de.egore911.versioning.ui.beans.detail;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.util.SessionUtil;
+import de.egore911.versioning.util.vcs.Provider;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -33,6 +38,8 @@ import de.egore911.versioning.persistence.model.Version;
 @ManagedBean(name = "versionDetail")
 @RequestScoped
 public class VersionDetail extends AbstractDetail<Version> {
+
+	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Override
 	public Version getInstance() {
@@ -58,7 +65,21 @@ public class VersionDetail extends AbstractDetail<Version> {
 	}
 
 	public String save() {
-		getDao().save(getInstance());
+		Version version = getInstance();
+
+		Provider provider = version.getProject().getProvider();
+		if (!provider.tagExists(version.getProject(), version.getVcsTag())) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ResourceBundle bundle = sessionUtil.getBundle();
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					bundle.getString("tag_not_found"),
+					bundle.getString("tag_not_found_detail"));
+			facesContext.addMessage("main:user_password", message);
+			return "";
+		}
+
+		getDao().save(version);
 		return "/versions.xhtml";
 	}
 

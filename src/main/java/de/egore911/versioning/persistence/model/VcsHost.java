@@ -26,14 +26,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import de.egore911.versioning.util.vcs.GitProvider;
-import de.egore911.versioning.util.vcs.Provider;
-import de.egore911.versioning.util.vcs.SvnProvider;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -87,21 +82,6 @@ public class VcsHost extends IntegerDbObject {
 
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
-	}
-
-	@Transient
-	public Provider getProvider() {
-		if (getVcs() == null) {
-			throw new IllegalArgumentException("VCS type not set");
-		}
-		switch (getVcs()) {
-		case git:
-			return new GitProvider(this);
-		case svn:
-			return new SvnProvider(this);
-		default:
-			throw new RuntimeException("not implemented yet");
-		}
 	}
 
 	@Override
