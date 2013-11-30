@@ -6,14 +6,16 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<rich:toolbar id="navigationbar">
-		<rich:dropDownMenu mode="ajax" id="core_menu">
+		<rich:dropDownMenu mode="ajax" id="core_menu"
+			rendered="#{user.hasPermission('USE')}">
 			<f:facet name="label">
 				<h:outputText value="#{messages.core}" />
 			</f:facet>
 			<rich:menuItem label="#{messages.versions}" action="/versions.xthml"
 				id="administration_menu_versions" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" id="administration_menu">
+		<rich:dropDownMenu mode="ajax" id="administration_menu"
+			rendered="#{user.hasPermission('ADMIN_SETTINGS')}">
 			<f:facet name="label">
 				<h:outputText value="#{messages.administration}" />
 			</f:facet>
@@ -24,14 +26,15 @@
 			<rich:menuItem label="#{messages.servers}" action="/servers.xthml"
 				id="administration_menu_servers" />
 		</rich:dropDownMenu>
-		<rich:dropDownMenu mode="ajax" id="users_menu">
-            <f:facet name="label">
-                <h:outputText value="#{messages.user}" />
-            </f:facet>
-            <rich:menuItem label="#{messages.users}" action="/users.xthml"
-                id="user_menu_users" />
-            <rich:menuItem label="#{messages.roles}" action="/roles.xthml"
-                id="user_menu_roles" />
-        </rich:dropDownMenu>
+		<rich:dropDownMenu mode="ajax" id="users_menu"
+			rendered="#{user.hasPermission('ADMIN_USERS')}">
+			<f:facet name="label">
+				<h:outputText value="#{messages.user}" />
+			</f:facet>
+			<rich:menuItem label="#{messages.users}" action="/users.xthml"
+				id="user_menu_users" />
+			<rich:menuItem label="#{messages.roles}" action="/roles.xthml"
+				id="user_menu_roles" />
+		</rich:dropDownMenu>
 	</rich:toolbar>
 </ui:composition>

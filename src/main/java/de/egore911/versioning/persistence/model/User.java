@@ -106,4 +106,16 @@ public class User extends IntegerDbObject {
 		return roles.contains(role);
 	}
 
+	public boolean hasPermission(Permission permission) {
+		if (CollectionUtils.isEmpty(roles)) {
+			return false;
+		}
+		for (Role role : roles) {
+			if (role.hasPermission(permission)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
