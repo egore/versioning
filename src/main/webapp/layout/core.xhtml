@@ -15,6 +15,11 @@
 		<h1>
 			<ui:insert name="title" />
 		</h1>
+		<h:outputFormat value="#{messages.logged_in_as_x}"
+			rendered="#{not empty user}">
+			<f:param value="#{user.name}" />
+		</h:outputFormat>
+		<h:link outcome="login" rendered="#{empty user}" value="#{messages.not_logged_in}" />
 		<ui:include src="menu.xhtml" />
 		<ui:insert />
 	</h:form>

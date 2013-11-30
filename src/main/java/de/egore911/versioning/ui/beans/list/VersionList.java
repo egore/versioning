@@ -14,39 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
+package de.egore911.versioning.ui.beans.list;
 
-import de.egore911.versioning.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.IntegerDbObject;
+import java.util.List;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
+import de.egore911.versioning.persistence.dao.VersionDao;
+import de.egore911.versioning.persistence.model.Version;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractDetail<T extends IntegerDbObject> {
+@ManagedBean(name = "versionList")
+@RequestScoped
+public class VersionList extends AbstractList<Version> {
 
-	protected T instance;
-
-	public abstract T getInstance();
-
-	public void setInstance(T instance) {
-		this.instance = instance;
+	@Override
+	public List<Version> getList() {
+		VersionDao versionDao = new VersionDao();
+		return versionDao.findAll(getOffset(), getLimit());
 	}
 
-	public void setId(Integer id) {
-		setInstance(getDao().findById(id));
+	@Override
+	public long count() {
+		VersionDao versionDao = new VersionDao();
+		return versionDao.count();
 	}
 
-	public Integer getId() {
-		if (instance == null) {
-			return null;
-		}
-		return instance.getId();
+	@Override
+	protected VersionDao getDao() {
+		return new VersionDao();
 	}
-
-	public boolean isManaged() {
-		return getId() != null;
-	}
-
-	protected abstract AbstractDao<T> getDao();
 
 }

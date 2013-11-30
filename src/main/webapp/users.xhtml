@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.users}" />
+	</ui:define>
+
+	<rich:dataTable value="#{userList.list}" var="user"
+		rows="#{userList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.user_name}" />
+			</f:facet>
+			<h:link outcome="user" value="#{user.name}">
+				<f:param name="id" value="#{user.id}" />
+			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.user_login}" />
+			</f:facet>
+			<h:outputText value="#{user.login}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.user_email}" />
+			</f:facet>
+			<h:outputText value="#{user.email}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.user_roles}" />
+			</f:facet>
+			<a4j:repeat value="#{project.roles}" var="role">
+				<h:outputText value="#{role.name} " />
+			</a4j:repeat>
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/user.xhtml" value="#{messages.add}" />
+</ui:composition>

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
+package de.egore911.versioning.ui.beans.detail;
 
 import java.util.List;
 
@@ -23,55 +23,43 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
-import de.egore911.versioning.persistence.dao.ServerDao;
-import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Server;
-import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.Version;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "projectDetail")
+@ManagedBean(name = "versionDetail")
 @RequestScoped
-public class ProjectDetail extends AbstractDetail<Project> {
+public class VersionDetail extends AbstractDetail<Version> {
 
 	@Override
-	public Project getInstance() {
+	public Version getInstance() {
 		if (instance == null) {
-			instance = new Project();
+			instance = new Version();
 		}
 		return instance;
 	}
 
 	@Override
-	protected ProjectDao getDao() {
-		return new ProjectDao();
+	protected VersionDao getDao() {
+		return new VersionDao();
 	}
 
-	public SelectItem[] getVcshostSelectItems() {
-		List<VcsHost> vcshosts = new VcshostDao().findAll();
-		SelectItem[] items = new SelectItem[vcshosts.size()];
+	public SelectItem[] getProjectSelectItems() {
+		List<Project> projects = new ProjectDao().findAll();
+		SelectItem[] items = new SelectItem[projects.size()];
 		int i = 0;
-		for (VcsHost vcshost : vcshosts) {
-			items[i++] = new SelectItem(vcshost, vcshost.getName());
-		}
-		return items;
-	}
-
-	public SelectItem[] getAllServerSelectItems() {
-		List<Server> servers = new ServerDao().findAll();
-		SelectItem[] items = new SelectItem[servers.size()];
-		int i = 0;
-		for (Server server : servers) {
-			items[i++] = new SelectItem(server, server.getName());
+		for (Project project : projects) {
+			items[i++] = new SelectItem(project, project.getName());
 		}
 		return items;
 	}
 
 	public String save() {
 		getDao().save(getInstance());
-		return "/projects.xhtml";
+		return "/versions.xhtml";
 	}
 
 }

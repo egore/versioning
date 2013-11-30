@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.roles}" />
+	</ui:define>
+
+	<rich:dataTable value="#{roleList.list}" var="role"
+		rows="#{roleList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.role_name}" />
+			</f:facet>
+			<h:link outcome="role" value="#{role.name}">
+				<f:param name="id" value="#{role.id}" />
+			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="ADMIN_SETTINGS" />
+			</f:facet>
+			<h:selectBooleanCheckbox disabled="true"
+				value="#{role.hasPermission('ADMIN_SETTINGS')}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="ADMIN_USERS" />
+			</f:facet>
+			<h:selectBooleanCheckbox disabled="true"
+				value="#{role.hasPermission('ADMIN_USERS')}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="USE" />
+			</f:facet>
+			<h:selectBooleanCheckbox disabled="true"
+				value="#{role.hasPermission('USE')}" />
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/role.xhtml" value="#{messages.add}" />
+</ui:composition>

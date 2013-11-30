@@ -14,36 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
+package de.egore911.versioning.ui.beans.detail;
 
-import java.util.List;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-
-import de.egore911.versioning.persistence.dao.VcshostDao;
-import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.dao.AbstractDao;
+import de.egore911.versioning.persistence.model.IntegerDbObject;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "vcshostList")
-@RequestScoped
-public class VcshostList extends AbstractList<VcsHost> {
+public abstract class AbstractDetail<T extends IntegerDbObject> {
 
-	@Override
-	public List<VcsHost> getList() {
-		return getDao().findAll(getOffset(), getLimit());
+	protected T instance;
+
+	public abstract T getInstance();
+
+	public void setInstance(T instance) {
+		this.instance = instance;
 	}
 
-	@Override
-	public long count() {
-		return getDao().count();
+	public void setId(Integer id) {
+		setInstance(getDao().findById(id));
 	}
 
-	@Override
-	protected VcshostDao getDao() {
-		return new VcshostDao();
+	public Integer getId() {
+		if (instance == null) {
+			return null;
+		}
+		return instance.getId();
 	}
+
+	public boolean isManaged() {
+		return getId() != null;
+	}
+
+	protected abstract AbstractDao<T> getDao();
 
 }

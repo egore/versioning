@@ -14,56 +14,48 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
-
-import java.util.Collections;
-import java.util.List;
+package de.egore911.versioning.ui.beans.detail;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.model.SelectItem;
 
-import de.egore911.versioning.persistence.dao.ServerDao;
-import de.egore911.versioning.persistence.model.Server;
-import de.egore911.versioning.persistence.model.Version;
-import de.egore911.versioning.ui.logic.DeploymentCalculator;
+import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.Vcs;
+import de.egore911.versioning.persistence.model.VcsHost;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "serverDetail")
+@ManagedBean(name = "vcshostDetail")
 @RequestScoped
-public class ServerDetail extends AbstractDetail<Server> {
+public class VcshostDetail extends AbstractDetail<VcsHost> {
 
 	@Override
-	public Server getInstance() {
+	public VcsHost getInstance() {
 		if (instance == null) {
-			instance = new Server();
+			instance = new VcsHost();
 		}
 		return instance;
 	}
 
 	@Override
-	protected ServerDao getDao() {
-		return new ServerDao();
+	protected VcshostDao getDao() {
+		return new VcshostDao();
 	}
 
-	public List<Version> getDeployedVersions() {
-		if (!isManaged()) {
-			return Collections.emptyList();
+	public SelectItem[] getVcsSelectItems() {
+		SelectItem[] items = new SelectItem[Vcs.values().length];
+		int i = 0;
+		for (Vcs vcs : Vcs.values()) {
+			items[i++] = new SelectItem(vcs, vcs.name());
 		}
-		return new DeploymentCalculator().getDeployedVersions(instance);
-	}
-
-	public List<Version> getDeployableVersions() {
-		if (!isManaged()) {
-			return Collections.emptyList();
-		}
-		return new DeploymentCalculator().getDeployableVersions(instance);
+		return items;
 	}
 
 	public String save() {
 		getDao().save(getInstance());
-		return "/servers.xhtml";
+		return "/vcshosts.xhtml";
 	}
 
 }

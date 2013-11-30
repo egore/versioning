@@ -14,25 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
+package de.egore911.versioning.ui.beans.list;
 
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import de.egore911.versioning.persistence.dao.ProjectDao;
-import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.dao.UserDao;
+import de.egore911.versioning.persistence.model.User;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "projectList")
+@ManagedBean(name = "userList")
 @RequestScoped
-public class ProjectList extends AbstractList<Project> {
+public class UserList extends AbstractList<User> {
 
 	@Override
-	public List<Project> getList() {
+	public List<User> getList() {
 		return getDao().findAll(getOffset(), getLimit());
 	}
 
@@ -42,8 +42,8 @@ public class ProjectList extends AbstractList<Project> {
 	}
 
 	@Override
-	protected ProjectDao getDao() {
-		return new ProjectDao();
+	protected UserDao getDao() {
+		return new UserDao();
 	}
 
 }

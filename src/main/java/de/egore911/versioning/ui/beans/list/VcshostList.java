@@ -14,38 +14,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
+package de.egore911.versioning.ui.beans.list;
 
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import de.egore911.versioning.persistence.dao.VersionDao;
-import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.VcsHost;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "versionList")
+@ManagedBean(name = "vcshostList")
 @RequestScoped
-public class VersionList extends AbstractList<Version> {
+public class VcshostList extends AbstractList<VcsHost> {
 
 	@Override
-	public List<Version> getList() {
-		VersionDao versionDao = new VersionDao();
-		return versionDao.findAll(getOffset(), getLimit());
+	public List<VcsHost> getList() {
+		return getDao().findAll(getOffset(), getLimit());
 	}
 
 	@Override
 	public long count() {
-		VersionDao versionDao = new VersionDao();
-		return versionDao.count();
+		return getDao().count();
 	}
 
 	@Override
-	protected VersionDao getDao() {
-		return new VersionDao();
+	protected VcshostDao getDao() {
+		return new VcshostDao();
 	}
 
 }

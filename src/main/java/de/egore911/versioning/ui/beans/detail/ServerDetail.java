@@ -14,52 +14,56 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
+package de.egore911.versioning.ui.beans.detail;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.model.SelectItem;
 
-import de.egore911.versioning.persistence.dao.ProjectDao;
-import de.egore911.versioning.persistence.dao.VersionDao;
-import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.ui.logic.DeploymentCalculator;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "versionDetail")
+@ManagedBean(name = "serverDetail")
 @RequestScoped
-public class VersionDetail extends AbstractDetail<Version> {
+public class ServerDetail extends AbstractDetail<Server> {
 
 	@Override
-	public Version getInstance() {
+	public Server getInstance() {
 		if (instance == null) {
-			instance = new Version();
+			instance = new Server();
 		}
 		return instance;
 	}
 
 	@Override
-	protected VersionDao getDao() {
-		return new VersionDao();
+	protected ServerDao getDao() {
+		return new ServerDao();
 	}
 
-	public SelectItem[] getProjectSelectItems() {
-		List<Project> projects = new ProjectDao().findAll();
-		SelectItem[] items = new SelectItem[projects.size()];
-		int i = 0;
-		for (Project project : projects) {
-			items[i++] = new SelectItem(project, project.getName());
+	public List<Version> getDeployedVersions() {
+		if (!isManaged()) {
+			return Collections.emptyList();
 		}
-		return items;
+		return new DeploymentCalculator().getDeployedVersions(instance);
+	}
+
+	public List<Version> getDeployableVersions() {
+		if (!isManaged()) {
+			return Collections.emptyList();
+		}
+		return new DeploymentCalculator().getDeployableVersions(instance);
 	}
 
 	public String save() {
 		getDao().save(getInstance());
-		return "/versions.xhtml";
+		return "/servers.xhtml";
 	}
 
 }

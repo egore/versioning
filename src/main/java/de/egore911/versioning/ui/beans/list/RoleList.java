@@ -14,25 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.egore911.versioning.ui.beans;
+package de.egore911.versioning.ui.beans.list;
 
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import de.egore911.versioning.persistence.dao.ServerDao;
-import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.dao.RoleDao;
+import de.egore911.versioning.persistence.model.Role;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "serverList")
+@ManagedBean(name = "roleList")
 @RequestScoped
-public class ServerList extends AbstractList<Server> {
+public class RoleList extends AbstractList<Role> {
 
 	@Override
-	public List<Server> getList() {
+	public List<Role> getList() {
 		return getDao().findAll(getOffset(), getLimit());
 	}
 
@@ -42,8 +42,8 @@ public class ServerList extends AbstractList<Server> {
 	}
 
 	@Override
-	protected ServerDao getDao() {
-		return new ServerDao();
+	protected RoleDao getDao() {
+		return new RoleDao();
 	}
 
 }
