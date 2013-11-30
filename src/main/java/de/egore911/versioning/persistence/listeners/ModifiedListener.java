@@ -16,12 +16,16 @@
  */
 package de.egore911.versioning.persistence.listeners;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.servlet.http.HttpSession;
 
 import org.joda.time.LocalDateTime;
 
 import de.egore911.versioning.persistence.model.DbObject;
+import de.egore911.versioning.persistence.model.User;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -32,11 +36,42 @@ public class ModifiedListener {
 	public void prePersist(DbObject<?> o) {
 		o.setCreated(LocalDateTime.now());
 		o.setModified(o.getCreated());
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if (facesContext != null) {
+			ExternalContext externalContext = facesContext.getExternalContext();
+			if (externalContext != null) {
+				Object session = externalContext.getSession(false);
+				if (session instanceof HttpSession) {
+					HttpSession httpSession = (HttpSession) session;
+					User user = (User) httpSession.getAttribute("user");
+					if (user != null) {
+						o.setCreatedBy(user);
+						o.setModifiedBy(user);
+					}
+				}
+			}
+		}
 	}
 
 	@PreUpdate
 	public void preUpdate(DbObject<?> o) {
 		o.setModified(LocalDateTime.now());
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if (facesContext != null) {
+			ExternalContext externalContext = facesContext.getExternalContext();
+			if (externalContext != null) {
+				Object session = externalContext.getSession(false);
+				if (session instanceof HttpSession) {
+					HttpSession httpSession = (HttpSession) session;
+					User user = (User) httpSession.getAttribute("user");
+					if (user != null) {
+						o.setModifiedBy(user);
+					}
+				}
+			}
+		}
 	}
 
 }
