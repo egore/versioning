@@ -19,9 +19,11 @@ package de.egore911.versioning.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -51,6 +53,8 @@ public class Role extends IntegerDbObject {
 	}
 
 	@ElementCollection
+	@CollectionTable(name = "role_permissions", joinColumns = @JoinColumn(name = "id_role"))
+	@Column(name = "permission")
 	public List<Permission> getPermissions() {
 		return permissions;
 	}
