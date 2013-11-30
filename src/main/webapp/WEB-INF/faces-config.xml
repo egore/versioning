@@ -9,6 +9,11 @@
 			<base-name>messages</base-name>
 			<var>messages</var>
 		</resource-bundle>
+
 	</application>
+
+	<factory>
+		<exception-handler-factory>de.egore911.versioning.util.security.WrappedExceptionHandlerFactory</exception-handler-factory>
+	</factory>
 
 </faces-config>

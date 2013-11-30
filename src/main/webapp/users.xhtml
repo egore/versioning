@@ -37,7 +37,7 @@
 			<f:facet name="header">
 				<h:outputText value="#{messages.user_roles}" />
 			</f:facet>
-			<a4j:repeat value="#{project.roles}" var="role">
+			<a4j:repeat value="#{user.roles}" var="role">
 				<h:outputText value="#{role.name} " />
 			</a4j:repeat>
 		</rich:column>

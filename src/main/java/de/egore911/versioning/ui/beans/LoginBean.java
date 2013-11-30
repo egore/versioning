@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.UserDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.UserUtil;
@@ -54,8 +55,22 @@ public class LoginBean {
 		if (user != null) {
 			// Found our user, show the versions
 			sessionUtil.setLoggedInUser(user);
-			// XXX: adapt if the user actually has USE permission
-			return "/versions.xhtml";
+			if (user.hasPermission(Permission.USE)) {
+				return "/versions.xhtml";
+			} else if (user.hasPermission(Permission.ADMIN_SETTINGS)) {
+				return "/projects.xthml";
+			} else if (user.hasPermission(Permission.ADMIN_USERS)) {
+				return "/users.xthml";
+			} else {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				ResourceBundle bundle = sessionUtil.getBundle();
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						bundle.getString("missing_permission"),
+						bundle.getString("missing_permission_detail"));
+				facesContext.addMessage("main:user_login", message);
+				return "";
+			}
 		} else {
 			// Invalid login
 			FacesContext facesContext = FacesContext.getCurrentInstance();
