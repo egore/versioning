@@ -28,6 +28,8 @@ The following containers are not supported right now
   to version 7. Jetty 9 switched its package from org.mortbay to org.eclipse
   causing injection to fail.
 
+All other containers are untested.
+
 Supported VCSs
 --------------
 
