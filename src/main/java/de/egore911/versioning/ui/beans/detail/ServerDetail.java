@@ -37,6 +37,8 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerDetail extends AbstractDetail<Server> {
 
+	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+
 	@Override
 	public Server getInstance() {
 		if (instance == null) {
@@ -54,14 +56,14 @@ public class ServerDetail extends AbstractDetail<Server> {
 		if (!isManaged()) {
 			return Collections.emptyList();
 		}
-		return new DeploymentCalculator().getDeployedVersions(instance);
+		return deploymentCalculator.getDeployedVersions(instance);
 	}
 
 	public List<Version> getDeployableVersions() {
 		if (!isManaged()) {
 			return Collections.emptyList();
 		}
-		return new DeploymentCalculator().getDeployableVersions(instance);
+		return deploymentCalculator.getDeployableVersions(instance);
 	}
 
 	public String save() {
