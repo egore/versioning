@@ -74,6 +74,13 @@ public class DeploymentCalculator {
 		for (Project configuredProject : configuredProjects) {
 			Version latest = versionUtil.getLatestVersion(configuredProject
 					.getVersions());
+
+			// No version for a project yet
+			if (latest == null) {
+				continue;
+			}
+
+			// Test if latest is more up to date than current
 			Version current = currentlyDeployedVersions.get(configuredProject);
 			if (current == null || latest.isNewerThan(current)) {
 				result.add(latest);
