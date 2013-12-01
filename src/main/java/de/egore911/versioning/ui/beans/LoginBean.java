@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,7 @@ import de.egore911.versioning.util.UserUtil;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @ManagedBean(name = "loginBean")
+@RequestScoped
 public class LoginBean {
 
 	private final SessionUtil sessionUtil = new SessionUtil();
