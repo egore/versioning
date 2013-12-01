@@ -25,6 +25,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Server_;
 
@@ -32,6 +34,9 @@ import de.egore911.versioning.persistence.model.Server_;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class ServerSelector extends AbstractSelector<Server> {
+
+	private String name;
+
 	@Override
 	protected Class<Server> getEntityClass() {
 		return Server.class;
@@ -41,6 +46,11 @@ public class ServerSelector extends AbstractSelector<Server> {
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
 			Root<Server> from) {
 		List<Predicate> predicates = new ArrayList<>();
+
+		if (StringUtils.isNotEmpty(name)) {
+			predicates.add(builder.equal(from.get(Server_.name), name));
+		}
+
 		return predicates;
 	}
 
@@ -48,6 +58,14 @@ public class ServerSelector extends AbstractSelector<Server> {
 	protected List<Order> generateOrderList(CriteriaBuilder builder,
 			Root<Server> from) {
 		return Collections.singletonList(builder.asc(from.get(Server_.name)));
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

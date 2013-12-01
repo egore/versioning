@@ -34,4 +34,10 @@ public class ServerDao extends AbstractDao<Server> {
 		return new ServerSelector();
 	}
 
+	public Server findByName(String name) {
+		ServerSelector serverSelector = createSelector();
+		serverSelector.setName(name);
+		return serverSelector.find();
+	}
+
 }
