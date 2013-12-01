@@ -23,6 +23,8 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
@@ -57,6 +59,7 @@ public class Role extends IntegerDbObject {
 	@ElementCollection
 	@CollectionTable(name = "role_permissions", joinColumns = @JoinColumn(name = "id_role"))
 	@Column(name = "permission")
+	@Enumerated(EnumType.STRING)
 	public List<Permission> getPermissions() {
 		return permissions;
 	}

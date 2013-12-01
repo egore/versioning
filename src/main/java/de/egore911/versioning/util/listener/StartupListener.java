@@ -16,67 +16,37 @@
  */
 package de.egore911.versioning.util.listener;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.sql.DataSource;
 
-import de.egore911.versioning.persistence.dao.RoleDao;
-import de.egore911.versioning.persistence.dao.UserDao;
-import de.egore911.versioning.persistence.model.Permission;
-import de.egore911.versioning.persistence.model.Role;
-import de.egore911.versioning.persistence.model.User;
-import de.egore911.versioning.util.EntityManagerUtil;
-import de.egore911.versioning.util.UserUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.googlecode.flyway.core.Flyway;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class StartupListener implements ServletContextListener {
 
+	private static final Logger log = LoggerFactory
+			.getLogger(StartupListener.class);
+
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("versioning");
 		try {
-			EntityManager em = emf.createEntityManager();
-			try {
-				EntityManagerUtil.setEntityManager(em);
-				UserDao userDao = new UserDao();
-				long count = userDao.count();
-				if (count == 0) {
-					RoleDao roleDao = new RoleDao();
-					List<Role> rolesWithUserAdminPermission = roleDao
-							.withPermission(Permission.ADMIN_USERS);
-					Role role;
-					if (rolesWithUserAdminPermission.isEmpty()) {
-						role = new Role();
-						role.setName("User Administration");
-						role.getPermissions().add(Permission.ADMIN_USERS);
-						role = roleDao.save(role);
-					} else {
-						role = rolesWithUserAdminPermission.get(0);
-					}
-
-					User user = new User();
-					user.setName("Default admin");
-					user.setLogin("admin");
-					user.setPassword(new UserUtil().hashPassword("admin"));
-					user.setEmail("dev-null@localhost");
-					user.getRoles().add(role);
-					userDao.save(user);
-				}
-			} finally {
-				EntityManagerUtil.clearEntityManager();
-				em.close();
-			}
-		} finally {
-			emf.close();
+			InitialContext initialContext = new InitialContext();
+			DataSource dataSource = (DataSource) initialContext
+					.lookup("java:comp/env/jdbc/versioningDS");
+			Flyway flyway = new Flyway();
+			flyway.setDataSource(dataSource);
+			flyway.migrate();
+		} catch (NamingException e) {
+			log.error(e.getMessage(), e);
 		}
-
 	}
 
 	@Override
