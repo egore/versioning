@@ -36,15 +36,15 @@
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>ServerList</servlet-name>
-		<servlet-class>de.egore911.versioning.ui.servlets.ServerList</servlet-class>
+		<servlet-name>ServerService</servlet-name>
+		<servlet-class>de.egore911.versioning.ui.servlets.ServerService</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>ServerList</servlet-name>
+		<servlet-name>ServerService</servlet-name>
 		<url-pattern>/service/server</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>ServerList</servlet-name>
+		<servlet-name>ServerService</servlet-name>
 		<url-pattern>/service/server/*</url-pattern>
 	</servlet-mapping>
 

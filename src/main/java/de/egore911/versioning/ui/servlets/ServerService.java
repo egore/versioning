@@ -33,7 +33,7 @@ import de.egore911.versioning.persistence.model.Server;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class ServerList extends HttpServlet {
+public class ServerService extends HttpServlet {
 
 	private static final long serialVersionUID = 838967528375645851L;
 
