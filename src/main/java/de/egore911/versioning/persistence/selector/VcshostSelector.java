@@ -17,13 +17,16 @@
 package de.egore911.versioning.persistence.selector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.VcsHost_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -40,6 +43,12 @@ public class VcshostSelector extends AbstractSelector<VcsHost> {
 			Root<VcsHost> from) {
 		List<Predicate> predicates = new ArrayList<>();
 		return predicates;
+	}
+
+	@Override
+	protected List<Order> generateOrderList(CriteriaBuilder builder,
+			Root<VcsHost> from) {
+		return Collections.singletonList(builder.asc(from.get(VcsHost_.name)));
 	}
 
 }

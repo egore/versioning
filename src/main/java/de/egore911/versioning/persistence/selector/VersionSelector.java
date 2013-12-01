@@ -17,13 +17,16 @@
 package de.egore911.versioning.persistence.selector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.model.Version_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -40,4 +43,12 @@ public class VersionSelector extends AbstractSelector<Version> {
 		List<Predicate> predicates = new ArrayList<>();
 		return predicates;
 	}
+
+	@Override
+	protected List<Order> generateOrderList(CriteriaBuilder builder,
+			Root<Version> from) {
+		return Arrays.asList(builder.asc(from.get(Version_.project)),
+				builder.asc(from.get(Version_.vcsTag)));
+	}
+
 }

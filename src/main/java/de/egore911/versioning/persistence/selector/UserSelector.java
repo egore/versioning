@@ -17,9 +17,11 @@
 package de.egore911.versioning.persistence.selector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -56,6 +58,12 @@ public class UserSelector extends AbstractSelector<User> {
 		}
 
 		return predicates;
+	}
+
+	@Override
+	protected List<Order> generateOrderList(CriteriaBuilder builder,
+			Root<User> from) {
+		return Collections.singletonList(builder.asc(from.get(User_.name)));
 	}
 
 	public String getLogin() {

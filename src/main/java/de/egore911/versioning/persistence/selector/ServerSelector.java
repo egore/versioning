@@ -17,13 +17,16 @@
 package de.egore911.versioning.persistence.selector;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.Server_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -40,4 +43,11 @@ public class ServerSelector extends AbstractSelector<Server> {
 		List<Predicate> predicates = new ArrayList<>();
 		return predicates;
 	}
+
+	@Override
+	protected List<Order> generateOrderList(CriteriaBuilder builder,
+			Root<Server> from) {
+		return Collections.singletonList(builder.asc(from.get(Server_.name)));
+	}
+
 }
