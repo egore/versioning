@@ -13,6 +13,8 @@
 			</f:facet>
 			<rich:menuItem label="#{messages.versions}" action="/versions.xthml"
 				id="administration_menu_versions" />
+            <rich:menuItem label="#{messages.deployments}" action="/deployments.xthml"
+                id="administration_menu_deployments" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="server" id="administration_menu"
 			rendered="#{user.hasPermission('ADMIN_SETTINGS')}">

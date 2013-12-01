@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.deployments}" />
+	</ui:define>
+
+	<a4j:repeat value="#{deploymentsBean.deployableVersionsPerServer}"
+		var="serverVersions">
+		<rich:panel>
+			<b><h:outputText value="#{serverVersions.server.name}" /></b>
+			<br />
+			<h:outputText value="Nothing"
+				rendered="#{empty serverVersions.versions}" />
+			<rich:dataTable value="#{serverVersions.versions}" var="version"
+				rendered="#{not empty serverVersions.versions}">
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{messages.version}" />
+					</f:facet>
+					<h:outputText value="#{version.project.name} #{version.vcsTag}" />
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+	</a4j:repeat>
+</ui:composition>
