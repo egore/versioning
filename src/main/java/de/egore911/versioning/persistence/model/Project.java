@@ -47,6 +47,7 @@ import de.egore911.versioning.util.vcs.SvnProvider;
 public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	private String name;
+	private String description;
 	private VcsHost vcsHost;
 	private String vcsPath;
 	private List<Server> configuredServers = new ArrayList<>(0);
@@ -61,6 +62,16 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Column(nullable = true, length = 511)
+	@Size(max = 511)
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@ManyToOne(optional = false)

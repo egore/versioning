@@ -20,6 +20,10 @@
 	<h:panelGrid columns="2" columnClasses="caption,">
 		<h:outputText value="#{messages.server_name}" />
 		<h:inputText value="#{serverDetail.instance.name}" id="server_name" />
+
+		<h:outputText value="#{messages.server_description}" />
+		<h:inputText value="#{serverDetail.instance.description}"
+			id="server_description" />
 	</h:panelGrid>
 
 	<h:commandButton value="#{messages.save}" id="save"

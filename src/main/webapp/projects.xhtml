@@ -17,7 +17,7 @@
 			<f:facet name="header">
 				<h:outputText value="#{messages.project_name}" />
 			</f:facet>
-			<h:link outcome="project" value="#{project.name}">
+			<h:link outcome="project" value="#{project.name}" title="#{project.description}">
 				<f:param name="id" value="#{project.id}" />
 			</h:link>
 		</rich:column>
