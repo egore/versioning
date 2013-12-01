@@ -17,27 +17,29 @@
 		<h:outputText value="#{messages.user}" />
 	</ui:define>
 
-	<h:outputText value="#{messages.user_name}" />
-	<h:inputText value="#{userDetail.instance.name}" id="user_name" />
+	<h:panelGrid columns="2" columnClasses="caption,">
+		<h:outputText value="#{messages.user_name}" />
+		<h:inputText value="#{userDetail.instance.name}" id="user_name" />
 
-	<h:outputText value="#{messages.user_login}" />
-	<h:inputText value="#{userDetail.instance.login}" id="user_login"
-		disabled="#{userDetail.managed}" />
+		<h:outputText value="#{messages.user_login}" />
+		<h:inputText value="#{userDetail.instance.login}" id="user_login"
+			disabled="#{userDetail.managed}" />
 
-	<h:outputText value="#{messages.user_password}" />
-	<h:inputSecret value="#{userDetail.password}" id="user_password" />
-	<h:outputText value="#{messages.user_password_verify}" />
-	<h:inputSecret value="#{userDetail.passwordVerify}"
-		id="user_password_verify" />
+		<h:outputText value="#{messages.user_password}" />
+		<h:inputSecret value="#{userDetail.password}" id="user_password" />
+		<h:outputText value="#{messages.user_password_verify}" />
+		<h:inputSecret value="#{userDetail.passwordVerify}"
+			id="user_password_verify" />
 
-	<h:outputText value="#{messages.user_email}" />
-	<h:inputText value="#{userDetail.instance.email}" id="user_email" />
+		<h:outputText value="#{messages.user_email}" />
+		<h:inputText value="#{userDetail.instance.email}" id="user_email" />
 
-	<h:outputText value="#{messages.user_roles}" />
-	<h:selectManyMenu value="#{userDetail.instance.roles}" id="user_roles"
-		converter="roleConverter">
-		<f:selectItems value="#{userDetail.allRoleSelectItems}" />
-	</h:selectManyMenu>
+		<h:outputText value="#{messages.user_roles}" />
+		<h:selectManyMenu value="#{userDetail.instance.roles}" id="user_roles"
+			converter="roleConverter">
+			<f:selectItems value="#{userDetail.allRoleSelectItems}" />
+		</h:selectManyMenu>
+	</h:panelGrid>
 
 	<h:commandButton value="#{messages.save}" action="#{userDetail.save}" />
 

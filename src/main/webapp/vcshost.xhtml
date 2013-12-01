@@ -17,17 +17,19 @@
 		<h:outputText value="#{messages.vcshost}" />
 	</ui:define>
 
-	<h:outputText value="#{messages.vcshost_name}" />
-	<h:inputText value="#{vcshostDetail.instance.name}" id="vcshost_name" />
+	<h:panelGrid columns="2" columnClasses="caption,">
+		<h:outputText value="#{messages.vcshost_name}" />
+		<h:inputText value="#{vcshostDetail.instance.name}" id="vcshost_name" />
 
-	<h:outputText value="#{messages.vcshost_vcs}" />
-	<h:selectOneRadio value="#{vcshostDetail.instance.vcs}"
-		id="vcshost_vcs">
-		<f:selectItems value="#{vcshostDetail.vcsSelectItems}" />
-	</h:selectOneRadio>
+		<h:outputText value="#{messages.vcshost_vcs}" />
+		<h:selectOneRadio value="#{vcshostDetail.instance.vcs}"
+			id="vcshost_vcs">
+			<f:selectItems value="#{vcshostDetail.vcsSelectItems}" />
+		</h:selectOneRadio>
 
-	<h:outputText value="#{messages.vcshost_uri}" />
-	<h:inputText value="#{vcshostDetail.instance.uri}" id="vcshost_uri" />
+		<h:outputText value="#{messages.vcshost_uri}" />
+		<h:inputText value="#{vcshostDetail.instance.uri}" id="vcshost_uri" />
+	</h:panelGrid>
 
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{vcshostDetail.save}" />

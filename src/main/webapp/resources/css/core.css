@@ -7,3 +7,7 @@ html {
 table#main\:navigationbar {
 	margin-bottom: 20px;
 }
+
+td.caption {
+	font-weight: bold;
+}

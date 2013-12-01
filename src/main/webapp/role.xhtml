@@ -17,14 +17,16 @@
 		<h:outputText value="#{messages.role}" />
 	</ui:define>
 
-	<h:outputText value="#{messages.role_name}" />
-	<h:inputText value="#{roleDetail.instance.name}" id="role_name" />
+	<h:panelGrid columns="2" columnClasses="caption,">
+		<h:outputText value="#{messages.role_name}" />
+		<h:inputText value="#{roleDetail.instance.name}" id="role_name" />
 
-	<h:outputText value="#{messages.role_permissions}" />
-	<h:selectManyMenu value="#{roleDetail.instance.permissions}"
-		id="role_permissions" converter="permissionConverter">
-		<f:selectItems value="#{roleDetail.allPermissionSelectItems}" />
-	</h:selectManyMenu>
+		<h:outputText value="#{messages.role_permissions}" />
+		<h:selectManyMenu value="#{roleDetail.instance.permissions}"
+			id="role_permissions" converter="permissionConverter">
+			<f:selectItems value="#{roleDetail.allPermissionSelectItems}" />
+		</h:selectManyMenu>
+	</h:panelGrid>
 
 	<h:commandButton value="#{messages.save}" action="#{roleDetail.save}" />
 
