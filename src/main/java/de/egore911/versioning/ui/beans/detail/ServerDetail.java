@@ -18,15 +18,19 @@ package de.egore911.versioning.ui.beans.detail;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -37,7 +41,8 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerDetail extends AbstractDetail<Server> {
 
-	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Override
 	public Server getInstance() {
@@ -67,6 +72,17 @@ public class ServerDetail extends AbstractDetail<Server> {
 	}
 
 	public String save() {
+		if (getInstance().getName().contains("/")) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ResourceBundle bundle = sessionUtil.getBundle();
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					bundle.getString("invalid_chars_in_name"),
+					bundle.getString("invalid_chars_in_name_detail"));
+			facesContext.addMessage("main:server_name", message);
+			return "";
+		}
+
 		getDao().save(getInstance());
 		return "/servers.xhtml";
 	}

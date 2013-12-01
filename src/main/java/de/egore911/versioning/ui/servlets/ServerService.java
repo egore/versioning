@@ -38,7 +38,7 @@ public class ServerService extends HttpServlet {
 	private static final long serialVersionUID = 838967528375645851L;
 
 	private static final Pattern PATTERN_SERVERNAME = Pattern
-			.compile(".*/server/(.+)\\.xml$");
+			.compile(".*/server/([^/]+)\\.xml$");
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
