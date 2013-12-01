@@ -6,10 +6,10 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
-import de.egore911.versioning.persistence.selector.ServerSelector;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -39,7 +39,7 @@ public class DeploymentsBean extends AbstractBean {
 	}
 
 	public List<ServerVersions> getDeployableVersionsPerServer() {
-		List<Server> servers = new ServerSelector().findAll();
+		List<Server> servers = new ServerDao().findAll();
 		List<ServerVersions> result = new ArrayList<>();
 		for (Server server : servers) {
 			result.add(new ServerVersions(server, deploymentCalculator
