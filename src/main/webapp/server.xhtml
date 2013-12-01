@@ -23,7 +23,25 @@
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{serverDetail.save}" />
 
-	Deployed: #{serverDetail.deployedVersions}
-	Deployable: #{serverDetail.deployableVersions}
+	<h2><h:outputText value="#{messages.server_currently_deployed}" /></h2>
+	<rich:dataTable value="#{serverDetail.deployedVersions}" var="version">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.version}" />
+			</f:facet>
+			<h:outputText value="#{version.project.name} #{version.vcsTag}" />
+		</rich:column>
+	</rich:dataTable>
+
+	<h2><h:outputText value="#{messages.server_deployable}" /></h2>
+	<rich:dataTable value="#{serverDetail.deployableVersions}"
+		var="version">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.version}" />
+			</f:facet>
+			<h:outputText value="#{version.project.name} #{version.vcsTag}" />
+		</rich:column>
+	</rich:dataTable>
 
 </ui:composition>
