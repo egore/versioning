@@ -26,9 +26,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -40,6 +43,8 @@ public class VcsHost extends IntegerDbObject {
 	private String name;
 	private Vcs vcs;
 	private String uri;
+	private String username;
+	private String password;
 	private List<Project> projects = new ArrayList<>();
 
 	@Column(nullable = false, length = 255)
@@ -74,6 +79,26 @@ public class VcsHost extends IntegerDbObject {
 		this.uri = uri;
 	}
 
+	@Column(length = 255)
+	@Size(max = 255)
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@Column(length = 63)
+	@Size(max = 63)
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@OneToMany(mappedBy = "vcsHost")
 	@OrderBy("name")
 	public List<Project> getProjects() {
@@ -88,6 +113,12 @@ public class VcsHost extends IntegerDbObject {
 	public String toString() {
 		return "VcsHost [name=" + name + ", vcs=" + vcs + ", uri=" + uri
 				+ ", projects=" + projects + ", id=" + getId() + "]";
+	}
+
+	@Transient
+	public boolean isCredentialsAvailable() {
+		return StringUtils.isNotEmpty(getUsername())
+				&& StringUtils.isNotEmpty(getPassword());
 	}
 
 }

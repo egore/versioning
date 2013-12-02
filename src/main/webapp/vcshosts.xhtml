@@ -33,6 +33,12 @@
 			</f:facet>
 			<h:outputText value="#{vcshost.uri}" />
 		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.vcshost_credentials}" />
+			</f:facet>
+			<h:selectBooleanCheckbox value="#{vcshost.credentialsAvailable}" disabled="true" />
+		</rich:column>
 	</rich:dataTable>
 
 	<h:commandLink action="/vcshost.xhtml" value="#{messages.add}" />

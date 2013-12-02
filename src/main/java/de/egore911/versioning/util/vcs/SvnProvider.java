@@ -21,10 +21,13 @@ import org.slf4j.LoggerFactory;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.SVNURL;
+import org.tmatesoft.svn.core.auth.BasicAuthenticationManager;
+import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.VcsHost;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -40,6 +43,12 @@ public class SvnProvider extends Provider {
 			SVNURL svnurl = SVNURL
 					.parseURIEncoded(project.getCompleteVcsPath());
 			SVNRepository repo = SVNRepositoryFactory.create(svnurl);
+			VcsHost vcsHost = project.getVcsHost();
+			if (vcsHost.isCredentialsAvailable()) {
+				ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
+						vcsHost.getUsername(), vcsHost.getPassword());
+				repo.setAuthenticationManager(authManager);
+			}
 			SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
 					repo.getLatestRevision());
 			return checkPath == SVNNodeKind.DIR;

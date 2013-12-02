@@ -16,14 +16,21 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.util.ResourceBundle;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+
+import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Vcs;
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -33,6 +40,11 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostDetail extends AbstractDetail<VcsHost> {
+
+	private final SessionUtil sessionUtil = new SessionUtil();
+
+	private String password;
+	private String passwordVerify;
 
 	@Override
 	public VcsHost getInstance() {
@@ -57,8 +69,41 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 	}
 
 	public String save() {
+		if (StringUtils.isNotEmpty(password)
+				|| StringUtils.isNotEmpty(passwordVerify)) {
+			if (password != null && !password.equals(passwordVerify)) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				ResourceBundle bundle = sessionUtil.getBundle();
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						bundle.getString("passwords_dont_match"),
+						bundle.getString("passwords_dont_match_detail"));
+				facesContext.addMessage("main:vcshost_password", message);
+				password = null;
+				passwordVerify = null;
+				return "";
+			} else {
+				getInstance().setPassword(password);
+			}
+		}
 		getDao().save(getInstance());
 		return "/vcshosts.xhtml";
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPasswordVerify() {
+		return passwordVerify;
+	}
+
+	public void setPasswordVerify(String passwordVerify) {
+		this.passwordVerify = passwordVerify;
 	}
 
 }
