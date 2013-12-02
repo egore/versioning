@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Server;
 
@@ -54,9 +56,15 @@ public class ServerService extends HttpServlet {
 					resp.setContentType("application/xml;charset=UTF-8");
 					writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 					writer.println("<server>");
-					writer.print("	<id>");
-					writer.print(server.getId());
-					writer.println("</id>");
+					writer.print("	<name>");
+					writer.print(server.getName());
+					writer.println("</name>");
+					if (StringUtils.isNotEmpty(server.getDescription())) {
+						writer.print("	<!-- ");
+						writer.print(server.getDescription()
+								.replace("--", "__"));
+						writer.println("-->");
+					}
 					writer.println("</server>");
 				} else {
 					// TODO send proper 404
