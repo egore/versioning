@@ -11,6 +11,7 @@
 	<description>Simple web-application to track when a software was deployed to a server</description>
 
 	<build>
+		<finalName>versioning</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
