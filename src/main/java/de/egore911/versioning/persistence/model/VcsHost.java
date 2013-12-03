@@ -40,6 +40,8 @@ import org.apache.commons.lang3.StringUtils;
 @Table(name = "vcshost", uniqueConstraints = { @UniqueConstraint(name = "pvcshost__name", columnNames = { "name" }) })
 public class VcsHost extends IntegerDbObject {
 
+	private static final long serialVersionUID = 143813924992020021L;
+
 	private String name;
 	private Vcs vcs;
 	private String uri;

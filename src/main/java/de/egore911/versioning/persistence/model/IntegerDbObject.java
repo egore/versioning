@@ -27,6 +27,8 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class IntegerDbObject extends DbObject<Integer> {
 
+	private static final long serialVersionUID = -6707371418461527979L;
+
 	private Integer id;
 
 	@Override

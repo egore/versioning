@@ -46,6 +46,8 @@ import de.egore911.versioning.util.vcs.SvnProvider;
 @Table(name = "project", uniqueConstraints = { @UniqueConstraint(name = "project__name", columnNames = { "name" }) })
 public class Project extends IntegerDbObject implements Comparable<Project> {
 
+	private static final long serialVersionUID = 526215336577704306L;
+
 	private String name;
 	private String description;
 	private VcsHost vcsHost;

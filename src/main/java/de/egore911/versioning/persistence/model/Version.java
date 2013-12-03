@@ -34,6 +34,8 @@ import org.apache.commons.lang3.StringUtils;
 		"id_project", "vcs_tag" }) })
 public class Version extends IntegerDbObject {
 
+	private static final long serialVersionUID = -5872475957543596131L;
+
 	private Project project;
 	private String vcsTag;
 

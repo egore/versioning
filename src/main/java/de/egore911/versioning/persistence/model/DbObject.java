@@ -35,7 +35,9 @@ import de.egore911.versioning.persistence.listeners.ModifiedListener;
  */
 @MappedSuperclass
 @EntityListeners({ ModifiedListener.class })
-public abstract class DbObject<ID extends Serializable> {
+public abstract class DbObject<ID extends Serializable> implements Serializable {
+
+	private static final long serialVersionUID = -3422412128666825823L;
 
 	private LocalDateTime created;
 	private LocalDateTime modified;

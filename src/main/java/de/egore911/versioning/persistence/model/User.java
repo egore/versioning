@@ -38,6 +38,8 @@ import org.apache.commons.collections4.CollectionUtils;
 @Table(name = "user")
 public class User extends IntegerDbObject {
 
+	private static final long serialVersionUID = 5341258879773745459L;
+
 	private String name;
 	private String login;
 	private String password;

@@ -34,6 +34,8 @@ import org.joda.time.LocalDateTime;
 		"id_version", "id_server" }) })
 public class Deployment extends IntegerDbObject {
 
+	private static final long serialVersionUID = 1049276965538023559L;
+
 	private Version version;
 	private Server server;
 	private LocalDateTime deployment;

@@ -41,6 +41,8 @@ import org.apache.commons.collections4.CollectionUtils;
 @Table(name = "role")
 public class Role extends IntegerDbObject {
 
+	private static final long serialVersionUID = 1353587049705666524L;
+
 	private String name;
 	private List<Permission> permissions = new ArrayList<>(0);
 	private List<User> users = new ArrayList<>(0);

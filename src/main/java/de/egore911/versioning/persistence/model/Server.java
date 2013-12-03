@@ -35,6 +35,8 @@ import javax.validation.constraints.Size;
 @Table(name = "server", uniqueConstraints = { @UniqueConstraint(name = "project__name", columnNames = { "name" }) })
 public class Server extends IntegerDbObject {
 
+	private static final long serialVersionUID = -1152147569504508181L;
+
 	private String name;
 	private String description;
 	private String targetdir;
