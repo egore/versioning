@@ -47,6 +47,25 @@
 				rendered="#{empty projectDetail.instance.war.mavenArtifact and empty projectDetail.instance.war.spacerUrl}" />
 			<h:commandButton action="#{projectDetail.chooseSpacerUrl}"
 				rendered="#{empty projectDetail.instance.war.mavenArtifact and empty projectDetail.instance.war.spacerUrl}" />
+			<h:panelGrid columns="2" columnClasses="caption,"
+				rendered="#{not empty projectDetail.instance.war.mavenArtifact}">
+				<h:outputText value="groupId" />
+				<h:inputText
+					value="#{projectDetail.instance.war.mavenArtifact.groupId}"
+					id="groupId" />
+				<h:outputText value="artifactId" />
+				<h:inputText
+					value="#{projectDetail.instance.war.mavenArtifact.artifactId}"
+					id="artifactId" />
+			</h:panelGrid>
+			<h:panelGrid columns="2" columnClasses="caption,"
+				rendered="#{not empty projectDetail.instance.war.spacerUrl}">
+				<h:outputText value="URL" />
+				<h:inputText
+					value="#{projectDetail.instance.war.mavenArtifact.spacerUrl}"
+					id="groupId" />
+				<h:outputText value="Allowed placeholders: [VERSION]" />
+			</h:panelGrid>
 		</h:panelGroup>
 
 	</h:panelGrid>
