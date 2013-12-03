@@ -18,9 +18,10 @@ package de.egore911.versioning.ui.beans.detail;
 
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
@@ -34,10 +35,19 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "projectDetail")
-@RequestScoped
+@Named("projectDetail")
+@ConversationScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ProjectDetail extends AbstractDetail<Project> {
+
+	private static final long serialVersionUID = 3915944174417420186L;
+
+	@Inject
+	private ProjectDao projectDao;
+	@Inject
+	private VcshostDao vcshostDao;
+	@Inject
+	private ServerDao serverDao;
 
 	@Override
 	public Project getInstance() {
@@ -49,11 +59,11 @@ public class ProjectDetail extends AbstractDetail<Project> {
 
 	@Override
 	protected ProjectDao getDao() {
-		return new ProjectDao();
+		return projectDao;
 	}
 
 	public SelectItem[] getVcshostSelectItems() {
-		List<VcsHost> vcshosts = new VcshostDao().findAll();
+		List<VcsHost> vcshosts = vcshostDao.findAll();
 		SelectItem[] items = new SelectItem[vcshosts.size()];
 		int i = 0;
 		for (VcsHost vcshost : vcshosts) {
@@ -63,7 +73,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	}
 
 	public SelectItem[] getAllServerSelectItems() {
-		List<Server> servers = new ServerDao().findAll();
+		List<Server> servers = serverDao.findAll();
 		SelectItem[] items = new SelectItem[servers.size()];
 		int i = 0;
 		for (Server server : servers) {
@@ -72,8 +82,30 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return items;
 	}
 
+	public String chooseWar() {
+		// getInstance().setWar(new War());
+		// getInstance().getWar().setProject(getInstance());
+		return "";
+	}
+
+	public String chooseMavenArtifact() {
+		// getInstance().getWar().setMavenArtifact(new MavenArtifact());
+		// getInstance().getWar().getMavenArtifact()
+		// .setWar(getInstance().getWar());
+		return "";
+	}
+
+	public String chooseSpacerUrl() {
+		// getInstance().getWar().setSpacerUrl(new SpacerUrl());
+		// getInstance().getWar().getSpacerUrl().setWar(getInstance().getWar());
+		return "";
+	}
+
 	public String save() {
 		getDao().save(getInstance());
+		if (!conversation.isTransient()) {
+			conversation.end();
+		}
 		return "/projects.xhtml";
 	}
 

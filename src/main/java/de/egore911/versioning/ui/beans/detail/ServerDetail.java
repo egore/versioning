@@ -20,10 +20,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -36,13 +37,18 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "serverDetail")
-@RequestScoped
+@Named("serverDetail")
+@ConversationScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerDetail extends AbstractDetail<Server> {
 
+	private static final long serialVersionUID = -3941952852926060166L;
+
 	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 	private final SessionUtil sessionUtil = new SessionUtil();
+
+	@Inject
+	private ServerDao serverDao;
 
 	@Override
 	public Server getInstance() {
@@ -54,7 +60,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 
 	@Override
 	protected ServerDao getDao() {
-		return new ServerDao();
+		return serverDao;
 	}
 
 	public List<Version> getDeployedVersions() {
@@ -84,6 +90,9 @@ public class ServerDetail extends AbstractDetail<Server> {
 		}
 
 		getDao().save(getInstance());
+		if (!conversation.isTransient()) {
+			conversation.end();
+		}
 		return "/servers.xhtml";
 	}
 

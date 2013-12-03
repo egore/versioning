@@ -16,6 +16,8 @@
  */
 package de.egore911.versioning.persistence.dao;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.persistence.selector.VersionSelector;
 
@@ -24,6 +26,8 @@ import de.egore911.versioning.persistence.selector.VersionSelector;
  */
 public class VersionDao extends AbstractDao<Version> {
 
+	private static final long serialVersionUID = 8401614495738118941L;
+
 	@Override
 	protected Class<Version> getEntityClass() {
 		return Version.class;
@@ -31,7 +35,7 @@ public class VersionDao extends AbstractDao<Version> {
 
 	@Override
 	protected VersionSelector createSelector() {
-		return new VersionSelector();
+		return BeanProvider.getContextualReference(VersionSelector.class);
 	}
 
 }

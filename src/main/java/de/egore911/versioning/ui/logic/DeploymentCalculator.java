@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.Deployment;
@@ -44,9 +46,12 @@ public class DeploymentCalculator {
 		}
 	};
 
-	private ProjectDao projectDao = new ProjectDao();
+	@Inject
+	private ProjectDao projectDao;
+	@Inject
+	private DeploymentDao deploymentDao;
+
 	private VersionUtil versionUtil = new VersionUtil();
-	private DeploymentDao deploymentDao = new DeploymentDao();
 
 	public List<Version> getDeployedVersions(Server server) {
 		List<Version> result = new ArrayList<>();

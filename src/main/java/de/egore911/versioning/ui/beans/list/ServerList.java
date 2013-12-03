@@ -18,8 +18,9 @@ package de.egore911.versioning.ui.beans.list;
 
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -29,10 +30,13 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "serverList")
+@Named("serverList")
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerList extends AbstractList<Server> {
+
+	@Inject
+	private ServerDao serverDao;
 
 	@Override
 	public List<Server> getList() {
@@ -46,7 +50,7 @@ public class ServerList extends AbstractList<Server> {
 
 	@Override
 	protected ServerDao getDao() {
-		return new ServerDao();
+		return serverDao;
 	}
 
 }

@@ -16,9 +16,10 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.RoleDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -28,10 +29,15 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "roleDetail")
-@RequestScoped
+@Named("roleDetail")
+@ConversationScoped
 @RequiresPermission(Permission.ADMIN_USERS)
 public class RoleDetail extends AbstractDetail<Role> {
+
+	private static final long serialVersionUID = 7342109474623621328L;
+
+	@Inject
+	private RoleDao roleDao;
 
 	@Override
 	public Role getInstance() {
@@ -43,11 +49,14 @@ public class RoleDetail extends AbstractDetail<Role> {
 
 	@Override
 	protected RoleDao getDao() {
-		return new RoleDao();
+		return roleDao;
 	}
 
 	public String save() {
 		getDao().save(getInstance());
+		if (!conversation.isTransient()) {
+			conversation.end();
+		}
 		return "/roles.xhtml";
 	}
 

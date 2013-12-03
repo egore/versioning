@@ -19,11 +19,12 @@ package de.egore911.versioning.ui.beans.detail;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,12 +40,19 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "userDetail")
-@RequestScoped
+@Named("userDetail")
+@ConversationScoped
 @RequiresPermission(Permission.ADMIN_USERS)
 public class UserDetail extends AbstractDetail<User> {
 
+	private static final long serialVersionUID = -6311272835219199695L;
+
 	private final SessionUtil sessionUtil = new SessionUtil();
+
+	@Inject
+	private UserDao userDao;
+	@Inject
+	private RoleDao roleDao;
 
 	private String password;
 	private String passwordVerify;
@@ -59,7 +67,7 @@ public class UserDetail extends AbstractDetail<User> {
 
 	@Override
 	protected UserDao getDao() {
-		return new UserDao();
+		return userDao;
 	}
 
 	public String save() {
@@ -82,11 +90,14 @@ public class UserDetail extends AbstractDetail<User> {
 			}
 		}
 		getDao().save(getInstance());
+		if (!conversation.isTransient()) {
+			conversation.end();
+		}
 		return "/users.xhtml";
 	}
 
 	public SelectItem[] getAllRoleSelectItems() {
-		List<Role> roles = new RoleDao().findAll();
+		List<Role> roles = roleDao.findAll();
 		SelectItem[] items = new SelectItem[roles.size()];
 		int i = 0;
 		for (Role role : roles) {

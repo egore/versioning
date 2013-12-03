@@ -16,6 +16,8 @@
  */
 package de.egore911.versioning.persistence.dao;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.selector.VcshostSelector;
 
@@ -24,6 +26,8 @@ import de.egore911.versioning.persistence.selector.VcshostSelector;
  */
 public class VcshostDao extends AbstractDao<VcsHost> {
 
+	private static final long serialVersionUID = 7496583058648972969L;
+
 	@Override
 	protected Class<VcsHost> getEntityClass() {
 		return VcsHost.class;
@@ -31,7 +35,7 @@ public class VcshostDao extends AbstractDao<VcsHost> {
 
 	@Override
 	protected VcshostSelector createSelector() {
-		return new VcshostSelector();
+		return BeanProvider.getContextualReference(VcshostSelector.class);
 	}
 
 }

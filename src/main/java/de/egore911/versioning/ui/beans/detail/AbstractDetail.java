@@ -16,6 +16,11 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.io.Serializable;
+
+import javax.enterprise.context.Conversation;
+import javax.inject.Inject;
+
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.ui.beans.AbstractBean;
@@ -24,7 +29,12 @@ import de.egore911.versioning.ui.beans.AbstractBean;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public abstract class AbstractDetail<T extends IntegerDbObject> extends
-		AbstractBean {
+		AbstractBean implements Serializable {
+
+	private static final long serialVersionUID = 1876481192302368063L;
+
+	@Inject
+	protected Conversation conversation;
 
 	protected T instance;
 
@@ -32,6 +42,9 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 
 	public void setInstance(T instance) {
 		this.instance = instance;
+		if (conversation.isTransient()) {
+			conversation.begin();
+		}
 	}
 
 	public void setId(Integer id) {

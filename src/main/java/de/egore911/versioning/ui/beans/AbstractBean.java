@@ -18,13 +18,9 @@ package de.egore911.versioning.ui.beans;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.Hibernate;
-
-import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
-import de.egore911.versioning.persistence.model.Role;
-import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.util.SessionUtil;
+import de.egore911.versioning.util.SessionUtil.LoggedInUser;
 import de.egore911.versioning.util.security.PermissionException;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -39,17 +35,12 @@ public class AbstractBean {
 				RequiresPermission.class);
 		if (requiresPermission != null) {
 			SessionUtil sessionUtil = new SessionUtil();
-			User user = sessionUtil.getLoggedInUser();
-			if (user == null) {
+			LoggedInUser loggedInUser = sessionUtil.getLoggedInUser();
+			if (loggedInUser == null) {
 				throw new PermissionException();
 			}
-			user = new UserDao().reattach(user);
-			for (Role role : user.getRoles()) {
-				Hibernate.initialize(role.getPermissions());
-			}
-			sessionUtil.setLoggedInUser(user);
 			for (Permission permission : requiresPermission.value()) {
-				if (!user.hasPermission(permission)) {
+				if (!loggedInUser.getPermissions().contains(permission)) {
 					throw new PermissionException(permission);
 				}
 			}

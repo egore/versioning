@@ -18,6 +18,8 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.selector.DeploymentSelector;
@@ -27,6 +29,8 @@ import de.egore911.versioning.persistence.selector.DeploymentSelector;
  */
 public class DeploymentDao extends AbstractDao<Deployment> {
 
+	private static final long serialVersionUID = -5244381817253511950L;
+
 	@Override
 	protected Class<Deployment> getEntityClass() {
 		return Deployment.class;
@@ -34,7 +38,7 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 
 	@Override
 	protected DeploymentSelector createSelector() {
-		return new DeploymentSelector();
+		return BeanProvider.getContextualReference(DeploymentSelector.class);
 	}
 
 	public List<Deployment> getCurrentDeployments(Server server) {

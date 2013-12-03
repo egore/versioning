@@ -18,6 +18,8 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.selector.ProjectSelector;
@@ -27,6 +29,8 @@ import de.egore911.versioning.persistence.selector.ProjectSelector;
  */
 public class ProjectDao extends AbstractDao<Project> {
 
+	private static final long serialVersionUID = 1342586434133194612L;
+
 	@Override
 	protected Class<Project> getEntityClass() {
 		return Project.class;
@@ -34,7 +38,7 @@ public class ProjectDao extends AbstractDao<Project> {
 
 	@Override
 	protected ProjectSelector createSelector() {
-		return new ProjectSelector();
+		return BeanProvider.getContextualReference(ProjectSelector.class);
 	}
 
 	public List<Project> getConfiguredProjects(Server server) {

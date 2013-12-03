@@ -18,11 +18,6 @@ package de.egore911.test;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,31 +31,17 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
-import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class ImportSqlTest {
 
-	private EntityManagerFactory emf;
-
 	@Before
 	public void before() {
 		System.setProperty("java.naming.factory.initial",
 				"de.egore911.test.JndiFactory");
 
-		emf = Persistence.createEntityManagerFactory("versioning");
-		EntityManager em = emf.createEntityManager();
-		EntityManagerUtil.setEntityManager(em);
-	}
-
-	@After
-	public void after() {
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		EntityManagerUtil.clearEntityManager();
-		em.close();
-		emf.close();
 	}
 
 	@Test

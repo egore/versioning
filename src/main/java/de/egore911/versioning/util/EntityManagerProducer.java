@@ -16,33 +16,34 @@
  */
 package de.egore911.versioning.util;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.inject.Disposes;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.deltaspike.jpa.api.entitymanager.PersistenceUnitName;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class EntityManagerUtil {
+@ApplicationScoped
+public class EntityManagerProducer {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(EntityManagerUtil.class);
+	@Inject
+	@PersistenceUnitName("versioning")
+	private EntityManagerFactory emf;
 
-	private static ThreadLocal<EntityManager> entityManagerHolder = new ThreadLocal<>();
-
-	public static EntityManager getEntityManager() {
-		return entityManagerHolder.get();
+	@Produces
+	@ConversationScoped
+	public EntityManager createEntityManager() {
+		return emf.createEntityManager();
 	}
 
-	public static void setEntityManager(EntityManager entityManager) {
-		if (entityManagerHolder.get() != null) {
-			log.error("Replacing existing EntityManger");
-		}
-		entityManagerHolder.set(entityManager);
+	public void closeEm(@Disposes EntityManager em) {
+		em.close();
 	}
 
-	public static void clearEntityManager() {
-		entityManagerHolder.set(null);
-	}
 }

@@ -18,8 +18,9 @@ package de.egore911.versioning.ui.beans.list;
 
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -29,26 +30,27 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "versionList")
+@Named("versionList")
 @RequestScoped
 @RequiresPermission(Permission.USE)
 public class VersionList extends AbstractList<Version> {
 
+	@Inject
+	private VersionDao versionDao;
+
 	@Override
 	public List<Version> getList() {
-		VersionDao versionDao = new VersionDao();
-		return versionDao.findAll(getOffset(), getLimit());
+		return getDao().findAll(getOffset(), getLimit());
 	}
 
 	@Override
 	public long count() {
-		VersionDao versionDao = new VersionDao();
-		return versionDao.count();
+		return getDao().count();
 	}
 
 	@Override
 	protected VersionDao getDao() {
-		return new VersionDao();
+		return versionDao;
 	}
 
 }

@@ -18,8 +18,9 @@ package de.egore911.versioning.ui.beans.list;
 
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -29,10 +30,13 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "projectList")
+@Named("projectList")
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ProjectList extends AbstractList<Project> {
+
+	@Inject
+	private ProjectDao projectDao;
 
 	@Override
 	public List<Project> getList() {
@@ -46,7 +50,7 @@ public class ProjectList extends AbstractList<Project> {
 
 	@Override
 	protected ProjectDao getDao() {
-		return new ProjectDao();
+		return projectDao;
 	}
 
 }

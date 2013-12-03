@@ -21,6 +21,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Server;
 
@@ -34,7 +36,8 @@ public class ServerConverter implements Converter {
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return new ServerDao().findById(Integer.valueOf(value));
+			return BeanProvider.getContextualReference(ServerDao.class)
+					.findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}

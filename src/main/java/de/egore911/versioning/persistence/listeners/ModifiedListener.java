@@ -19,11 +19,14 @@ package de.egore911.versioning.persistence.listeners;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.joda.time.LocalDateTime;
 
+import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.DbObject;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.util.SessionUtil;
+import de.egore911.versioning.util.SessionUtil.LoggedInUser;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -35,10 +38,14 @@ public class ModifiedListener {
 		o.setCreated(LocalDateTime.now());
 		o.setModified(o.getCreated());
 
-		User user = new SessionUtil().getLoggedInUser();
-		if (user != null) {
-			o.setCreatedBy(user);
-			o.setModifiedBy(user);
+		LoggedInUser loggedInUser = new SessionUtil().getLoggedInUser();
+		if (loggedInUser != null) {
+			User user = BeanProvider.getContextualReference(UserDao.class)
+					.findById(loggedInUser.getId());
+			if (user != null) {
+				o.setCreatedBy(user);
+				o.setModifiedBy(user);
+			}
 		}
 	}
 
@@ -46,9 +53,13 @@ public class ModifiedListener {
 	public void preUpdate(DbObject<?> o) {
 		o.setModified(LocalDateTime.now());
 
-		User user = new SessionUtil().getLoggedInUser();
-		if (user != null) {
-			o.setModifiedBy(user);
+		LoggedInUser loggedInUser = new SessionUtil().getLoggedInUser();
+		if (loggedInUser != null) {
+			User user = BeanProvider.getContextualReference(UserDao.class)
+					.findById(loggedInUser.getId());
+			if (user != null) {
+				o.setModifiedBy(user);
+			}
 		}
 	}
 

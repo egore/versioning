@@ -18,6 +18,8 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Role;
 import de.egore911.versioning.persistence.selector.RoleSelector;
@@ -27,6 +29,8 @@ import de.egore911.versioning.persistence.selector.RoleSelector;
  */
 public class RoleDao extends AbstractDao<Role> {
 
+	private static final long serialVersionUID = -1415981365607805541L;
+
 	@Override
 	protected Class<Role> getEntityClass() {
 		return Role.class;
@@ -34,7 +38,7 @@ public class RoleDao extends AbstractDao<Role> {
 
 	@Override
 	protected RoleSelector createSelector() {
-		return new RoleSelector();
+		return BeanProvider.getContextualReference(RoleSelector.class);
 	}
 
 	public List<Role> withPermission(Permission permission) {
