@@ -19,7 +19,8 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequiresPermission(Permission.USE)
 public class DeploymentsBean extends AbstractBean {
 
-	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+	@Inject
+	private DeploymentCalculator deploymentCalculator;
 
 	@Inject
 	private ServerDao serverDao;

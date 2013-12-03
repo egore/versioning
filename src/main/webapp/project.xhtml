@@ -38,6 +38,17 @@
 			id="project_configuredServers" converter="serverConverter">
 			<f:selectItems value="#{projectDetail.allServerSelectItems}" />
 		</h:selectManyMenu>
+
+		<h:commandButton action="#{projectDetail.chooseWar}"
+			rendered="#{empty projectDetail.instance.war}" />
+		<h:panelGroup rendered="#{not empty projectDetail.instance.war}">
+			<h:outputText value="WAR!" />
+			<h:commandButton action="#{projectDetail.chooseMavenArtifact}"
+				rendered="#{empty projectDetail.instance.war.mavenArtifact and empty projectDetail.instance.war.spacerUrl}" />
+			<h:commandButton action="#{projectDetail.chooseSpacerUrl}"
+				rendered="#{empty projectDetail.instance.war.mavenArtifact and empty projectDetail.instance.war.spacerUrl}" />
+		</h:panelGroup>
+
 	</h:panelGrid>
 
 	<h:commandButton value="#{messages.save}"

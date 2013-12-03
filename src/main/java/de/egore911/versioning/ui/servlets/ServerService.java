@@ -47,6 +47,8 @@ public class ServerService extends HttpServlet {
 
 	@Inject
 	private ServerDao serverDao;
+	@Inject
+	private DeploymentCalculator deploymentCalculator;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -76,7 +78,6 @@ public class ServerService extends HttpServlet {
 								.replace("--", "__"));
 						writer.println("-->");
 					}
-					DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 					List<Version> versions = deploymentCalculator
 							.getDeployableVersions(server);
 					writer.println("	<deployments>");
@@ -86,6 +87,35 @@ public class ServerService extends HttpServlet {
 								.replace("--", "__"));
 						writer.println("-->");
 						writer.println("		<deployment>");
+						if (version.getProject().getWar() != null) {
+							writer.println("			<war>");
+							if (version.getProject().getWar()
+									.getMavenArtifact() != null) {
+								writer.print("				<groupId>");
+								writer.print(version.getProject().getWar()
+										.getMavenArtifact().getGroupId());
+								writer.println("</groupId>");
+								writer.print("				<artifactId>");
+								writer.print(version.getProject().getWar()
+										.getMavenArtifact().getArtifactId());
+								writer.println("</artifactId>");
+								writer.print("				<version>");
+								writer.print(version.getVcsTag());
+								writer.println("</version>");
+							} else {
+								writer.print("				<url>");
+								writer.print(version
+										.getProject()
+										.getWar()
+										.getSpacerUrl()
+										.getUrl()
+										.replace("[VERSION]",
+												version.getVcsTag()));
+								writer.print("				</url>");
+								writer.println("				</groupId>");
+							}
+							writer.println("			</war>");
+						}
 						writer.println("		</deployment>");
 					}
 					writer.println("	</deployments>");

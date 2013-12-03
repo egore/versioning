@@ -26,6 +26,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -52,6 +53,7 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	private String description;
 	private VcsHost vcsHost;
 	private String vcsPath;
+	private War war;
 	private List<Server> configuredServers = new ArrayList<>(0);
 	private List<Version> versions = new ArrayList<>(0);
 
@@ -96,6 +98,15 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	public void setVcsPath(String vcsPath) {
 		this.vcsPath = vcsPath;
+	}
+
+	@OneToOne(mappedBy = "project")
+	public War getWar() {
+		return war;
+	}
+
+	public void setWar(War war) {
+		this.war = war;
 	}
 
 	@ManyToMany

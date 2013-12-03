@@ -44,7 +44,8 @@ public class ServerDetail extends AbstractDetail<Server> {
 
 	private static final long serialVersionUID = -3941952852926060166L;
 
-	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+	@Inject
+	private DeploymentCalculator deploymentCalculator;
 	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Inject
