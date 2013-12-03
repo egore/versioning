@@ -10,8 +10,9 @@
 	<logger name="de.egore911.versioning" level="DEBUG" />
 	<logger name="org.hibernate.tool.hbm2ddl.SchemaExport" level="OFF" />
 	<logger name="org.hibernate" level="WARN" />
-	<logger name="org.hibernate.SQL" level="DEBUG"/>
+	<logger name="org.hibernate.SQL" level="DEBUG" />
 	<logger name="org.eclipse.jetty" level="INFO" />
+	<logger name="org.jboss.weld" level="INFO" />
 
 	<root level="TRACE">
 		<appender-ref ref="STDOUT" />
