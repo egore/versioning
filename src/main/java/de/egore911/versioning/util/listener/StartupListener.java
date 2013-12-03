@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.googlecode.flyway.core.Flyway;
 
@@ -37,6 +38,10 @@ public class StartupListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
+
+		SLF4JBridgeHandler.removeHandlersForRootLogger();
+		SLF4JBridgeHandler.install();
+
 		try {
 			InitialContext initialContext = new InitialContext();
 			DataSource dataSource = (DataSource) initialContext
