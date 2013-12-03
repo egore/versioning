@@ -31,6 +31,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.ui.logic.DeploymentCalculator;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -59,12 +61,30 @@ public class ServerService extends HttpServlet {
 					writer.print("	<name>");
 					writer.print(server.getName());
 					writer.println("</name>");
+					if (StringUtils.isNotEmpty(server.getTargetdir())) {
+						writer.print("	<targetdir>");
+						writer.print(server.getTargetdir());
+						writer.println("</targetdir>");
+					}
 					if (StringUtils.isNotEmpty(server.getDescription())) {
 						writer.print("	<!-- ");
 						writer.print(server.getDescription()
 								.replace("--", "__"));
 						writer.println("-->");
 					}
+					DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+					List<Version> versions = deploymentCalculator
+							.getDeployableVersions(server);
+					writer.println("	<deployments>");
+					for (Version version : versions) {
+						writer.print("		<!-- ");
+						writer.print(version.getProject().getName()
+								.replace("--", "__"));
+						writer.println("-->");
+						writer.println("		<deployment>");
+						writer.println("		</deployment>");
+					}
+					writer.println("	</deployments>");
 					writer.println("</server>");
 				} else {
 					// TODO send proper 404

@@ -24,6 +24,10 @@
 		<h:outputText value="#{messages.server_description}" />
 		<h:inputText value="#{serverDetail.instance.description}"
 			id="server_description" />
+
+        <h:outputText value="#{messages.server_targetdir}" />
+        <h:inputText value="#{serverDetail.instance.targetdir}"
+            id="server_targetdir" />
 	</h:panelGrid>
 
 	<h:commandButton value="#{messages.save}" id="save"

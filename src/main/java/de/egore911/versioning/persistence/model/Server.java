@@ -37,6 +37,7 @@ public class Server extends IntegerDbObject {
 
 	private String name;
 	private String description;
+	private String targetdir;
 	private List<Project> configuredProjects = new ArrayList<>(0);
 
 	@Column(nullable = false, length = 255)
@@ -58,6 +59,20 @@ public class Server extends IntegerDbObject {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * @return specifies the path on the server where to put the deployments
+	 *         (e.g. /var/lib/tomcat/webapps)
+	 */
+	@Column(nullable = true, length = 1023)
+	@Size(max = 1023)
+	public String getTargetdir() {
+		return targetdir;
+	}
+
+	public void setTargetdir(String targetdir) {
+		this.targetdir = targetdir;
 	}
 
 	@ManyToMany(mappedBy = "configuredServers")
