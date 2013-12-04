@@ -183,28 +183,6 @@
 			<version>4.3.4.Final</version>
 		</dependency>
 
-		<!-- CDI / Weld -->
-		<dependency>
-			<groupId>org.jboss.weld.servlet</groupId>
-			<artifactId>weld-servlet</artifactId>
-			<version>2.1.0.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.weld</groupId>
-			<artifactId>weld-core</artifactId>
-			<version>2.1.0.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.deltaspike.modules</groupId>
-			<artifactId>deltaspike-jpa-module-impl</artifactId>
-			<version>0.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.deltaspike.modules</groupId>
-			<artifactId>deltaspike-jsf-module-impl</artifactId>
-			<version>0.5</version>
-		</dependency>
-
 		<!-- VCS support -->
 		<dependency>
 			<groupId>org.eclipse.jgit</groupId>

@@ -16,35 +16,28 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
-import java.io.Serializable;
-
-import javax.enterprise.context.Conversation;
-import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.ui.beans.AbstractBean;
+import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public abstract class AbstractDetail<T extends IntegerDbObject> extends
-		AbstractBean implements Serializable {
-
-	private static final long serialVersionUID = 1876481192302368063L;
-
-	@Inject
-	protected Conversation conversation;
+		AbstractBean {
 
 	protected T instance;
 
 	public abstract T getInstance();
 
 	public void setInstance(T instance) {
+		HttpSession session = new SessionUtil().getSession();
+		session.setAttribute(this.getClass().getSimpleName() + "_instance",
+				instance);
 		this.instance = instance;
-		if (conversation.isTransient()) {
-			conversation.begin();
-		}
 	}
 
 	public void setId(Integer id) {
@@ -52,10 +45,10 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 	}
 
 	public Integer getId() {
-		if (instance == null) {
+		if (getInstance() == null) {
 			return null;
 		}
-		return instance.getId();
+		return getInstance().getId();
 	}
 
 	public boolean isManaged() {

@@ -19,12 +19,11 @@ package de.egore911.versioning.ui.beans.detail;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.VersionDao;
@@ -38,19 +37,12 @@ import de.egore911.versioning.util.vcs.Provider;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Named("versionDetail")
-@ConversationScoped
+@ManagedBean(name = "versionDetail")
+@RequestScoped
 @RequiresPermission(Permission.USE)
 public class VersionDetail extends AbstractDetail<Version> {
 
-	private static final long serialVersionUID = -8116891433758776459L;
-
 	private final SessionUtil sessionUtil = new SessionUtil();
-
-	@Inject
-	private VersionDao versionDao;
-	@Inject
-	private ProjectDao projectDao;
 
 	@Override
 	public Version getInstance() {
@@ -62,11 +54,11 @@ public class VersionDetail extends AbstractDetail<Version> {
 
 	@Override
 	protected VersionDao getDao() {
-		return versionDao;
+		return new VersionDao();
 	}
 
 	public SelectItem[] getProjectSelectItems() {
-		List<Project> projects = projectDao.findAll();
+		List<Project> projects = new ProjectDao().findAll();
 		SelectItem[] items = new SelectItem[projects.size()];
 		int i = 0;
 		for (Project project : projects) {
@@ -91,9 +83,6 @@ public class VersionDetail extends AbstractDetail<Version> {
 		}
 
 		getDao().save(version);
-		if (!conversation.isTransient()) {
-			conversation.end();
-		}
 		return "/versions.xhtml";
 	}
 

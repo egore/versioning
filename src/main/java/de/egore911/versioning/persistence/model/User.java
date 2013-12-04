@@ -17,10 +17,7 @@
 package de.egore911.versioning.persistence.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +26,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -110,15 +106,6 @@ public class User extends IntegerDbObject {
 			return false;
 		}
 		return roles.contains(role);
-	}
-
-	@Transient
-	public Set<Permission> getPermissions() {
-		Set<Permission> permissions = new HashSet<>();
-		for (Role role : getRoles()) {
-			permissions.addAll(role.getPermissions());
-		}
-		return Collections.unmodifiableSet(permissions);
 	}
 
 	public boolean hasPermission(Permission permission) {

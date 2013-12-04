@@ -19,7 +19,6 @@ package de.egore911.versioning.persistence.selector;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -29,23 +28,23 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import de.egore911.versioning.util.EntityManagerUtil;
+
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public abstract class AbstractSelector<T> {
 
-	@Inject
-	private EntityManager entityManager;
-
 	public List<T> findAll() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = builder.createQuery(getEntityClass());
 		Root<T> from = cq.from(getEntityClass());
 		List<Predicate> predicates = generatePredicateList(builder, from);
 		cq.where(predicates.toArray(new Predicate[predicates.size()]));
 		cq.orderBy(generateOrderList(builder, from));
 		cq.select(from);
-		TypedQuery<T> q = entityManager.createQuery(cq);
+		TypedQuery<T> q = em.createQuery(cq);
 		if (limit != null) {
 			q.setMaxResults(limit);
 		}
@@ -56,13 +55,14 @@ public abstract class AbstractSelector<T> {
 	}
 
 	public T find() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = builder.createQuery(getEntityClass());
 		Root<T> from = cq.from(getEntityClass());
 		List<Predicate> predicates = generatePredicateList(builder, from);
 		cq.where(predicates.toArray(new Predicate[predicates.size()]));
 		cq.select(from);
-		TypedQuery<T> q = entityManager.createQuery(cq);
+		TypedQuery<T> q = em.createQuery(cq);
 		try {
 			return q.getSingleResult();
 		} catch (NoResultException e) {
@@ -71,14 +71,15 @@ public abstract class AbstractSelector<T> {
 	}
 
 	public long count() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = builder.createQuery(Long.class);
 		Root<T> from = cq.from(getEntityClass());
 		List<Predicate> predicates = generatePredicateList(builder, from);
 		cq.where(predicates.toArray(new Predicate[predicates.size()]));
 		cq.orderBy(generateOrderList(builder, from));
 		cq.select(builder.count(from));
-		TypedQuery<Long> q = entityManager.createQuery(cq);
+		TypedQuery<Long> q = em.createQuery(cq);
 		return q.getSingleResult();
 	}
 

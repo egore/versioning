@@ -16,59 +16,19 @@
  */
 package de.egore911.versioning.util;
 
-import java.io.Serializable;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
-import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.User;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class SessionUtil {
-
-	public static class LoggedInUser implements Serializable {
-
-		private static final long serialVersionUID = -7077049038648586713L;
-
-		private String name;
-		private Integer id;
-		private Set<Permission> permissions;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Integer getId() {
-			return id;
-		}
-
-		public void setId(Integer id) {
-			this.id = id;
-		}
-
-		public Set<Permission> getPermissions() {
-			return permissions;
-		}
-
-		public void setPermissions(Set<Permission> permissions) {
-			this.permissions = permissions;
-		}
-
-		public boolean hasPermission(Permission permission) {
-			return this.permissions.contains(permission);
-		}
-	}
 
 	public HttpSession getSession() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -84,7 +44,7 @@ public class SessionUtil {
 		return null;
 	}
 
-	public LoggedInUser getLoggedInUser() {
+	public User getLoggedInUser() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (facesContext != null) {
 			ExternalContext externalContext = facesContext.getExternalContext();
@@ -92,9 +52,8 @@ public class SessionUtil {
 				Object session = externalContext.getSession(false);
 				if (session instanceof HttpSession) {
 					HttpSession httpSession = (HttpSession) session;
-					LoggedInUser loggedInUser = (LoggedInUser) httpSession
-							.getAttribute("user");
-					return loggedInUser;
+					User user = (User) httpSession.getAttribute("user");
+					return user;
 				}
 			}
 		}
@@ -109,11 +68,7 @@ public class SessionUtil {
 				Object session = externalContext.getSession(false);
 				if (session instanceof HttpSession) {
 					HttpSession httpSession = (HttpSession) session;
-					LoggedInUser loggedInUser = new LoggedInUser();
-					loggedInUser.setName(user.getName());
-					loggedInUser.setId(user.getId());
-					loggedInUser.setPermissions(user.getPermissions());
-					httpSession.setAttribute("user", loggedInUser);
+					httpSession.setAttribute("user", user);
 				}
 			}
 		}

@@ -21,8 +21,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import org.apache.deltaspike.core.api.provider.BeanProvider;
-
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.VcsHost;
 
@@ -36,8 +34,7 @@ public class VcshostConverter implements Converter {
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return BeanProvider.getContextualReference(VcshostDao.class)
-					.findById(Integer.valueOf(value));
+			return new VcshostDao().findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}

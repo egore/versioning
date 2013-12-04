@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.googlecode.flyway.core.Flyway;
-import com.googlecode.flyway.core.api.FlywayException;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -50,7 +49,7 @@ public class StartupListener implements ServletContextListener {
 			Flyway flyway = new Flyway();
 			flyway.setDataSource(dataSource);
 			flyway.migrate();
-		} catch (NamingException | FlywayException e) {
+		} catch (NamingException e) {
 			log.error(e.getMessage(), e);
 		}
 	}

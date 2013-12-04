@@ -18,52 +18,53 @@ package de.egore911.versioning.ui.beans.detail;
 
 import java.util.List;
 
-import javax.enterprise.context.ConversationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.War;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Named("projectDetail")
-@ConversationScoped
+@ManagedBean(name = "projectDetail")
+@RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ProjectDetail extends AbstractDetail<Project> {
-
-	private static final long serialVersionUID = 3915944174417420186L;
-
-	@Inject
-	private ProjectDao projectDao;
-	@Inject
-	private VcshostDao vcshostDao;
-	@Inject
-	private ServerDao serverDao;
 
 	@Override
 	public Project getInstance() {
 		if (instance == null) {
-			instance = new Project();
+			HttpSession session = new SessionUtil().getSession();
+			instance = getDao().reattach(
+					(Project) session.getAttribute(this.getClass()
+							.getSimpleName() + "_instance"));
+			if (instance == null) {
+				instance = new Project();
+			}
 		}
 		return instance;
 	}
 
 	@Override
 	protected ProjectDao getDao() {
-		return projectDao;
+		return new ProjectDao();
 	}
 
 	public SelectItem[] getVcshostSelectItems() {
-		List<VcsHost> vcshosts = vcshostDao.findAll();
+		List<VcsHost> vcshosts = new VcshostDao().findAll();
 		SelectItem[] items = new SelectItem[vcshosts.size()];
 		int i = 0;
 		for (VcsHost vcshost : vcshosts) {
@@ -73,7 +74,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	}
 
 	public SelectItem[] getAllServerSelectItems() {
-		List<Server> servers = serverDao.findAll();
+		List<Server> servers = new ServerDao().findAll();
 		SelectItem[] items = new SelectItem[servers.size()];
 		int i = 0;
 		for (Server server : servers) {
@@ -83,29 +84,26 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	}
 
 	public String chooseWar() {
-		// getInstance().setWar(new War());
-		// getInstance().getWar().setProject(getInstance());
+		getInstance().setWar(new War());
+		getInstance().getWar().setProject(getInstance());
 		return "";
 	}
 
 	public String chooseMavenArtifact() {
-		// getInstance().getWar().setMavenArtifact(new MavenArtifact());
-		// getInstance().getWar().getMavenArtifact()
-		// .setWar(getInstance().getWar());
+		getInstance().getWar().setMavenArtifact(new MavenArtifact());
+		getInstance().getWar().getMavenArtifact()
+				.setWar(getInstance().getWar());
 		return "";
 	}
 
 	public String chooseSpacerUrl() {
-		// getInstance().getWar().setSpacerUrl(new SpacerUrl());
-		// getInstance().getWar().getSpacerUrl().setWar(getInstance().getWar());
+		getInstance().getWar().setSpacerUrl(new SpacerUrl());
+		getInstance().getWar().getSpacerUrl().setWar(getInstance().getWar());
 		return "";
 	}
 
 	public String save() {
 		getDao().save(getInstance());
-		if (!conversation.isTransient()) {
-			conversation.end();
-		}
 		return "/projects.xhtml";
 	}
 

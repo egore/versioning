@@ -11,6 +11,8 @@
 		<f:viewParam name="id" value="#{userDetail.id}" />
 	</f:metadata>
 
+	<h:inputHidden id="instanceId" value="#{userDetail.id}" />
+
 	<ui:define name="title">
 		<h:outputText value="#{messages.user}" />
 	</ui:define>

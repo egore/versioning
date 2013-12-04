@@ -18,12 +18,11 @@ package de.egore911.versioning.ui.beans.detail;
 
 import java.util.ResourceBundle;
 
-import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,17 +36,12 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Named("vcshostDetail")
-@ConversationScoped
+@ManagedBean(name = "vcshostDetail")
+@RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostDetail extends AbstractDetail<VcsHost> {
 
-	private static final long serialVersionUID = 4167319926643191753L;
-
 	private final SessionUtil sessionUtil = new SessionUtil();
-
-	@Inject
-	private VcshostDao vcshostDao;
 
 	private String password;
 	private String passwordVerify;
@@ -62,7 +56,7 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 
 	@Override
 	protected VcshostDao getDao() {
-		return vcshostDao;
+		return new VcshostDao();
 	}
 
 	public SelectItem[] getVcsSelectItems() {
@@ -93,9 +87,6 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 			}
 		}
 		getDao().save(getInstance());
-		if (!conversation.isTransient()) {
-			conversation.end();
-		}
 		return "/vcshosts.xhtml";
 	}
 

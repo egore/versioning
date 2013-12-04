@@ -16,10 +16,8 @@
  */
 package de.egore911.versioning.persistence.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
@@ -27,20 +25,15 @@ import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.persistence.selector.AbstractSelector;
+import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractDao<T extends IntegerDbObject> implements
-		Serializable {
-
-	private static final long serialVersionUID = -2763554034196924108L;
+public abstract class AbstractDao<T extends IntegerDbObject> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(AbstractDao.class);
-
-	@Inject
-	private EntityManager entityManager;
 
 	public List<T> findAll() {
 		if (log.isTraceEnabled()) {
@@ -64,7 +57,8 @@ public abstract class AbstractDao<T extends IntegerDbObject> implements
 		if (log.isTraceEnabled()) {
 			log.trace("Selecting {}", getClass().getSimpleName());
 		}
-		return entityManager.find(getEntityClass(), id);
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		return em.find(getEntityClass(), id);
 	}
 
 	public long count() {
@@ -75,21 +69,23 @@ public abstract class AbstractDao<T extends IntegerDbObject> implements
 	}
 
 	public T save(T entity) {
-		entityManager.getTransaction().begin();
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
 		try {
-			entity = entityManager.merge(entity);
-			entityManager.getTransaction().commit();
+			entity = em.merge(entity);
+			em.getTransaction().commit();
 			return entity;
 		} finally {
-			if (entityManager.getTransaction().isActive()) {
-				entityManager.getTransaction().rollback();
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
 			}
 		}
 	}
 
 	public T reattach(T entity) {
-		if (!entityManager.contains(entity)) {
-			entity = entityManager.merge(entity);
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		if (!em.contains(entity)) {
+			entity = em.merge(entity);
 		}
 		return entity;
 	}

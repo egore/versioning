@@ -18,9 +18,8 @@ package de.egore911.versioning.ui.beans.list;
 
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -30,13 +29,10 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Named("vcshostList")
+@ManagedBean(name = "vcshostList")
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostList extends AbstractList<VcsHost> {
-
-	@Inject
-	private VcshostDao vcshostDao;
 
 	@Override
 	public List<VcsHost> getList() {
@@ -50,7 +46,7 @@ public class VcshostList extends AbstractList<VcsHost> {
 
 	@Override
 	protected VcshostDao getDao() {
-		return vcshostDao;
+		return new VcshostDao();
 	}
 
 }

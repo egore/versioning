@@ -23,10 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.Deployment;
@@ -38,8 +34,6 @@ import de.egore911.versioning.util.VersionUtil;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Named
-@RequestScoped
 public class DeploymentCalculator {
 
 	private static final Comparator<Version> COMPARATOR_BY_PROJECT = new Comparator<Version>() {
@@ -50,12 +44,9 @@ public class DeploymentCalculator {
 		}
 	};
 
-	@Inject
-	private ProjectDao projectDao;
-	@Inject
-	private DeploymentDao deploymentDao;
-
+	private ProjectDao projectDao = new ProjectDao();
 	private VersionUtil versionUtil = new VersionUtil();
+	private DeploymentDao deploymentDao = new DeploymentDao();
 
 	public List<Version> getDeployedVersions(Server server) {
 		List<Version> result = new ArrayList<>();

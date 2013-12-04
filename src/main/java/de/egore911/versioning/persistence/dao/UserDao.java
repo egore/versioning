@@ -16,8 +16,6 @@
  */
 package de.egore911.versioning.persistence.dao;
 
-import org.apache.deltaspike.core.api.provider.BeanProvider;
-
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.persistence.selector.UserSelector;
 
@@ -26,8 +24,6 @@ import de.egore911.versioning.persistence.selector.UserSelector;
  */
 public class UserDao extends AbstractDao<User> {
 
-	private static final long serialVersionUID = 3737442309594910399L;
-
 	@Override
 	protected Class<User> getEntityClass() {
 		return User.class;
@@ -35,7 +31,7 @@ public class UserDao extends AbstractDao<User> {
 
 	@Override
 	protected UserSelector createSelector() {
-		return BeanProvider.getContextualReference(UserSelector.class);
+		return new UserSelector();
 	}
 
 	public User getUser(String login, String passwordHash) {
