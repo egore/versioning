@@ -19,6 +19,7 @@ package de.egore911.versioning.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -100,7 +101,7 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 		this.vcsPath = vcsPath;
 	}
 
-	@OneToOne(mappedBy = "project")
+	@OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
 	public War getWar() {
 		return war;
 	}

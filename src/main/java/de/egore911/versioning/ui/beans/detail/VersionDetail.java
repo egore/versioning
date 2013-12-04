@@ -45,16 +45,13 @@ public class VersionDetail extends AbstractDetail<Version> {
 	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Override
-	public Version getInstance() {
-		if (instance == null) {
-			instance = new Version();
-		}
-		return instance;
+	protected VersionDao getDao() {
+		return new VersionDao();
 	}
 
 	@Override
-	protected VersionDao getDao() {
-		return new VersionDao();
+	protected Version createEmpty() {
+		return new Version();
 	}
 
 	public SelectItem[] getProjectSelectItems() {

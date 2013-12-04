@@ -47,16 +47,13 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 	private String passwordVerify;
 
 	@Override
-	public VcsHost getInstance() {
-		if (instance == null) {
-			instance = new VcsHost();
-		}
-		return instance;
+	protected VcshostDao getDao() {
+		return new VcshostDao();
 	}
 
 	@Override
-	protected VcshostDao getDao() {
-		return new VcshostDao();
+	protected VcsHost createEmpty() {
+		return new VcsHost();
 	}
 
 	public SelectItem[] getVcsSelectItems() {

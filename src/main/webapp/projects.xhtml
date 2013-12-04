@@ -17,7 +17,8 @@
 			<f:facet name="header">
 				<h:outputText value="#{messages.project_name}" />
 			</f:facet>
-			<h:link outcome="project" value="#{project.name}" title="#{project.description}">
+			<h:link outcome="project" value="#{project.name}"
+				title="#{project.description}">
 				<f:param name="id" value="#{project.id}" />
 			</h:link>
 		</rich:column>
@@ -43,5 +44,8 @@
 		</rich:column>
 	</rich:dataTable>
 
-	<h:commandLink action="/project.xhtml" value="#{messages.add}" />
+
+	<h:commandLink action="/project.xhtml" value="#{messages.add}">
+		<f:param name="id" value="-1" />
+	</h:commandLink>
 </ui:composition>

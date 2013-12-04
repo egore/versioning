@@ -34,16 +34,13 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class RoleDetail extends AbstractDetail<Role> {
 
 	@Override
-	public Role getInstance() {
-		if (instance == null) {
-			instance = new Role();
-		}
-		return instance;
+	protected RoleDao getDao() {
+		return new RoleDao();
 	}
 
 	@Override
-	protected RoleDao getDao() {
-		return new RoleDao();
+	protected Role createEmpty() {
+		return new Role();
 	}
 
 	public String save() {

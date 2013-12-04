@@ -16,6 +16,7 @@
  */
 package de.egore911.versioning.persistence.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -46,7 +47,7 @@ public class War extends IntegerDbObject {
 		this.project = project;
 	}
 
-	@OneToOne(mappedBy = "war")
+	@OneToOne(mappedBy = "war", cascade = CascadeType.ALL)
 	public MavenArtifact getMavenArtifact() {
 		return mavenArtifact;
 	}
@@ -55,7 +56,7 @@ public class War extends IntegerDbObject {
 		this.mavenArtifact = mavenArtifact;
 	}
 
-	@OneToOne(mappedBy = "war")
+	@OneToOne(mappedBy = "war", cascade = CascadeType.ALL)
 	public SpacerUrl getSpacerUrl() {
 		return spacerUrl;
 	}

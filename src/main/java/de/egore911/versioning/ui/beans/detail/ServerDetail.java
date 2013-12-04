@@ -41,22 +41,17 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerDetail extends AbstractDetail<Server> {
 
-	private static final long serialVersionUID = -3941952852926060166L;
-
 	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Override
-	public Server getInstance() {
-		if (instance == null) {
-			instance = new Server();
-		}
-		return instance;
+	protected ServerDao getDao() {
+		return new ServerDao();
 	}
 
 	@Override
-	protected ServerDao getDao() {
-		return new ServerDao();
+	protected Server createEmpty() {
+		return new Server();
 	}
 
 	public List<Version> getDeployedVersions() {

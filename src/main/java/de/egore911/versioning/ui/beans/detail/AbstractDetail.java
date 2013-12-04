@@ -16,6 +16,7 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import javax.faces.bean.ManagedProperty;
 import javax.servlet.http.HttpSession;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
@@ -29,9 +30,33 @@ import de.egore911.versioning.util.SessionUtil;
 public abstract class AbstractDetail<T extends IntegerDbObject> extends
 		AbstractBean {
 
+	@ManagedProperty(value = "#{param.id}")
+	private Integer id;
+
 	protected T instance;
 
-	public abstract T getInstance();
+	public T getInstance() {
+		// No request cache yet, determine it
+		if (instance == null) {
+			HttpSession session = new SessionUtil().getSession();
+			instance = (T) session.getAttribute(this.getClass().getSimpleName()
+					+ "_instance");
+			if (instance == null) {
+				if (id != null) {
+					instance = getDao().findById(id);
+				}
+				if (instance == null) {
+					instance = createEmpty();
+				}
+			}
+			session.setAttribute(this.getClass().getSimpleName() + "_instance",
+					instance);
+		}
+		if (instance != null && instance.getId() != null) {
+			instance = getDao().reattach(instance);
+		}
+		return instance;
+	}
 
 	public void setInstance(T instance) {
 		HttpSession session = new SessionUtil().getSession();
@@ -40,21 +65,24 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 		this.instance = instance;
 	}
 
-	public void setId(Integer id) {
-		setInstance(getDao().findById(id));
-	}
-
-	public Integer getId() {
-		if (getInstance() == null) {
-			return null;
-		}
-		return getInstance().getId();
-	}
-
 	public boolean isManaged() {
-		return getId() != null;
+		return getInstance() != null && getInstance().getId() != null;
 	}
 
 	protected abstract AbstractDao<T> getDao();
+
+	protected abstract T createEmpty();
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+		// If a ID got passed we were called with a parameter in the URL
+		if (id != null) {
+			setInstance(null);
+		}
+	}
 
 }

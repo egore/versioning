@@ -50,16 +50,13 @@ public class UserDetail extends AbstractDetail<User> {
 	private String passwordVerify;
 
 	@Override
-	public User getInstance() {
-		if (instance == null) {
-			instance = new User();
-		}
-		return instance;
+	protected UserDao getDao() {
+		return new UserDao();
 	}
 
 	@Override
-	protected UserDao getDao() {
-		return new UserDao();
+	protected User createEmpty() {
+		return new User();
 	}
 
 	public String save() {

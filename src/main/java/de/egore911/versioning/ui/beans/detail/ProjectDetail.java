@@ -21,7 +21,6 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
@@ -33,7 +32,6 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.War;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -45,22 +43,13 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class ProjectDetail extends AbstractDetail<Project> {
 
 	@Override
-	public Project getInstance() {
-		if (instance == null) {
-			HttpSession session = new SessionUtil().getSession();
-			instance = getDao().reattach(
-					(Project) session.getAttribute(this.getClass()
-							.getSimpleName() + "_instance"));
-			if (instance == null) {
-				instance = new Project();
-			}
-		}
-		return instance;
+	protected ProjectDao getDao() {
+		return new ProjectDao();
 	}
 
 	@Override
-	protected ProjectDao getDao() {
-		return new ProjectDao();
+	protected Project createEmpty() {
+		return new Project();
 	}
 
 	public SelectItem[] getVcshostSelectItems() {
@@ -84,26 +73,35 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	}
 
 	public String chooseWar() {
-		getInstance().setWar(new War());
-		getInstance().getWar().setProject(getInstance());
+		Project project = getInstance();
+		War war = new War();
+		project.setWar(war);
+		war.setProject(project);
+		setInstance(project);
 		return "";
 	}
 
 	public String chooseMavenArtifact() {
-		getInstance().getWar().setMavenArtifact(new MavenArtifact());
-		getInstance().getWar().getMavenArtifact()
-				.setWar(getInstance().getWar());
+		War war = getInstance().getWar();
+		MavenArtifact mavenArtifact = new MavenArtifact();
+		war.setMavenArtifact(mavenArtifact);
+		mavenArtifact.setWar(war);
+		setInstance(getInstance());
 		return "";
 	}
 
 	public String chooseSpacerUrl() {
-		getInstance().getWar().setSpacerUrl(new SpacerUrl());
-		getInstance().getWar().getSpacerUrl().setWar(getInstance().getWar());
+		War war = getInstance().getWar();
+		SpacerUrl spacerUrl = new SpacerUrl();
+		war.setSpacerUrl(spacerUrl);
+		spacerUrl.setWar(war);
+		setInstance(getInstance());
 		return "";
 	}
 
 	public String save() {
 		getDao().save(getInstance());
+		setInstance(null);
 		return "/projects.xhtml";
 	}
 
