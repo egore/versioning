@@ -28,11 +28,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.model.MavenArtifact;
+import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
+import de.egore911.versioning.util.UrlUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -40,6 +45,9 @@ import de.egore911.versioning.ui.logic.DeploymentCalculator;
 public class ServerService extends HttpServlet {
 
 	private static final long serialVersionUID = 838967528375645851L;
+
+	private static final Logger log = LoggerFactory
+			.getLogger(ServerService.class);
 
 	private static final Pattern PATTERN_SERVERNAME = Pattern
 			.compile(".*/server/([^/]+)\\.xml$");
@@ -49,6 +57,8 @@ public class ServerService extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+
+		UrlUtil urlUtil = new UrlUtil();
 
 		Matcher matcher = PATTERN_SERVERNAME.matcher(req.getRequestURI());
 		try (PrintWriter writer = resp.getWriter()) {
@@ -79,36 +89,61 @@ public class ServerService extends HttpServlet {
 					writer.println("	<deployments>");
 					for (Version version : versions) {
 						writer.print("		<!-- ");
-						writer.print(version.getProject().getName()
-								.replace("--", "__"));
+						Project project = version.getProject();
+						writer.print(project.getName().replace("--", "__"));
 						writer.println("-->");
 						writer.println("		<deployment>");
-						if (version.getProject().getWar() != null) {
+						if (project.getWar() != null) {
 							writer.println("			<war>");
-							if (version.getProject().getWar()
-									.getMavenArtifact() != null) {
+							if (project.getWar().getMavenArtifact() != null) {
+
+								MavenArtifact mavenArtifact = project.getWar()
+										.getMavenArtifact();
+								if (project.getMavenRepository() == null) {
+									log.error(
+											"Found maven artifact {}:{}:{} without maven repository, skipping!",
+											mavenArtifact.getGroupId(),
+											mavenArtifact.getArtifactId(),
+											version.getVcsTag());
+									continue;
+								}
+
+								String url = urlUtil.concatenateUrlWithSlashes(
+										project.getMavenRepository()
+												.getBaseUrl(),
+										mavenArtifact.getGroupId().replace('.',
+												'/'), mavenArtifact
+												.getArtifactId(), version
+												.getVcsTag(),
+										mavenArtifact.getArtifactId() + "-"
+												+ version.getVcsTag() + ".war");
+
+								writer.print("				<url>");
+								writer.print(url);
+								writer.println("</url>");
+
+								writer.println("				<!-- ");
 								writer.print("				<groupId>");
-								writer.print(version.getProject().getWar()
+								writer.print(project.getWar()
 										.getMavenArtifact().getGroupId());
 								writer.println("</groupId>");
 								writer.print("				<artifactId>");
-								writer.print(version.getProject().getWar()
+								writer.print(project.getWar()
 										.getMavenArtifact().getArtifactId());
 								writer.println("</artifactId>");
 								writer.print("				<version>");
 								writer.print(version.getVcsTag());
 								writer.println("</version>");
+								writer.println("				-->");
 							} else {
 								writer.print("				<url>");
-								writer.print(version
-										.getProject()
+								writer.print(project
 										.getWar()
 										.getSpacerUrl()
 										.getUrl()
 										.replace("[VERSION]",
 												version.getVcsTag()));
-								writer.print("				</url>");
-								writer.println("				</groupId>");
+								writer.println("</url>");
 							}
 							writer.println("			</war>");
 						}
