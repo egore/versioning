@@ -49,10 +49,11 @@ public class AbstractBean {
 			}
 			sessionUtil.setLoggedInUser(user);
 			for (Permission permission : requiresPermission.value()) {
-				if (!user.hasPermission(permission)) {
-					throw new PermissionException(permission);
+				if (user.hasPermission(permission)) {
+					return;
 				}
 			}
+			throw new PermissionException(requiresPermission.value());
 		}
 	}
 

@@ -13,20 +13,24 @@
 
 	<a4j:repeat value="#{deploymentsBean.deployableVersionsPerServer}"
 		var="serverVersions">
-		<rich:panel>
-			<b><h:outputText value="#{serverVersions.server.name}" /></b>
-			<br />
-			<h:outputText value="Nothing"
-				rendered="#{empty serverVersions.versions}" />
-			<rich:dataTable value="#{serverVersions.versions}" var="version"
-				rendered="#{not empty serverVersions.versions}">
-				<rich:column>
-					<f:facet name="header">
-						<h:outputText value="#{messages.version}" />
-					</f:facet>
-					<h:outputText value="#{version.project.name} #{version.vcsTag}" />
-				</rich:column>
-			</rich:dataTable>
-		</rich:panel>
+		<b><h:outputText value="#{serverVersions.server.name}" /></b>
+		<br />
+		<h:outputText value="Nothing"
+			rendered="#{empty serverVersions.versions}" />
+		<rich:dataTable value="#{serverVersions.versions}" var="version"
+			rendered="#{not empty serverVersions.versions}">
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText value="#{messages.version}" />
+				</f:facet>
+				<h:outputText value="#{version.project.name} #{version.vcsTag}" />
+			</rich:column>
+			<rich:column rendered="#{user.hasPermission('DEPLOY')}">
+				<f:facet name="header">
+					<h:outputText value="#{messages.deploy}" />
+				</f:facet>
+				<h:commandButton action="#{deploymentsBean.deploy(serverVersions.server, version)}" value="#{messages.deploy}" />
+			</rich:column>
+		</rich:dataTable>
 	</a4j:repeat>
 </ui:composition>

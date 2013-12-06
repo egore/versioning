@@ -6,7 +6,11 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.joda.time.LocalDateTime;
+
+import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
@@ -15,7 +19,7 @@ import de.egore911.versioning.util.security.RequiresPermission;
 
 @ManagedBean(name = "deploymentsBean")
 @RequestScoped
-@RequiresPermission(Permission.USE)
+@RequiresPermission({ Permission.CREATE_VERSIONS, Permission.DEPLOY })
 public class DeploymentsBean extends AbstractBean {
 
 	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
@@ -46,6 +50,18 @@ public class DeploymentsBean extends AbstractBean {
 					.getDeployableVersions(server)));
 		}
 		return result;
+	}
+
+	public String deploy(Server server, Version version) {
+		Deployment currentDeployment = new DeploymentDao()
+				.getCurrentDeployment(server, version.getProject());
+
+		Deployment newDeployment = new Deployment();
+		newDeployment.setVersion(version);
+		newDeployment.setServer(server);
+		newDeployment.setDeployment(LocalDateTime.now());
+		new DeploymentDao().replace(currentDeployment, newDeployment);
+		return "";
 	}
 
 }

@@ -18,9 +18,15 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
+import org.joda.time.LocalDateTime;
+
 import de.egore911.versioning.persistence.model.Deployment;
+import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.selector.DeploymentSelector;
+import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -42,6 +48,29 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		deploymentSelector.setDeployedOn(server);
 		deploymentSelector.setUneployed(Boolean.FALSE);
 		return deploymentSelector.findAll();
+	}
+
+	public Deployment getCurrentDeployment(Server server, Project project) {
+		DeploymentSelector deploymentSelector = createSelector();
+		deploymentSelector.setDeployedOn(server);
+		deploymentSelector.setProject(project);
+		deploymentSelector.setUneployed(Boolean.FALSE);
+		return deploymentSelector.find();
+	}
+
+	public void replace(Deployment currentDeployment, Deployment newDeployment) {
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
+		try {
+			currentDeployment.setUndeployment(LocalDateTime.now());
+			em.merge(currentDeployment);
+			em.merge(newDeployment);
+			em.getTransaction().commit();
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+		}
 	}
 
 }

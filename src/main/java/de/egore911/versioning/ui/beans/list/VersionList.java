@@ -31,7 +31,7 @@ import de.egore911.versioning.util.security.RequiresPermission;
  */
 @ManagedBean(name = "versionList")
 @RequestScoped
-@RequiresPermission(Permission.USE)
+@RequiresPermission({ Permission.CREATE_VERSIONS, Permission.DEPLOY })
 public class VersionList extends AbstractList<Version> {
 
 	@Override

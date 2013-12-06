@@ -25,8 +25,8 @@ public class PermissionException extends RuntimeException {
 
 	private static final long serialVersionUID = 8303892206944255550L;
 
-	public PermissionException(Permission permission) {
-		super("Missing permission: " + permission);
+	public PermissionException(Permission[] permissions) {
+		super("Missing any of the permission: " + permissions);
 	}
 
 	public PermissionException() {

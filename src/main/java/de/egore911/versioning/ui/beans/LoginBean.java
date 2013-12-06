@@ -57,8 +57,10 @@ public class LoginBean {
 		if (user != null) {
 			// Found our user, show the versions
 			sessionUtil.setLoggedInUser(user);
-			if (user.hasPermission(Permission.USE)) {
+			if (user.hasPermission(Permission.CREATE_VERSIONS)) {
 				return "/versions.xhtml";
+			} else if (user.hasPermission(Permission.DEPLOY)) {
+				return "/deployments.xhtml";
 			} else if (user.hasPermission(Permission.ADMIN_SETTINGS)) {
 				return "/projects.xthml";
 			} else if (user.hasPermission(Permission.ADMIN_USERS)) {

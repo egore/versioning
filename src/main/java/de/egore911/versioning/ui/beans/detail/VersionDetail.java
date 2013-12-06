@@ -39,7 +39,7 @@ import de.egore911.versioning.util.vcs.Provider;
  */
 @ManagedBean(name = "versionDetail")
 @RequestScoped
-@RequiresPermission(Permission.USE)
+@RequiresPermission(Permission.CREATE_VERSIONS)
 public class VersionDetail extends AbstractDetail<Version> {
 
 	private final SessionUtil sessionUtil = new SessionUtil();

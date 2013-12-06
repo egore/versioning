@@ -1,5 +1,3 @@
-* Ability to mark versions as deployed
-
 * VCS tag to version converter
   A database table to hold regexp(?) to convert tags into valid version numbers (e.g. maven-3.0.4 -> 3.0.4)
 

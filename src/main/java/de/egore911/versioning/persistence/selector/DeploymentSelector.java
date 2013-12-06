@@ -20,12 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Deployment_;
+import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.model.Version_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -34,6 +38,7 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 
 	private Server deployedOn;
 	private Boolean isUneployed;
+	private Project project;
 
 	@Override
 	protected Class<Deployment> getEntityClass() {
@@ -60,6 +65,13 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 			}
 		}
 
+		if (project != null) {
+			Join<Deployment, Version> fromVersion = from
+					.join(Deployment_.version);
+			predicates.add(builder.equal(fromVersion.get(Version_.project),
+					project));
+		}
+
 		return predicates;
 	}
 
@@ -77,5 +89,13 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 
 	public void setUneployed(Boolean uneployed) {
 		isUneployed = uneployed;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 }

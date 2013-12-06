@@ -24,6 +24,8 @@ public enum Permission {
 	ADMIN_SETTINGS,
 	/** Users, Roles */
 	ADMIN_USERS,
-	/** Normal user */
-	USE
+	/** Create versions */
+	CREATE_VERSIONS,
+	/** Create versions */
+	DEPLOY,
 }

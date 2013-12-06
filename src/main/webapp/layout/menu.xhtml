@@ -7,7 +7,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<rich:toolbar id="navigationbar">
 		<rich:dropDownMenu mode="server" id="core_menu"
-			rendered="#{user.hasPermission('USE')}">
+			rendered="#{user.hasPermission('CREATE_VERSIONS') or user.hasPermission('DEPLOY')}">
 			<f:facet name="label">
 				<h:outputText value="#{messages.core}" />
 			</f:facet>
