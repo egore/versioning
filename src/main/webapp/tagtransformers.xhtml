@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.tagtransformers}" />
+	</ui:define>
+
+	<rich:dataTable value="#{tagtransformerList.list}" var="tagtransformer"
+		rows="#{tagtransformerList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.tagtransformer_name}" />
+			</f:facet>
+			<h:link outcome="tagtransformer" value="#{tagtransformer.name}">
+				<f:param name="id" value="#{tagtransformer.id}" />
+			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.tagtransformer_searchPattern}" />
+			</f:facet>
+			<h:outputText value="#{tagtransformer.searchPattern}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.tagtransformer_replacementPattern}" />
+			</f:facet>
+			<h:outputText value="#{tagtransformer.replacementPattern}" />
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/tagtransformer.xhtml" value="#{messages.add}">
+		<f:param name="id" value="-1" />
+	</h:commandLink>
+</ui:composition>

@@ -95,6 +95,8 @@ public class ServerService extends HttpServlet {
 						writer.println("		<deployment>");
 						if (project.getWar() != null) {
 							writer.println("			<war>");
+							String transformedVcsTag = version
+									.getTransformedVcsTag();
 							if (project.getWar().getMavenArtifact() != null) {
 
 								MavenArtifact mavenArtifact = project.getWar()
@@ -113,10 +115,10 @@ public class ServerService extends HttpServlet {
 												.getBaseUrl(),
 										mavenArtifact.getGroupId().replace('.',
 												'/'), mavenArtifact
-												.getArtifactId(), version
-												.getVcsTag(),
+												.getArtifactId(),
+										transformedVcsTag,
 										mavenArtifact.getArtifactId() + "-"
-												+ version.getVcsTag() + ".war");
+												+ transformedVcsTag + ".war");
 
 								writer.print("				<url>");
 								writer.print(url);
@@ -132,7 +134,7 @@ public class ServerService extends HttpServlet {
 										.getMavenArtifact().getArtifactId());
 								writer.println("</artifactId>");
 								writer.print("				<version>");
-								writer.print(version.getVcsTag());
+								writer.print(transformedVcsTag);
 								writer.println("</version>");
 								writer.println("				-->");
 							} else {
@@ -141,8 +143,7 @@ public class ServerService extends HttpServlet {
 										.getWar()
 										.getSpacerUrl()
 										.getUrl()
-										.replace("[VERSION]",
-												version.getVcsTag()));
+										.replace("[VERSION]", transformedVcsTag));
 								writer.println("</url>");
 							}
 							writer.println("			</war>");

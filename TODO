@@ -1,6 +1,3 @@
-* VCS tag to version converter
-  A database table to hold regexp(?) to convert tags into valid version numbers (e.g. maven-3.0.4 -> 3.0.4)
-
 * target path's for wars
   We already have a path on the server (server.targetdir), but we also need a path to store the wars relative to it
 

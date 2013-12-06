@@ -34,8 +34,14 @@
 			id="project_mavenRepository" converter="mavenrepositoryConverter">
 			<f:selectItems
 				value="#{projectDetail.allMavenRepositoriesSelectItems}" />
-			<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
-			<f:attribute name="collectionType" value="java.util.ArrayList" />
+		</h:selectOneMenu>
+
+		<h:outputText value="#{messages.project_tagTransformer}" />
+		<h:selectOneMenu value="#{projectDetail.instance.tagTransformer}"
+			id="project_tagTransformer" converter="tagtransformerConverter">
+			<f:selectItem itemValue="#{null}" itemLabel="#{messages.tagtransformer_none}"/>
+			<f:selectItems
+				value="#{projectDetail.allTagTransformerSelectItems}" />
 		</h:selectOneMenu>
 
 		<h:outputText value="#{messages.project_configuredServers}" />

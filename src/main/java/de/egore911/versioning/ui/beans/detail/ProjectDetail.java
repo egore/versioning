@@ -25,6 +25,7 @@ import javax.faces.model.SelectItem;
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.MavenRepository;
@@ -32,6 +33,7 @@ import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
+import de.egore911.versioning.persistence.model.TagTransformer;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.War;
 import de.egore911.versioning.util.security.RequiresPermission;
@@ -82,6 +84,18 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		for (MavenRepository mavenRepository : mavenRepositories) {
 			items[i++] = new SelectItem(mavenRepository,
 					mavenRepository.getName());
+		}
+		return items;
+	}
+
+	public SelectItem[] getAllTagTransformerSelectItems() {
+		List<TagTransformer> tagTransformers = new TagTransformerDao()
+				.findAll();
+		SelectItem[] items = new SelectItem[tagTransformers.size()];
+		int i = 0;
+		for (TagTransformer tagTransformer : tagTransformers) {
+			items[i++] = new SelectItem(tagTransformer,
+					tagTransformer.getName());
 		}
 		return items;
 	}

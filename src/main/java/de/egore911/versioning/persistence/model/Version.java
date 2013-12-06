@@ -21,6 +21,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
@@ -59,21 +60,34 @@ public class Version extends IntegerDbObject {
 		this.vcsTag = vcsTag;
 	}
 
+	@Transient
+	public String getTransformedVcsTag() {
+		TagTransformer tagTransformer = getProject().getTagTransformer();
+		if (tagTransformer != null) {
+			return getVcsTag().replaceAll(tagTransformer.getSearchPattern(),
+					tagTransformer.getReplacementPattern());
+		}
+		return getVcsTag();
+	}
+
+	@Transient
 	public boolean isNewerThan(Version other) {
 		if (other == null) {
 			throw new IllegalArgumentException("Given version cannot be null");
 		}
-		if (getVcsTag() == null) {
+		String transformedVcsTag = getTransformedVcsTag();
+		if (transformedVcsTag == null) {
 			throw new IllegalArgumentException("Own VCS tag cannot be null");
 		}
-		if (other.getVcsTag() == null) {
+		String otherTransformedVcsTag = other.getTransformedVcsTag();
+		if (otherTransformedVcsTag == null) {
 			throw new IllegalArgumentException(
 					"Given versions VCS tag cannot be null");
 		}
-		int myDots = StringUtils.countMatches(getVcsTag(), ".");
-		int otherDots = StringUtils.countMatches(other.getVcsTag(), ".");
-		String[] mySplit = getVcsTag().split("\\.");
-		String[] otherSplit = other.getVcsTag().split("\\.");
+		int myDots = StringUtils.countMatches(transformedVcsTag, ".");
+		int otherDots = StringUtils.countMatches(otherTransformedVcsTag, ".");
+		String[] mySplit = transformedVcsTag.split("\\.");
+		String[] otherSplit = otherTransformedVcsTag.split("\\.");
 		int length = Math.min(mySplit.length, otherSplit.length);
 		for (int i = 0; i < length; i++) {
 			int compare = mySplit[i].compareTo(otherSplit[i]);
