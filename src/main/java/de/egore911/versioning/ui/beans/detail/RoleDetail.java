@@ -43,11 +43,6 @@ public class RoleDetail extends AbstractDetail<Role> {
 		return new Role();
 	}
 
-	public String save() {
-		getDao().save(getInstance());
-		return "/roles.xhtml";
-	}
-
 	public SelectItem[] getAllPermissionSelectItems() {
 		SelectItem[] items = new SelectItem[Permission.values().length];
 		int i = 0;
@@ -55,6 +50,12 @@ public class RoleDetail extends AbstractDetail<Role> {
 			items[i++] = new SelectItem(permission, permission.name());
 		}
 		return items;
+	}
+
+	public String save() {
+		getDao().save(getInstance());
+		setInstance(null);
+		return "/roles.xhtml";
 	}
 
 }

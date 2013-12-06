@@ -44,6 +44,7 @@ public class MavenrepositoryDetail extends AbstractDetail<MavenRepository> {
 
 	public String save() {
 		getDao().save(getInstance());
+		setInstance(null);
 		return "/mavenrepositories.xhtml";
 	}
 

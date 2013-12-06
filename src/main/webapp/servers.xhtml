@@ -17,11 +17,14 @@
 			<f:facet name="header">
 				<h:outputText value="#{messages.server_name}" />
 			</f:facet>
-			<h:link outcome="server" value="#{server.name}" title="#{server.description}">
+			<h:link outcome="server" value="#{server.name}"
+				title="#{server.description}">
 				<f:param name="id" value="#{server.id}" />
 			</h:link>
 		</rich:column>
 	</rich:dataTable>
 
-	<h:commandLink action="/server.xhtml" value="#{messages.add}" />
+	<h:commandLink action="/server.xhtml" value="#{messages.add}">
+		<f:param name="id" value="-1" />
+	</h:commandLink>
 </ui:composition>

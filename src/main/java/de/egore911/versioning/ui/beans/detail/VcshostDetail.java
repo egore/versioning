@@ -84,6 +84,7 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 			}
 		}
 		getDao().save(getInstance());
+		setInstance(null);
 		return "/vcshosts.xhtml";
 	}
 

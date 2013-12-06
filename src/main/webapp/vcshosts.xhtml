@@ -37,9 +37,12 @@
 			<f:facet name="header">
 				<h:outputText value="#{messages.vcshost_credentials}" />
 			</f:facet>
-			<h:selectBooleanCheckbox value="#{vcshost.credentialsAvailable}" disabled="true" />
+			<h:selectBooleanCheckbox value="#{vcshost.credentialsAvailable}"
+				disabled="true" />
 		</rich:column>
 	</rich:dataTable>
 
-	<h:commandLink action="/vcshost.xhtml" value="#{messages.add}" />
+	<h:commandLink action="/vcshost.xhtml" value="#{messages.add}">
+		<f:param name="id" value="-1" />
+	</h:commandLink>
 </ui:composition>

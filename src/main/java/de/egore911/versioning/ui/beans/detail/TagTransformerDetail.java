@@ -69,6 +69,7 @@ public class TagTransformerDetail extends AbstractDetail<TagTransformer> {
 		}
 
 		getDao().save(getInstance());
+		setInstance(null);
 		return "/tagtransformers.xhtml";
 	}
 

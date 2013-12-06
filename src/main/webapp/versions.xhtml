@@ -29,5 +29,7 @@
 		</rich:column>
 	</rich:dataTable>
 
-	<h:commandLink action="/version.xhtml" value="#{messages.add}" />
+	<h:commandLink action="/version.xhtml" value="#{messages.add}">
+		<f:param name="id" value="-1" />
+	</h:commandLink>
 </ui:composition>

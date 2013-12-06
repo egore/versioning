@@ -80,6 +80,7 @@ public class VersionDetail extends AbstractDetail<Version> {
 		}
 
 		getDao().save(version);
+		setInstance(null);
 		return "/versions.xhtml";
 	}
 

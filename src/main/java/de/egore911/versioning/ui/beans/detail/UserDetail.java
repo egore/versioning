@@ -79,6 +79,7 @@ public class UserDetail extends AbstractDetail<User> {
 			}
 		}
 		getDao().save(getInstance());
+		setInstance(null);
 		return "/users.xhtml";
 	}
 

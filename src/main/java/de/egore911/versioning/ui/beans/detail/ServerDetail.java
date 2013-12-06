@@ -81,6 +81,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 		}
 
 		getDao().save(getInstance());
+		setInstance(null);
 		return "/servers.xhtml";
 	}
 

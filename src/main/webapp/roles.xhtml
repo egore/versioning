@@ -43,13 +43,15 @@
 				value="#{role.hasPermission('CREATE_VERSIONS')}" />
 		</rich:column>
 		<rich:column>
-            <f:facet name="header">
-                <h:outputText value="DEPLOY" />
-            </f:facet>
-            <h:selectBooleanCheckbox disabled="true"
-                value="#{role.hasPermission('DEPLOY')}" />
-        </rich:column>
+			<f:facet name="header">
+				<h:outputText value="DEPLOY" />
+			</f:facet>
+			<h:selectBooleanCheckbox disabled="true"
+				value="#{role.hasPermission('DEPLOY')}" />
+		</rich:column>
 	</rich:dataTable>
 
-	<h:commandLink action="/role.xhtml" value="#{messages.add}" />
+	<h:commandLink action="/role.xhtml" value="#{messages.add}">
+		<f:param name="id" value="-1" />
+	</h:commandLink>
 </ui:composition>
