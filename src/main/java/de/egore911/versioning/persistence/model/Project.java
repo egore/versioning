@@ -55,6 +55,7 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	private VcsHost vcsHost;
 	private String vcsPath;
 	private War war;
+	private MavenRepository mavenRepository;
 	private List<Server> configuredServers = new ArrayList<>(0);
 	private List<Version> versions = new ArrayList<>(0);
 
@@ -108,6 +109,16 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	public void setWar(War war) {
 		this.war = war;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "id_mavenrepository", nullable = true)
+	public MavenRepository getMavenRepository() {
+		return mavenRepository;
+	}
+
+	public void setMavenRepository(MavenRepository mavenRepository) {
+		this.mavenRepository = mavenRepository;
 	}
 
 	@ManyToMany

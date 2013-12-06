@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout/core.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.mavenrepositories}" />
+	</ui:define>
+
+	<rich:dataTable value="#{mavenrepositoryList.list}"
+		var="mavenrepository" rows="#{mavenrepositoryList.limit}">
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.mavenrepository_name}" />
+			</f:facet>
+			<h:link outcome="mavenrepository" value="#{mavenrepository.name}">
+				<f:param name="id" value="#{mavenrepository.id}" />
+			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.mavenrepository_baseUrl}" />
+			</f:facet>
+			<h:outputText value="#{mavenrepository.baseUrl}" />
+		</rich:column>
+	</rich:dataTable>
+
+	<h:commandLink action="/mavenrepository.xhtml" value="#{messages.add}" />
+</ui:composition>

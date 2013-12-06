@@ -27,6 +27,9 @@
 				id="administration_menu_projects" />
 			<rich:menuItem label="#{messages.servers}" action="/servers.xthml"
 				id="administration_menu_servers" />
+			<rich:menuItem label="#{messages.mavenrepositories}"
+				action="/mavenrepositories.xthml"
+				id="administration_menu_mavenrepositories" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="server" id="users_menu"
 			rendered="#{user.hasPermission('ADMIN_USERS')}">

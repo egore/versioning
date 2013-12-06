@@ -22,10 +22,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.MavenArtifact;
+import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
@@ -68,6 +70,18 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		int i = 0;
 		for (Server server : servers) {
 			items[i++] = new SelectItem(server, server.getName());
+		}
+		return items;
+	}
+
+	public SelectItem[] getAllMavenRepositoriesSelectItems() {
+		List<MavenRepository> mavenRepositories = new MavenRepositoryDao()
+				.findAll();
+		SelectItem[] items = new SelectItem[mavenRepositories.size()];
+		int i = 0;
+		for (MavenRepository mavenRepository : mavenRepositories) {
+			items[i++] = new SelectItem(mavenRepository,
+					mavenRepository.getName());
 		}
 		return items;
 	}
