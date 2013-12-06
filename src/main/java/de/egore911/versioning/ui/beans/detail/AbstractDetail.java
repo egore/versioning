@@ -52,9 +52,6 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 			session.setAttribute(this.getClass().getSimpleName() + "_instance",
 					instance);
 		}
-		if (instance != null && instance.getId() != null) {
-			instance = getDao().reattach(instance);
-		}
 		return instance;
 	}
 
