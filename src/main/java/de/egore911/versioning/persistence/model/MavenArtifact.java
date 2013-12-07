@@ -34,19 +34,30 @@ public class MavenArtifact extends IntegerDbObject {
 	private static final long serialVersionUID = -2268245235601129769L;
 
 	private ActionCopy actionCopy;
+	private ActionExtraction actionExtraction;
+
 	private String groupId;
 	private String artifactId;
 	private String packaging;
 
-	@OneToOne(optional = false)
-	@JoinColumn(name = "id_action_copy", nullable = false)
-	@NotNull
+	@OneToOne
+	@JoinColumn(name = "id_action_copy")
 	public ActionCopy getActionCopy() {
 		return actionCopy;
 	}
 
 	public void setActionCopy(ActionCopy actionCopy) {
 		this.actionCopy = actionCopy;
+	}
+
+	@OneToOne
+	@JoinColumn(name = "id_action_extraction")
+	public ActionExtraction getActionExtraction() {
+		return actionExtraction;
+	}
+
+	public void setActionExtraction(ActionExtraction actionExtraction) {
+		this.actionExtraction = actionExtraction;
 	}
 
 	@Column(nullable = false, length = 255, name = "group_id")

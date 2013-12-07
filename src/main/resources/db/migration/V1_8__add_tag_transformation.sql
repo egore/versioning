@@ -17,4 +17,4 @@ CREATE TABLE tag_transformer (
 ALTER TABLE project
   ADD COLUMN id_tagtransformer int(11) DEFAULT NULL,
   ADD KEY FK_97ssoqcyb71qfb3nh52au6g9e (id_tagtransformer),
-  CONSTRAINT FK_97ssoqcyb71qfb3nh52au6g9e FOREIGN KEY (id_tagtransformer) REFERENCES tag_transformer (id);
+  ADD CONSTRAINT FK_97ssoqcyb71qfb3nh52au6g9e FOREIGN KEY (id_tagtransformer) REFERENCES tag_transformer (id);

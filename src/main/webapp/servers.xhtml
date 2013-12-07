@@ -22,6 +22,12 @@
 				<f:param name="id" value="#{server.id}" />
 			</h:link>
 		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.server_targetdir}" />
+			</f:facet>
+			<h:outputText value="#{server.targetdir}"/>
+		</rich:column>
 	</rich:dataTable>
 
 	<h:commandLink action="/server.xhtml" value="#{messages.add}">

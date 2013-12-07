@@ -1,7 +1,0 @@
-* Extraction support
-  Extracting data from a given path in the JAR to a given directory
-  Should this be attached below WAR/EAR/JAR or directly attached to project?
-
-* Maven repository support
-  Specify a list of repositories to download maven artifacts from
-  configurable per project?

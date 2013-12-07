@@ -16,44 +16,46 @@
  */
 package de.egore911.versioning.persistence.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
-@Table(name = "action_copy")
-public class ActionCopy extends AbstractAction {
+@Table(name = "action_extraction")
+public class ActionExtraction extends AbstractAction {
 
-	private static final long serialVersionUID = -6348284172396876137L;
+	private static final long serialVersionUID = -6450765572706399548L;
 
-	private String targetPath;
+	private List<Extraction> extractions = new ArrayList<>(0);
 
-	@Column(length = 511, name = "target_path")
-	@Size(max = 511)
-	public String getTargetPath() {
-		return targetPath;
+	@OneToMany(mappedBy = "actionExtraction", cascade = CascadeType.ALL)
+	@OrderBy("source,destination")
+	public List<Extraction> getExtractions() {
+		return extractions;
 	}
 
-	public void setTargetPath(String targetPath) {
-		this.targetPath = targetPath;
+	public void setExtractions(List<Extraction> extractions) {
+		this.extractions = extractions;
 	}
 
 	@Override
-	@OneToOne(mappedBy = "actionCopy", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "actionExtraction", cascade = CascadeType.ALL)
 	public MavenArtifact getMavenArtifact() {
 		return super.getMavenArtifact();
 	}
 
 	@Override
-	@OneToOne(mappedBy = "actionCopy", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "actionExtraction", cascade = CascadeType.ALL)
 	public SpacerUrl getSpacerUrl() {
 		return super.getSpacerUrl();
 	}
-
 }

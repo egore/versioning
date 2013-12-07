@@ -58,8 +58,11 @@
 
 	<!-- "Add action" buttons -->
 	<h:commandButton action="#{projectDetail.chooseCopy}"
-		value="#{messges.project_add_copy}"
+		value="#{messages.project_add_copy}"
 		rendered="#{empty projectDetail.instance.actionCopy}" />
+	<h:commandButton action="#{projectDetail.chooseExtraction}"
+		value="#{messages.project_add_extraction}"
+		rendered="#{empty projectDetail.instance.actionExtraction}" />
 
 	<rich:panel header="#{messages.actionCopy}"
 		rendered="#{not empty projectDetail.instance.actionCopy}">
@@ -67,39 +70,54 @@
 		<h:panelGrid columns="2" columnClasses="caption,">
 			<h:outputText value="#{messages.actionCopy_targetPath}" />
 			<h:inputText value="#{projectDetail.instance.actionCopy.targetPath}"
-				id="war_targetPath" />
+				id="actionCopy_targetPath" />
 		</h:panelGrid>
 
-		<h:commandButton action="#{projectDetail.chooseMavenArtifact}"
-			value="#{messages.actionCopy_add_mavenartifact}"
+		<h:commandButton action="#{projectDetail.chooseCopyMavenArtifact}"
+			value="#{messages.add_mavenartifact}"
 			rendered="#{empty projectDetail.instance.actionCopy.mavenArtifact and empty projectDetail.instance.actionCopy.spacerUrl}" />
-		<h:commandButton action="#{projectDetail.chooseSpacerUrl}"
-			value="#{messages.actionCopy_add_spacerurl}"
+		<h:commandButton action="#{projectDetail.chooseCopySpacerUrl}"
+			value="#{messages.add_spacerurl}"
 			rendered="#{empty projectDetail.instance.actionCopy.mavenArtifact and empty projectDetail.instance.actionCopy.spacerUrl}" />
-		<h:panelGrid columns="2" columnClasses="caption,"
-			rendered="#{not empty projectDetail.instance.actionCopy.mavenArtifact}">
-			<h:outputText value="#{messages.actionCopy_mavenArtifact_groupId}" />
-			<h:inputText
-				value="#{projectDetail.instance.actionCopy.mavenArtifact.groupId}"
-				id="actionCopy_mavenArtifact_groupId" />
-			<h:outputText value="#{messages.actionCopy_mavenArtifact_artifactId}" />
-			<h:inputText
-				value="#{projectDetail.instance.actionCopy.mavenArtifact.artifactId}"
-				id="actionCopy_mavenArtifact_artifactId" />
-			<h:outputText value="#{messages.actionCopy_mavenArtifact_packaging}" />
-			<h:inputText
-				value="#{projectDetail.instance.actionCopy.mavenArtifact.packaging}"
-				id="actionCopy_mavenArtifact_packaging" pt:placeholder="jar" />
-		</h:panelGrid>
-		<h:panelGrid columns="2" columnClasses="caption,"
-			rendered="#{not empty projectDetail.instance.actionCopy.spacerUrl}">
-			<h:outputText value="#{messages.actionCopy_spacerUrl_url}" />
-			<h:inputText
-				value="#{projectDetail.instance.actionCopy.spacerUrl.url}"
-				id="actionCopy_spacerUrl_url" />
-			<h:outputText
-				value="#{messages.actionCopy_spacerUrl_validplaceholders}" />
-		</h:panelGrid>
+
+		<ui:include src="/layout/mavenArtifact_or_spacerUrl.xhtml">
+			<ui:param name="actionEntity"
+				value="#{projectDetail.instance.actionCopy}" />
+			<ui:param name="idPrefix" value="actionCopy_" />
+		</ui:include>
+
+	</rich:panel>
+
+	<rich:panel header="#{messages.actionExtraction}"
+		rendered="#{not empty projectDetail.instance.actionExtraction}">
+
+		<ui:repeat
+			value="#{projectDetail.instance.actionExtraction.extractions}"
+			var="extraction">
+			<h:panelGrid columns="2" columnClasses="caption,">
+				<h:outputText value="#{messages.actionExtraction_source}" />
+				<h:inputText value="#{extraction.source}" />
+				<h:outputText value="#{messages.actionExtraction_destination}" />
+				<h:inputText value="#{extraction.destination}" />
+			</h:panelGrid>
+		</ui:repeat>
+		<h:commandButton value="#{messages.actionExtraction_add_extraction}"
+			action="#{projectDetail.addExtraction}" />
+
+
+		<h:commandButton
+			action="#{projectDetail.chooseExtractionMavenArtifact}"
+			value="#{messages.add_mavenartifact}"
+			rendered="#{empty projectDetail.instance.actionExtraction.mavenArtifact and empty projectDetail.instance.actionExtraction.spacerUrl}" />
+		<h:commandButton action="#{projectDetail.chooseExtractionSpacerUrl}"
+			value="#{messages.add_spacerurl}"
+			rendered="#{empty projectDetail.instance.actionExtraction.mavenArtifact and empty projectDetail.instance.actionExtraction.spacerUrl}" />
+
+		<ui:include src="/layout/mavenArtifact_or_spacerUrl.xhtml">
+			<ui:param name="actionEntity"
+				value="#{projectDetail.instance.actionExtraction}" />
+			<ui:param name="idPrefix" value="actionExtraction_" />
+		</ui:include>
 	</rich:panel>
 
 

@@ -28,6 +28,8 @@ import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.ActionCopy;
+import de.egore911.versioning.persistence.model.ActionExtraction;
+import de.egore911.versioning.persistence.model.Extraction;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.Permission;
@@ -109,7 +111,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
-	public String chooseMavenArtifact() {
+	public String chooseCopyMavenArtifact() {
 		ActionCopy actionCopy = getInstance().getActionCopy();
 		MavenArtifact mavenArtifact = new MavenArtifact();
 		actionCopy.setMavenArtifact(mavenArtifact);
@@ -118,12 +120,47 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
-	public String chooseSpacerUrl() {
+	public String chooseCopySpacerUrl() {
 		ActionCopy actionCopy = getInstance().getActionCopy();
 		SpacerUrl spacerUrl = new SpacerUrl();
 		actionCopy.setSpacerUrl(spacerUrl);
 		spacerUrl.setActionCopy(actionCopy);
 		setInstance(getInstance());
+		return "";
+	}
+
+	public String chooseExtraction() {
+		Project project = getInstance();
+		ActionExtraction actionExtraction = new ActionExtraction();
+		project.setActionExtraction(actionExtraction);
+		actionExtraction.setProject(project);
+		setInstance(project);
+		return "";
+	}
+
+	public String chooseExtractionMavenArtifact() {
+		ActionExtraction actionExtraction = getInstance().getActionExtraction();
+		MavenArtifact mavenArtifact = new MavenArtifact();
+		actionExtraction.setMavenArtifact(mavenArtifact);
+		mavenArtifact.setActionExtraction(actionExtraction);
+		setInstance(getInstance());
+		return "";
+	}
+
+	public String chooseExtractionSpacerUrl() {
+		ActionExtraction actionExtraction = getInstance().getActionExtraction();
+		SpacerUrl spacerUrl = new SpacerUrl();
+		actionExtraction.setSpacerUrl(spacerUrl);
+		spacerUrl.setActionExtraction(actionExtraction);
+		setInstance(getInstance());
+		return "";
+	}
+
+	public String addExtraction() {
+		ActionExtraction actionExtraction = getInstance().getActionExtraction();
+		Extraction extraction = new Extraction();
+		extraction.setActionExtraction(actionExtraction);
+		actionExtraction.getExtractions().add(extraction);
 		return "";
 	}
 

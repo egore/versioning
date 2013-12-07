@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
+ * published by the Free Software Foundation; either version 2 of 
  * the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -19,7 +19,7 @@ package de.egore911.versioning.persistence.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,28 +28,19 @@ import javax.validation.constraints.Size;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
-@Table(name = "spacer_url")
-public class SpacerUrl extends IntegerDbObject {
+@Table(name = "extraction")
+public class Extraction extends IntegerDbObject {
 
-	private static final long serialVersionUID = 7091720075959159414L;
+	private static final long serialVersionUID = 3167483509972085839L;
 
-	private ActionCopy actionCopy;
 	private ActionExtraction actionExtraction;
 
-	private String url;
+	private String source;
+	private String destination;
 
-	@OneToOne
-	@JoinColumn(name = "id_action_copy")
-	public ActionCopy getActionCopy() {
-		return actionCopy;
-	}
-
-	public void setActionCopy(ActionCopy actionCopy) {
-		this.actionCopy = actionCopy;
-	}
-
-	@OneToOne
-	@JoinColumn(name = "id_action_extraction")
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "id_action_extraction", nullable = false)
+	@NotNull
 	public ActionExtraction getActionExtraction() {
 		return actionExtraction;
 	}
@@ -58,15 +49,25 @@ public class SpacerUrl extends IntegerDbObject {
 		this.actionExtraction = actionExtraction;
 	}
 
-	@Column(nullable = false, length = 1023)
+	@Column(nullable = false, length = 511)
 	@NotNull
-	@Size(max = 1023)
-	public String getUrl() {
-		return url;
+	@Size(min = 1, max = 511)
+	public String getSource() {
+		return source;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setSource(String source) {
+		this.source = source;
 	}
 
+	@Column(nullable = false, length = 511)
+	@NotNull
+	@Size(min = 1, max = 511)
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
 }

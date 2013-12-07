@@ -32,7 +32,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.model.AbstractAction;
 import de.egore911.versioning.persistence.model.ActionCopy;
+import de.egore911.versioning.persistence.model.ActionExtraction;
+import de.egore911.versioning.persistence.model.Extraction;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
@@ -94,54 +97,42 @@ public class ServerService extends HttpServlet {
 							writer.println("			<copy>");
 							String transformedVcsTag = version
 									.getTransformedVcsTag();
-							if (actionCopy.getMavenArtifact() != null) {
-
-								MavenArtifact mavenArtifact = actionCopy
-										.getMavenArtifact();
-								if (project.getMavenRepository() == null) {
-									log.error(
-											"Found maven artifact {}:{}:{} without maven repository, skipping!",
-											mavenArtifact.getGroupId(),
-											mavenArtifact.getArtifactId(),
-											version.getVcsTag());
-									continue;
-								}
-
-								String packaging = mavenArtifact.getPackaging();
-								if (StringUtils.isEmpty(packaging)) {
-									packaging = "jar";
-								}
-
-								String filename = mavenArtifact.getArtifactId() + "-"
-										+ transformedVcsTag + "."
-										+ packaging;
-								String url = urlUtil.concatenateUrlWithSlashes(
-										project.getMavenRepository()
-												.getBaseUrl(),
-										mavenArtifact.getGroupId().replace('.',
-												'/'), mavenArtifact
-												.getArtifactId(),
-										transformedVcsTag,
-										filename);
-
-								writer.print("				<url>");
-								writer.print(url);
-								writer.println("</url>");
-							} else {
-								writer.print("				<url>");
-								writer.print(actionCopy
-										.getSpacerUrl()
-										.getUrl()
-										.replace("[VERSION]", transformedVcsTag));
-								writer.println("</url>");
+							if (appendUrl(project, version, actionCopy,
+									transformedVcsTag, urlUtil, writer)) {
+								writer.print("				<target>");
+								writer.print(urlUtil.concatenateUrlWithSlashes(
+										server.getTargetdir(),
+										actionCopy.getTargetPath()));
+								writer.println("</target>");
 							}
-							writer.print("				<target>");
-							writer.print(urlUtil.concatenateUrlWithSlashes(
-									server.getTargetdir(),
-									actionCopy.getTargetPath()));
-							writer.println("</target>");
 							writer.println("			</copy>");
 						}
+
+						ActionExtraction actionExtraction = project
+								.getActionExtraction();
+						if (actionExtraction != null) {
+							writer.println("			<extract>");
+							String transformedVcsTag = version
+									.getTransformedVcsTag();
+							if (appendUrl(project, version, actionExtraction,
+									transformedVcsTag, urlUtil, writer)) {
+								writer.println("				<extractions>");
+								for (Extraction extraction : actionExtraction
+										.getExtractions()) {
+									writer.println("					<extraction>");
+									writer.print("						<source>");
+									writer.print(extraction.getSource());
+									writer.println("</source>");
+									writer.print("						<destination>");
+									writer.print(extraction.getDestination());
+									writer.println("</destination>");
+									writer.println("					</extraction>");
+								}
+								writer.println("				</extractions>");
+							}
+							writer.println("			</extract>");
+						}
+
 						writer.println("		</deployment>");
 					}
 					writer.println("	</deployments>");
@@ -161,4 +152,49 @@ public class ServerService extends HttpServlet {
 			}
 		}
 	}
+
+	private static boolean appendUrl(Project project, Version version,
+			AbstractAction action, String transformedVcsTag, UrlUtil urlUtil,
+			PrintWriter writer) {
+		if (action.getMavenArtifact() != null) {
+
+			MavenArtifact mavenArtifact = action.getMavenArtifact();
+			if (project.getMavenRepository() == null) {
+				log.error(
+						"Found maven artifact {}:{}:{} without maven repository, skipping!",
+						mavenArtifact.getGroupId(),
+						mavenArtifact.getArtifactId(), version.getVcsTag());
+				return false;
+			}
+
+			String packaging = mavenArtifact.getPackaging();
+			if (StringUtils.isEmpty(packaging)) {
+				packaging = "jar";
+			}
+
+			String filename = mavenArtifact.getArtifactId() + "-"
+					+ transformedVcsTag + "." + packaging;
+			String url = urlUtil.concatenateUrlWithSlashes(project
+					.getMavenRepository().getBaseUrl(), mavenArtifact
+					.getGroupId().replace('.', '/'), mavenArtifact
+					.getArtifactId(), transformedVcsTag, filename);
+
+			writer.print("				<url>");
+			writer.print(url);
+			writer.println("</url>");
+		} else if (action.getSpacerUrl() != null) {
+			writer.print("				<url>");
+			writer.print(action.getSpacerUrl().getUrl()
+					.replace("[VERSION]", transformedVcsTag));
+			writer.println("</url>");
+		} else {
+			log.error(
+					"Found neither maven artifact nor spacerUrl in project {}",
+					project.getName());
+			return false;
+		}
+
+		return true;
+	}
+
 }
