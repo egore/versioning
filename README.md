@@ -30,6 +30,15 @@ The following containers are not supported right now
 
 All other containers are untested.
 
+Supported Databases
+-------------------
+
+The project is using hibernate for data access. This means that theoretically
+every database supported by hibernate is usable. You have to keep in mind that
+we are using flyway to initialize and migrate the databases and the scripts are
+only available and tested on MariaDB 5.5 right now. Further database systems
+are going to be supported at a later point.
+
 Supported VCSs
 --------------
 
@@ -48,3 +57,4 @@ The following components were used to develop *versioning*:
 * JSF 2.2 and RichFaces 4.3
 * jgit 3.1 and svnkit 1.7
 * junit 4.11, mockito 1.9 and hsqldb 2.3
+* flyway 2.2
