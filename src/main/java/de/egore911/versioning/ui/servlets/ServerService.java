@@ -124,7 +124,9 @@ public class ServerService extends HttpServlet {
 									writer.print(extraction.getSource());
 									writer.println("</source>");
 									writer.print("						<destination>");
-									writer.print(extraction.getDestination());
+									writer.print(urlUtil.concatenateUrlWithSlashes(
+											server.getTargetdir(),
+											extraction.getDestination()));
 									writer.println("</destination>");
 									writer.println("					</extraction>");
 								}
