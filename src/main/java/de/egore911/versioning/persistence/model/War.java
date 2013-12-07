@@ -17,11 +17,13 @@
 package de.egore911.versioning.persistence.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -32,9 +34,20 @@ public class War extends IntegerDbObject {
 
 	private static final long serialVersionUID = -6348284172396876137L;
 
+	private String targetPath;
 	private Project project;
 	private MavenArtifact mavenArtifact;
 	private SpacerUrl spacerUrl;
+
+	@Column(length = 511, name = "target_path")
+	@Size(max = 511)
+	public String getTargetPath() {
+		return targetPath;
+	}
+
+	public void setTargetPath(String targetPath) {
+		this.targetPath = targetPath;
+	}
 
 	@OneToOne(optional = false)
 	@JoinColumn(name = "id_project", nullable = false)

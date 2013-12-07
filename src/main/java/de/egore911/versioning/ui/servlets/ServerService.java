@@ -73,11 +73,6 @@ public class ServerService extends HttpServlet {
 					writer.print("	<name>");
 					writer.print(server.getName());
 					writer.println("</name>");
-					if (StringUtils.isNotEmpty(server.getTargetdir())) {
-						writer.print("	<targetdir>");
-						writer.print(server.getTargetdir());
-						writer.println("</targetdir>");
-					}
 					if (StringUtils.isNotEmpty(server.getDescription())) {
 						writer.print("	<!-- ");
 						writer.print(server.getDescription()
@@ -123,20 +118,6 @@ public class ServerService extends HttpServlet {
 								writer.print("				<url>");
 								writer.print(url);
 								writer.println("</url>");
-
-								writer.println("				<!-- ");
-								writer.print("				<groupId>");
-								writer.print(project.getWar()
-										.getMavenArtifact().getGroupId());
-								writer.println("</groupId>");
-								writer.print("				<artifactId>");
-								writer.print(project.getWar()
-										.getMavenArtifact().getArtifactId());
-								writer.println("</artifactId>");
-								writer.print("				<version>");
-								writer.print(transformedVcsTag);
-								writer.println("</version>");
-								writer.println("				-->");
 							} else {
 								writer.print("				<url>");
 								writer.print(project
@@ -146,6 +127,11 @@ public class ServerService extends HttpServlet {
 										.replace("[VERSION]", transformedVcsTag));
 								writer.println("</url>");
 							}
+							writer.print("				<target>");
+							writer.print(urlUtil.concatenateUrlWithSlashes(
+									server.getTargetdir(), project.getWar()
+											.getTargetPath()));
+							writer.println("</target>");
 							writer.println("			</war>");
 						}
 						writer.println("		</deployment>");

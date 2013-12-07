@@ -39,9 +39,9 @@
 		<h:outputText value="#{messages.project_tagTransformer}" />
 		<h:selectOneMenu value="#{projectDetail.instance.tagTransformer}"
 			id="project_tagTransformer" converter="tagtransformerConverter">
-			<f:selectItem itemValue="#{null}" itemLabel="#{messages.tagtransformer_none}"/>
-			<f:selectItems
-				value="#{projectDetail.allTagTransformerSelectItems}" />
+			<f:selectItem itemValue="#{null}"
+				itemLabel="#{messages.tagtransformer_none}" />
+			<f:selectItems value="#{projectDetail.allTagTransformerSelectItems}" />
 		</h:selectOneMenu>
 
 		<h:outputText value="#{messages.project_configuredServers}" />
@@ -53,12 +53,20 @@
 		</h:selectManyMenu>
 
 		<h:commandButton action="#{projectDetail.chooseWar}"
+			value="#{messges.project_add_war}"
 			rendered="#{empty projectDetail.instance.war}" />
 		<h:panelGroup rendered="#{not empty projectDetail.instance.war}">
-			<h:outputText value="WAR!" />
+			<h:outputText value="#{messages.war}" />
+
+			<h:outputText value="#{messages.war_targetPath}" />
+			<h:inputText value="#{projectDetail.instance.war.targetPath}"
+				id="war_targetPath" />
+
 			<h:commandButton action="#{projectDetail.chooseMavenArtifact}"
+				value="#{messages.war_add_mavenartifact}"
 				rendered="#{empty projectDetail.instance.war.mavenArtifact and empty projectDetail.instance.war.spacerUrl}" />
 			<h:commandButton action="#{projectDetail.chooseSpacerUrl}"
+				value="#{messages.war_add_spacerurl}"
 				rendered="#{empty projectDetail.instance.war.mavenArtifact and empty projectDetail.instance.war.spacerUrl}" />
 			<h:panelGrid columns="2" columnClasses="caption,"
 				rendered="#{not empty projectDetail.instance.war.mavenArtifact}">
@@ -77,7 +85,7 @@
 				<h:inputText
 					value="#{projectDetail.instance.war.mavenArtifact.spacerUrl}"
 					id="spacerUrl" />
-				<h:outputText value="Allowed placeholders: [VERSION]" />
+				<h:outputText value="#{messages.war_spacerurl_validplaceholders}" />
 			</h:panelGrid>
 		</h:panelGroup>
 
