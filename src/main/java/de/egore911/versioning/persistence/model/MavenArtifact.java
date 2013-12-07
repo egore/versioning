@@ -33,19 +33,20 @@ public class MavenArtifact extends IntegerDbObject {
 
 	private static final long serialVersionUID = -2268245235601129769L;
 
-	private War war;
+	private ActionCopy actionCopy;
 	private String groupId;
 	private String artifactId;
+	private String packaging;
 
 	@OneToOne(optional = false)
-	@JoinColumn(name = "id_war", nullable = false)
+	@JoinColumn(name = "id_action_copy", nullable = false)
 	@NotNull
-	public War getWar() {
-		return war;
+	public ActionCopy getActionCopy() {
+		return actionCopy;
 	}
 
-	public void setWar(War war) {
-		this.war = war;
+	public void setActionCopy(ActionCopy actionCopy) {
+		this.actionCopy = actionCopy;
 	}
 
 	@Column(nullable = false, length = 255, name = "group_id")
@@ -68,6 +69,16 @@ public class MavenArtifact extends IntegerDbObject {
 
 	public void setArtifactId(String artifactId) {
 		this.artifactId = artifactId;
+	}
+
+	@Column(length = 31)
+	@Size(max = 31)
+	public String getPackaging() {
+		return packaging;
+	}
+
+	public void setPackaging(String packaging) {
+		this.packaging = packaging;
 	}
 
 }

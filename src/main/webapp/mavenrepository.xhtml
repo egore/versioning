@@ -17,16 +17,17 @@
 		<h:outputText value="#{messages.mavenrepository}" />
 	</ui:define>
 
-	<h:panelGrid columns="2" columnClasses="caption,">
-		<h:outputText value="#{messages.mavenrepository_name}" />
-		<h:inputText value="#{mavenrepositoryDetail.instance.name}"
-			id="mavenrepository_name" />
+	<rich:panel header="#{messages.mavenrepository}">
+		<h:panelGrid columns="2" columnClasses="caption,">
+			<h:outputText value="#{messages.mavenrepository_name}" />
+			<h:inputText value="#{mavenrepositoryDetail.instance.name}"
+				id="mavenrepository_name" />
 
-		<h:outputText value="#{messages.mavenrepository_baseUrl}" />
-		<h:inputText value="#{mavenrepositoryDetail.instance.baseUrl}"
-			id="mavenrepository_baseUrl" />
-
-	</h:panelGrid>
+			<h:outputText value="#{messages.mavenrepository_baseUrl}" />
+			<h:inputText value="#{mavenrepositoryDetail.instance.baseUrl}"
+				id="mavenrepository_baseUrl" />
+		</h:panelGrid>
+	</rich:panel>
 
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{mavenrepositoryDetail.save}" />

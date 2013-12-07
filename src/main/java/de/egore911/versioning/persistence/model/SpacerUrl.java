@@ -33,18 +33,18 @@ public class SpacerUrl extends IntegerDbObject {
 
 	private static final long serialVersionUID = 7091720075959159414L;
 
-	private War war;
+	private ActionCopy actionCopy;
 	private String url;
 
 	@OneToOne(optional = false)
-	@JoinColumn(name = "id_war", nullable = false)
+	@JoinColumn(name = "id_action_copy", nullable = false)
 	@NotNull
-	public War getWar() {
-		return war;
+	public ActionCopy getActionCopy() {
+		return actionCopy;
 	}
 
-	public void setWar(War war) {
-		this.war = war;
+	public void setActionCopy(ActionCopy actionCopy) {
+		this.actionCopy = actionCopy;
 	}
 
 	@Column(nullable = false, length = 1023)

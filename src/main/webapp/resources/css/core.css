@@ -5,9 +5,18 @@ html {
 }
 
 table#main\:navigationbar {
-	margin-bottom: 20px;
+	margin-bottom: 14px;
 }
 
 td.caption {
 	font-weight: bold;
+	width: 160px;
+}
+
+td select {
+	width: 100%;
+}
+
+div.rf-p {
+	margin-bottom: 14px;
 }

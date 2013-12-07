@@ -54,7 +54,7 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	private String description;
 	private VcsHost vcsHost;
 	private String vcsPath;
-	private War war;
+	private ActionCopy actionCopy;
 	private MavenRepository mavenRepository;
 	private TagTransformer tagTransformer;
 	private List<Server> configuredServers = new ArrayList<>(0);
@@ -104,12 +104,12 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	}
 
 	@OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
-	public War getWar() {
-		return war;
+	public ActionCopy getActionCopy() {
+		return actionCopy;
 	}
 
-	public void setWar(War war) {
-		this.war = war;
+	public void setActionCopy(ActionCopy actionCopy) {
+		this.actionCopy = actionCopy;
 	}
 
 	@ManyToOne

@@ -1,12 +1,3 @@
-* target path's for wars
-  We already have a path on the server (server.targetdir), but we also need a path to store the wars relative to it
-
-* EAR support
-  Pretty much the same as wars
-
-* JAR support
-  Pretty much the same as wars
-
 * Extraction support
   Extracting data from a given path in the JAR to a given directory
   Should this be attached below WAR/EAR/JAR or directly attached to project?

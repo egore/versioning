@@ -17,21 +17,22 @@
 		<h:outputText value="#{messages.tagtransformer}" />
 	</ui:define>
 
-	<h:panelGrid columns="2" columnClasses="caption,">
-		<h:outputText value="#{messages.tagtransformer_name}" />
-		<h:inputText value="#{tagtransformerDetail.instance.name}"
-			id="tagtransformer_name" />
+	<rich:panel header="#{messages.tagtransformer}">
+		<h:panelGrid columns="2" columnClasses="caption,">
+			<h:outputText value="#{messages.tagtransformer_name}" />
+			<h:inputText value="#{tagtransformerDetail.instance.name}"
+				id="tagtransformer_name" />
 
-		<h:outputText value="#{messages.tagtransformer_searchPattern}" />
-		<h:inputText value="#{tagtransformerDetail.instance.searchPattern}"
-			id="tagtransformer_searchPattern" />
+			<h:outputText value="#{messages.tagtransformer_searchPattern}" />
+			<h:inputText value="#{tagtransformerDetail.instance.searchPattern}"
+				id="tagtransformer_searchPattern" />
 
-		<h:outputText value="#{messages.tagtransformer_replacementPattern}" />
-		<h:inputText
-			value="#{tagtransformerDetail.instance.replacementPattern}"
-			id="tagtransformer_replacementPattern" />
-
-	</h:panelGrid>
+			<h:outputText value="#{messages.tagtransformer_replacementPattern}" />
+			<h:inputText
+				value="#{tagtransformerDetail.instance.replacementPattern}"
+				id="tagtransformer_replacementPattern" />
+		</h:panelGrid>
+	</rich:panel>
 
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{tagtransformerDetail.save}" />

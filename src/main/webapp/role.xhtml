@@ -17,18 +17,20 @@
 		<h:outputText value="#{messages.role}" />
 	</ui:define>
 
-	<h:panelGrid columns="2" columnClasses="caption,">
-		<h:outputText value="#{messages.role_name}" />
-		<h:inputText value="#{roleDetail.instance.name}" id="role_name" />
+	<rich:panel header="#{messages.role}">
+		<h:panelGrid columns="2" columnClasses="caption,">
+			<h:outputText value="#{messages.role_name}" />
+			<h:inputText value="#{roleDetail.instance.name}" id="role_name" />
 
-		<h:outputText value="#{messages.role_permissions}" />
-		<h:selectManyMenu value="#{roleDetail.instance.permissions}"
-			id="role_permissions" converter="permissionConverter">
-			<f:selectItems value="#{roleDetail.allPermissionSelectItems}" />
-			<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
-			<f:attribute name="collectionType" value="java.util.ArrayList" />
-		</h:selectManyMenu>
-	</h:panelGrid>
+			<h:outputText value="#{messages.role_permissions}" />
+			<h:selectManyMenu value="#{roleDetail.instance.permissions}"
+				id="role_permissions" converter="permissionConverter">
+				<f:selectItems value="#{roleDetail.allPermissionSelectItems}" />
+				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
+				<f:attribute name="collectionType" value="java.util.ArrayList" />
+			</h:selectManyMenu>
+		</h:panelGrid>
+	</rich:panel>
 
 	<h:commandButton value="#{messages.save}" action="#{roleDetail.save}" />
 

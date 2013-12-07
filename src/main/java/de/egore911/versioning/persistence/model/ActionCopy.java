@@ -29,8 +29,8 @@ import javax.validation.constraints.Size;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
-@Table(name = "action_war")
-public class War extends IntegerDbObject {
+@Table(name = "action_copy")
+public class ActionCopy extends IntegerDbObject {
 
 	private static final long serialVersionUID = -6348284172396876137L;
 
@@ -60,7 +60,7 @@ public class War extends IntegerDbObject {
 		this.project = project;
 	}
 
-	@OneToOne(mappedBy = "war", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "actionCopy", cascade = CascadeType.ALL)
 	public MavenArtifact getMavenArtifact() {
 		return mavenArtifact;
 	}
@@ -69,7 +69,7 @@ public class War extends IntegerDbObject {
 		this.mavenArtifact = mavenArtifact;
 	}
 
-	@OneToOne(mappedBy = "war", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "actionCopy", cascade = CascadeType.ALL)
 	public SpacerUrl getSpacerUrl() {
 		return spacerUrl;
 	}

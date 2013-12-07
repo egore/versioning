@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
@@ -88,13 +89,14 @@ public class ServerService extends HttpServlet {
 						writer.print(project.getName().replace("--", "__"));
 						writer.println("-->");
 						writer.println("		<deployment>");
-						if (project.getWar() != null) {
-							writer.println("			<war>");
+						ActionCopy actionCopy = project.getActionCopy();
+						if (actionCopy != null) {
+							writer.println("			<copy>");
 							String transformedVcsTag = version
 									.getTransformedVcsTag();
-							if (project.getWar().getMavenArtifact() != null) {
+							if (actionCopy.getMavenArtifact() != null) {
 
-								MavenArtifact mavenArtifact = project.getWar()
+								MavenArtifact mavenArtifact = actionCopy
 										.getMavenArtifact();
 								if (project.getMavenRepository() == null) {
 									log.error(
@@ -105,6 +107,14 @@ public class ServerService extends HttpServlet {
 									continue;
 								}
 
+								String packaging = mavenArtifact.getPackaging();
+								if (StringUtils.isEmpty(packaging)) {
+									packaging = "jar";
+								}
+
+								String filename = mavenArtifact.getArtifactId() + "-"
+										+ transformedVcsTag + "."
+										+ packaging;
 								String url = urlUtil.concatenateUrlWithSlashes(
 										project.getMavenRepository()
 												.getBaseUrl(),
@@ -112,16 +122,14 @@ public class ServerService extends HttpServlet {
 												'/'), mavenArtifact
 												.getArtifactId(),
 										transformedVcsTag,
-										mavenArtifact.getArtifactId() + "-"
-												+ transformedVcsTag + ".war");
+										filename);
 
 								writer.print("				<url>");
 								writer.print(url);
 								writer.println("</url>");
 							} else {
 								writer.print("				<url>");
-								writer.print(project
-										.getWar()
+								writer.print(actionCopy
 										.getSpacerUrl()
 										.getUrl()
 										.replace("[VERSION]", transformedVcsTag));
@@ -129,10 +137,10 @@ public class ServerService extends HttpServlet {
 							}
 							writer.print("				<target>");
 							writer.print(urlUtil.concatenateUrlWithSlashes(
-									server.getTargetdir(), project.getWar()
-											.getTargetPath()));
+									server.getTargetdir(),
+									actionCopy.getTargetPath()));
 							writer.println("</target>");
-							writer.println("			</war>");
+							writer.println("			</copy>");
 						}
 						writer.println("		</deployment>");
 					}

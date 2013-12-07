@@ -27,6 +27,7 @@ import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.Permission;
@@ -35,7 +36,6 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.TagTransformer;
 import de.egore911.versioning.persistence.model.VcsHost;
-import de.egore911.versioning.persistence.model.War;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -100,29 +100,29 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return items;
 	}
 
-	public String chooseWar() {
+	public String chooseCopy() {
 		Project project = getInstance();
-		War war = new War();
-		project.setWar(war);
-		war.setProject(project);
+		ActionCopy actionCopy = new ActionCopy();
+		project.setActionCopy(actionCopy);
+		actionCopy.setProject(project);
 		setInstance(project);
 		return "";
 	}
 
 	public String chooseMavenArtifact() {
-		War war = getInstance().getWar();
+		ActionCopy actionCopy = getInstance().getActionCopy();
 		MavenArtifact mavenArtifact = new MavenArtifact();
-		war.setMavenArtifact(mavenArtifact);
-		mavenArtifact.setWar(war);
+		actionCopy.setMavenArtifact(mavenArtifact);
+		mavenArtifact.setActionCopy(actionCopy);
 		setInstance(getInstance());
 		return "";
 	}
 
 	public String chooseSpacerUrl() {
-		War war = getInstance().getWar();
+		ActionCopy actionCopy = getInstance().getActionCopy();
 		SpacerUrl spacerUrl = new SpacerUrl();
-		war.setSpacerUrl(spacerUrl);
-		spacerUrl.setWar(war);
+		actionCopy.setSpacerUrl(spacerUrl);
+		spacerUrl.setActionCopy(actionCopy);
 		setInstance(getInstance());
 		return "";
 	}

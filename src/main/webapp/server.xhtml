@@ -17,45 +17,62 @@
 		<h:outputText value="#{messages.server}" />
 	</ui:define>
 
-	<h:panelGrid columns="2" columnClasses="caption,">
-		<h:outputText value="#{messages.server_name}" />
-		<h:inputText value="#{serverDetail.instance.name}" id="server_name" />
+	<rich:panel header="#{messages.server}">
+		<h:panelGrid columns="2" columnClasses="caption,">
+			<h:outputText value="#{messages.server_name}" />
+			<h:inputText value="#{serverDetail.instance.name}" id="server_name" />
 
-		<h:outputText value="#{messages.server_description}" />
-		<h:inputText value="#{serverDetail.instance.description}"
-			id="server_description" />
+			<h:outputText value="#{messages.server_description}" />
+			<h:inputText value="#{serverDetail.instance.description}"
+				id="server_description" />
 
-        <h:outputText value="#{messages.server_targetdir}" />
-        <h:inputText value="#{serverDetail.instance.targetdir}"
-            id="server_targetdir" />
-	</h:panelGrid>
+			<h:outputText value="#{messages.server_targetdir}" />
+			<h:inputText value="#{serverDetail.instance.targetdir}"
+				id="server_targetdir" />
+		</h:panelGrid>
+	</rich:panel>
 
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{serverDetail.save}" />
 
-	<h2>
-		<h:outputText value="#{messages.server_currently_deployed}" />
-	</h2>
-	<rich:dataTable value="#{serverDetail.deployedVersions}" var="version">
-		<rich:column>
-			<f:facet name="header">
-				<h:outputText value="#{messages.version}" />
-			</f:facet>
-			<h:outputText value="#{version.project.name} #{version.vcsTag}" />
-		</rich:column>
-	</rich:dataTable>
+	<rich:panel header="#{messages.deployments}"
+		rendered="#{serverDetail.managed}">
+		<h3>
+			<h:outputText value="#{messages.server_currently_deployed}" />
+		</h3>
+		<rich:dataTable value="#{serverDetail.deployedVersions}" var="version">
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText value="#{messages.project}" />
+				</f:facet>
+				<h:outputText value="#{version.project.name}" />
+			</rich:column>
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText value="#{messages.version}" />
+				</f:facet>
+				<h:outputText value="#{version.transformedVcsTag}" />
+			</rich:column>
+		</rich:dataTable>
 
-	<h2>
-		<h:outputText value="#{messages.server_deployable}" />
-	</h2>
-	<rich:dataTable value="#{serverDetail.deployableVersions}"
-		var="version">
-		<rich:column>
-			<f:facet name="header">
-				<h:outputText value="#{messages.version}" />
-			</f:facet>
-			<h:outputText value="#{version.project.name} #{version.vcsTag}" />
-		</rich:column>
-	</rich:dataTable>
+		<h3>
+			<h:outputText value="#{messages.server_deployable}" />
+		</h3>
+		<rich:dataTable value="#{serverDetail.deployableVersions}"
+			var="version">
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText value="#{messages.project}" />
+				</f:facet>
+				<h:outputText value="#{version.project.name}" />
+			</rich:column>
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText value="#{messages.version}" />
+				</f:facet>
+				<h:outputText value="#{version.transformedVcsTag}" />
+			</rich:column>
+		</rich:dataTable>
+	</rich:panel>
 
 </ui:composition>
