@@ -17,6 +17,7 @@
 package de.egore911.versioning.util.vcs;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.egore911.versioning.persistence.model.Project;
@@ -29,6 +30,7 @@ import de.egore911.versioning.persistence.model.VcsHost;
 public class GitProviderTest {
 
 	@Test
+	@Ignore
 	public void testTagExistsSsh() {
 		VcsHost vcsHost = new VcsHost();
 		vcsHost.setVcs(Vcs.git);
