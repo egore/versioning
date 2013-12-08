@@ -16,16 +16,24 @@
  */
 package de.egore911.test;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.sql.DataSource;
 
+import org.hibernate.tool.hbm2ddl.SimpleSchemaExport;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
@@ -37,11 +45,15 @@ import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.util.EntityManagerUtil;
+import de.egore911.versioning.util.listener.StartupListener;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class ImportSqlTest {
+
+	private static final Logger log = LoggerFactory
+			.getLogger(ImportSqlTest.class);
 
 	private EntityManagerFactory emf;
 
@@ -49,6 +61,19 @@ public class ImportSqlTest {
 	public void before() {
 		System.setProperty("java.naming.factory.initial",
 				"de.egore911.test.JndiFactory");
+
+		new StartupListener().contextInitialized(null);
+		try {
+			InitialContext initialContext = new InitialContext();
+			DataSource dataSource = (DataSource) initialContext
+					.lookup("java:comp/env/jdbc/versioningDS");
+			try (Connection connection = dataSource.getConnection()) {
+				new SimpleSchemaExport()
+						.importScript(connection, "/import.sql");
+			}
+		} catch (NamingException | SQLException e) {
+			log.error(e.getMessage(), e);
+		}
 
 		emf = Persistence.createEntityManagerFactory("versioning");
 		EntityManager em = emf.createEntityManager();

@@ -16,6 +16,9 @@
  */
 package de.egore911.versioning.util.listener;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletContextEvent;
@@ -48,6 +51,40 @@ public class StartupListener implements ServletContextListener {
 					.lookup("java:comp/env/jdbc/versioningDS");
 			Flyway flyway = new Flyway();
 			flyway.setDataSource(dataSource);
+
+			switch (dataSource.getClass().getName()) {
+			case "org.hsqldb.jdbc.JDBCDataSource":
+				// Plain datasource for HSQLDB
+				flyway.setLocations("db/migration/hsqldb");
+				break;
+			case "com.mysql.jdbc.jdbc2.optional.MysqlDataSource":
+				// Plain datasource for MySQL/MariaDB
+				flyway.setLocations("db/migration/mysql");
+				break;
+			case "org.apache.tomcat.dbcp.dbcp.BasicDataSource":
+				// Wrapped by Tomcat
+				try (Connection connection = dataSource.getConnection()) {
+					// Deal with raw
+					if (connection.toString().startsWith("jdbc:mysql://")) {
+						flyway.setLocations("db/migration/mysql");
+					} else if (connection.toString().startsWith("jdbc:hsqldb")) {
+						flyway.setLocations("db/migration/hsqldb");
+					} else {
+						throw new RuntimeException(
+								"Unsupported database detected, please report this: "
+										+ connection.toString());
+					}
+				} catch (SQLException e) {
+					log.error("Error opening connection :{}", e.getMessage(), e);
+					return;
+				}
+				break;
+			default:
+				throw new RuntimeException(
+						"Unsupported database detected, please report this: "
+								+ dataSource.getClass().getName());
+			}
+
 			flyway.migrate();
 		} catch (NamingException e) {
 			log.error(e.getMessage(), e);

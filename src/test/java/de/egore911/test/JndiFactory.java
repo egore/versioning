@@ -49,6 +49,8 @@ public class JndiFactory implements InitialContextFactory {
 		Context context = Mockito.mock(Context.class);
 		Mockito.when(context.getNameParser("")).thenReturn(nameParser);
 		Mockito.when(context.lookup(name)).thenReturn(jdbcDataSource);
+		Mockito.when(context.lookup("java:comp/env/jdbc/versioningDS"))
+				.thenReturn(jdbcDataSource);
 
 		return context;
 	}
