@@ -16,6 +16,7 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -78,6 +79,40 @@ public class UserDetail extends AbstractDetail<User> {
 						.setPassword(new UserUtil().hashPassword(password));
 			}
 		}
+
+		User user = new UserDao().findByLogin(getInstance().getLogin());
+		if (isManaged()) {
+			if (user != null && !getInstance().getId().equals(user.getId())) {
+				// Login already taken
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				ResourceBundle bundle = sessionUtil.getBundle();
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						bundle.getString("duplicate_login"),
+						MessageFormat.format(
+								bundle.getString("duplicate_login_detail"),
+								getInstance().getLogin()));
+				facesContext.addMessage("main:user_login", message);
+				getInstance().setLogin(user.getLogin());
+				return "";
+			}
+		} else {
+			if (user != null) {
+				// Login already taken
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				ResourceBundle bundle = sessionUtil.getBundle();
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
+						bundle.getString("duplicate_login"),
+						MessageFormat.format(
+								bundle.getString("duplicate_login_detail"),
+								getInstance().getLogin()));
+				facesContext.addMessage("main:user_login", message);
+				getInstance().setLogin(null);
+				return "";
+			}
+		}
+
 		getDao().save(getInstance());
 		setInstance(null);
 		return "/users.xhtml";
