@@ -5,7 +5,7 @@
 
 	<groupId>de.egore911.versioning</groupId>
 	<artifactId>versioning</artifactId>
-	<version>0.1.1</version>
+	<version>0.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>${project.artifactId}</name>
 	<description>Simple web-application to track when a software was deployed to a server</description>
