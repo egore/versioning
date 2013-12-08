@@ -1,7 +1,13 @@
 html {
 	background: #f2f2f2;
 	color: #222222;
-	font: 13px/1.5 arial,sans-serif;
+	font: 13px/1.5 arial, sans-serif;
+}
+
+span#logged_in_as {
+	position: absolute;
+	top: 48px;
+	right: 10px;
 }
 
 table#main\:navigationbar {
@@ -19,4 +25,8 @@ td select {
 
 div.rf-p {
 	margin-bottom: 14px;
+}
+
+table.rf-dt {
+	margin-bottom: 12px;
 }

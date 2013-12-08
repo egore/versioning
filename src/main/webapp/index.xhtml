@@ -6,5 +6,13 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="layout/core.xhtml">
-    Nothing here yet
+
+	<ui:define name="title">
+		<h:outputText value="#{messages.welcome}" />
+	</ui:define>
+
+		<h:outputFormat value="#{messages.welcome_text}">
+			<f:param value="#{applicationBean.versionNumber}" />
+		</h:outputFormat>
+
 </ui:composition>

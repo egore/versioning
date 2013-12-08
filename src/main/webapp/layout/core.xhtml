@@ -7,7 +7,8 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head id="head">
-	<title><ui:insert name="title" /> - versioning #{applicationBean.versionNumber}</title>
+	<title><ui:insert name="title" /> - versioning
+		#{applicationBean.versionNumber}</title>
 	<h:outputStylesheet library="css" name="core.css" />
 </h:head>
 <h:body>
@@ -15,11 +16,11 @@
 		<h1>
 			<ui:insert name="title" />
 		</h1>
-		<h:outputFormat value="#{messages.logged_in_as_x}"
-			rendered="#{not empty user}">
-			<f:param value="#{user.name}" />
-		</h:outputFormat>
-		<h:link outcome="login" rendered="#{empty user}" value="#{messages.not_logged_in}" />
+		<span id="logged_in_as"><h:outputFormat
+				value="#{messages.logged_in_as_x}" rendered="#{not empty user}">
+				<f:param value="#{user.name}" />
+			</h:outputFormat> <h:link outcome="login" rendered="#{empty user}"
+				value="#{messages.not_logged_in}" /></span>
 		<ui:include src="menu.xhtml" />
 		<ui:insert />
 	</h:form>
