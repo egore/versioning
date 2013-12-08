@@ -49,6 +49,10 @@
 			<h:selectBooleanCheckbox disabled="true"
 				value="#{role.hasPermission('DEPLOY')}" />
 		</rich:column>
+		<f:facet name="footer">
+			<rich:dataScroller maxPages="#{roleList.maxPages}"
+				page="#{roleList.page}" />
+		</f:facet>
 	</rich:dataTable>
 
 	<h:commandLink action="/role.xhtml" value="#{messages.add}">

@@ -33,6 +33,10 @@
 			</f:facet>
 			<h:outputText value="#{tagtransformer.replacementPattern}" />
 		</rich:column>
+		<f:facet name="footer">
+			<rich:dataScroller maxPages="#{tagtransformerList.maxPages}"
+				page="#{tagtransformerList.page}" />
+		</f:facet>
 	</rich:dataTable>
 
 	<h:commandLink action="/tagtransformer.xhtml" value="#{messages.add}">

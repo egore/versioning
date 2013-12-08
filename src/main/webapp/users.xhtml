@@ -41,6 +41,10 @@
 				<h:outputText value="#{role.name} " />
 			</a4j:repeat>
 		</rich:column>
+		<f:facet name="footer">
+			<rich:dataScroller maxPages="#{userList.maxPages}"
+				page="#{userList.page}" />
+		</f:facet>
 	</rich:dataTable>
 
 	<h:commandLink action="/user.xhtml" value="#{messages.add}">

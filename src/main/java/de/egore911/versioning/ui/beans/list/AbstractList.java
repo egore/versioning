@@ -33,9 +33,16 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	private Integer offset;
 	private Integer limit;
 
-	public abstract List<T> getList();
+	public List<T> getList() {
+		// FIXME disable server side paging for now until it works properly with
+		// rich:dataTable and rich:dataScroller
+		// return getDao().findAll(getOffset(), getLimit());
+		return getDao().findAll();
+	}
 
-	public abstract long count();
+	public long count() {
+		return getDao().count();
+	}
 
 	public Integer getOffset() {
 		if (offset == null) {
@@ -60,14 +67,18 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	}
 
 	public Integer getPage() {
-		return getOffset() / getLimit();
+		return (getOffset() / getLimit()) + 1;
 	}
 
 	public void setPage(Integer page) {
 		if (page == null) {
 			return;
 		}
-		setOffset(page * getLimit());
+		setOffset((page - 1) * getLimit());
+	}
+
+	public Integer getMaxPages() {
+		return (int) Math.ceil((double) count() / getLimit());
 	}
 
 	protected abstract AbstractDao<T> getDao();

@@ -16,8 +16,6 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
-import java.util.List;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -33,18 +31,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequestScoped
 @RequiresPermission({ Permission.CREATE_VERSIONS, Permission.DEPLOY })
 public class VersionList extends AbstractList<Version> {
-
-	@Override
-	public List<Version> getList() {
-		VersionDao versionDao = new VersionDao();
-		return versionDao.findAll(getOffset(), getLimit());
-	}
-
-	@Override
-	public long count() {
-		VersionDao versionDao = new VersionDao();
-		return versionDao.count();
-	}
 
 	@Override
 	protected VersionDao getDao() {

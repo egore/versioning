@@ -40,6 +40,10 @@
 			<h:selectBooleanCheckbox value="#{vcshost.credentialsAvailable}"
 				disabled="true" />
 		</rich:column>
+		<f:facet name="footer">
+			<rich:dataScroller maxPages="#{vcshostList.maxPages}"
+				page="#{vcshostList.page}" />
+		</f:facet>
 	</rich:dataTable>
 
 	<h:commandLink action="/vcshost.xhtml" value="#{messages.add}">

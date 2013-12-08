@@ -27,6 +27,10 @@
 				<f:param name="id" value="#{version.id}" />
 			</h:link>
 		</rich:column>
+		<f:facet name="footer">
+			<rich:dataScroller maxPages="#{versionList.maxPages}"
+				page="#{versionList.page}" />
+		</f:facet>
 	</rich:dataTable>
 
 	<h:commandLink action="/version.xhtml" value="#{messages.add}">

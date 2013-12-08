@@ -42,8 +42,10 @@
 				<h:outputText value="#{server.name} " />
 			</a4j:repeat>
 		</rich:column>
+		<f:facet name="footer">
+			<rich:dataScroller maxPages="#{projectList.maxPages}" page="#{projectList.page}" />
+		</f:facet>
 	</rich:dataTable>
-
 
 	<h:commandLink action="/project.xhtml" value="#{messages.add}">
 		<f:param name="id" value="-1" />
