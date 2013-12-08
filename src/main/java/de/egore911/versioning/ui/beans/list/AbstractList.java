@@ -16,11 +16,12 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
-import java.util.List;
+import javax.faces.model.DataModel;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.ui.beans.AbstractBean;
+import de.egore911.versioning.ui.model.PagingDataModel;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -32,13 +33,6 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 
 	private Integer offset;
 	private Integer limit;
-
-	public List<T> getList() {
-		// FIXME disable server side paging for now until it works properly with
-		// rich:dataTable and rich:dataScroller
-		// return getDao().findAll(getOffset(), getLimit());
-		return getDao().findAll();
-	}
 
 	public long count() {
 		return getDao().count();
@@ -83,4 +77,14 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 
 	protected abstract AbstractDao<T> getDao();
 
+	private DataModel<T> dataModel;
+
+	public DataModel<T> getDataModel() {
+		if (dataModel == null) {
+			AbstractDao<T> dao = getDao();
+			dataModel = new PagingDataModel<>(dao.count(), dao);
+		}
+		return dataModel;
+
+	}
 }

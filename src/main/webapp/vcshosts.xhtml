@@ -11,7 +11,7 @@
 		<h:outputText value="#{messages.vcshosts}" />
 	</ui:define>
 
-	<rich:dataTable value="#{vcshostList.list}" var="vcshost"
+	<rich:dataTable value="#{vcshostList.dataModel}" var="vcshost"
 		rows="#{vcshostList.limit}">
 		<rich:column>
 			<f:facet name="header">

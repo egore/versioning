@@ -11,7 +11,7 @@
 		<h:outputText value="#{messages.roles}" />
 	</ui:define>
 
-	<rich:dataTable value="#{roleList.list}" var="role"
+	<rich:dataTable value="#{roleList.dataModel}" var="role"
 		rows="#{roleList.limit}">
 		<rich:column>
 			<f:facet name="header">
