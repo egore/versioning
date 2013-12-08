@@ -30,7 +30,6 @@ import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Version;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 import de.egore911.versioning.util.vcs.Provider;
 
@@ -41,8 +40,6 @@ import de.egore911.versioning.util.vcs.Provider;
 @RequestScoped
 @RequiresPermission(Permission.CREATE_VERSIONS)
 public class VersionDetail extends AbstractDetail<Version> {
-
-	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Override
 	protected VersionDao getDao() {
@@ -65,6 +62,11 @@ public class VersionDetail extends AbstractDetail<Version> {
 	}
 
 	public String save() {
+
+		if (!validate("version")) {
+			return "";
+		}
+
 		Version version = getInstance();
 
 		Provider provider = version.getProject().getProvider();

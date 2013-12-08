@@ -30,7 +30,6 @@ import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Vcs;
 import de.egore911.versioning.persistence.model.VcsHost;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -40,8 +39,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostDetail extends AbstractDetail<VcsHost> {
-
-	private final SessionUtil sessionUtil = new SessionUtil();
 
 	private String password;
 	private String passwordVerify;
@@ -66,6 +63,11 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 	}
 
 	public String save() {
+
+		if (!validate("vcshost")) {
+			return "";
+		}
+
 		if (StringUtils.isNotEmpty(password)
 				|| StringUtils.isNotEmpty(passwordVerify)) {
 			if (password != null && !password.equals(passwordVerify)) {

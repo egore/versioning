@@ -33,7 +33,6 @@ import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Role;
 import de.egore911.versioning.persistence.model.User;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.UserUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -44,8 +43,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_USERS)
 public class UserDetail extends AbstractDetail<User> {
-
-	private final SessionUtil sessionUtil = new SessionUtil();
 
 	private String password;
 	private String passwordVerify;
@@ -61,6 +58,11 @@ public class UserDetail extends AbstractDetail<User> {
 	}
 
 	public String save() {
+
+		if (!validate("user")) {
+			return "";
+		}
+
 		if (StringUtils.isNotEmpty(password)
 				|| StringUtils.isNotEmpty(passwordVerify)) {
 			if (password != null && !password.equals(passwordVerify)) {

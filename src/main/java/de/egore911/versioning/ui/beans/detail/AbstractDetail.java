@@ -16,8 +16,17 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.util.ResourceBundle;
+import java.util.Set;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
@@ -32,6 +41,8 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 
 	@ManagedProperty(value = "#{param.id}")
 	private Integer id;
+
+	protected final SessionUtil sessionUtil = new SessionUtil();
 
 	protected T instance;
 
@@ -80,6 +91,29 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 		if (id != null) {
 			setInstance(null);
 		}
+	}
+
+	protected boolean validate(String prefix) {
+		ValidatorFactory validatorFactory = Validation
+				.buildDefaultValidatorFactory();
+		Validator validator = validatorFactory.getValidator();
+		Set<ConstraintViolation<T>> constraintVioalations = validator
+				.validate(getInstance());
+		if (!constraintVioalations.isEmpty()) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ResourceBundle bundle = sessionUtil.getBundle();
+			for (ConstraintViolation<T> constraintVioalation : constraintVioalations) {
+
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR, bundle.getString(prefix
+								+ "_" + constraintVioalation.getPropertyPath())
+								+ ": " + constraintVioalation.getMessage(), "");
+				facesContext.addMessage("main:" + prefix + "_"
+						+ constraintVioalation.getPropertyPath(), message);
+			}
+			return false;
+		}
+		return true;
 	}
 
 }

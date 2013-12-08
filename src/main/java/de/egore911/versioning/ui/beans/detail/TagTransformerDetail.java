@@ -29,7 +29,6 @@ import javax.faces.context.FacesContext;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.TagTransformer;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -39,8 +38,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class TagTransformerDetail extends AbstractDetail<TagTransformer> {
-
-	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Override
 	protected TagTransformerDao getDao() {
@@ -53,6 +50,11 @@ public class TagTransformerDetail extends AbstractDetail<TagTransformer> {
 	}
 
 	public String save() {
+
+		if (!validate("tagtransformer")) {
+			return "";
+		}
+
 		try {
 			Pattern.compile(getInstance().getSearchPattern());
 		} catch (PatternSyntaxException e) {

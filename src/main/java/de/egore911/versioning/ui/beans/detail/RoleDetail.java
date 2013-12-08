@@ -53,6 +53,11 @@ public class RoleDetail extends AbstractDetail<Role> {
 	}
 
 	public String save() {
+
+		if (!validate("role")) {
+			return "";
+		}
+
 		getDao().save(getInstance());
 		setInstance(null);
 		return "/roles.xhtml";

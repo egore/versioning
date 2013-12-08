@@ -165,6 +165,11 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	}
 
 	public String save() {
+
+		if (!validate("project")) {
+			return "";
+		}
+
 		getDao().save(getInstance());
 		setInstance(null);
 		return "/projects.xhtml";

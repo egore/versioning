@@ -30,7 +30,6 @@ import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -42,7 +41,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class ServerDetail extends AbstractDetail<Server> {
 
 	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
-	private final SessionUtil sessionUtil = new SessionUtil();
 
 	@Override
 	protected ServerDao getDao() {
@@ -69,6 +67,11 @@ public class ServerDetail extends AbstractDetail<Server> {
 	}
 
 	public String save() {
+
+		if (!validate("server")) {
+			return "";
+		}
+
 		if (getInstance().getName().contains("/")) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ResourceBundle bundle = sessionUtil.getBundle();
