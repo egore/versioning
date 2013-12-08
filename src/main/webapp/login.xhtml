@@ -11,15 +11,17 @@
 		<h:outputText value="#{messages.login}" />
 	</ui:define>
 
-	<h:panelGrid columns="2" columnClasses="caption,">
+	<h:panelGrid columns="2" columnClasses="caption," style="margin: 0 auto; padding-top: 10%;">
 		<h:outputText value="#{messages.user_login}" />
 		<h:inputText value="#{loginBean.login}" id="user_login" />
 
 		<h:outputText value="#{messages.user_password}" />
 		<h:inputSecret value="#{loginBean.password}" id="user_password" />
+
+		<h:outputText value="" />
+		<h:commandButton value="#{messages.login}"
+			action="#{loginBean.performLogin}" />
 	</h:panelGrid>
 
-	<h:commandButton value="#{messages.login}"
-		action="#{loginBean.performLogin}" />
 
 </ui:composition>
