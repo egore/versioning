@@ -9,10 +9,10 @@ import org.joda.time.LocalDateTime;
 @StaticMetamodel(DbObject.class)
 public abstract class DbObject_ {
 
-	public static volatile SingularAttribute<DbObject, User> createdBy;
-	public static volatile SingularAttribute<DbObject, LocalDateTime> created;
-	public static volatile SingularAttribute<DbObject, User> modifiedBy;
-	public static volatile SingularAttribute<DbObject, LocalDateTime> modified;
+	public static volatile SingularAttribute<DbObject<?>, User> createdBy;
+	public static volatile SingularAttribute<DbObject<?>, LocalDateTime> created;
+	public static volatile SingularAttribute<DbObject<?>, User> modifiedBy;
+	public static volatile SingularAttribute<DbObject<?>, LocalDateTime> modified;
 
 }
 
