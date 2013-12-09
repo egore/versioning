@@ -39,22 +39,22 @@ public class AbstractListTest {
 		Mockito.when(list.getPage()).thenCallRealMethod();
 
 		list.setLimit(10);
-		list.setPage(0);
+		list.setPage(1);
 		Assert.assertEquals(0, list.getOffset().intValue());
 
-		list.setPage(1);
+		list.setPage(2);
 		Assert.assertEquals(10, list.getOffset().intValue());
 
-		list.setPage(2);
+		list.setPage(3);
 		Assert.assertEquals(20, list.getOffset().intValue());
 
 		list.setLimit(20);
-		Assert.assertEquals(1, list.getPage().intValue());
+		Assert.assertEquals(2, list.getPage().intValue());
 
 		list.setLimit(21);
-		Assert.assertEquals(0, list.getPage().intValue());
+		Assert.assertEquals(1, list.getPage().intValue());
 
 		list.setLimit(19);
-		Assert.assertEquals(1, list.getPage().intValue());
+		Assert.assertEquals(2, list.getPage().intValue());
 	}
 }
