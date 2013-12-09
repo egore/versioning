@@ -11,9 +11,9 @@ public abstract class Project_ extends de.egore911.versioning.persistence.model.
 
 	public static volatile ListAttribute<Project, Version> versions;
 	public static volatile ListAttribute<Project, Server> configuredServers;
+	public static volatile ListAttribute<Project, ActionExtraction> actionExtractions;
+	public static volatile ListAttribute<Project, ActionCopy> actionCopies;
 	public static volatile SingularAttribute<Project, String> description;
-	public static volatile SingularAttribute<Project, ActionExtraction> actionExtraction;
-	public static volatile SingularAttribute<Project, ActionCopy> actionCopy;
 	public static volatile SingularAttribute<Project, String> name;
 	public static volatile SingularAttribute<Project, String> vcsPath;
 	public static volatile SingularAttribute<Project, TagTransformer> tagTransformer;
