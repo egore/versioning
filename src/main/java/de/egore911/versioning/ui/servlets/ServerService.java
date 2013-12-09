@@ -114,8 +114,9 @@ public class ServerService extends HttpServlet {
 						writer.print(project.getName().replace("--", "__"));
 						writer.println("-->");
 						writer.println("		<deployment>");
-						ActionCopy actionCopy = project.getActionCopy();
-						if (actionCopy != null) {
+						List<ActionCopy> actionCopies = project
+								.getActionCopies();
+						for (ActionCopy actionCopy : actionCopies) {
 							writer.println("			<copy>");
 							String transformedVcsTag = version
 									.getTransformedVcsTag();
@@ -130,9 +131,9 @@ public class ServerService extends HttpServlet {
 							writer.println("			</copy>");
 						}
 
-						ActionExtraction actionExtraction = project
-								.getActionExtraction();
-						if (actionExtraction != null) {
+						List<ActionExtraction> actionExtractions = project
+								.getActionExtractions();
+						for (ActionExtraction actionExtraction : actionExtractions) {
 							writer.println("			<extract>");
 							String transformedVcsTag = version
 									.getTransformedVcsTag();

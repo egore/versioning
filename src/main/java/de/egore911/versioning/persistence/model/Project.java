@@ -27,7 +27,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -54,8 +53,8 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	private String description;
 	private VcsHost vcsHost;
 	private String vcsPath;
-	private ActionCopy actionCopy;
-	private ActionExtraction actionExtraction;
+	private List<ActionCopy> actionCopies;
+	private List<ActionExtraction> actionExtractions;
 	private MavenRepository mavenRepository;
 	private TagTransformer tagTransformer;
 	private List<Server> configuredServers = new ArrayList<>(0);
@@ -104,22 +103,22 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 		this.vcsPath = vcsPath;
 	}
 
-	@OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
-	public ActionCopy getActionCopy() {
-		return actionCopy;
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	public List<ActionCopy> getActionCopies() {
+		return actionCopies;
 	}
 
-	public void setActionCopy(ActionCopy actionCopy) {
-		this.actionCopy = actionCopy;
+	public void setActionCopies(List<ActionCopy> actionCopies) {
+		this.actionCopies = actionCopies;
 	}
 
-	@OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
-	public ActionExtraction getActionExtraction() {
-		return actionExtraction;
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	public List<ActionExtraction> getActionExtractions() {
+		return actionExtractions;
 	}
 
-	public void setActionExtraction(ActionExtraction actionExtraction) {
-		this.actionExtraction = actionExtraction;
+	public void setActionExtractions(List<ActionExtraction> actionExtractions) {
+		this.actionExtractions = actionExtractions;
 	}
 
 	@ManyToOne

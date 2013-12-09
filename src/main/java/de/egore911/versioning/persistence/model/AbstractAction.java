@@ -17,8 +17,8 @@
 package de.egore911.versioning.persistence.model;
 
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +34,7 @@ public class AbstractAction extends IntegerDbObject {
 	private MavenArtifact mavenArtifact;
 	private SpacerUrl spacerUrl;
 
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "id_project", nullable = false)
 	@NotNull
 	public Project getProject() {

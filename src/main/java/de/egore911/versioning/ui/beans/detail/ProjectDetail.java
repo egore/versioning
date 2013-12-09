@@ -105,14 +105,13 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	public String chooseCopy() {
 		Project project = getInstance();
 		ActionCopy actionCopy = new ActionCopy();
-		project.setActionCopy(actionCopy);
+		project.getActionCopies().add(actionCopy);
 		actionCopy.setProject(project);
 		setInstance(project);
 		return "";
 	}
 
-	public String chooseCopyMavenArtifact() {
-		ActionCopy actionCopy = getInstance().getActionCopy();
+	public String chooseCopyMavenArtifact(ActionCopy actionCopy) {
 		MavenArtifact mavenArtifact = new MavenArtifact();
 		actionCopy.setMavenArtifact(mavenArtifact);
 		mavenArtifact.setActionCopy(actionCopy);
@@ -120,8 +119,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
-	public String chooseCopySpacerUrl() {
-		ActionCopy actionCopy = getInstance().getActionCopy();
+	public String chooseCopySpacerUrl(ActionCopy actionCopy) {
 		SpacerUrl spacerUrl = new SpacerUrl();
 		actionCopy.setSpacerUrl(spacerUrl);
 		spacerUrl.setActionCopy(actionCopy);
@@ -132,14 +130,15 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	public String chooseExtraction() {
 		Project project = getInstance();
 		ActionExtraction actionExtraction = new ActionExtraction();
-		project.setActionExtraction(actionExtraction);
+		addExtraction(actionExtraction);
+		project.getActionExtractions().add(actionExtraction);
 		actionExtraction.setProject(project);
 		setInstance(project);
 		return "";
 	}
 
-	public String chooseExtractionMavenArtifact() {
-		ActionExtraction actionExtraction = getInstance().getActionExtraction();
+	public String chooseExtractionMavenArtifact(
+			ActionExtraction actionExtraction) {
 		MavenArtifact mavenArtifact = new MavenArtifact();
 		actionExtraction.setMavenArtifact(mavenArtifact);
 		mavenArtifact.setActionExtraction(actionExtraction);
@@ -147,8 +146,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
-	public String chooseExtractionSpacerUrl() {
-		ActionExtraction actionExtraction = getInstance().getActionExtraction();
+	public String chooseExtractionSpacerUrl(ActionExtraction actionExtraction) {
 		SpacerUrl spacerUrl = new SpacerUrl();
 		actionExtraction.setSpacerUrl(spacerUrl);
 		spacerUrl.setActionExtraction(actionExtraction);
@@ -156,8 +154,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
-	public String addExtraction() {
-		ActionExtraction actionExtraction = getInstance().getActionExtraction();
+	public String addExtraction(ActionExtraction actionExtraction) {
 		Extraction extraction = new Extraction();
 		extraction.setActionExtraction(actionExtraction);
 		actionExtraction.getExtractions().add(extraction);
