@@ -53,14 +53,15 @@ public class DeploymentsBean extends AbstractBean {
 	}
 
 	public String deploy(Server server, Version version) {
-		Deployment currentDeployment = new DeploymentDao()
+		DeploymentDao deploymentDao = new DeploymentDao();
+		Deployment currentDeployment = deploymentDao
 				.getCurrentDeployment(server, version.getProject());
 
 		Deployment newDeployment = new Deployment();
 		newDeployment.setVersion(version);
 		newDeployment.setServer(server);
 		newDeployment.setDeployment(LocalDateTime.now());
-		new DeploymentDao().replace(currentDeployment, newDeployment);
+		deploymentDao.replace(currentDeployment, newDeployment);
 		return "";
 	}
 

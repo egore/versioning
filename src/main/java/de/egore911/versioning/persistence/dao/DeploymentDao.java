@@ -62,8 +62,10 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		em.getTransaction().begin();
 		try {
-			currentDeployment.setUndeployment(LocalDateTime.now());
-			em.merge(currentDeployment);
+			if (currentDeployment != null) {
+				currentDeployment.setUndeployment(LocalDateTime.now());
+				em.merge(currentDeployment);
+			}
 			em.merge(newDeployment);
 			em.getTransaction().commit();
 		} finally {
