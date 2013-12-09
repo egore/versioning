@@ -73,7 +73,29 @@ public class ServerService extends HttpServlet {
 				if (server != null) {
 					resp.setContentType("application/xml;charset=UTF-8");
 					writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-					writer.println("<server>");
+					writer.print("<server xmlns=\"http://versioning.egore911.de/server/1.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://versioning.egore911.de/server/1.0 ");
+					writer.print(req.getScheme());
+					writer.print("://");
+					writer.print(req.getServerName());
+					switch (req.getScheme()) {
+					case "http":
+						if (req.getServerPort() != 80) {
+							writer.print(":");
+							writer.print(req.getServerPort());
+						}
+						break;
+					case "https":
+						if (req.getServerPort() != 443) {
+							writer.print(":");
+							writer.print(req.getServerPort());
+						}
+						break;
+					default:
+						writer.print(":");
+						writer.print(req.getServerPort());
+					}
+					writer.print(req.getServletContext().getContextPath());
+					writer.println("/xsd/server-1.0.xsd\">");
 					writer.print("	<name>");
 					writer.print(server.getName());
 					writer.println("</name>");

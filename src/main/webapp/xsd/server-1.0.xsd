@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://versioning.egore911.de/server/1.0"
+	targetNamespace="http://versioning.egore911.de/server/1.0"
+	elementFormDefault="qualified">
+
+	<xs:element name="server">
+		<xs:annotation>
+			<xs:documentation>
+				The core of the document is a server. It will list a name plus
+				all the deployment actions.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string" />
+				<xs:element name="deployments" type="deployments" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="deployments">
+		<xs:sequence>
+			<xs:element name="deployment" type="deployment" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="deployment">
+		<xs:sequence>
+			<xs:element name="copy" type="copy" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element name="extract" type="extract" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="copy">
+		<xs:sequence>
+			<xs:element name="url" type="xs:string" />
+			<xs:element name="target" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="extract">
+		<xs:sequence>
+			<xs:element name="url" type="xs:string" />
+			<xs:element name="extractions" type="extractions" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="extractions">
+		<xs:sequence>
+			<xs:element name="extraction" type="extraction" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="extraction">
+		<xs:sequence>
+			<xs:element name="source" type="xs:string" />
+			<xs:element name="destination" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
