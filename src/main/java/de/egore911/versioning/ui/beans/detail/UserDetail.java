@@ -59,10 +59,6 @@ public class UserDetail extends AbstractDetail<User> {
 
 	public String save() {
 
-		if (!validate("user")) {
-			return "";
-		}
-
 		if (StringUtils.isNotEmpty(password)
 				|| StringUtils.isNotEmpty(passwordVerify)) {
 			if (password != null && !password.equals(passwordVerify)) {
@@ -80,6 +76,10 @@ public class UserDetail extends AbstractDetail<User> {
 				getInstance()
 						.setPassword(new UserUtil().hashPassword(password));
 			}
+		}
+
+		if (!validate("user")) {
+			return "";
 		}
 
 		User user = new UserDao().findByLogin(getInstance().getLogin());
