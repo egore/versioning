@@ -26,6 +26,30 @@
 		</h:panelGrid>
 	</rich:panel>
 
+	<rich:panel header="#{messages.variables}">
+
+		<h:outputFormat value="#{messages.server_variables_for}" escape="false">
+			<f:param value="#{messages.actionCopy}" />
+			<f:param value="#{messages.actionCopy_targetPath}" />
+			<f:param value="#{messages.actionExtraction}" />
+			<f:param value="#{messages.actionExtraction_source}" />
+			<f:param value="#{messages.actionExtraction_destination}" />
+		</h:outputFormat>
+
+		<ui:repeat var="variable" value="#{serverDetail.instance.variables}">
+			<h:panelGrid columns="2" columnClasses="caption,">
+				<h:outputText value="#{messages.variable_name}" />
+				<h:inputText value="#{variable.name}" />
+				<h:outputText value="#{messages.variable_value}" />
+				<h:inputText value="#{variable.value}" />
+			</h:panelGrid>
+		</ui:repeat>
+
+		<h:commandButton action="#{serverDetail.addVariable}"
+			value="#{messages.server_add_variable}" />
+
+	</rich:panel>
+
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{serverDetail.save}" />
 

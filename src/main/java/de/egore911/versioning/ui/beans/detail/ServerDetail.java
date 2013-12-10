@@ -28,6 +28,7 @@ import javax.faces.context.FacesContext;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.util.security.RequiresPermission;
@@ -64,6 +65,13 @@ public class ServerDetail extends AbstractDetail<Server> {
 			return Collections.emptyList();
 		}
 		return deploymentCalculator.getDeployableVersions(instance);
+	}
+
+	public String addVariable() {
+		Variable variable = new Variable();
+		variable.setServer(getInstance());
+		getInstance().getVariables().add(variable);
+		return "";
 	}
 
 	public String save() {

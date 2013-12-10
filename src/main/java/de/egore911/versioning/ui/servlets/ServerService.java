@@ -19,7 +19,9 @@ package de.egore911.versioning.ui.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +41,7 @@ import de.egore911.versioning.persistence.model.Extraction;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.util.UrlUtil;
@@ -57,6 +60,18 @@ public class ServerService extends HttpServlet {
 			.compile(".*/server/([^/]+)\\.xml$");
 
 	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+
+	private static String replaceVariables(String s, Map<String, String> replace) {
+		Matcher m = Variable.VARIABLE_PATTERN.matcher(s);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			if (replace.containsKey(m.group(1))) {
+				m.appendReplacement(sb, replace.get(m.group(1)));
+			}
+		}
+		m.appendTail(sb);
+		return sb.toString();
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -105,6 +120,12 @@ public class ServerService extends HttpServlet {
 								.replace("--", "__"));
 						writer.println("-->");
 					}
+
+					Map<String, String> replace = new HashMap<>();
+					for (Variable variable : server.getVariables()) {
+						replace.put(variable.getName(), variable.getValue());
+					}
+
 					List<Version> versions = deploymentCalculator
 							.getDeployableVersions(server);
 					writer.println("	<deployments>");
@@ -125,7 +146,9 @@ public class ServerService extends HttpServlet {
 								writer.print("				<target>");
 								writer.print(urlUtil.concatenateUrlWithSlashes(
 										server.getTargetdir(),
-										actionCopy.getTargetPath()));
+										replaceVariables(
+												actionCopy.getTargetPath(),
+												replace)));
 								writer.println("</target>");
 							}
 							writer.println("			</copy>");
@@ -144,12 +167,16 @@ public class ServerService extends HttpServlet {
 										.getExtractions()) {
 									writer.println("					<extraction>");
 									writer.print("						<source>");
-									writer.print(extraction.getSource());
+									writer.print(replaceVariables(
+											extraction.getSource(), replace));
 									writer.println("</source>");
 									writer.print("						<destination>");
-									writer.print(urlUtil.concatenateUrlWithSlashes(
-											server.getTargetdir(),
-											extraction.getDestination()));
+									writer.print(urlUtil
+											.concatenateUrlWithSlashes(
+													server.getTargetdir(),
+													replaceVariables(extraction
+															.getDestination(),
+															replace)));
 									writer.println("</destination>");
 									writer.println("					</extraction>");
 								}

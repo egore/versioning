@@ -16,10 +16,15 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.regex.Matcher;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
@@ -37,6 +42,7 @@ import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.TagTransformer;
+import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -167,9 +173,50 @@ public class ProjectDetail extends AbstractDetail<Project> {
 			return "";
 		}
 
+		for (ActionCopy actionCopy : getInstance().getActionCopies()) {
+			checkVariableExists(actionCopy.getTargetPath());
+		}
+		for (ActionExtraction actionExtraction : getInstance()
+				.getActionExtractions()) {
+			for (Extraction extraction : actionExtraction.getExtractions()) {
+				checkVariableExists(extraction.getSource());
+				checkVariableExists(extraction.getDestination());
+			}
+		}
+
 		getDao().save(getInstance());
 		setInstance(null);
 		return "/projects.xhtml";
+	}
+
+	private void checkVariableExists(String s) {
+		Matcher m = Variable.VARIABLE_PATTERN.matcher(s);
+		while (m.find()) {
+			String variableName = m.group(1);
+			for (Server server : getInstance().getConfiguredServers()) {
+				boolean found = false;
+				for (Variable variable : server.getVariables()) {
+					if (variable.getName().equals(variableName)) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					FacesContext facesContext = FacesContext
+							.getCurrentInstance();
+					ResourceBundle bundle = sessionUtil.getBundle();
+					FacesMessage message = new FacesMessage(
+							FacesMessage.SEVERITY_WARN,
+							MessageFormat.format(
+									bundle.getString("missing_variable_X_for_server_Y"),
+									variableName, server.getName()),
+							MessageFormat.format(
+									bundle.getString("missing_variable_X_for_server_Y_detail"),
+									variableName, server.getName()));
+					facesContext.addMessage("main:server_name", message);
+				}
+			}
+		}
 	}
 
 }

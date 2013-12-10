@@ -19,9 +19,11 @@ package de.egore911.versioning.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -40,6 +42,7 @@ public class Server extends IntegerDbObject {
 	private String name;
 	private String description;
 	private String targetdir;
+	private List<Variable> variables = new ArrayList<>(0);
 	private List<Project> configuredProjects = new ArrayList<>(0);
 
 	@Column(nullable = false, length = 255)
@@ -75,6 +78,15 @@ public class Server extends IntegerDbObject {
 
 	public void setTargetdir(String targetdir) {
 		this.targetdir = targetdir;
+	}
+
+	@OneToMany(mappedBy = "server", cascade = CascadeType.ALL)
+	public List<Variable> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(List<Variable> variables) {
+		this.variables = variables;
 	}
 
 	@ManyToMany(mappedBy = "configuredServers")
