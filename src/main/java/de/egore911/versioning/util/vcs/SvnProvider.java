@@ -40,18 +40,33 @@ public class SvnProvider extends Provider {
 	@Override
 	public boolean tagExistsImpl(Project project, String tagName) {
 		try {
-			SVNURL svnurl = SVNURL
-					.parseURIEncoded(project.getCompleteVcsPath());
-			SVNRepository repo = SVNRepositoryFactory.create(svnurl);
-			VcsHost vcsHost = project.getVcsHost();
-			if (vcsHost.isCredentialsAvailable()) {
-				ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
-						vcsHost.getUsername(), vcsHost.getPassword());
-				repo.setAuthenticationManager(authManager);
+			String completeVcsPath = project.getCompleteVcsPath();
+			if (!completeVcsPath.contains("trunk")) {
+				SVNURL svnurl = SVNURL.parseURIEncoded(completeVcsPath);
+				SVNRepository repo = SVNRepositoryFactory.create(svnurl);
+				VcsHost vcsHost = project.getVcsHost();
+				if (vcsHost.isCredentialsAvailable()) {
+					ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
+							vcsHost.getUsername(), vcsHost.getPassword());
+					repo.setAuthenticationManager(authManager);
+				}
+				SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
+						repo.getLatestRevision());
+				return checkPath == SVNNodeKind.DIR;
+			} else {
+				SVNURL svnurl = SVNURL.parseURIEncoded(completeVcsPath.replace(
+						"/trunk", "/tags"));
+				SVNRepository repo = SVNRepositoryFactory.create(svnurl);
+				VcsHost vcsHost = project.getVcsHost();
+				if (vcsHost.isCredentialsAvailable()) {
+					ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
+							vcsHost.getUsername(), vcsHost.getPassword());
+					repo.setAuthenticationManager(authManager);
+				}
+				SVNNodeKind checkPath = repo.checkPath(tagName,
+						repo.getLatestRevision());
+				return checkPath == SVNNodeKind.DIR;
 			}
-			SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
-					repo.getLatestRevision());
-			return checkPath == SVNNodeKind.DIR;
 		} catch (SVNException e) {
 			log.error(e.getMessage(), e);
 			return false;
