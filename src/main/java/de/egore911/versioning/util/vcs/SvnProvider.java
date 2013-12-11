@@ -16,6 +16,9 @@
  */
 package de.egore911.versioning.util.vcs;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tmatesoft.svn.core.SVNException;
@@ -68,6 +71,13 @@ public class SvnProvider extends Provider {
 				return checkPath == SVNNodeKind.DIR;
 			}
 		} catch (SVNException e) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			if (facesContext != null) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
+						e.getLocalizedMessage());
+				facesContext.addMessage("main", message);
+			}
 			log.error(e.getMessage(), e);
 			return false;
 		}
