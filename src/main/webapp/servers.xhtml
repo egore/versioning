@@ -28,6 +28,15 @@
 			</f:facet>
 			<h:outputText value="#{server.targetdir}" />
 		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.variables}" />
+			</f:facet>
+			<ui:repeat var="variable" value="#{server.variables}" varStatus="status">
+				<h:outputText value=", " rendered="#{not status.first}" />
+				<h:outputText value="#{variable.name}: #{variable.value}" />
+			</ui:repeat>
+		</rich:column>
 		<f:facet name="footer">
 			<rich:dataScroller maxPages="#{serverList.maxPages}"
 				page="#{serverList.page}" />
