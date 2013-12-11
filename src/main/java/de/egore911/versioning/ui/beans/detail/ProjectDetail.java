@@ -173,14 +173,18 @@ public class ProjectDetail extends AbstractDetail<Project> {
 			return "";
 		}
 
-		for (ActionCopy actionCopy : getInstance().getActionCopies()) {
-			checkVariableExists(actionCopy.getTargetPath());
+		if (getInstance().getActionCopies() != null) {
+			for (ActionCopy actionCopy : getInstance().getActionCopies()) {
+				checkVariableExists(actionCopy.getTargetPath());
+			}
 		}
-		for (ActionExtraction actionExtraction : getInstance()
-				.getActionExtractions()) {
-			for (Extraction extraction : actionExtraction.getExtractions()) {
-				checkVariableExists(extraction.getSource());
-				checkVariableExists(extraction.getDestination());
+		if (getInstance().getActionExtractions() != null) {
+			for (ActionExtraction actionExtraction : getInstance()
+					.getActionExtractions()) {
+				for (Extraction extraction : actionExtraction.getExtractions()) {
+					checkVariableExists(extraction.getSource());
+					checkVariableExists(extraction.getDestination());
+				}
 			}
 		}
 
