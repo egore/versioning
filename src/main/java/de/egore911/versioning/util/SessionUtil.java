@@ -69,6 +69,8 @@ public class SessionUtil {
 				if (session instanceof HttpSession) {
 					HttpSession httpSession = (HttpSession) session;
 					httpSession.setAttribute("user", user);
+					// Keep the session for eight hours once logged in
+					httpSession.setMaxInactiveInterval(28800);
 				}
 			}
 		}
