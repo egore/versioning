@@ -28,6 +28,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
@@ -88,14 +90,28 @@ public abstract class AbstractSelector<T> {
 	protected abstract List<Predicate> generatePredicateList(
 			CriteriaBuilder builder, Root<T> from);
 
+	private List<Order> generateOrderList(CriteriaBuilder builder, Root<T> from) {
+		if (StringUtils.isNotEmpty(getSortColumn())) {
+			if (!Boolean.FALSE.equals(getAscending())) {
+				return Collections.singletonList(builder.asc(from
+						.get(getSortColumn())));
+			}
+			return Collections.singletonList(builder.desc(from
+					.get(getSortColumn())));
+		}
+		return getDefaultOrderList(builder, from);
+	}
+
 	@SuppressWarnings("unused")
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<T> from) {
 		return Collections.emptyList();
 	}
 
 	private Integer offset;
 	private Integer limit;
+	private String sortColumn;
+	private Boolean ascending;
 
 	public Integer getOffset() {
 		return offset;
@@ -111,6 +127,22 @@ public abstract class AbstractSelector<T> {
 
 	public void setLimit(Integer limit) {
 		this.limit = limit;
+	}
+
+	public String getSortColumn() {
+		return sortColumn;
+	}
+
+	public void setSortColumn(String sortColumn) {
+		this.sortColumn = sortColumn;
+	}
+
+	public Boolean getAscending() {
+		return ascending;
+	}
+
+	public void setAscending(Boolean ascending) {
+		this.ascending = ascending;
 	}
 
 }

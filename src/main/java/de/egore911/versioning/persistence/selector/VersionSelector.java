@@ -45,7 +45,7 @@ public class VersionSelector extends AbstractSelector<Version> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<Version> from) {
 		return Arrays.asList(builder.asc(from.get(Version_.project)),
 				builder.asc(from.get(Version_.vcsTag)));

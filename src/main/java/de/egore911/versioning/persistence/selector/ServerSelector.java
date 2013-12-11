@@ -55,7 +55,7 @@ public class ServerSelector extends AbstractSelector<Server> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<Server> from) {
 		return Collections.singletonList(builder.asc(from.get(Server_.name)));
 	}

@@ -61,7 +61,7 @@ public class UserSelector extends AbstractSelector<User> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<User> from) {
 		return Collections.singletonList(builder.asc(from.get(User_.name)));
 	}

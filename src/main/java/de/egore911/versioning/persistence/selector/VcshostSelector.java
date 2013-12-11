@@ -46,7 +46,7 @@ public class VcshostSelector extends AbstractSelector<VcsHost> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<VcsHost> from) {
 		return Collections.singletonList(builder.asc(from.get(VcsHost_.name)));
 	}

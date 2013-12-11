@@ -56,7 +56,7 @@ public class MavenRepositorySelector extends AbstractSelector<MavenRepository> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<MavenRepository> from) {
 		return Collections.singletonList(builder.asc(from
 				.get(MavenRepository_.name)));

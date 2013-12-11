@@ -55,7 +55,7 @@ public class TagTransformerSelector extends AbstractSelector<TagTransformer> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<TagTransformer> from) {
 		return Collections.singletonList(builder.asc(from
 				.get(TagTransformer_.name)));

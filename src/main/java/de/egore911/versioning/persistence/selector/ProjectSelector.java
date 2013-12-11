@@ -57,7 +57,7 @@ public class ProjectSelector extends AbstractSelector<Project> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<Project> from) {
 		return Collections.singletonList(builder.asc(from.get(Project_.name)));
 	}

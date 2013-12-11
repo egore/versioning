@@ -53,6 +53,19 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 		return selector.findAll();
 	}
 
+	public List<T> findAll(int offset, int limit, String sortColumn, boolean asc) {
+		if (log.isTraceEnabled()) {
+			log.trace("Selecting all {}s from {} to {}", getClass()
+					.getSimpleName(), offset, offset + limit);
+		}
+		AbstractSelector<T> selector = createSelector();
+		selector.setOffset(offset);
+		selector.setLimit(limit);
+		selector.setSortColumn(sortColumn);
+		selector.setAscending(asc);
+		return selector.findAll();
+	}
+
 	public T findById(Integer id) {
 		if (log.isTraceEnabled()) {
 			log.trace("Selecting {}", getClass().getSimpleName());

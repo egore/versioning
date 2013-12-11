@@ -57,7 +57,7 @@ public class RoleSelector extends AbstractSelector<Role> {
 	}
 
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
+	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
 			Root<Role> from) {
 		return Collections.singletonList(builder.asc(from.get(Role_.name)));
 	}
