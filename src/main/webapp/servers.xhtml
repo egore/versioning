@@ -12,10 +12,14 @@
 	</ui:define>
 
 	<rich:dataTable value="#{serverList.dataModel}" var="server"
-		rows="#{serverList.limit}">
+		rows="#{serverList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.server_name}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{serverList}" />
+					<ui:param name="whichColumn" value="name" />
+				</ui:include>
 			</f:facet>
 			<h:link outcome="server" value="#{server.name}"
 				title="#{server.description}">
@@ -25,6 +29,10 @@
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.server_targetdir}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{serverList}" />
+					<ui:param name="whichColumn" value="targetdir" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{server.targetdir}" />
 		</rich:column>
@@ -32,7 +40,8 @@
 			<f:facet name="header">
 				<h:outputText value="#{messages.variables}" />
 			</f:facet>
-			<ui:repeat var="variable" value="#{server.variables}" varStatus="status">
+			<ui:repeat var="variable" value="#{server.variables}"
+				varStatus="status">
 				<h:outputText value=", " rendered="#{not status.first}" />
 				<h:outputText value="#{variable.name}: #{variable.value}" />
 			</ui:repeat>

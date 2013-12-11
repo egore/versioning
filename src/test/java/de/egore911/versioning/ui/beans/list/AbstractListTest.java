@@ -31,30 +31,32 @@ public class AbstractListTest {
 	@Test
 	public void testPaging() {
 		AbstractList<IntegerDbObject> list = Mockito.mock(AbstractList.class);
-		Mockito.doCallRealMethod().when(list).setLimit(Matchers.anyInt());
-		Mockito.when(list.getLimit()).thenCallRealMethod();
-		Mockito.doCallRealMethod().when(list).setOffset(Matchers.anyInt());
-		Mockito.when(list.getOffset()).thenCallRealMethod();
+		Mockito.doCallRealMethod().when(list).getState()
+				.setLimit(Matchers.anyInt());
+		Mockito.when(list.getState().getLimit()).thenCallRealMethod();
+		Mockito.doCallRealMethod().when(list).getState()
+				.setOffset(Matchers.anyInt());
+		Mockito.when(list.getState().getOffset()).thenCallRealMethod();
 		Mockito.doCallRealMethod().when(list).setPage(Matchers.anyInt());
 		Mockito.when(list.getPage()).thenCallRealMethod();
 
-		list.setLimit(10);
+		list.getState().setLimit(10);
 		list.setPage(1);
-		Assert.assertEquals(0, list.getOffset().intValue());
+		Assert.assertEquals(0, list.getState().getOffset().intValue());
 
 		list.setPage(2);
-		Assert.assertEquals(10, list.getOffset().intValue());
+		Assert.assertEquals(10, list.getState().getOffset().intValue());
 
 		list.setPage(3);
-		Assert.assertEquals(20, list.getOffset().intValue());
+		Assert.assertEquals(20, list.getState().getOffset().intValue());
 
-		list.setLimit(20);
+		list.getState().setLimit(20);
 		Assert.assertEquals(2, list.getPage().intValue());
 
-		list.setLimit(21);
+		list.getState().setLimit(21);
 		Assert.assertEquals(1, list.getPage().intValue());
 
-		list.setLimit(19);
+		list.getState().setLimit(19);
 		Assert.assertEquals(2, list.getPage().intValue());
 	}
 }

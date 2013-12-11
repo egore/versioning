@@ -20,8 +20,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import de.egore911.versioning.persistence.dao.VersionDao;
+import de.egore911.versioning.persistence.model.DbObject_;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.ui.model.SortDirection;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -35,6 +37,14 @@ public class VersionList extends AbstractList<Version> {
 	@Override
 	protected VersionDao getDao() {
 		return new VersionDao();
+	}
+
+	@Override
+	protected State createInitialState() {
+		State state = new State();
+		state.setSortColumn(DbObject_.created.getName());
+		state.setSortDirection(SortDirection.DESC);
+		return state;
 	}
 
 }

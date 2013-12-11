@@ -16,12 +16,21 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
+import java.io.Serializable;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.model.DataModel;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.ui.beans.AbstractBean;
 import de.egore911.versioning.ui.model.PagingDataModel;
+import de.egore911.versioning.ui.model.SortDirection;
+import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -31,48 +40,102 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 
 	private static final int DEFAULT_LIMIT = 20;
 
-	private Integer offset;
-	private Integer limit;
+	public static class State implements Serializable {
+
+		private static final long serialVersionUID = -1222436414575029583L;
+
+		private Integer offset;
+		private Integer limit;
+		private String sortColumn;
+		private SortDirection sortDirection;
+
+		public Integer getOffset() {
+			if (offset == null) {
+				return 0;
+			}
+			return offset;
+		}
+
+		public void setOffset(Integer offset) {
+			this.offset = offset;
+		}
+
+		public Integer getLimit() {
+			if (limit == null) {
+				limit = DEFAULT_LIMIT;
+			}
+			return limit;
+		}
+
+		public void setLimit(Integer limit) {
+			this.limit = limit;
+		}
+
+		public String getSortColumn() {
+			return sortColumn;
+		}
+
+		public void setSortColumn(String sortColumn) {
+			this.sortColumn = sortColumn;
+		}
+
+		public SortDirection getSortDirection() {
+			return sortDirection;
+		}
+
+		public void setSortDirection(SortDirection sortDirection) {
+			this.sortDirection = sortDirection;
+		}
+
+	}
+
+	private transient State state = createInitialState();
+	private transient HttpSession session;
+
+	protected abstract State createInitialState();
+
+	@Override
+	@PostConstruct
+	public void postConstruct() {
+		super.postConstruct();
+		session = new SessionUtil().getSession();
+		State previousState = (State) session.getAttribute(this.getClass()
+				.getSimpleName() + "_state");
+		if (previousState != null) {
+			this.state = previousState;
+		}
+	}
+
+	@PreDestroy
+	public void preDestroy() {
+		session.setAttribute(this.getClass().getSimpleName() + "_state", state);
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
 
 	public long count() {
 		return getDao().count();
 	}
 
-	public Integer getOffset() {
-		if (offset == null) {
-			return 0;
-		}
-		return offset;
-	}
-
-	public void setOffset(Integer offset) {
-		this.offset = offset;
-	}
-
-	public Integer getLimit() {
-		if (limit == null) {
-			limit = DEFAULT_LIMIT;
-		}
-		return limit;
-	}
-
-	public void setLimit(Integer limit) {
-		this.limit = limit;
-	}
-
 	public Integer getPage() {
-		return (getOffset() / getLimit()) + 1;
+		return (state.getOffset() / state.getLimit()) + 1;
 	}
 
 	public void setPage(Integer page) {
 		if (page == null) {
 			return;
 		}
-		setOffset((page - 1) * getLimit());
+		state.setOffset((page - 1) * state.getLimit());
 	}
 
 	public Integer getMaxPages() {
-		return (int) Math.ceil((double) count() / getLimit());
+		return (int) Math.ceil((double) count() / state.getLimit());
 	}
 
 	protected abstract AbstractDao<T> getDao();
@@ -82,9 +145,22 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	public DataModel<T> getDataModel() {
 		if (dataModel == null) {
 			AbstractDao<T> dao = getDao();
-			dataModel = new PagingDataModel<>(dao.count(), dao);
+			dataModel = new PagingDataModel<>(dao.count(), dao,
+					state.getSortColumn(), state.getSortDirection());
 		}
 		return dataModel;
+	}
 
+	public String orderBy(String sortColumn) {
+		if (StringUtils.equals(state.getSortColumn(), sortColumn)) {
+			state.setSortDirection(state.getSortDirection() == SortDirection.ASC ? SortDirection.DESC
+					: SortDirection.ASC);
+		} else {
+			// XXX is ASC by default a good idea?
+			state.setSortDirection(SortDirection.ASC);
+		}
+		state.setSortColumn(sortColumn);
+		dataModel = null;
+		return "";
 	}
 }

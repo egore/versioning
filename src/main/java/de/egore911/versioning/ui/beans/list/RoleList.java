@@ -22,6 +22,8 @@ import javax.faces.bean.RequestScoped;
 import de.egore911.versioning.persistence.dao.RoleDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Role;
+import de.egore911.versioning.persistence.model.Role_;
+import de.egore911.versioning.ui.model.SortDirection;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -35,6 +37,14 @@ public class RoleList extends AbstractList<Role> {
 	@Override
 	protected RoleDao getDao() {
 		return new RoleDao();
+	}
+
+	@Override
+	protected State createInitialState() {
+		State state = new State();
+		state.setSortColumn(Role_.name.getName());
+		state.setSortDirection(SortDirection.ASC);
+		return state;
 	}
 
 }

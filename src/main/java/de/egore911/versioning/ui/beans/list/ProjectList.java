@@ -22,6 +22,8 @@ import javax.faces.bean.RequestScoped;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.Project_;
+import de.egore911.versioning.ui.model.SortDirection;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -35,6 +37,14 @@ public class ProjectList extends AbstractList<Project> {
 	@Override
 	protected ProjectDao getDao() {
 		return new ProjectDao();
+	}
+
+	@Override
+	protected State createInitialState() {
+		State state = new State();
+		state.setSortColumn(Project_.name.getName());
+		state.setSortDirection(SortDirection.ASC);
+		return state;
 	}
 
 }

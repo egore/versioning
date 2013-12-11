@@ -12,7 +12,7 @@
 	</ui:define>
 
 	<rich:dataTable value="#{versionList.dataModel}" var="version"
-		rows="#{versionList.limit}">
+		rows="#{versionList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.version_project}" />
@@ -26,6 +26,32 @@
 			<h:link outcome="version" value="#{version.vcsTag}">
 				<f:param name="id" value="#{version.id}" />
 			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.entity_createdBy}" />
+			</f:facet>
+			<h:outputText value="#{version.createdBy.name}" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.entity_created}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{versionList}" />
+					<ui:param name="whichColumn" value="created" />
+				</ui:include>
+			</f:facet>
+			<h:outputText value="#{version.created}"
+				converter="jodaTimeConverter" />
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.version_currently_deployed}" />
+			</f:facet>
+			<ui:repeat var="deployment" value="#{version.deployments}">
+				<h:outputText value="#{deployment.server.name}"
+					rendered="#{empty deployment.undeployment}" />
+			</ui:repeat>
 		</rich:column>
 		<f:facet name="footer">
 			<rich:dataScroller maxPages="#{versionList.maxPages}"

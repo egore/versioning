@@ -22,6 +22,8 @@ import javax.faces.bean.RequestScoped;
 import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.User;
+import de.egore911.versioning.persistence.model.User_;
+import de.egore911.versioning.ui.model.SortDirection;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -35,6 +37,14 @@ public class UserList extends AbstractList<User> {
 	@Override
 	protected UserDao getDao() {
 		return new UserDao();
+	}
+
+	@Override
+	protected State createInitialState() {
+		State state = new State();
+		state.setSortColumn(User_.name.getName());
+		state.setSortDirection(SortDirection.ASC);
+		return state;
 	}
 
 }

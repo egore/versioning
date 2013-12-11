@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- Param: whichList -->
+	<!-- Param: whichColumn -->
+
+	<h:commandLink action="#{whichList.orderBy(whichColumn)}">
+		<h:graphicImage value="/images/arrows_down.png" width="16" height="16"
+			rendered="#{whichList.state.sortColumn eq whichColumn and whichList.state.sortDirection eq 'ASC'}" />
+		<h:graphicImage value="/images/arrows_up.png" width="16" height="16"
+			rendered="#{whichList.state.sortColumn eq whichColumn and whichList.state.sortDirection eq 'DESC'}" />
+		<h:graphicImage value="/images/arrows_none.png" width="16" height="16"
+			rendered="#{whichList.state.sortColumn ne whichColumn}" />
+	</h:commandLink>
+
+</ui:composition>

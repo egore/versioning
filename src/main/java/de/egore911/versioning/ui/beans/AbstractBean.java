@@ -34,7 +34,7 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class AbstractBean {
 
 	@PostConstruct
-	public void created() {
+	public void postConstruct() {
 		RequiresPermission requiresPermission = this.getClass().getAnnotation(
 				RequiresPermission.class);
 		if (requiresPermission != null) {

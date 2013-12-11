@@ -12,10 +12,14 @@
 	</ui:define>
 
 	<rich:dataTable value="#{mavenrepositoryList.dataModel}"
-		var="mavenrepository" rows="#{mavenrepositoryList.limit}">
+		var="mavenrepository" rows="#{mavenrepositoryList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.mavenrepository_name}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{mavenrepositoryList}" />
+					<ui:param name="whichColumn" value="name" />
+				</ui:include>
 			</f:facet>
 			<h:link outcome="mavenrepository" value="#{mavenrepository.name}">
 				<f:param name="id" value="#{mavenrepository.id}" />
@@ -24,6 +28,10 @@
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.mavenrepository_baseUrl}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{mavenrepositoryList}" />
+					<ui:param name="whichColumn" value="baseUrl" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{mavenrepository.baseUrl}" />
 		</rich:column>

@@ -12,10 +12,14 @@
 	</ui:define>
 
 	<rich:dataTable value="#{projectList.dataModel}" var="project"
-		rows="#{projectList.limit}">
+		rows="#{projectList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.project_name}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{projectList}" />
+					<ui:param name="whichColumn" value="name" />
+				</ui:include>
 			</f:facet>
 			<h:link outcome="project" value="#{project.name}"
 				title="#{project.description}">
@@ -31,6 +35,10 @@
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.project_vcsPath}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{projectList}" />
+					<ui:param name="whichColumn" value="vcsPath" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{project.vcsPath}" />
 		</rich:column>
@@ -43,7 +51,8 @@
 			</a4j:repeat>
 		</rich:column>
 		<f:facet name="footer">
-			<rich:dataScroller maxPages="#{projectList.maxPages}" page="#{projectList.page}" />
+			<rich:dataScroller maxPages="#{projectList.maxPages}"
+				page="#{projectList.page}" />
 		</f:facet>
 	</rich:dataTable>
 

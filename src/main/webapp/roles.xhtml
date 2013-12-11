@@ -12,10 +12,14 @@
 	</ui:define>
 
 	<rich:dataTable value="#{roleList.dataModel}" var="role"
-		rows="#{roleList.limit}">
+		rows="#{roleList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.role_name}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{roleList}" />
+					<ui:param name="whichColumn" value="name" />
+				</ui:include>
 			</f:facet>
 			<h:link outcome="role" value="#{role.name}">
 				<f:param name="id" value="#{role.id}" />

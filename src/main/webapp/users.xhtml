@@ -12,10 +12,14 @@
 	</ui:define>
 
 	<rich:dataTable value="#{userList.dataModel}" var="user"
-		rows="#{userList.limit}">
+		rows="#{userList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.user_name}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{userList}" />
+					<ui:param name="whichColumn" value="name" />
+				</ui:include>
 			</f:facet>
 			<h:link outcome="user" value="#{user.name}">
 				<f:param name="id" value="#{user.id}" />
@@ -24,12 +28,20 @@
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.user_login}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{userList}" />
+					<ui:param name="whichColumn" value="login" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{user.login}" />
 		</rich:column>
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.user_email}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{userList}" />
+					<ui:param name="whichColumn" value="email" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{user.email}" />
 		</rich:column>

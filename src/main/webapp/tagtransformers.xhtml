@@ -11,11 +11,15 @@
 		<h:outputText value="#{messages.tagtransformers}" />
 	</ui:define>
 
-	<rich:dataTable value="#{tagtransformerList.dataModel}" var="tagtransformer"
-		rows="#{tagtransformerList.limit}">
+	<rich:dataTable value="#{tagtransformerList.dataModel}"
+		var="tagtransformer" rows="#{tagtransformerList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.tagtransformer_name}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{tagtransformerList}" />
+					<ui:param name="whichColumn" value="name" />
+				</ui:include>
 			</f:facet>
 			<h:link outcome="tagtransformer" value="#{tagtransformer.name}">
 				<f:param name="id" value="#{tagtransformer.id}" />
@@ -24,12 +28,20 @@
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.tagtransformer_searchPattern}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{tagtransformerList}" />
+					<ui:param name="whichColumn" value="searchPattern" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{tagtransformer.searchPattern}" />
 		</rich:column>
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.tagtransformer_replacementPattern}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{tagtransformerList}" />
+					<ui:param name="whichColumn" value="replacementPattern" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{tagtransformer.replacementPattern}" />
 		</rich:column>

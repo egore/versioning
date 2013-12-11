@@ -12,10 +12,14 @@
 	</ui:define>
 
 	<rich:dataTable value="#{vcshostList.dataModel}" var="vcshost"
-		rows="#{vcshostList.limit}">
+		rows="#{vcshostList.state.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.vcshost_name}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{vcshostList}" />
+					<ui:param name="whichColumn" value="name" />
+				</ui:include>
 			</f:facet>
 			<h:link outcome="vcshost" value="#{vcshost.name}">
 				<f:param name="id" value="#{vcshost.id}" />
@@ -24,12 +28,20 @@
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.vcshost_vcs}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{vcshostList}" />
+					<ui:param name="whichColumn" value="vcs" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{vcshost.vcs}" />
 		</rich:column>
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.vcshost_uri}" />
+				<ui:include src="/layout/sorting.xhtml">
+					<ui:param name="whichList" value="#{vcshostList}" />
+					<ui:param name="whichColumn" value="uri" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{vcshost.uri}" />
 		</rich:column>

@@ -21,7 +21,9 @@ import javax.faces.bean.RequestScoped;
 
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.model.MavenRepository;
+import de.egore911.versioning.persistence.model.MavenRepository_;
 import de.egore911.versioning.persistence.model.Permission;
+import de.egore911.versioning.ui.model.SortDirection;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -35,6 +37,14 @@ public class MavenRepositoryList extends AbstractList<MavenRepository> {
 	@Override
 	protected MavenRepositoryDao getDao() {
 		return new MavenRepositoryDao();
+	}
+
+	@Override
+	protected State createInitialState() {
+		State state = new State();
+		state.setSortColumn(MavenRepository_.name.getName());
+		state.setSortDirection(SortDirection.ASC);
+		return state;
 	}
 
 }

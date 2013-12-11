@@ -16,9 +16,6 @@
  */
 package de.egore911.versioning.ui.model;
 
-/**
- * @author Christoph Brill &lt;egore911@gmail.com&gt;
- */
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,6 +29,9 @@ import org.ajax4jsf.model.SequenceRange;
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 
+/**
+ * @author Christoph Brill &lt;egore911@gmail.com&gt;
+ */
 public class PagingDataModel<T extends IntegerDbObject> extends
 		ExtendedDataModel<T> implements Serializable {
 
@@ -40,11 +40,16 @@ public class PagingDataModel<T extends IntegerDbObject> extends
 	private List<T> dataList;
 	private final long count;
 	private final AbstractDao<T> dao;
+	private final String sortColumn;
+	private final SortDirection sortDirection;
 	private Integer rowKey;
 
-	public PagingDataModel(long count, AbstractDao<T> dao) {
+	public PagingDataModel(long count, AbstractDao<T> dao, String sortColumn,
+			SortDirection sortDirection) {
 		this.count = count;
 		this.dao = dao;
+		this.sortColumn = sortColumn;
+		this.sortDirection = sortDirection;
 	}
 
 	@Override
@@ -98,7 +103,8 @@ public class PagingDataModel<T extends IntegerDbObject> extends
 			Object argument) {
 		SequenceRange sequenceRange = (SequenceRange) range;
 		dataList = dao.findAll(sequenceRange.getFirstRow(),
-				sequenceRange.getRows());
+				sequenceRange.getRows(), sortColumn,
+				sortDirection == SortDirection.ASC);
 		for (int index = 0; index < dataList.size(); index++) {
 			visitor.process(context, index, argument);
 		}

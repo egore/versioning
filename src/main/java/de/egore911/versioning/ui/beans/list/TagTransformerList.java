@@ -22,6 +22,8 @@ import javax.faces.bean.RequestScoped;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.TagTransformer;
+import de.egore911.versioning.persistence.model.TagTransformer_;
+import de.egore911.versioning.ui.model.SortDirection;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -35,6 +37,14 @@ public class TagTransformerList extends AbstractList<TagTransformer> {
 	@Override
 	protected TagTransformerDao getDao() {
 		return new TagTransformerDao();
+	}
+
+	@Override
+	protected State createInitialState() {
+		State state = new State();
+		state.setSortColumn(TagTransformer_.name.getName());
+		state.setSortDirection(SortDirection.ASC);
+		return state;
 	}
 
 }
