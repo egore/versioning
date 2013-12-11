@@ -16,10 +16,14 @@
  */
 package de.egore911.versioning.persistence.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -39,6 +43,7 @@ public class Version extends IntegerDbObject {
 
 	private Project project;
 	private String vcsTag;
+	private List<Deployment> deployments = new ArrayList<>(0);
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "id_project", nullable = false)
@@ -58,6 +63,15 @@ public class Version extends IntegerDbObject {
 
 	public void setVcsTag(String vcsTag) {
 		this.vcsTag = vcsTag;
+	}
+
+	@OneToMany(mappedBy = "version")
+	public List<Deployment> getDeployments() {
+		return deployments;
+	}
+
+	public void setDeployments(List<Deployment> deployments) {
+		this.deployments = deployments;
 	}
 
 	@Transient
