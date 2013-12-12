@@ -40,14 +40,6 @@
 				id="project_vcsPath" disabled="#{projectDetail.managed}" />
 			<h:outputText value="#{messages.project_vcsPath_help}" />
 
-			<h:outputText value="#{messages.project_mavenRepository}" />
-			<h:selectOneMenu value="#{projectDetail.instance.mavenRepository}"
-				id="project_mavenRepository" converter="mavenrepositoryConverter">
-				<f:selectItems
-					value="#{projectDetail.allMavenRepositoriesSelectItems}" />
-			</h:selectOneMenu>
-			<h:outputText value="#{messages.project_mavenRepository_help}" />
-
 			<h:outputText value="#{messages.project_tagTransformer}" />
 			<h:selectOneMenu value="#{projectDetail.instance.tagTransformer}"
 				id="project_tagTransformer" converter="tagtransformerConverter">

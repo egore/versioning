@@ -217,7 +217,7 @@ public class ServerService extends HttpServlet {
 		if (action.getMavenArtifact() != null) {
 
 			MavenArtifact mavenArtifact = action.getMavenArtifact();
-			if (project.getMavenRepository() == null) {
+			if (mavenArtifact.getMavenRepository() == null) {
 				log.error(
 						"Found maven artifact {}:{}:{} without maven repository, skipping!",
 						mavenArtifact.getGroupId(),
@@ -232,7 +232,7 @@ public class ServerService extends HttpServlet {
 
 			String filename = mavenArtifact.getArtifactId() + "-"
 					+ transformedVcsTag + "." + packaging;
-			String url = urlUtil.concatenateUrlWithSlashes(project
+			String url = urlUtil.concatenateUrlWithSlashes(mavenArtifact
 					.getMavenRepository().getBaseUrl(), mavenArtifact
 					.getGroupId().replace('.', '/'), mavenArtifact
 					.getArtifactId(), transformedVcsTag, filename);

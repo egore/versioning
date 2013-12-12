@@ -17,7 +17,6 @@ public abstract class Project_ extends de.egore911.versioning.persistence.model.
 	public static volatile SingularAttribute<Project, String> name;
 	public static volatile SingularAttribute<Project, String> vcsPath;
 	public static volatile SingularAttribute<Project, TagTransformer> tagTransformer;
-	public static volatile SingularAttribute<Project, MavenRepository> mavenRepository;
 	public static volatile SingularAttribute<Project, VcsHost> vcsHost;
 
 }

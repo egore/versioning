@@ -13,6 +13,7 @@ public abstract class MavenArtifact_ extends de.egore911.versioning.persistence.
 	public static volatile SingularAttribute<MavenArtifact, ActionExtraction> actionExtraction;
 	public static volatile SingularAttribute<MavenArtifact, ActionCopy> actionCopy;
 	public static volatile SingularAttribute<MavenArtifact, String> artifactId;
+	public static volatile SingularAttribute<MavenArtifact, MavenRepository> mavenRepository;
 
 }
 

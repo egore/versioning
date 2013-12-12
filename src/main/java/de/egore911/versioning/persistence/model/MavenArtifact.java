@@ -19,6 +19,7 @@ package de.egore911.versioning.persistence.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -39,6 +40,7 @@ public class MavenArtifact extends IntegerDbObject {
 	private String groupId;
 	private String artifactId;
 	private String packaging;
+	private MavenRepository mavenRepository;
 
 	@OneToOne
 	@JoinColumn(name = "id_action_copy")
@@ -90,6 +92,16 @@ public class MavenArtifact extends IntegerDbObject {
 
 	public void setPackaging(String packaging) {
 		this.packaging = packaging;
+	}
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "id_mavenrepository", nullable = false)
+	public MavenRepository getMavenRepository() {
+		return mavenRepository;
+	}
+
+	public void setMavenRepository(MavenRepository mavenRepository) {
+		this.mavenRepository = mavenRepository;
 	}
 
 }

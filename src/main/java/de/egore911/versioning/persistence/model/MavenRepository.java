@@ -38,7 +38,7 @@ public class MavenRepository extends IntegerDbObject {
 
 	private String name;
 	private String baseUrl;
-	private List<Project> projects = new ArrayList<>(0);
+	private List<MavenArtifact> mavenArtifacts = new ArrayList<>(0);
 
 	@Column(nullable = false, length = 255)
 	@NotNull
@@ -63,12 +63,12 @@ public class MavenRepository extends IntegerDbObject {
 	}
 
 	@OneToMany(mappedBy = "mavenRepository")
-	public List<Project> getProjects() {
-		return projects;
+	public List<MavenArtifact> getMavenArtifacts() {
+		return mavenArtifacts;
 	}
 
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
+	public void setMavenArtifacts(List<MavenArtifact> mavenArtifacts) {
+		this.mavenArtifacts = mavenArtifacts;
 	}
 
 }

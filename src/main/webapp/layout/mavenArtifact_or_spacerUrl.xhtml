@@ -9,18 +9,29 @@
 
 	<h:panelGrid columns="3" columnClasses="caption,value,help"
 		rendered="#{not empty actionEntity.mavenArtifact}">
+
 		<h:outputText value="#{messages.mavenArtifact_groupId}" />
 		<h:inputText value="#{actionEntity.mavenArtifact.groupId}"
 			id="#{idPrefix}mavenArtifact_groupId" />
 		<h:outputText value="#{messages.mavenArtifact_groupId_help}" />
+
 		<h:outputText value="#{messages.mavenArtifact_artifactId}" />
 		<h:inputText value="#{actionEntity.mavenArtifact.artifactId}"
 			id="#{idPrefix}mavenArtifact_artifactId" />
 		<h:outputText value="#{messages.mavenArtifact_artifactId_help}" />
+
 		<h:outputText value="#{messages.mavenArtifact_packaging}" />
 		<h:inputText value="#{actionEntity.mavenArtifact.packaging}"
 			id="#{idPrefix}mavenArtifact_packaging" pt:placeholder="jar" />
 		<h:outputText value="#{messages.mavenArtifact_packaging_help}" />
+
+		<h:outputText value="#{messages.mavenArtifact_mavenRepository}" />
+		<h:selectOneMenu value="#{actionEntity.mavenArtifact.mavenRepository}"
+			id="mavenArtifact_mavenRepository" converter="mavenrepositoryConverter">
+			<f:selectItems
+				value="#{projectDetail.allMavenRepositoriesSelectItems}" />
+		</h:selectOneMenu>
+		<h:outputText value="#{messages.mavenArtifact_mavenRepository_help}" />
 	</h:panelGrid>
 	<h:panelGrid columns="3" columnClasses="caption,value,help"
 		rendered="#{not empty actionEntity.spacerUrl}">

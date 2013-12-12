@@ -10,7 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class MavenRepository_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
 	public static volatile SingularAttribute<MavenRepository, String> baseUrl;
-	public static volatile ListAttribute<MavenRepository, Project> projects;
+	public static volatile ListAttribute<MavenRepository, MavenArtifact> mavenArtifacts;
 	public static volatile SingularAttribute<MavenRepository, String> name;
 
 }

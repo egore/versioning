@@ -55,7 +55,6 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	private String vcsPath;
 	private List<ActionCopy> actionCopies;
 	private List<ActionExtraction> actionExtractions;
-	private MavenRepository mavenRepository;
 	private TagTransformer tagTransformer;
 	private List<Server> configuredServers = new ArrayList<>(0);
 	private List<Version> versions = new ArrayList<>(0);
@@ -119,16 +118,6 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	public void setActionExtractions(List<ActionExtraction> actionExtractions) {
 		this.actionExtractions = actionExtractions;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "id_mavenrepository", nullable = true)
-	public MavenRepository getMavenRepository() {
-		return mavenRepository;
-	}
-
-	public void setMavenRepository(MavenRepository mavenRepository) {
-		this.mavenRepository = mavenRepository;
 	}
 
 	@ManyToOne
