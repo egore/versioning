@@ -12,19 +12,23 @@
 	</ui:define>
 
 	<rich:panel header="#{messages.tagtransformer}">
-		<h:panelGrid columns="2" columnClasses="caption,">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.tagtransformer_name}" />
 			<h:inputText value="#{tagtransformerDetail.instance.name}"
 				id="tagtransformer_name" />
+			<h:outputText value="#{messages.tagtransformer_name_help}" />
 
 			<h:outputText value="#{messages.tagtransformer_searchPattern}" />
 			<h:inputText value="#{tagtransformerDetail.instance.searchPattern}"
 				id="tagtransformer_searchPattern" />
+			<h:outputText value="#{messages.tagtransformer_searchPattern_help}" />
 
 			<h:outputText value="#{messages.tagtransformer_replacementPattern}" />
 			<h:inputText
 				value="#{tagtransformerDetail.instance.replacementPattern}"
 				id="tagtransformer_replacementPattern" />
+			<h:outputText
+				value="#{messages.tagtransformer_replacementPattern_help}" />
 		</h:panelGrid>
 	</rich:panel>
 

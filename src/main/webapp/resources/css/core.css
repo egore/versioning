@@ -17,10 +17,23 @@ table#main\:navigationbar {
 td.caption {
 	font-weight: bold;
 	width: 160px;
+	vertical-align: top;
+	padding-top: 3px;
 }
 
-td select {
+td.value {
+	width: 300px;
+}
+
+td.value select, td.value input[type='text'], td.value input[type='password'], textarea {
 	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+td.help {
+	padding-left: 15px;
+	font-size: 80%;
 }
 
 div.rf-p {

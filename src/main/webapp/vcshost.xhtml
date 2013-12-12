@@ -12,29 +12,35 @@
 	</ui:define>
 
 	<rich:panel header="#{messages.vcshost}">
-		<h:panelGrid columns="2" columnClasses="caption,">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.vcshost_name}" />
 			<h:inputText value="#{vcshostDetail.instance.name}" id="vcshost_name" />
+			<h:outputText value="#{messages.vcshost_name_help}" />
 
 			<h:outputText value="#{messages.vcshost_vcs}" />
 			<h:selectOneRadio value="#{vcshostDetail.instance.vcs}"
 				id="vcshost_vcs">
 				<f:selectItems value="#{vcshostDetail.vcsSelectItems}" />
 			</h:selectOneRadio>
+			<h:outputText value="#{messages.vcshost_vcs_help}" />
 
 			<h:outputText value="#{messages.vcshost_uri}" />
 			<h:inputText value="#{vcshostDetail.instance.uri}" id="vcshost_uri" />
+			<h:outputText value="#{messages.vcshost_uri_help}" />
 
 			<h:outputText value="#{messages.vcshost_username}" />
 			<h:inputText value="#{vcshostDetail.instance.username}"
 				id="vcshost_username" />
+			<h:outputText value="#{messages.vcshost_username_help}" />
 
 			<h:outputText value="#{messages.vcshost_password}" />
 			<h:inputSecret value="#{vcshostDetail.password}"
 				id="vcshost_password" />
+			<h:outputText value="#{messages.vcshost_password_help}" />
 			<h:outputText value="#{messages.vcshost_password_verify}" />
 			<h:inputSecret value="#{vcshostDetail.passwordVerify}"
 				id="vcshost_password_verify" />
+			<h:outputText value="#{messages.vcshost_password_verify_help}" />
 		</h:panelGrid>
 	</rich:panel>
 

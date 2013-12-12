@@ -12,21 +12,26 @@
 	</ui:define>
 
 	<rich:panel header="#{messages.user}">
-		<h:panelGrid columns="2" columnClasses="caption,">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.user_name}" />
 			<h:inputText value="#{userDetail.instance.name}" id="user_name" />
+			<h:outputText value="#{messages.user_name_help}" />
 
 			<h:outputText value="#{messages.user_login}" />
 			<h:inputText value="#{userDetail.instance.login}" id="user_login" />
+			<h:outputText value="#{messages.user_login_help}" />
 
 			<h:outputText value="#{messages.user_password}" />
 			<h:inputSecret value="#{userDetail.password}" id="user_password" />
+			<h:outputText value="#{messages.user_password_help}" />
 			<h:outputText value="#{messages.user_password_verify}" />
 			<h:inputSecret value="#{userDetail.passwordVerify}"
 				id="user_password_verify" />
+			<h:outputText value="#{messages.user_password_verify_help}" />
 
 			<h:outputText value="#{messages.user_email}" />
 			<h:inputText value="#{userDetail.instance.email}" id="user_email" />
+			<h:outputText value="#{messages.user_email_help}" />
 
 			<h:outputText value="#{messages.user_roles}" />
 			<h:selectManyMenu value="#{userDetail.instance.roles}"
@@ -35,6 +40,7 @@
 				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
 			</h:selectManyMenu>
+			<h:outputText value="#{messages.user_roles_help}" />
 		</h:panelGrid>
 	</rich:panel>
 

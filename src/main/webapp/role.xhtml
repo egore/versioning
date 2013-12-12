@@ -12,9 +12,10 @@
 	</ui:define>
 
 	<rich:panel header="#{messages.role}">
-		<h:panelGrid columns="2" columnClasses="caption,">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.role_name}" />
 			<h:inputText value="#{roleDetail.instance.name}" id="role_name" />
+			<h:outputText value="#{messages.role_name_help}" />
 
 			<h:outputText value="#{messages.role_permissions}" />
 			<h:selectManyMenu value="#{roleDetail.instance.permissions}"
@@ -23,6 +24,7 @@
 				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
 			</h:selectManyMenu>
+			<h:outputText value="#{messages.role_permissions_help}" />
 		</h:panelGrid>
 	</rich:panel>
 

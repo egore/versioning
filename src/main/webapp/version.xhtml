@@ -12,17 +12,19 @@
 	</ui:define>
 
 	<rich:panel header="#{messages.version}">
-		<h:panelGrid columns="2" columnClasses="caption,">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.version_project}" />
 			<h:selectOneMenu value="#{versionDetail.instance.project}"
 				id="version_project" converter="projectConverter"
 				disabled="#{versionDetail.managed}">
 				<f:selectItems value="#{versionDetail.projectSelectItems}" />
 			</h:selectOneMenu>
+			<h:outputText value="#{messages.version_project_help}" />
 
 			<h:outputText value="#{messages.version_vcsTag}" />
 			<h:inputText value="#{versionDetail.instance.vcsTag}"
 				id="version_vcsTag" disabled="#{versionDetail.managed}" />
+			<h:outputText value="#{messages.version_vcsTag_help}" />
 		</h:panelGrid>
 	</rich:panel>
 

@@ -12,23 +12,27 @@
 	</ui:define>
 
 	<rich:panel header="#{messages.server}">
-		<h:panelGrid columns="2" columnClasses="caption,">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.server_name}" />
 			<h:inputText value="#{serverDetail.instance.name}" id="server_name" />
+			<h:outputText value="#{messages.server_name_help}" />
 
 			<h:outputText value="#{messages.server_description}" />
-			<h:inputText value="#{serverDetail.instance.description}"
-				id="server_description" />
+			<h:inputTextarea value="#{serverDetail.instance.description}"
+				id="server_description" rows="2" cols="40" />
+			<h:outputText value="#{messages.server_description_help}" />
 
 			<h:outputText value="#{messages.server_targetdir}" />
 			<h:inputText value="#{serverDetail.instance.targetdir}"
 				id="server_targetdir" />
+			<h:outputText value="#{messages.server_targetdir_help}" />
 		</h:panelGrid>
 	</rich:panel>
 
 	<rich:panel header="#{messages.variables}">
 
-		<h:outputFormat value="#{messages.server_variables_for}" escape="false">
+		<h:outputFormat value="#{messages.server_variables_for}"
+			escape="false">
 			<f:param value="#{messages.actionCopy}" />
 			<f:param value="#{messages.actionCopy_targetPath}" />
 			<f:param value="#{messages.actionExtraction}" />
@@ -36,12 +40,15 @@
 			<f:param value="#{messages.actionExtraction_destination}" />
 		</h:outputFormat>
 
-		<ui:repeat var="variable" value="#{serverDetail.instance.variables}">
-			<h:panelGrid columns="2" columnClasses="caption,">
+		<ui:repeat var="variable" value="#{serverDetail.instance.variables}"
+			varStatus="status">
+			<h:panelGrid columns="3" columnClasses="caption,value,help">
 				<h:outputText value="#{messages.variable_name}" />
 				<h:inputText value="#{variable.name}" />
+				<h:outputText value="#{status.first ? messages.variable_name_help : ''}" />
 				<h:outputText value="#{messages.variable_value}" />
 				<h:inputText value="#{variable.value}" />
+				<h:outputText value="#{status.first ? messages.variable_value_help : ''}" />
 			</h:panelGrid>
 		</ui:repeat>
 

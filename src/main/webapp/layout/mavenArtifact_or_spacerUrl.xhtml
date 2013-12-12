@@ -7,24 +7,27 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<h:panelGrid columns="2" columnClasses="caption,"
+	<h:panelGrid columns="3" columnClasses="caption,value,help"
 		rendered="#{not empty actionEntity.mavenArtifact}">
 		<h:outputText value="#{messages.mavenArtifact_groupId}" />
 		<h:inputText value="#{actionEntity.mavenArtifact.groupId}"
 			id="#{idPrefix}mavenArtifact_groupId" />
+		<h:outputText value="#{messages.mavenArtifact_groupId_help}" />
 		<h:outputText value="#{messages.mavenArtifact_artifactId}" />
 		<h:inputText value="#{actionEntity.mavenArtifact.artifactId}"
 			id="#{idPrefix}mavenArtifact_artifactId" />
+		<h:outputText value="#{messages.mavenArtifact_artifactId_help}" />
 		<h:outputText value="#{messages.mavenArtifact_packaging}" />
 		<h:inputText value="#{actionEntity.mavenArtifact.packaging}"
 			id="#{idPrefix}mavenArtifact_packaging" pt:placeholder="jar" />
+		<h:outputText value="#{messages.mavenArtifact_packaging_help}" />
 	</h:panelGrid>
-	<h:panelGrid columns="2" columnClasses="caption,"
+	<h:panelGrid columns="3" columnClasses="caption,value,help"
 		rendered="#{not empty actionEntity.spacerUrl}">
 		<h:outputText value="#{messages.spacerUrl_url}" />
 		<h:inputText value="#{actionEntity.spacerUrl.url}"
 			id="#{idPrefix}spacerUrl_url" />
-		<h:outputText value="#{messages.spacerUrl_validplaceholders}" />
+		<h:outputText value="#{messages.spacerUrl_url_help}" />
 	</h:panelGrid>
 
 </ui:composition>

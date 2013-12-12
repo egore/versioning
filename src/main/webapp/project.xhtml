@@ -13,23 +13,32 @@
 	</ui:define>
 
 	<rich:panel header="#{messages.project}">
-		<h:panelGrid columns="2" columnClasses="caption,">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.project_name}" />
 			<h:inputText value="#{projectDetail.instance.name}" id="project_name" />
+			<h:outputText value="#{messages.project_name_help}" />
 
 			<h:outputText value="#{messages.project_description}" />
-			<h:inputText value="#{projectDetail.instance.description}"
-				id="project_description" />
+			<h:inputTextarea value="#{projectDetail.instance.description}"
+				id="project_description" rows="2" cols="40" />
+			<h:outputText value="#{messages.project_description_help}" />
 
 			<h:outputText value="#{messages.project_vcsHost}" />
 			<h:selectOneMenu value="#{projectDetail.instance.vcsHost}"
 				id="project_vcsHost" converter="vcshostConverter">
 				<f:selectItems value="#{projectDetail.vcshostSelectItems}" />
+				<f:ajax event="change" render="server_uri" />
 			</h:selectOneMenu>
+			<h:outputText value="#{messages.project_vcsHost_help}" />
+			<h:outputText value="" />
+			<h:outputText id="server_uri"
+				value="#{projectDetail.instance.vcsHost.uri}" />
+			<h:outputText value="" />
 
 			<h:outputText value="#{messages.project_vcsPath}" />
 			<h:inputText value="#{projectDetail.instance.vcsPath}"
 				id="project_vcsPath" disabled="#{projectDetail.managed}" />
+			<h:outputText value="#{messages.project_vcsPath_help}" />
 
 			<h:outputText value="#{messages.project_mavenRepository}" />
 			<h:selectOneMenu value="#{projectDetail.instance.mavenRepository}"
@@ -37,6 +46,7 @@
 				<f:selectItems
 					value="#{projectDetail.allMavenRepositoriesSelectItems}" />
 			</h:selectOneMenu>
+			<h:outputText value="#{messages.project_mavenRepository_help}" />
 
 			<h:outputText value="#{messages.project_tagTransformer}" />
 			<h:selectOneMenu value="#{projectDetail.instance.tagTransformer}"
@@ -45,14 +55,17 @@
 					itemLabel="#{messages.tagtransformer_none}" />
 				<f:selectItems value="#{projectDetail.allTagTransformerSelectItems}" />
 			</h:selectOneMenu>
+			<h:outputText value="#{messages.project_tagTransformer_help}" />
 
 			<h:outputText value="#{messages.project_configuredServers}" />
 			<h:selectManyMenu value="#{projectDetail.instance.configuredServers}"
-				id="project_configuredServers" converter="serverConverter">
+				id="project_configuredServers" converter="serverConverter"
+				style="height: 100px;">
 				<f:selectItems value="#{projectDetail.allServerSelectItems}" />
 				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
 			</h:selectManyMenu>
+			<h:outputText value="#{messages.project_configuredServers_help}" />
 		</h:panelGrid>
 	</rich:panel>
 
@@ -62,14 +75,17 @@
 		value="#{projectDetail.instance.actionCopies}">
 
 		<rich:panel header="#{messages.actionCopy}">
-			<h:panelGrid columns="2" columnClasses="caption,">
+			<h:panelGrid columns="3" columnClasses="caption,value,help"
+				style="padding-bottom: 15px;">
 				<h:outputText value="#{messages.actionCopy_targetPath}" />
 				<h:inputText value="#{actionCopy.targetPath}"
 					id="actionCopy_targetPath" />
+				<h:outputText value="#{messages.actionCopy_targetPath_help}" />
 
 				<h:outputText value="#{messages.actionCopy_targetFilename}" />
 				<h:inputText value="#{actionCopy.targetFilename}"
 					id="actionCopy_targetFilename" />
+				<h:outputText value="#{messages.actionCopy_targetFilename_help}" />
 			</h:panelGrid>
 
 			<h:commandButton
@@ -97,11 +113,13 @@
 
 		<rich:panel header="#{messages.actionExtraction}">
 			<ui:repeat value="#{actionExtraction.extractions}" var="extraction">
-				<h:panelGrid columns="2" columnClasses="caption,">
+				<h:panelGrid columns="3" columnClasses="caption,value,help">
 					<h:outputText value="#{messages.actionExtraction_source}" />
 					<h:inputText value="#{extraction.source}" />
+					<h:outputText value="#{messages.actionExtraction_source_help}" />
 					<h:outputText value="#{messages.actionExtraction_destination}" />
 					<h:inputText value="#{extraction.destination}" />
+					<h:outputText value="#{messages.actionExtraction_destination_help}" />
 				</h:panelGrid>
 			</ui:repeat>
 			<h:commandButton value="#{messages.actionExtraction_add_extraction}"
