@@ -35,18 +35,22 @@ public class ApplicationBean {
 
 	public String getVersionNumber() {
 		if (versionNumber == null) {
-			Manifest manifest = new Manifest();
 			ServletContext servletContext = (ServletContext) FacesContext
 					.getCurrentInstance().getExternalContext().getContext();
-			try {
-				manifest.read(servletContext
-						.getResourceAsStream("/META-INF/MANIFEST.MF"));
-				versionNumber = manifest.getMainAttributes().getValue(
-						"Implementation-Version");
-			} catch (IOException e) {
-				versionNumber = "development";
-			}
+			versionNumber = readVersion(servletContext);
 		}
 		return versionNumber;
+	}
+
+	public static String readVersion(ServletContext servletContext) {
+		Manifest manifest = new Manifest();
+		try {
+			manifest.read(servletContext
+					.getResourceAsStream("/META-INF/MANIFEST.MF"));
+			return manifest.getMainAttributes().getValue(
+					"Implementation-Version");
+		} catch (IOException e) {
+			return "development";
+		}
 	}
 }
