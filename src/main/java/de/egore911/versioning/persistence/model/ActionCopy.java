@@ -33,6 +33,7 @@ public class ActionCopy extends AbstractAction {
 	private static final long serialVersionUID = -6348284172396876137L;
 
 	private String targetPath;
+	private String targetFilename;
 
 	@Column(length = 511, name = "target_path")
 	@Size(max = 511)
@@ -42,6 +43,16 @@ public class ActionCopy extends AbstractAction {
 
 	public void setTargetPath(String targetPath) {
 		this.targetPath = targetPath;
+	}
+
+	@Column(length = 254, name = "target_filename")
+	@Size(max = 254)
+	public String getTargetFilename() {
+		return targetFilename;
+	}
+
+	public void setTargetFilename(String targetFilename) {
+		this.targetFilename = targetFilename;
 	}
 
 	@Override

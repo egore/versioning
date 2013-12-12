@@ -1,6 +1,7 @@
 package de.egore911.versioning.persistence.model;
 
 import javax.annotation.Generated;
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
@@ -10,6 +11,7 @@ public abstract class Version_ extends de.egore911.versioning.persistence.model.
 
 	public static volatile SingularAttribute<Version, Project> project;
 	public static volatile SingularAttribute<Version, String> vcsTag;
+	public static volatile ListAttribute<Version, Deployment> deployments;
 
 }
 

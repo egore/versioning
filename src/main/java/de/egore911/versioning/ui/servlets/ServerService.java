@@ -150,6 +150,12 @@ public class ServerService extends HttpServlet {
 												actionCopy.getTargetPath(),
 												replace)));
 								writer.println("</target>");
+								if (StringUtils.isNotEmpty(actionCopy
+										.getTargetFilename())) {
+									writer.print("				<filename>");
+									writer.print(actionCopy.getTargetFilename());
+									writer.println("</filename>");
+								}
 							}
 							writer.println("			</copy>");
 						}
