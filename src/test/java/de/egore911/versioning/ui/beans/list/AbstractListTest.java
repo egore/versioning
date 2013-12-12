@@ -22,6 +22,7 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import de.egore911.versioning.persistence.model.IntegerDbObject;
+import de.egore911.versioning.ui.beans.list.AbstractList.State;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -30,33 +31,35 @@ public class AbstractListTest {
 
 	@Test
 	public void testPaging() {
+		State state = Mockito.mock(State.class);
+		Mockito.doCallRealMethod().when(state).setLimit(Matchers.anyInt());
+		Mockito.when(state.getLimit()).thenCallRealMethod();
+		Mockito.doCallRealMethod().when(state).setOffset(Matchers.anyInt());
+		Mockito.when(state.getOffset()).thenCallRealMethod();
+
 		AbstractList<IntegerDbObject> list = Mockito.mock(AbstractList.class);
-		Mockito.doCallRealMethod().when(list).getState()
-				.setLimit(Matchers.anyInt());
-		Mockito.when(list.getState().getLimit()).thenCallRealMethod();
-		Mockito.doCallRealMethod().when(list).getState()
-				.setOffset(Matchers.anyInt());
-		Mockito.when(list.getState().getOffset()).thenCallRealMethod();
+		Mockito.when(list.getState()).thenReturn(state);
+
 		Mockito.doCallRealMethod().when(list).setPage(Matchers.anyInt());
 		Mockito.when(list.getPage()).thenCallRealMethod();
 
-		list.getState().setLimit(10);
+		state.setLimit(10);
 		list.setPage(1);
-		Assert.assertEquals(0, list.getState().getOffset().intValue());
+		Assert.assertEquals(0, state.getOffset().intValue());
 
 		list.setPage(2);
-		Assert.assertEquals(10, list.getState().getOffset().intValue());
+		Assert.assertEquals(10, state.getOffset().intValue());
 
 		list.setPage(3);
-		Assert.assertEquals(20, list.getState().getOffset().intValue());
+		Assert.assertEquals(20, state.getOffset().intValue());
 
-		list.getState().setLimit(20);
+		state.setLimit(20);
 		Assert.assertEquals(2, list.getPage().intValue());
 
-		list.getState().setLimit(21);
+		state.setLimit(21);
 		Assert.assertEquals(1, list.getPage().intValue());
 
-		list.getState().setLimit(19);
+		state.setLimit(19);
 		Assert.assertEquals(2, list.getPage().intValue());
 	}
 }

@@ -102,13 +102,14 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 		State previousState = (State) session.getAttribute(this.getClass()
 				.getSimpleName() + "_state");
 		if (previousState != null) {
-			this.state = previousState;
+			setState(previousState);
 		}
 	}
 
 	@PreDestroy
 	public void preDestroy() {
-		session.setAttribute(this.getClass().getSimpleName() + "_state", state);
+		session.setAttribute(this.getClass().getSimpleName() + "_state",
+				getState());
 	}
 
 	public State getState() {
@@ -124,18 +125,18 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	}
 
 	public Integer getPage() {
-		return (state.getOffset() / state.getLimit()) + 1;
+		return (getState().getOffset() / getState().getLimit()) + 1;
 	}
 
 	public void setPage(Integer page) {
 		if (page == null) {
 			return;
 		}
-		state.setOffset((page - 1) * state.getLimit());
+		getState().setOffset((page - 1) * getState().getLimit());
 	}
 
 	public Integer getMaxPages() {
-		return (int) Math.ceil((double) count() / state.getLimit());
+		return (int) Math.ceil((double) count() / getState().getLimit());
 	}
 
 	protected abstract AbstractDao<T> getDao();
@@ -145,21 +146,23 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	public DataModel<T> getDataModel() {
 		if (dataModel == null) {
 			AbstractDao<T> dao = getDao();
-			dataModel = new PagingDataModel<>(dao.count(), dao,
-					state.getSortColumn(), state.getSortDirection());
+			dataModel = new PagingDataModel<>(dao.count(), dao, getState()
+					.getSortColumn(), getState().getSortDirection());
 		}
 		return dataModel;
 	}
 
 	public String orderBy(String sortColumn) {
-		if (StringUtils.equals(state.getSortColumn(), sortColumn)) {
-			state.setSortDirection(state.getSortDirection() == SortDirection.ASC ? SortDirection.DESC
-					: SortDirection.ASC);
+		if (StringUtils.equals(getState().getSortColumn(), sortColumn)) {
+			getState()
+					.setSortDirection(
+							getState().getSortDirection() == SortDirection.ASC ? SortDirection.DESC
+									: SortDirection.ASC);
 		} else {
 			// XXX is ASC by default a good idea?
-			state.setSortDirection(SortDirection.ASC);
+			getState().setSortDirection(SortDirection.ASC);
 		}
-		state.setSortColumn(sortColumn);
+		getState().setSortColumn(sortColumn);
 		dataModel = null;
 		return "";
 	}
