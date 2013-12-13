@@ -13,7 +13,7 @@
 
 	<a4j:repeat value="#{deploymentsBean.deployableVersionsPerServer}"
 		var="serverVersions">
-		<rich:panel header="#{messages.server}: #{serverVersions.server.name}">
+		<rich:panel header="#{messages.server}: #{serverVersions.server.name} (#{serverVersions.server.description})">
 			<h:outputText value="Nothing"
 				rendered="#{empty serverVersions.versions}" />
 			<rich:dataTable value="#{serverVersions.versions}" var="version"
