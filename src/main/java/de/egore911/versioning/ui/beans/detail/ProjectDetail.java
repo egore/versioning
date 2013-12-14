@@ -34,16 +34,20 @@ import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.ActionExtraction;
+import de.egore911.versioning.persistence.model.ActionReplacement;
 import de.egore911.versioning.persistence.model.Extraction;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.Replacement;
+import de.egore911.versioning.persistence.model.Replacementfile;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.TagTransformer;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.Wildcard;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -108,6 +112,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return items;
 	}
 
+	// Copy
 	public String chooseCopy() {
 		Project project = getInstance();
 		ActionCopy actionCopy = new ActionCopy();
@@ -133,6 +138,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
+	// Extraction
 	public String chooseExtraction() {
 		Project project = getInstance();
 		ActionExtraction actionExtraction = new ActionExtraction();
@@ -167,24 +173,53 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
+	// Replacement
+	public String chooseReplacement() {
+		Project project = getInstance();
+		ActionReplacement actionReplacement = new ActionReplacement();
+		addWildcard(actionReplacement);
+		addReplacement(actionReplacement);
+		project.getActionReplacements().add(actionReplacement);
+		actionReplacement.setProject(project);
+		setInstance(project);
+		return "";
+	}
+
+	public String addWildcard(ActionReplacement actionReplacement) {
+		Wildcard wildcard = new Wildcard();
+		wildcard.setActionReplacement(actionReplacement);
+		actionReplacement.getWildcards().add(wildcard);
+		return "";
+	}
+
+	public String addReplacement(ActionReplacement actionReplacement) {
+		Replacement replacement = new Replacement();
+		replacement.setActionReplacement(actionReplacement);
+		actionReplacement.getReplacements().add(replacement);
+		return "";
+	}
+
+	public String addReplacementFile(ActionReplacement actionReplacement) {
+		Replacementfile replacementFile = new Replacementfile();
+		replacementFile.setActionReplacement(actionReplacement);
+		actionReplacement.getReplacementFiles().add(replacementFile);
+		return "";
+	}
+
 	public String save() {
 
 		if (!validate("project")) {
 			return "";
 		}
 
-		if (getInstance().getActionCopies() != null) {
-			for (ActionCopy actionCopy : getInstance().getActionCopies()) {
-				checkVariableExists(actionCopy.getTargetPath());
-			}
+		for (ActionCopy actionCopy : getInstance().getActionCopies()) {
+			checkVariableExists(actionCopy.getTargetPath());
 		}
-		if (getInstance().getActionExtractions() != null) {
-			for (ActionExtraction actionExtraction : getInstance()
-					.getActionExtractions()) {
-				for (Extraction extraction : actionExtraction.getExtractions()) {
-					checkVariableExists(extraction.getSource());
-					checkVariableExists(extraction.getDestination());
-				}
+		for (ActionExtraction actionExtraction : getInstance()
+				.getActionExtractions()) {
+			for (Extraction extraction : actionExtraction.getExtractions()) {
+				checkVariableExists(extraction.getSource());
+				checkVariableExists(extraction.getDestination());
 			}
 		}
 

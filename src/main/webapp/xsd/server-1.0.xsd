@@ -6,7 +6,8 @@
 	<xs:element name="server">
 		<xs:annotation>
 			<xs:documentation>
-				The core of the document is a server. It will list a name plus
+				The core of the document is a server. It will list
+				a name plus
 				all the deployment actions.
 			</xs:documentation>
 		</xs:annotation>
@@ -30,6 +31,8 @@
 			<xs:element name="copy" type="copy" minOccurs="0"
 				maxOccurs="unbounded" />
 			<xs:element name="extract" type="extract" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xs:element name="replace" type="replace" minOccurs="0"
 				maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
@@ -58,6 +61,44 @@
 		<xs:sequence>
 			<xs:element name="source" type="xs:string" />
 			<xs:element name="destination" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="replace">
+		<xs:sequence>
+			<xs:element name="basepath" type="xs:string" />
+			<xs:element name="wildcards" type="wildcards" minOccurs="0" />
+			<xs:element name="replacements" type="replacements"
+				minOccurs="0" />
+			<xs:element name="replacementfiles" type="replacementfiles"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="wildcards">
+		<xs:sequence>
+			<xs:element name="wildcard" type="xs:string" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="replacements">
+		<xs:sequence>
+			<xs:element name="replacement" type="replacement"
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="replacement">
+		<xs:sequence>
+			<xs:element name="variable" type="xs:string" />
+			<xs:element name="value" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="replacementfiles">
+		<xs:sequence>
+			<xs:element name="replacementfile" type="xs:string"
+				maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 

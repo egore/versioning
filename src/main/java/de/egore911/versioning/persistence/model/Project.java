@@ -53,8 +53,9 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	private String description;
 	private VcsHost vcsHost;
 	private String vcsPath;
-	private List<ActionCopy> actionCopies;
-	private List<ActionExtraction> actionExtractions;
+	private List<ActionCopy> actionCopies = new ArrayList<>(0);
+	private List<ActionExtraction> actionExtractions = new ArrayList<>(0);
+	private List<ActionReplacement> actionReplacements = new ArrayList<>(0);
 	private TagTransformer tagTransformer;
 	private List<Server> configuredServers = new ArrayList<>(0);
 	private List<Version> versions = new ArrayList<>(0);
@@ -118,6 +119,15 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	public void setActionExtractions(List<ActionExtraction> actionExtractions) {
 		this.actionExtractions = actionExtractions;
+	}
+
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	public List<ActionReplacement> getActionReplacements() {
+		return actionReplacements;
+	}
+
+	public void setActionReplacements(List<ActionReplacement> actionReplacements) {
+		this.actionReplacements = actionReplacements;
 	}
 
 	@ManyToOne

@@ -37,12 +37,16 @@ import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.AbstractAction;
 import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.ActionExtraction;
+import de.egore911.versioning.persistence.model.ActionReplacement;
 import de.egore911.versioning.persistence.model.Extraction;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.Replacement;
+import de.egore911.versioning.persistence.model.Replacementfile;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.model.Wildcard;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.util.UrlUtil;
 
@@ -189,6 +193,48 @@ public class ServerService extends HttpServlet {
 								writer.println("				</extractions>");
 							}
 							writer.println("			</extract>");
+						}
+
+						for (ActionReplacement actionReplacement : project
+								.getActionReplacements()) {
+							writer.println("			<replace>");
+							writer.print("				<basepath>");
+							writer.print(server.getTargetdir());
+							writer.println("</basepath>");
+							writer.println("				<wildcards>");
+							for (Wildcard wildcard : actionReplacement
+									.getWildcards()) {
+								writer.print("					<wildcard>");
+								writer.print(wildcard.getValue());
+								writer.println("</wildcard>");
+							}
+							writer.println("				</wildcards>");
+							writer.println("				<replacements>");
+							for (Replacement replacement : actionReplacement
+									.getReplacements()) {
+								writer.println("					<replacement>");
+								writer.print("						<variable>");
+								writer.print(replacement.getVariable());
+								writer.println("</variable>");
+								writer.print("						<value>");
+								writer.print(replacement.getValue());
+								writer.println("</value>");
+								writer.println("					</replacement>");
+							}
+							writer.println("				</replacements>");
+
+							if (!actionReplacement.getWildcards().isEmpty()) {
+								writer.println("				<replacementfiles>");
+								for (Replacementfile replacementFile : actionReplacement
+										.getReplacementFiles()) {
+									writer.print("					<replacementfile>");
+									writer.print(replacementFile.getValue());
+									writer.println("</replacementfile>");
+								}
+								writer.println("				</replacementfiles>");
+							}
+
+							writer.println("			</replace>");
 						}
 
 						writer.println("		</deployment>");
