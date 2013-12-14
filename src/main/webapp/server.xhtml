@@ -26,6 +26,15 @@
 			<h:inputText value="#{serverDetail.instance.targetdir}"
 				id="server_targetdir" />
 			<h:outputText value="#{messages.server_targetdir_help}" />
+
+
+			<h:outputText value="#{messages.server_configuredProjects}" />
+			<rich:pickList value="#{serverDetail.instance.configuredProjects}"
+				converter="projectConverter" addAllText="⇒" removeAllText="⇐"
+				addText="→" removeText="←" minListHeight="100">
+				<f:selectItems value="#{serverDetail.allProjects}" />
+			</rich:pickList>
+			<h:outputText value="#{messages.server_configuredProjects_help}" />
 		</h:panelGrid>
 	</rich:panel>
 
@@ -45,10 +54,12 @@
 			<h:panelGrid columns="3" columnClasses="caption,value,help">
 				<h:outputText value="#{messages.variable_name}" />
 				<h:inputText value="#{variable.name}" />
-				<h:outputText value="#{status.first ? messages.variable_name_help : ''}" />
+				<h:outputText
+					value="#{status.first ? messages.variable_name_help : ''}" />
 				<h:outputText value="#{messages.variable_value}" />
 				<h:inputText value="#{variable.value}" />
-				<h:outputText value="#{status.first ? messages.variable_value_help : ''}" />
+				<h:outputText
+					value="#{status.first ? messages.variable_value_help : ''}" />
 			</h:panelGrid>
 		</ui:repeat>
 

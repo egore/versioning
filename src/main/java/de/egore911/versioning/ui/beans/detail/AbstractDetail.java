@@ -54,7 +54,7 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 					+ "_instance");
 			if (instance == null) {
 				if (id != null) {
-					instance = getDao().findById(id);
+					instance = load(id);
 				}
 				if (instance == null) {
 					instance = createEmpty();
@@ -64,6 +64,10 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 					instance);
 		}
 		return instance;
+	}
+
+	protected T load(Integer id) {
+		return getDao().findById(id);
 	}
 
 	public void setInstance(T instance) {

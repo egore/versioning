@@ -16,6 +16,7 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,13 +25,18 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpSession;
 
+import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Permission;
+import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -50,7 +56,19 @@ public class ServerDetail extends AbstractDetail<Server> {
 
 	@Override
 	protected Server createEmpty() {
+		HttpSession session = new SessionUtil().getSession();
+		session.setAttribute("server_" + null + "_origProjects",
+				new ArrayList<>());
 		return new Server();
+	}
+
+	@Override
+	protected Server load(Integer id) {
+		Server server = super.load(id);
+		HttpSession session = new SessionUtil().getSession();
+		session.setAttribute("server_" + server.getId() + "_origProjects",
+				new ArrayList<>(server.getConfiguredProjects()));
+		return server;
 	}
 
 	public List<Version> getDeployedVersions() {
@@ -65,6 +83,16 @@ public class ServerDetail extends AbstractDetail<Server> {
 			return Collections.emptyList();
 		}
 		return deploymentCalculator.getDeployableVersions(instance);
+	}
+
+	public SelectItem[] getAllProjects() {
+		List<Project> projects = new ProjectDao().findAll();
+		SelectItem[] items = new SelectItem[projects.size()];
+		int i = 0;
+		for (Project project : projects) {
+			items[i++] = new SelectItem(project, project.getName());
+		}
+		return items;
 	}
 
 	public String addVariable() {
@@ -89,6 +117,27 @@ public class ServerDetail extends AbstractDetail<Server> {
 					bundle.getString("invalid_chars_in_name_detail"));
 			facesContext.addMessage("main:server_name", message);
 			return "";
+		}
+
+		for (Project project : getInstance().getConfiguredProjects()) {
+			if (!project.getConfiguredServers().contains(getInstance())) {
+				project.getConfiguredServers().add(getInstance());
+			}
+		}
+
+		HttpSession session = new SessionUtil().getSession();
+		List<Project> origProjects = (List<Project>) session
+				.getAttribute("server_" + getInstance().getId()
+						+ "_origProjects");
+		session.setAttribute("server_" + getInstance().getId()
+				+ "_origProjects", null);
+		ProjectDao projectDao = new ProjectDao();
+		for (Project project : origProjects) {
+			if (!getInstance().getConfiguredProjects().contains(project)) {
+				project = projectDao.reattach(project);
+				project.getConfiguredServers().remove(getInstance());
+				projectDao.save(project);
+			}
 		}
 
 		getDao().save(getInstance());

@@ -89,7 +89,7 @@ public class Server extends IntegerDbObject {
 		this.variables = variables;
 	}
 
-	@ManyToMany(mappedBy = "configuredServers")
+	@ManyToMany(mappedBy = "configuredServers", cascade = CascadeType.ALL)
 	@OrderBy("name")
 	public List<Project> getConfiguredProjects() {
 		return configuredProjects;
