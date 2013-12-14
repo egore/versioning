@@ -14,6 +14,28 @@ by JNDI. Only a single datasource is needed to be bound to
 "java:comp/env/jndi/versioningDS". At the moment the database will automatically
 be updated. This will change at a later point when an actual release happened.
 
+Operations
+----------
+
+*Copy*
+
+The copy operation will download an artifact (e.g. a JAR-file) from a specified URL
+and save it to a given directory. The copy operation will try to parse the first
+pom.xml found in the project to determine the file name to be used for saving, if
+the filename was not specified by the operation.
+
+*Extract*
+
+Using the extract operation it's possible to download a file from a given URL and
+extract parts of it. This can e.g. be used to extract default configurations.
+
+*Replace*
+
+The replace operation will perform search and replace on the checked out files. It
+use a list of replacements provided by the versioning server or can use a
+properties file. The later can especially be used to insert passwords or other
+sensitive information into files publically saved on a server.
+
 Servletcontainers
 -----------------
 
