@@ -63,8 +63,8 @@ public class ServerDetail extends AbstractDetail<Server> {
 	}
 
 	@Override
-	protected Server load(Integer id) {
-		Server server = super.load(id);
+	protected Server load() {
+		Server server = super.load();
 		HttpSession session = new SessionUtil().getSession();
 		session.setAttribute("server_" + server.getId() + "_origProjects",
 				new ArrayList<>(server.getConfiguredProjects()));
