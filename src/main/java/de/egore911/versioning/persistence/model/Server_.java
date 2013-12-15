@@ -9,10 +9,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Server.class)
 public abstract class Server_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
+	public static volatile SingularAttribute<Server, String> targetPath;
 	public static volatile ListAttribute<Server, Project> configuredProjects;
 	public static volatile SingularAttribute<Server, String> description;
 	public static volatile SingularAttribute<Server, String> name;
 	public static volatile SingularAttribute<Server, String> targetdir;
+	public static volatile SingularAttribute<Server, String> vcsPath;
+	public static volatile SingularAttribute<Server, VcsHost> vcsHost;
 	public static volatile ListAttribute<Server, Variable> variables;
 
 }

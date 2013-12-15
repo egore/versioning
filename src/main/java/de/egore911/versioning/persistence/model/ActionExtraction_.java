@@ -7,7 +7,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(ActionExtraction.class)
-public abstract class ActionExtraction_ extends de.egore911.versioning.persistence.model.AbstractAction_ {
+public abstract class ActionExtraction_ extends de.egore911.versioning.persistence.model.AbstractRemoteAction_ {
 
 	public static volatile SingularAttribute<ActionExtraction, SpacerUrl> spacerUrl;
 	public static volatile SingularAttribute<ActionExtraction, MavenArtifact> mavenArtifact;
