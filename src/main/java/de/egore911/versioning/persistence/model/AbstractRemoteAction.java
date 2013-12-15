@@ -16,13 +16,11 @@
  */
 package de.egore911.versioning.persistence.model;
 
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@MappedSuperclass
 public abstract class AbstractRemoteAction extends AbstractAction {
 
 	private static final long serialVersionUID = 3274807738773492077L;

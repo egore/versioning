@@ -6,7 +6,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(ActionCopy.class)
-public abstract class ActionCopy_ extends de.egore911.versioning.persistence.model.AbstractRemoteAction_ {
+public abstract class ActionCopy_ extends de.egore911.versioning.persistence.model.AbstractAction_ {
 
 	public static volatile SingularAttribute<ActionCopy, String> targetPath;
 	public static volatile SingularAttribute<ActionCopy, String> targetFilename;
