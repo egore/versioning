@@ -135,157 +135,48 @@ public class ServerService extends HttpServlet {
 							.getDeployableVersions(server);
 					writer.println("	<deployments>");
 					for (Version version : versions) {
-						writer.print("		<!-- ");
 						Project project = version.getProject();
-						writer.print(project.getName().replace("--", "__"));
-						writer.println("-->");
-						writer.println("		<deployment>");
+
 						List<ActionCopy> actionCopies = project
 								.getActionCopies();
-						for (ActionCopy actionCopy : actionCopies) {
-							writer.println("			<copy>");
-							String transformedVcsTag = version
-									.getTransformedVcsTag();
-							if (appendUrl(project, version, actionCopy,
-									transformedVcsTag, urlUtil, writer)) {
-								writer.print("				<target>");
-								writer.print(urlUtil.concatenateUrlWithSlashes(
-										server.getTargetdir(),
-										replaceVariables(
-												actionCopy.getTargetPath(),
-												replace)));
-								writer.println("</target>");
-								if (StringUtils.isNotEmpty(actionCopy
-										.getTargetFilename())) {
-									writer.print("				<filename>");
-									writer.print(actionCopy.getTargetFilename());
-									writer.println("</filename>");
-								}
-							}
-							writer.println("			</copy>");
-						}
-
 						List<ActionExtraction> actionExtractions = project
 								.getActionExtractions();
-						for (ActionExtraction actionExtraction : actionExtractions) {
-							writer.println("			<extract>");
-							String transformedVcsTag = version
-									.getTransformedVcsTag();
-							if (appendUrl(project, version, actionExtraction,
-									transformedVcsTag, urlUtil, writer)) {
-								writer.println("				<extractions>");
-								for (Extraction extraction : actionExtraction
-										.getExtractions()) {
-									writer.println("					<extraction>");
-									writer.print("						<source>");
-									writer.print(replaceVariables(
-											extraction.getSource(), replace));
-									writer.println("</source>");
-									writer.print("						<destination>");
-									writer.print(urlUtil
-											.concatenateUrlWithSlashes(
-													server.getTargetdir(),
-													replaceVariables(extraction
-															.getDestination(),
-															replace)));
-									writer.println("</destination>");
-									writer.println("					</extraction>");
-								}
-								writer.println("				</extractions>");
-							}
-							writer.println("			</extract>");
+						List<ActionCheckout> actionCheckouts = project
+								.getActionCheckouts();
+						List<ActionReplacement> actionReplacements = project
+								.getActionReplacements();
+
+						if (!actionCopies.isEmpty()
+								|| !actionExtractions.isEmpty()
+								|| !actionCheckouts.isEmpty()
+								|| !actionReplacements.isEmpty()) {
+
+							writer.print("		<!-- ");
+							writer.print(project.getName().replace("--", "__"));
+							writer.println("-->");
+
+							writer.println("		<deployment>");
+
+							appendCopyActions(urlUtil, writer, server, replace,
+									version, project, actionCopies);
+
+							appendExtractionActions(urlUtil, writer, server,
+									replace, version, project,
+									actionExtractions);
+
+							appendCheckoutActions(urlUtil, writer, server,
+									replace, version, project, actionCheckouts);
+
+							appendReplacementActions(writer, server,
+									actionReplacements);
+
+							writer.println("		</deployment>");
 						}
-
-						for (ActionCheckout actionCheckout : project
-								.getActionCheckouts()) {
-							writer.println("			<checkout>");
-							writer.print("				<target>");
-							writer.print(urlUtil.concatenateUrlWithSlashes(
-									server.getTargetdir(),
-									replaceVariables(
-											actionCheckout.getTargetPath(),
-											replace)));
-							writer.println("</target>");
-							writer.print("				<");
-							writer.print(project.getVcsHost().getVcs());
-							writer.print(">");
-							writer.print(project.getVcsHost().getUri());
-							writer.print(project.getVcsPath());
-							writer.print("</");
-							writer.print(project.getVcsHost().getVcs());
-							writer.println(">");
-							writer.print("				<tag>");
-							writer.print(version.getVcsTag());
-							writer.print("</tag>");
-							writer.println("			</checkout>");
-						}
-
-						if (server.getVcsHost() != null) {
-							writer.println("			<checkout>");
-							writer.print("				<target>");
-							writer.print(urlUtil.concatenateUrlWithSlashes(
-									server.getTargetdir(),
-									replaceVariables(server.getTargetPath(),
-											replace)));
-							writer.println("</target>");
-							writer.print("				<");
-							writer.print(server.getVcsHost().getVcs());
-							writer.print(">");
-							writer.print(server.getVcsHost().getUri());
-							writer.print(server.getVcsPath());
-							writer.print("</");
-							writer.print(server.getVcsHost().getVcs());
-							writer.println(">");
-							writer.print("				<tag>");
-							writer.print(version.getVcsTag());
-							writer.print("</tag>");
-							writer.println("			</checkout>");
-						}
-
-						for (ActionReplacement actionReplacement : project
-								.getActionReplacements()) {
-							writer.println("			<replace>");
-							writer.print("				<basepath>");
-							writer.print(server.getTargetdir());
-							writer.println("</basepath>");
-							writer.println("				<wildcards>");
-							for (Wildcard wildcard : actionReplacement
-									.getWildcards()) {
-								writer.print("					<wildcard>");
-								writer.print(wildcard.getValue());
-								writer.println("</wildcard>");
-							}
-							writer.println("				</wildcards>");
-							writer.println("				<replacements>");
-							for (Replacement replacement : actionReplacement
-									.getReplacements()) {
-								writer.println("					<replacement>");
-								writer.print("						<variable>");
-								writer.print(replacement.getVariable());
-								writer.println("</variable>");
-								writer.print("						<value>");
-								writer.print(replacement.getValue());
-								writer.println("</value>");
-								writer.println("					</replacement>");
-							}
-							writer.println("				</replacements>");
-
-							if (!actionReplacement.getWildcards().isEmpty()) {
-								writer.println("				<replacementfiles>");
-								for (Replacementfile replacementFile : actionReplacement
-										.getReplacementFiles()) {
-									writer.print("					<replacementfile>");
-									writer.print(replacementFile.getValue());
-									writer.println("</replacementfile>");
-								}
-								writer.println("				</replacementfiles>");
-							}
-
-							writer.println("			</replace>");
-						}
-
-						writer.println("		</deployment>");
 					}
+
+					appendServerConfigurationCheckout(urlUtil, writer, server,
+							replace);
+
 					writer.println("	</deployments>");
 					writer.println("</server>");
 				} else {
@@ -301,6 +192,153 @@ public class ServerService extends HttpServlet {
 				}
 
 			}
+		}
+	}
+
+	private static void appendServerConfigurationCheckout(UrlUtil urlUtil,
+			PrintWriter writer, Server server, Map<String, String> replace) {
+		if (server.getVcsHost() != null) {
+			writer.print("		<!-- ");
+			writer.print(server.getName().replace("--", "__"));
+			writer.println("-->");
+			writer.println("		<deployment>");
+			writer.println("			<checkout>");
+			writer.print("				<target>");
+			writer.print(urlUtil.concatenateUrlWithSlashes(
+					server.getTargetdir(),
+					replaceVariables(server.getTargetPath(), replace)));
+			writer.println("</target>");
+			writer.print("				<");
+			writer.print(server.getVcsHost().getVcs());
+			writer.print(">");
+			writer.print(server.getVcsHost().getUri());
+			writer.print(server.getVcsPath());
+			writer.print("</");
+			writer.print(server.getVcsHost().getVcs());
+			writer.println(">");
+			writer.println("			</checkout>");
+			writer.println("		</deployment>");
+		}
+	}
+
+	private static void appendCopyActions(UrlUtil urlUtil, PrintWriter writer,
+			Server server, Map<String, String> replace, Version version,
+			Project project, List<ActionCopy> actionCopies) {
+		for (ActionCopy actionCopy : actionCopies) {
+			writer.println("			<copy>");
+			String transformedVcsTag = version.getTransformedVcsTag();
+			if (appendUrl(project, version, actionCopy, transformedVcsTag,
+					urlUtil, writer)) {
+				writer.print("				<target>");
+				writer.print(urlUtil.concatenateUrlWithSlashes(
+						server.getTargetdir(),
+						replaceVariables(actionCopy.getTargetPath(), replace)));
+				writer.println("</target>");
+				if (StringUtils.isNotEmpty(actionCopy.getTargetFilename())) {
+					writer.print("				<filename>");
+					writer.print(actionCopy.getTargetFilename());
+					writer.println("</filename>");
+				}
+			}
+			writer.println("			</copy>");
+		}
+	}
+
+	private static void appendExtractionActions(UrlUtil urlUtil,
+			PrintWriter writer, Server server, Map<String, String> replace,
+			Version version, Project project,
+			List<ActionExtraction> actionExtractions) {
+		for (ActionExtraction actionExtraction : actionExtractions) {
+			writer.println("			<extract>");
+			String transformedVcsTag = version.getTransformedVcsTag();
+			if (appendUrl(project, version, actionExtraction,
+					transformedVcsTag, urlUtil, writer)) {
+				writer.println("				<extractions>");
+				for (Extraction extraction : actionExtraction.getExtractions()) {
+					writer.println("					<extraction>");
+					writer.print("						<source>");
+					writer.print(replaceVariables(extraction.getSource(),
+							replace));
+					writer.println("</source>");
+					writer.print("						<destination>");
+					writer.print(urlUtil.concatenateUrlWithSlashes(
+							server.getTargetdir(),
+							replaceVariables(extraction.getDestination(),
+									replace)));
+					writer.println("</destination>");
+					writer.println("					</extraction>");
+				}
+				writer.println("				</extractions>");
+			}
+			writer.println("			</extract>");
+		}
+	}
+
+	private static void appendCheckoutActions(UrlUtil urlUtil,
+			PrintWriter writer, Server server, Map<String, String> replace,
+			Version version, Project project,
+			List<ActionCheckout> actionCheckouts) {
+		for (ActionCheckout actionCheckout : actionCheckouts) {
+			writer.println("			<checkout>");
+			writer.print("				<target>");
+			writer.print(urlUtil.concatenateUrlWithSlashes(
+					server.getTargetdir(),
+					replaceVariables(actionCheckout.getTargetPath(), replace)));
+			writer.println("</target>");
+			writer.print("				<");
+			writer.print(project.getVcsHost().getVcs());
+			writer.print(">");
+			writer.print(project.getVcsHost().getUri());
+			writer.print(project.getVcsPath());
+			writer.print("</");
+			writer.print(project.getVcsHost().getVcs());
+			writer.println(">");
+			writer.print("				<tag>");
+			writer.print(version.getVcsTag());
+			writer.print("</tag>");
+			writer.println("			</checkout>");
+		}
+	}
+
+	private static void appendReplacementActions(PrintWriter writer,
+			Server server, List<ActionReplacement> actionReplacements) {
+		for (ActionReplacement actionReplacement : actionReplacements) {
+			writer.println("			<replace>");
+			writer.print("				<basepath>");
+			writer.print(server.getTargetdir());
+			writer.println("</basepath>");
+			writer.println("				<wildcards>");
+			for (Wildcard wildcard : actionReplacement.getWildcards()) {
+				writer.print("					<wildcard>");
+				writer.print(wildcard.getValue());
+				writer.println("</wildcard>");
+			}
+			writer.println("				</wildcards>");
+			writer.println("				<replacements>");
+			for (Replacement replacement : actionReplacement.getReplacements()) {
+				writer.println("					<replacement>");
+				writer.print("						<variable>");
+				writer.print(replacement.getVariable());
+				writer.println("</variable>");
+				writer.print("						<value>");
+				writer.print(replacement.getValue());
+				writer.println("</value>");
+				writer.println("					</replacement>");
+			}
+			writer.println("				</replacements>");
+
+			if (!actionReplacement.getWildcards().isEmpty()) {
+				writer.println("				<replacementfiles>");
+				for (Replacementfile replacementFile : actionReplacement
+						.getReplacementFiles()) {
+					writer.print("					<replacementfile>");
+					writer.print(replacementFile.getValue());
+					writer.println("</replacementfile>");
+				}
+				writer.println("				</replacementfiles>");
+			}
+
+			writer.println("			</replace>");
 		}
 	}
 
