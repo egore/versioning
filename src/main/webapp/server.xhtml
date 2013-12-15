@@ -48,7 +48,7 @@
 					itemLabel="#{messages.vcshost_none}" />
 				<f:selectItems value="#{serverDetail.allVcshostSelectItems}" />
 				<f:ajax event="change"
-					render="server_uri server_vcsPath server_tagTransformer server_targetPath" />
+					render="server_uri server_vcsPath server_targetPath" />
 			</h:selectOneMenu>
 			<h:outputText value="#{messages.server_vcsHost_help}" />
 			<h:outputText value="" />
