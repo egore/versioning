@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
+ * published by the Free Software Foundation; either version 2 of 
  * the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -16,30 +16,36 @@
  */
 package de.egore911.versioning.persistence.model;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @MappedSuperclass
-public abstract class AbstractAction extends IntegerDbObject {
+public abstract class AbstractRemoteAction extends AbstractAction {
 
-	private static final long serialVersionUID = -6578090449613398035L;
+	private static final long serialVersionUID = 3274807738773492077L;
 
-	private Project project;
+	private MavenArtifact mavenArtifact;
+	private SpacerUrl spacerUrl;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_project", nullable = false)
-	@NotNull
-	public Project getProject() {
-		return project;
+	@Transient
+	public MavenArtifact getMavenArtifact() {
+		return mavenArtifact;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void setMavenArtifact(MavenArtifact mavenArtifact) {
+		this.mavenArtifact = mavenArtifact;
+	}
+
+	@Transient
+	public SpacerUrl getSpacerUrl() {
+		return spacerUrl;
+	}
+
+	public void setSpacerUrl(SpacerUrl spacerUrl) {
+		this.spacerUrl = spacerUrl;
 	}
 
 }

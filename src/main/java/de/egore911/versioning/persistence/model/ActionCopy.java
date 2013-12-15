@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "action_copy")
-public class ActionCopy extends AbstractAction {
+public class ActionCopy extends AbstractRemoteAction {
 
 	private static final long serialVersionUID = -6348284172396876137L;
 

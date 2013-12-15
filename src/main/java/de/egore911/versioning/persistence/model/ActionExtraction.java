@@ -31,7 +31,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "action_extraction")
-public class ActionExtraction extends AbstractAction {
+public class ActionExtraction extends AbstractRemoteAction {
 
 	private static final long serialVersionUID = -6450765572706399548L;
 
