@@ -26,7 +26,7 @@
 			<h:outputText value="#{messages.project_vcsHost}" />
 			<h:selectOneMenu value="#{projectDetail.instance.vcsHost}"
 				id="project_vcsHost" converter="vcshostConverter">
-				<f:selectItems value="#{projectDetail.vcshostSelectItems}" />
+				<f:selectItems value="#{projectDetail.allVcshostSelectItems}" />
 				<f:ajax event="change" render="server_uri" />
 			</h:selectOneMenu>
 			<h:outputText value="#{messages.project_vcsHost_help}" />
@@ -131,6 +131,26 @@
 				<ui:param name="idPrefix" value="actionExtraction_" />
 			</ui:include>
 
+		</rich:panel>
+	</ui:repeat>
+
+	<h:commandButton action="#{projectDetail.chooseCheckout}"
+		value="#{messages.project_add_checkout}"
+		rendered="#{empty projectDetail.instance.actionCheckouts}" />
+
+	<ui:repeat var="actionCheckout"
+		value="#{projectDetail.instance.actionCheckouts}">
+		<rich:panel header="#{messages.actionCheckout}">
+			<h:panelGrid columns="3" columnClasses="caption,value,help">
+				<h:outputText value="#{messages.actionCheckout_source}" />
+				<h:outputText
+					value="#{projectDetail.instance.vcsHost.uri}#{projectDetail.instance.vcsPath}" />
+				<h:outputText value="#{messages.actionCheckout_source_help}" />
+
+				<h:outputText value="#{messages.actionCheckout_targetPath}" />
+				<h:inputText value="#{actionCheckout.targetPath}" />
+				<h:outputText value="#{messages.actionCheckout_targetPath_help}" />
+			</h:panelGrid>
 		</rich:panel>
 	</ui:repeat>
 

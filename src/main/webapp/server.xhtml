@@ -38,6 +38,38 @@
 		</h:panelGrid>
 	</rich:panel>
 
+	<rich:panel header="#{messages.server_vcsconfiguration}">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
+
+			<h:outputText value="#{messages.server_vcsHost}" />
+			<h:selectOneMenu value="#{serverDetail.instance.vcsHost}"
+				id="server_vcsHost" converter="vcshostConverter">
+				<f:selectItem itemValue="#{null}"
+					itemLabel="#{messages.vcshost_none}" />
+				<f:selectItems value="#{serverDetail.allVcshostSelectItems}" />
+				<f:ajax event="change"
+					render="server_uri server_vcsPath server_tagTransformer server_targetPath" />
+			</h:selectOneMenu>
+			<h:outputText value="#{messages.server_vcsHost_help}" />
+			<h:outputText value="" />
+			<h:outputText id="server_uri"
+				value="#{serverDetail.instance.vcsHost.uri}" />
+			<h:outputText value="" />
+
+			<h:outputText value="#{messages.server_vcsPath}" />
+			<h:inputText value="#{serverDetail.instance.vcsPath}"
+				id="server_vcsPath"
+				disabled="#{empty serverDetail.instance.vcsHost}" />
+			<h:outputText value="#{messages.server_vcsPath_help}" />
+
+			<h:outputText value="#{messages.server_targetPath}" />
+			<h:inputText value="#{serverDetail.instance.targetPath}"
+				id="server_targetPath"
+				disabled="#{empty serverDetail.instance.vcsHost}" />
+			<h:outputText value="#{messages.server_targetPath_help}" />
+		</h:panelGrid>
+	</rich:panel>
+
 	<rich:panel header="#{messages.variables}">
 
 		<h:outputFormat value="#{messages.server_variables_for}"

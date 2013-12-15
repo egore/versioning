@@ -32,6 +32,7 @@ import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.ActionCheckout;
 import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.ActionExtraction;
 import de.egore911.versioning.persistence.model.ActionReplacement;
@@ -68,7 +69,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return new Project();
 	}
 
-	public SelectItem[] getVcshostSelectItems() {
+	public SelectItem[] getAllVcshostSelectItems() {
 		List<VcsHost> vcshosts = new VcshostDao().findAll();
 		SelectItem[] items = new SelectItem[vcshosts.size()];
 		int i = 0;
@@ -203,6 +204,16 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		Replacementfile replacementFile = new Replacementfile();
 		replacementFile.setActionReplacement(actionReplacement);
 		actionReplacement.getReplacementFiles().add(replacementFile);
+		return "";
+	}
+
+	// Checkout
+	public String chooseCheckout() {
+		Project project = getInstance();
+		ActionCheckout actionCheckout = new ActionCheckout();
+		project.getActionCheckouts().add(actionCheckout);
+		actionCheckout.setProject(project);
+		setInstance(project);
 		return "";
 	}
 

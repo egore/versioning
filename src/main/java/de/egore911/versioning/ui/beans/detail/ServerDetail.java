@@ -30,10 +30,12 @@ import javax.servlet.http.HttpSession;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Variable;
+import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.util.SessionUtil;
@@ -102,6 +104,16 @@ public class ServerDetail extends AbstractDetail<Server> {
 		variable.setServer(getInstance());
 		getInstance().getVariables().add(variable);
 		return "";
+	}
+
+	public SelectItem[] getAllVcshostSelectItems() {
+		List<VcsHost> vcshosts = new VcshostDao().findAll();
+		SelectItem[] items = new SelectItem[vcshosts.size()];
+		int i = 0;
+		for (VcsHost vcshost : vcshosts) {
+			items[i++] = new SelectItem(vcshost, vcshost.getName());
+		}
+		return items;
 	}
 
 	public String save() {

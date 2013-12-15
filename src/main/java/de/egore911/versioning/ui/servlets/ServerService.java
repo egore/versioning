@@ -34,7 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
-import de.egore911.versioning.persistence.model.AbstractAction;
+import de.egore911.versioning.persistence.model.AbstractRemoteAction;
+import de.egore911.versioning.persistence.model.ActionCheckout;
 import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.ActionExtraction;
 import de.egore911.versioning.persistence.model.ActionReplacement;
@@ -195,6 +196,52 @@ public class ServerService extends HttpServlet {
 							writer.println("			</extract>");
 						}
 
+						for (ActionCheckout actionCheckout : project
+								.getActionCheckouts()) {
+							writer.println("			<checkout>");
+							writer.print("				<target>");
+							writer.print(urlUtil.concatenateUrlWithSlashes(
+									server.getTargetdir(),
+									replaceVariables(
+											actionCheckout.getTargetPath(),
+											replace)));
+							writer.println("</target>");
+							writer.print("				<");
+							writer.print(project.getVcsHost().getVcs());
+							writer.print(">");
+							writer.print(project.getVcsHost().getUri());
+							writer.print(project.getVcsPath());
+							writer.print("</");
+							writer.print(project.getVcsHost().getVcs());
+							writer.println(">");
+							writer.print("				<tag>");
+							writer.print(version.getVcsTag());
+							writer.print("</tag>");
+							writer.println("			</checkout>");
+						}
+
+						if (server.getVcsHost() != null) {
+							writer.println("			<checkout>");
+							writer.print("				<target>");
+							writer.print(urlUtil.concatenateUrlWithSlashes(
+									server.getTargetdir(),
+									replaceVariables(server.getTargetPath(),
+											replace)));
+							writer.println("</target>");
+							writer.print("				<");
+							writer.print(server.getVcsHost().getVcs());
+							writer.print(">");
+							writer.print(server.getVcsHost().getUri());
+							writer.print(server.getVcsPath());
+							writer.print("</");
+							writer.print(server.getVcsHost().getVcs());
+							writer.println(">");
+							writer.print("				<tag>");
+							writer.print(version.getVcsTag());
+							writer.print("</tag>");
+							writer.println("			</checkout>");
+						}
+
 						for (ActionReplacement actionReplacement : project
 								.getActionReplacements()) {
 							writer.println("			<replace>");
@@ -258,8 +305,8 @@ public class ServerService extends HttpServlet {
 	}
 
 	private static boolean appendUrl(Project project, Version version,
-			AbstractAction action, String transformedVcsTag, UrlUtil urlUtil,
-			PrintWriter writer) {
+			AbstractRemoteAction action, String transformedVcsTag,
+			UrlUtil urlUtil, PrintWriter writer) {
 		if (action.getMavenArtifact() != null) {
 
 			MavenArtifact mavenArtifact = action.getMavenArtifact();

@@ -22,7 +22,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -42,12 +44,15 @@ public class Server extends IntegerDbObject {
 	private String name;
 	private String description;
 	private String targetdir;
+	private VcsHost vcsHost;
+	private String vcsPath;
+	private String targetPath;
 	private List<Variable> variables = new ArrayList<>(0);
 	private List<Project> configuredProjects = new ArrayList<>(0);
 
 	@Column(nullable = false, length = 255)
 	@NotNull
-	@Size(max = 255)
+	@Size(min = 1, max = 255)
 	public String getName() {
 		return name;
 	}
@@ -78,6 +83,36 @@ public class Server extends IntegerDbObject {
 
 	public void setTargetdir(String targetdir) {
 		this.targetdir = targetdir;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "id_vcshost")
+	public VcsHost getVcsHost() {
+		return vcsHost;
+	}
+
+	public void setVcsHost(VcsHost vcsHost) {
+		this.vcsHost = vcsHost;
+	}
+
+	@Column(length = 255)
+	@Size(max = 255)
+	public String getVcsPath() {
+		return vcsPath;
+	}
+
+	public void setVcsPath(String vcsPath) {
+		this.vcsPath = vcsPath;
+	}
+
+	@Column(length = 511, name = "target_path")
+	@Size(max = 511)
+	public String getTargetPath() {
+		return targetPath;
+	}
+
+	public void setTargetPath(String targetPath) {
+		this.targetPath = targetPath;
 	}
 
 	@OneToMany(mappedBy = "server", cascade = CascadeType.ALL)

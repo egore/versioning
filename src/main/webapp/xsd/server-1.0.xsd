@@ -32,6 +32,8 @@
 				maxOccurs="unbounded" />
 			<xs:element name="extract" type="extract" minOccurs="0"
 				maxOccurs="unbounded" />
+			<xs:element name="checkout" type="checkout" minOccurs="0"
+				maxOccurs="unbounded" />
 			<xs:element name="replace" type="replace" minOccurs="0"
 				maxOccurs="unbounded" />
 		</xs:sequence>
@@ -41,6 +43,7 @@
 		<xs:sequence>
 			<xs:element name="url" type="xs:string" />
 			<xs:element name="target" type="xs:string" />
+			<xs:element name="filename" type="xs:string" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 
@@ -61,6 +64,14 @@
 		<xs:sequence>
 			<xs:element name="source" type="xs:string" />
 			<xs:element name="destination" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="checkout">
+		<xs:sequence>
+			<xs:element name="target" type="xs:string" />
+			<xs:element name="svn" type="xs:string" minOccurs="0" />
+			<xs:element name="git" type="xs:string" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 
