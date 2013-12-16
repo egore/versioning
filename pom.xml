@@ -4,7 +4,7 @@
 
 	<groupId>de.egore911.versioning</groupId>
 	<artifactId>versioning</artifactId>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>${project.artifactId}</name>
 	<description>Simple web-application to track when a software was deployed to a server</description>
@@ -19,7 +19,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/egore/versioning.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/egore/versioning.git</developerConnection>
-	  <tag>0.2</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<build>
