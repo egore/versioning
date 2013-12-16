@@ -26,7 +26,7 @@
 			<h:outputText value="#{messages.project_vcsHost}" />
 			<h:selectOneMenu value="#{projectDetail.instance.vcsHost}"
 				id="project_vcsHost" converter="vcshostConverter">
-				<f:selectItems value="#{projectDetail.allVcshostSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allVcshostSelectItems}" />
 				<f:ajax event="change" render="server_uri" />
 			</h:selectOneMenu>
 			<h:outputText value="#{messages.project_vcsHost_help}" />
@@ -45,7 +45,7 @@
 				id="project_tagTransformer" converter="tagtransformerConverter">
 				<f:selectItem itemValue="#{null}"
 					itemLabel="#{messages.tagtransformer_none}" />
-				<f:selectItems value="#{projectDetail.allTagTransformerSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allTagTransformerSelectItems}" />
 			</h:selectOneMenu>
 			<h:outputText value="#{messages.project_tagTransformer_help}" />
 
@@ -53,7 +53,7 @@
 			<h:selectManyMenu value="#{projectDetail.instance.configuredServers}"
 				id="project_configuredServers" converter="serverConverter"
 				style="height: 100px;">
-				<f:selectItems value="#{projectDetail.allServerSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allServerSelectItems}" />
 				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
 			</h:selectManyMenu>

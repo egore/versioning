@@ -16,19 +16,15 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
-import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Permission;
-import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.util.security.RequiresPermission;
 import de.egore911.versioning.util.vcs.Provider;
@@ -49,16 +45,6 @@ public class VersionDetail extends AbstractDetail<Version> {
 	@Override
 	protected Version createEmpty() {
 		return new Version();
-	}
-
-	public SelectItem[] getProjectSelectItems() {
-		List<Project> projects = new ProjectDao().findAll();
-		SelectItem[] items = new SelectItem[projects.size()];
-		int i = 0;
-		for (Project project : projects) {
-			items[i++] = new SelectItem(project, project.getName());
-		}
-		return items;
 	}
 
 	public String save() {

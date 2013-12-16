@@ -29,7 +29,7 @@
 		<h:selectOneMenu value="#{actionEntity.mavenArtifact.mavenRepository}"
 			id="mavenArtifact_mavenRepository" converter="mavenrepositoryConverter">
 			<f:selectItems
-				value="#{projectDetail.allMavenRepositoriesSelectItems}" />
+				value="#{selectItemBean.allMavenRepositoriesSelectItems}" />
 		</h:selectOneMenu>
 		<h:outputText value="#{messages.mavenArtifact_mavenRepository_help}" />
 	</h:panelGrid>

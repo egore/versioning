@@ -17,7 +17,6 @@
 package de.egore911.versioning.ui.beans.detail;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 
@@ -25,29 +24,21 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
-import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
-import de.egore911.versioning.persistence.dao.ServerDao;
-import de.egore911.versioning.persistence.dao.TagTransformerDao;
-import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.ActionCheckout;
 import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.ActionExtraction;
 import de.egore911.versioning.persistence.model.ActionReplacement;
 import de.egore911.versioning.persistence.model.Extraction;
 import de.egore911.versioning.persistence.model.MavenArtifact;
-import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Replacement;
 import de.egore911.versioning.persistence.model.Replacementfile;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
-import de.egore911.versioning.persistence.model.TagTransformer;
 import de.egore911.versioning.persistence.model.Variable;
-import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Wildcard;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -67,50 +58,6 @@ public class ProjectDetail extends AbstractDetail<Project> {
 	@Override
 	protected Project createEmpty() {
 		return new Project();
-	}
-
-	public SelectItem[] getAllVcshostSelectItems() {
-		List<VcsHost> vcshosts = new VcshostDao().findAll();
-		SelectItem[] items = new SelectItem[vcshosts.size()];
-		int i = 0;
-		for (VcsHost vcshost : vcshosts) {
-			items[i++] = new SelectItem(vcshost, vcshost.getName());
-		}
-		return items;
-	}
-
-	public SelectItem[] getAllServerSelectItems() {
-		List<Server> servers = new ServerDao().findAll();
-		SelectItem[] items = new SelectItem[servers.size()];
-		int i = 0;
-		for (Server server : servers) {
-			items[i++] = new SelectItem(server, server.getName());
-		}
-		return items;
-	}
-
-	public SelectItem[] getAllMavenRepositoriesSelectItems() {
-		List<MavenRepository> mavenRepositories = new MavenRepositoryDao()
-				.findAll();
-		SelectItem[] items = new SelectItem[mavenRepositories.size()];
-		int i = 0;
-		for (MavenRepository mavenRepository : mavenRepositories) {
-			items[i++] = new SelectItem(mavenRepository,
-					mavenRepository.getName());
-		}
-		return items;
-	}
-
-	public SelectItem[] getAllTagTransformerSelectItems() {
-		List<TagTransformer> tagTransformers = new TagTransformerDao()
-				.findAll();
-		SelectItem[] items = new SelectItem[tagTransformers.size()];
-		int i = 0;
-		for (TagTransformer tagTransformer : tagTransformers) {
-			items[i++] = new SelectItem(tagTransformer,
-					tagTransformer.getName());
-		}
-		return items;
 	}
 
 	// Copy

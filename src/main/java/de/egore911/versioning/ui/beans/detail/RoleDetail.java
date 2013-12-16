@@ -18,7 +18,6 @@ package de.egore911.versioning.ui.beans.detail;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.model.SelectItem;
 
 import de.egore911.versioning.persistence.dao.RoleDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -41,15 +40,6 @@ public class RoleDetail extends AbstractDetail<Role> {
 	@Override
 	protected Role createEmpty() {
 		return new Role();
-	}
-
-	public SelectItem[] getAllPermissionSelectItems() {
-		SelectItem[] items = new SelectItem[Permission.values().length];
-		int i = 0;
-		for (Permission permission : Permission.values()) {
-			items[i++] = new SelectItem(permission, permission.name());
-		}
-		return items;
 	}
 
 	public String save() {

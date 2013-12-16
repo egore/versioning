@@ -32,7 +32,7 @@
 			<rich:pickList value="#{serverDetail.instance.configuredProjects}"
 				converter="projectConverter" addAllText="⇒" removeAllText="⇐"
 				addText="→" removeText="←" minListHeight="100">
-				<f:selectItems value="#{serverDetail.allProjects}" />
+				<f:selectItems value="#{selectItemBean.allProjectSelectItems}" />
 			</rich:pickList>
 			<h:outputText value="#{messages.server_configuredProjects_help}" />
 		</h:panelGrid>
@@ -46,7 +46,7 @@
 				id="server_vcsHost" converter="vcshostConverter">
 				<f:selectItem itemValue="#{null}"
 					itemLabel="#{messages.vcshost_none}" />
-				<f:selectItems value="#{serverDetail.allVcshostSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allVcshostSelectItems}" />
 				<f:ajax event="change"
 					render="server_uri server_vcsPath server_targetPath" />
 			</h:selectOneMenu>

@@ -20,7 +20,7 @@
 			<h:outputText value="#{messages.role_permissions}" />
 			<h:selectManyMenu value="#{roleDetail.instance.permissions}"
 				id="role_permissions" converter="permissionConverter">
-				<f:selectItems value="#{roleDetail.allPermissionSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allPermissionSelectItems}" />
 				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
 			</h:selectManyMenu>

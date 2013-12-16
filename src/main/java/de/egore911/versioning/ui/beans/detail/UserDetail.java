@@ -17,21 +17,17 @@
 package de.egore911.versioning.ui.beans.detail;
 
 import java.text.MessageFormat;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.egore911.versioning.persistence.dao.RoleDao;
 import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
-import de.egore911.versioning.persistence.model.Role;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.util.UserUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
@@ -118,16 +114,6 @@ public class UserDetail extends AbstractDetail<User> {
 		getDao().save(getInstance());
 		setInstance(null);
 		return "/users.xhtml";
-	}
-
-	public SelectItem[] getAllRoleSelectItems() {
-		List<Role> roles = new RoleDao().findAll();
-		SelectItem[] items = new SelectItem[roles.size()];
-		int i = 0;
-		for (Role role : roles) {
-			items[i++] = new SelectItem(role, role.getName());
-		}
-		return items;
 	}
 
 	public String getPassword() {

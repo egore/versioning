@@ -36,7 +36,7 @@
 			<h:outputText value="#{messages.user_roles}" />
 			<h:selectManyMenu value="#{userDetail.instance.roles}"
 				id="user_roles" converter="roleConverter">
-				<f:selectItems value="#{userDetail.allRoleSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allRoleSelectItems}" />
 				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
 				<f:attribute name="collectionType" value="java.util.ArrayList" />
 			</h:selectManyMenu>

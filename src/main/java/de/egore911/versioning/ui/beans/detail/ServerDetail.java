@@ -25,12 +25,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
-import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.ActionReplacement;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
@@ -38,7 +36,6 @@ import de.egore911.versioning.persistence.model.Replacement;
 import de.egore911.versioning.persistence.model.Replacementfile;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Variable;
-import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.persistence.model.Wildcard;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
@@ -93,31 +90,11 @@ public class ServerDetail extends AbstractDetail<Server> {
 		return deploymentCalculator.getDeployableVersions(instance);
 	}
 
-	public SelectItem[] getAllProjects() {
-		List<Project> projects = new ProjectDao().findAll();
-		SelectItem[] items = new SelectItem[projects.size()];
-		int i = 0;
-		for (Project project : projects) {
-			items[i++] = new SelectItem(project, project.getName());
-		}
-		return items;
-	}
-
 	public String addVariable() {
 		Variable variable = new Variable();
 		variable.setServer(getInstance());
 		getInstance().getVariables().add(variable);
 		return "";
-	}
-
-	public SelectItem[] getAllVcshostSelectItems() {
-		List<VcsHost> vcshosts = new VcshostDao().findAll();
-		SelectItem[] items = new SelectItem[vcshosts.size()];
-		int i = 0;
-		for (VcsHost vcshost : vcshosts) {
-			items[i++] = new SelectItem(vcshost, vcshost.getName());
-		}
-		return items;
 	}
 
 	// Replacement

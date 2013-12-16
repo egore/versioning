@@ -17,7 +17,7 @@
 			<h:selectOneMenu value="#{versionDetail.instance.project}"
 				id="version_project" converter="projectConverter"
 				disabled="#{versionDetail.managed}">
-				<f:selectItems value="#{versionDetail.projectSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allProjectSelectItems}" />
 			</h:selectOneMenu>
 			<h:outputText value="#{messages.version_project_help}" />
 

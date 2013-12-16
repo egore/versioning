@@ -20,7 +20,7 @@
 			<h:outputText value="#{messages.vcshost_vcs}" />
 			<h:selectOneRadio value="#{vcshostDetail.instance.vcs}"
 				id="vcshost_vcs">
-				<f:selectItems value="#{vcshostDetail.vcsSelectItems}" />
+				<f:selectItems value="#{selectItemBean.allVcsSelectItems}" />
 			</h:selectOneRadio>
 			<h:outputText value="#{messages.vcshost_vcs_help}" />
 

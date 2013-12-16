@@ -22,13 +22,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
-import de.egore911.versioning.persistence.model.Vcs;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -51,15 +49,6 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 	@Override
 	protected VcsHost createEmpty() {
 		return new VcsHost();
-	}
-
-	public SelectItem[] getVcsSelectItems() {
-		SelectItem[] items = new SelectItem[Vcs.values().length];
-		int i = 0;
-		for (Vcs vcs : Vcs.values()) {
-			items[i++] = new SelectItem(vcs, vcs.name());
-		}
-		return items;
 	}
 
 	public String save() {
