@@ -13,6 +13,7 @@ atlassian-ide-plugin.xml
 target
 release.properties
 pom.xml.releaseBackup
+release
 
 # Tomcat
 context.xml
