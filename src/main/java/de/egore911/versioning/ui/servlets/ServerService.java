@@ -82,8 +82,6 @@ public class ServerService extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		UrlUtil urlUtil = new UrlUtil();
-
 		Matcher matcher = PATTERN_SERVERNAME.matcher(req.getRequestURI());
 		try (PrintWriter writer = resp.getWriter()) {
 			if (matcher.matches()) {
@@ -157,15 +155,14 @@ public class ServerService extends HttpServlet {
 
 							writer.println("		<deployment>");
 
-							appendCopyActions(urlUtil, writer, server, replace,
-									version, project, actionCopies);
+							appendCopyActions(writer, server, replace, version,
+									project, actionCopies);
 
-							appendExtractionActions(urlUtil, writer, server,
-									replace, version, project,
-									actionExtractions);
+							appendExtractionActions(writer, server, replace,
+									version, project, actionExtractions);
 
-							appendCheckoutActions(urlUtil, writer, server,
-									replace, version, project, actionCheckouts);
+							appendCheckoutActions(writer, server, replace,
+									version, project, actionCheckouts);
 
 							appendReplacementActions(writer, server,
 									actionReplacements);
@@ -174,8 +171,7 @@ public class ServerService extends HttpServlet {
 						}
 					}
 
-					appendServerConfigurationCheckout(urlUtil, writer, server,
-							replace);
+					appendServerConfigurationCheckout(writer, server, replace);
 
 					writer.println("	</deployments>");
 					writer.println("</server>");
@@ -195,8 +191,8 @@ public class ServerService extends HttpServlet {
 		}
 	}
 
-	private static void appendServerConfigurationCheckout(UrlUtil urlUtil,
-			PrintWriter writer, Server server, Map<String, String> replace) {
+	private static void appendServerConfigurationCheckout(PrintWriter writer,
+			Server server, Map<String, String> replace) {
 		List<ActionReplacement> actionReplacements = server
 				.getActionReplacements();
 		if (server.getVcsHost() != null || !actionReplacements.isEmpty()) {
@@ -209,7 +205,7 @@ public class ServerService extends HttpServlet {
 		if (server.getVcsHost() != null) {
 			writer.println("			<checkout>");
 			writer.print("				<target>");
-			writer.print(urlUtil.concatenateUrlWithSlashes(
+			writer.print(UrlUtil.concatenateUrlWithSlashes(
 					server.getTargetdir(),
 					replaceVariables(server.getTargetPath(), replace)));
 			writer.println("</target>");
@@ -231,16 +227,16 @@ public class ServerService extends HttpServlet {
 		}
 	}
 
-	private static void appendCopyActions(UrlUtil urlUtil, PrintWriter writer,
-			Server server, Map<String, String> replace, Version version,
-			Project project, List<ActionCopy> actionCopies) {
+	private static void appendCopyActions(PrintWriter writer, Server server,
+			Map<String, String> replace, Version version, Project project,
+			List<ActionCopy> actionCopies) {
 		for (ActionCopy actionCopy : actionCopies) {
 			writer.println("			<copy>");
 			String transformedVcsTag = version.getTransformedVcsTag();
 			if (appendUrl(project, version, actionCopy, transformedVcsTag,
-					urlUtil, writer)) {
+					writer)) {
 				writer.print("				<target>");
-				writer.print(urlUtil.concatenateUrlWithSlashes(
+				writer.print(UrlUtil.concatenateUrlWithSlashes(
 						server.getTargetdir(),
 						replaceVariables(actionCopy.getTargetPath(), replace)));
 				writer.println("</target>");
@@ -254,15 +250,14 @@ public class ServerService extends HttpServlet {
 		}
 	}
 
-	private static void appendExtractionActions(UrlUtil urlUtil,
-			PrintWriter writer, Server server, Map<String, String> replace,
-			Version version, Project project,
-			List<ActionExtraction> actionExtractions) {
+	private static void appendExtractionActions(PrintWriter writer,
+			Server server, Map<String, String> replace, Version version,
+			Project project, List<ActionExtraction> actionExtractions) {
 		for (ActionExtraction actionExtraction : actionExtractions) {
 			writer.println("			<extract>");
 			String transformedVcsTag = version.getTransformedVcsTag();
 			if (appendUrl(project, version, actionExtraction,
-					transformedVcsTag, urlUtil, writer)) {
+					transformedVcsTag, writer)) {
 				writer.println("				<extractions>");
 				for (Extraction extraction : actionExtraction.getExtractions()) {
 					writer.println("					<extraction>");
@@ -271,7 +266,7 @@ public class ServerService extends HttpServlet {
 							replace));
 					writer.println("</source>");
 					writer.print("						<destination>");
-					writer.print(urlUtil.concatenateUrlWithSlashes(
+					writer.print(UrlUtil.concatenateUrlWithSlashes(
 							server.getTargetdir(),
 							replaceVariables(extraction.getDestination(),
 									replace)));
@@ -284,14 +279,13 @@ public class ServerService extends HttpServlet {
 		}
 	}
 
-	private static void appendCheckoutActions(UrlUtil urlUtil,
-			PrintWriter writer, Server server, Map<String, String> replace,
-			Version version, Project project,
-			List<ActionCheckout> actionCheckouts) {
+	private static void appendCheckoutActions(PrintWriter writer,
+			Server server, Map<String, String> replace, Version version,
+			Project project, List<ActionCheckout> actionCheckouts) {
 		for (ActionCheckout actionCheckout : actionCheckouts) {
 			writer.println("			<checkout>");
 			writer.print("				<target>");
-			writer.print(urlUtil.concatenateUrlWithSlashes(
+			writer.print(UrlUtil.concatenateUrlWithSlashes(
 					server.getTargetdir(),
 					replaceVariables(actionCheckout.getTargetPath(), replace)));
 			writer.println("</target>");
@@ -354,7 +348,7 @@ public class ServerService extends HttpServlet {
 
 	private static boolean appendUrl(Project project, Version version,
 			AbstractRemoteAction action, String transformedVcsTag,
-			UrlUtil urlUtil, PrintWriter writer) {
+			PrintWriter writer) {
 		if (action.getMavenArtifact() != null) {
 
 			MavenArtifact mavenArtifact = action.getMavenArtifact();
@@ -373,7 +367,7 @@ public class ServerService extends HttpServlet {
 
 			String filename = mavenArtifact.getArtifactId() + "-"
 					+ transformedVcsTag + "." + packaging;
-			String url = urlUtil.concatenateUrlWithSlashes(mavenArtifact
+			String url = UrlUtil.concatenateUrlWithSlashes(mavenArtifact
 					.getMavenRepository().getBaseUrl(), mavenArtifact
 					.getGroupId().replace('.', '/'), mavenArtifact
 					.getArtifactId(), transformedVcsTag, filename);

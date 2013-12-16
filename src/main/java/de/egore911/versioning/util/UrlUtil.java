@@ -21,7 +21,10 @@ package de.egore911.versioning.util;
  */
 public class UrlUtil {
 
-	public String concatenateUrlWithSlashes(String... urlParts) {
+	private UrlUtil() {
+	}
+
+	public static String concatenateUrlWithSlashes(String... urlParts) {
 		StringBuilder builder = new StringBuilder();
 		for (String urlPart : urlParts) {
 			if (urlPart == null) {

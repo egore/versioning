@@ -50,8 +50,7 @@ public class LoginBean {
 
 		// Check if the user exists
 		UserDao userDao = new UserDao();
-		User user = userDao.getUser(login,
-				new UserUtil().hashPassword(password));
+		User user = userDao.getUser(login, UserUtil.hashPassword(password));
 		if (user != null) {
 			// Found our user, show the versions
 			SessionUtil.setLoggedInUser(user);

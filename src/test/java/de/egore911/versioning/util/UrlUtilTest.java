@@ -27,78 +27,74 @@ public class UrlUtilTest {
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyNulls() {
 		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes(null, null, null));
+				UrlUtil.concatenateUrlWithSlashes(null, null, null));
 	}
 
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyEmpty() {
-		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes("", "", ""));
+		Assert.assertEquals("", UrlUtil.concatenateUrlWithSlashes("", "", ""));
 	}
 
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyNullsAndEmpty() {
 		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes(null, null, ""));
+				UrlUtil.concatenateUrlWithSlashes(null, null, ""));
 		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes(null, "", null));
+				UrlUtil.concatenateUrlWithSlashes(null, "", null));
 		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes("", null, null));
-		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes(null, "", ""));
-		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes("", null, ""));
-		Assert.assertEquals("",
-				new UrlUtil().concatenateUrlWithSlashes("", "", null));
+				UrlUtil.concatenateUrlWithSlashes("", null, null));
+		Assert.assertEquals("", UrlUtil.concatenateUrlWithSlashes(null, "", ""));
+		Assert.assertEquals("", UrlUtil.concatenateUrlWithSlashes("", null, ""));
+		Assert.assertEquals("", UrlUtil.concatenateUrlWithSlashes("", "", null));
 	}
 
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyWithoutAnySlashes() {
-		Assert.assertEquals("http://github.com/egore/versioning", new UrlUtil()
+		Assert.assertEquals("http://github.com/egore/versioning", UrlUtil
 				.concatenateUrlWithSlashes("http://github.com", "egore",
 						"versioning"));
-		Assert.assertEquals("http://github.com/egore/versioning", new UrlUtil()
+		Assert.assertEquals("http://github.com/egore/versioning", UrlUtil
 				.concatenateUrlWithSlashes("http://github.com",
 						"egore/versioning"));
 	}
 
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyWithSlashesAtEnd() {
-		Assert.assertEquals("http://github.com/egore/versioning/",
-				new UrlUtil().concatenateUrlWithSlashes("http://github.com/",
-						"egore/", "versioning/"));
-		Assert.assertEquals("http://github.com/egore/versioning/",
-				new UrlUtil().concatenateUrlWithSlashes("http://github.com/",
+		Assert.assertEquals("http://github.com/egore/versioning/", UrlUtil
+				.concatenateUrlWithSlashes("http://github.com/", "egore/",
+						"versioning/"));
+		Assert.assertEquals("http://github.com/egore/versioning/", UrlUtil
+				.concatenateUrlWithSlashes("http://github.com/",
 						"egore/versioning/"));
 	}
 
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyWithSlashesAtBeginning() {
-		Assert.assertEquals("http://github.com/egore/versioning", new UrlUtil()
+		Assert.assertEquals("http://github.com/egore/versioning", UrlUtil
 				.concatenateUrlWithSlashes("http://github.com", "/egore",
 						"/versioning"));
-		Assert.assertEquals("http://github.com/egore/versioning", new UrlUtil()
+		Assert.assertEquals("http://github.com/egore/versioning", UrlUtil
 				.concatenateUrlWithSlashes("http://github.com",
 						"/egore/versioning"));
 	}
 
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyWithSlashesAtBeginningAndEnd() {
-		Assert.assertEquals("http://github.com/egore/versioning/",
-				new UrlUtil().concatenateUrlWithSlashes("http://github.com/",
-						"/egore/", "/versioning/"));
-		Assert.assertEquals("http://github.com/egore/versioning/",
-				new UrlUtil().concatenateUrlWithSlashes("http://github.com/",
+		Assert.assertEquals("http://github.com/egore/versioning/", UrlUtil
+				.concatenateUrlWithSlashes("http://github.com/", "/egore/",
+						"/versioning/"));
+		Assert.assertEquals("http://github.com/egore/versioning/", UrlUtil
+				.concatenateUrlWithSlashes("http://github.com/",
 						"/egore/versioning/"));
 	}
 
 	@Test
 	public void testConcatenateUrlWithSlashesOnlyWithSlashOnlyArgument() {
-		Assert.assertEquals("http://github.com/egore/versioning/",
-				new UrlUtil().concatenateUrlWithSlashes(
+		Assert.assertEquals("http://github.com/egore/versioning/", UrlUtil
+				.concatenateUrlWithSlashes(
 						"http://github.com/egore/versioning/", "/"));
-		Assert.assertEquals("http://github.com/egore/versioning/",
-				new UrlUtil().concatenateUrlWithSlashes(
+		Assert.assertEquals("http://github.com/egore/versioning/", UrlUtil
+				.concatenateUrlWithSlashes(
 						"http://github.com/egore/versioning", "/"));
 	}
 

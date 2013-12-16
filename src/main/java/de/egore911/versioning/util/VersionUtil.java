@@ -29,6 +29,9 @@ import de.egore911.versioning.persistence.model.Version;
  */
 public class VersionUtil {
 
+	private VersionUtil() {
+	}
+
 	/**
 	 * Return the latest version from the given list of versions.
 	 * 
@@ -36,7 +39,7 @@ public class VersionUtil {
 	 *            the list of versions
 	 * @return the latest version in the given list
 	 */
-	public Version getLatestVersion(List<Version> versions) {
+	public static Version getLatestVersion(List<Version> versions) {
 		if (CollectionUtils.isEmpty(versions)) {
 			return null;
 		}

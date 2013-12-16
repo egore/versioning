@@ -30,6 +30,9 @@ import de.egore911.versioning.persistence.model.User;
  */
 public class SessionUtil {
 
+	private SessionUtil() {
+	}
+
 	public static HttpSession getSession() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (facesContext != null) {

@@ -45,7 +45,6 @@ public class DeploymentCalculator {
 	};
 
 	private ProjectDao projectDao = new ProjectDao();
-	private VersionUtil versionUtil = new VersionUtil();
 	private DeploymentDao deploymentDao = new DeploymentDao();
 
 	public List<Version> getDeployedVersions(Server server) {
@@ -72,7 +71,7 @@ public class DeploymentCalculator {
 				.getConfiguredProjects(server);
 		List<Version> result = new ArrayList<>();
 		for (Project configuredProject : configuredProjects) {
-			Version latest = versionUtil.getLatestVersion(configuredProject
+			Version latest = VersionUtil.getLatestVersion(configuredProject
 					.getVersions());
 
 			// No version for a project yet

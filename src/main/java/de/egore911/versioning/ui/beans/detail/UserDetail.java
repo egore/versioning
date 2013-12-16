@@ -70,8 +70,7 @@ public class UserDetail extends AbstractDetail<User> {
 				passwordVerify = null;
 				return "";
 			} else {
-				getInstance()
-						.setPassword(new UserUtil().hashPassword(password));
+				getInstance().setPassword(UserUtil.hashPassword(password));
 			}
 		}
 
