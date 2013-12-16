@@ -19,16 +19,28 @@ package de.egore911.versioning.util.security;
 import de.egore911.versioning.persistence.model.Permission;
 
 /**
+ * Indicates that a user was not allowed to perform an operation because he did
+ * not have any of the requested permissions or was not logged in at all.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class PermissionException extends RuntimeException {
 
 	private static final long serialVersionUID = 8303892206944255550L;
 
+	/**
+	 * The user was missing any of the given permissions.
+	 * 
+	 * @param permissions
+	 *            list of permissions
+	 */
 	public PermissionException(Permission[] permissions) {
 		super("Missing any of the permission: " + permissions);
 	}
 
+	/**
+	 * The user was not logged in.
+	 */
 	public PermissionException() {
 		super("Not logged in");
 	}

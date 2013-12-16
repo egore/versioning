@@ -25,6 +25,9 @@ import java.lang.annotation.Target;
 import de.egore911.versioning.persistence.model.Permission;
 
 /**
+ * Annotion for classes to indicate a user needs to have any of the given
+ * permissions to use the class.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -23,10 +23,19 @@ import org.apache.commons.collections4.CollectionUtils;
 import de.egore911.versioning.persistence.model.Version;
 
 /**
+ * Utility containing helper methods regarding versions.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class VersionUtil {
 
+	/**
+	 * Return the latest version from the given list of versions.
+	 * 
+	 * @param versions
+	 *            the list of versions
+	 * @return the latest version in the given list
+	 */
 	public Version getLatestVersion(List<Version> versions) {
 		if (CollectionUtils.isEmpty(versions)) {
 			return null;

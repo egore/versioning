@@ -22,6 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Utility class to hold the current entity manager for the duration of a
+ * request. Done using a {@link ThreadLocal}.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class EntityManagerUtil {
@@ -31,10 +34,19 @@ public class EntityManagerUtil {
 
 	private static ThreadLocal<EntityManager> entityManagerHolder = new ThreadLocal<>();
 
+	/**
+	 * @return the current entity manager for the request
+	 * @see #setEntityManager(EntityManager)
+	 */
 	public static EntityManager getEntityManager() {
 		return entityManagerHolder.get();
 	}
 
+	/**
+	 * @param entityManager
+	 *            the current entity manager for the request
+	 * @see #getEntityManager()
+	 */
 	public static void setEntityManager(EntityManager entityManager) {
 		if (entityManagerHolder.get() != null) {
 			log.error("Replacing existing EntityManger");
@@ -42,6 +54,9 @@ public class EntityManagerUtil {
 		entityManagerHolder.set(entityManager);
 	}
 
+	/**
+	 * Remove the current entitymanager from the request.
+	 */
 	public static void clearEntityManager() {
 		entityManagerHolder.set(null);
 	}

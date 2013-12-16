@@ -25,6 +25,14 @@ import java.security.NoSuchAlgorithmException;
  */
 public class UserUtil {
 
+	/**
+	 * Calculate the SHA-1 sum for a given password (or any string for that
+	 * matter).
+	 * 
+	 * @param password
+	 *            the password to be hashed
+	 * @return the SHA-1 sum for the given password
+	 */
 	public String hashPassword(String password) {
 		MessageDigest md;
 		try {
@@ -36,6 +44,13 @@ public class UserUtil {
 				.forName("UTF-8"))));
 	}
 
+	/**
+	 * Convert a byte array to a hexadecimal represenation.
+	 * 
+	 * @param b
+	 *            the byte array
+	 * @return the hexadecimal represenation
+	 */
 	public String byteArrayToHexString(byte[] b) {
 		StringBuilder result = new StringBuilder(b.length);
 		for (int i = 0; i < b.length; i++) {
