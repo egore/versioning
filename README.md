@@ -29,12 +29,20 @@ the filename was not specified by the operation.
 Using the extract operation it's possible to download a file from a given URL and
 extract parts of it. This can e.g. be used to extract default configurations.
 
+*Checkout*
+
+The checkout operation will download source code from a VCS repository (see
+supported VCSs below). This can, for example, be used to checkout projects that
+don't need to be compiled. It is also available for servers and can be used to
+checkout their VCS managed configuration.
+
 *Replace*
 
-The replace operation will perform search and replace on the checked out files. It
-use a list of replacements provided by the versioning server or can use a
+The replace operation will perform search and replace on the prepared files. It
+uses a list of replacements provided by the versioning server or can use a
 properties file. The later can especially be used to insert passwords or other
-sensitive information into files publically saved on a server.
+sensitive information into files publically saved on a server. The operation
+is available for projects and for servers.
 
 Servletcontainers
 -----------------
@@ -57,9 +65,14 @@ Supported Databases
 
 The project is using hibernate for data access. This means that theoretically
 every database supported by hibernate is usable. You have to keep in mind that
-we are using flyway to initialize and migrate the databases and the scripts are
-only available and tested on MariaDB 5.5 right now. Further database systems
-are going to be supported at a later point.
+we are using flyway to initialize and migrate the databases. The flyway scripts
+are only available and tested on on the following databases right now:
+
+* MySQL 5.0+
+* MariaDB 5.5+
+* hsqldb 2.3+
+
+Further database systems are going to be supported at a later point.
 
 Supported VCSs
 --------------
