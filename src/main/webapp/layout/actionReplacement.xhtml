@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- Parameter: entityDetail -->
+
+	<h:commandButton action="#{entityDetail.chooseReplacement}"
+		value="#{messages.actionReplacement_add}" />
+
+	<ui:repeat var="actionReplacement"
+		value="#{entityDetail.instance.actionReplacements}">
+
+		<rich:panel header="#{messages.actionReplacement}">
+			<ui:repeat value="#{actionReplacement.wildcards}" var="wildcard"
+				varStatus="status">
+				<h:panelGrid columns="3" columnClasses="caption,value,help">
+					<h:outputText
+						value="#{status.first ? messages.actionReplacement_wildcard : ''}" />
+					<h:inputText value="#{wildcard.value}" />
+					<h:outputText
+						value="#{status.first ? messages.actionReplacement_wildcard_help : ''}" />
+				</h:panelGrid>
+			</ui:repeat>
+			<h:commandButton value="#{messages.actionReplacement_add_wildcard}"
+				action="#{entityDetail.addWildcard(actionReplacement)}" />
+
+			<ui:repeat value="#{actionReplacement.replacements}"
+				var="replacement" varStatus="status">
+				<h:panelGrid columns="3" columnClasses="caption,value,help">
+					<h:outputText value="#{messages.actionReplacement_variable}" />
+					<h:inputText value="#{replacement.variable}" />
+					<h:outputText
+						value="#{status.first ? messages.actionReplacement_variable_help : ''}" />
+					<h:outputText value="#{messages.actionReplacement_value}" />
+					<h:inputText value="#{replacement.value}" />
+					<h:outputText
+						value="#{status.first ? messages.actionReplacement_value_help : ''}" />
+				</h:panelGrid>
+			</ui:repeat>
+			<h:commandButton
+				value="#{messages.actionReplacement_add_replacement}"
+				action="#{entityDetail.addReplacement(actionReplacement)}" />
+
+			<ui:repeat value="#{actionReplacement.replacementFiles}"
+				var="replacementFile" varStatus="status">
+				<h:panelGrid columns="3" columnClasses="caption,value,help">
+					<h:outputText
+						value="#{status.first ? messages.actionReplacement_replacementFile : ''}" />
+					<h:inputText value="#{replacementFile.value}" />
+					<h:outputText
+						value="#{status.first ? messages.actionReplacement_replacementFile_help : ''}" />
+				</h:panelGrid>
+			</ui:repeat>
+			<h:commandButton
+				value="#{messages.actionReplacement_add_replacementFile}"
+				action="#{entityDetail.addReplacementFile(actionReplacement)}" />
+
+		</rich:panel>
+	</ui:repeat>
+
+
+
+</ui:composition>

@@ -31,12 +31,16 @@ import javax.servlet.http.HttpSession;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
+import de.egore911.versioning.persistence.model.ActionReplacement;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.Replacement;
+import de.egore911.versioning.persistence.model.Replacementfile;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.model.Wildcard;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
@@ -114,6 +118,39 @@ public class ServerDetail extends AbstractDetail<Server> {
 			items[i++] = new SelectItem(vcshost, vcshost.getName());
 		}
 		return items;
+	}
+
+	// Replacement
+	public String chooseReplacement() {
+		Server server = getInstance();
+		ActionReplacement actionReplacement = new ActionReplacement();
+		addWildcard(actionReplacement);
+		addReplacement(actionReplacement);
+		server.getActionReplacements().add(actionReplacement);
+		actionReplacement.setServer(server);
+		setInstance(server);
+		return "";
+	}
+
+	public String addWildcard(ActionReplacement actionReplacement) {
+		Wildcard wildcard = new Wildcard();
+		wildcard.setActionReplacement(actionReplacement);
+		actionReplacement.getWildcards().add(wildcard);
+		return "";
+	}
+
+	public String addReplacement(ActionReplacement actionReplacement) {
+		Replacement replacement = new Replacement();
+		replacement.setActionReplacement(actionReplacement);
+		actionReplacement.getReplacements().add(replacement);
+		return "";
+	}
+
+	public String addReplacementFile(ActionReplacement actionReplacement) {
+		Replacementfile replacementFile = new Replacementfile();
+		replacementFile.setActionReplacement(actionReplacement);
+		actionReplacement.getReplacementFiles().add(replacementFile);
+		return "";
 	}
 
 	public String save() {

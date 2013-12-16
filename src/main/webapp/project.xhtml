@@ -62,7 +62,7 @@
 	</rich:panel>
 
 	<h:commandButton action="#{projectDetail.chooseCopy}"
-		value="#{messages.project_add_copy}" />
+		value="#{messages.actionCheckout_add}" />
 	<ui:repeat var="actionCopy"
 		value="#{projectDetail.instance.actionCopies}">
 
@@ -98,7 +98,7 @@
 	</ui:repeat>
 
 	<h:commandButton action="#{projectDetail.chooseExtraction}"
-		value="#{messages.project_add_extraction}" />
+		value="#{messages.actionExtraction_add}" />
 
 	<ui:repeat var="actionExtraction"
 		value="#{projectDetail.instance.actionExtractions}">
@@ -135,7 +135,7 @@
 	</ui:repeat>
 
 	<h:commandButton action="#{projectDetail.chooseCheckout}"
-		value="#{messages.project_add_checkout}"
+		value="#{messages.actionCheckout_add}"
 		rendered="#{empty projectDetail.instance.actionCheckouts}" />
 
 	<ui:repeat var="actionCheckout"
@@ -154,59 +154,9 @@
 		</rich:panel>
 	</ui:repeat>
 
-	<h:commandButton action="#{projectDetail.chooseReplacement}"
-		value="#{messages.project_add_replacement}" />
-
-	<ui:repeat var="actionReplacement"
-		value="#{projectDetail.instance.actionReplacements}">
-
-		<rich:panel header="#{messages.actionReplacement}">
-			<ui:repeat value="#{actionReplacement.wildcards}" var="wildcard"
-				varStatus="status">
-				<h:panelGrid columns="3" columnClasses="caption,value,help">
-					<h:outputText
-						value="#{status.first ? messages.actionReplacement_wildcard : ''}" />
-					<h:inputText value="#{wildcard.value}" />
-					<h:outputText
-						value="#{status.first ? messages.actionReplacement_wildcard_help : ''}" />
-				</h:panelGrid>
-			</ui:repeat>
-			<h:commandButton value="#{messages.actionReplacement_add_wildcard}"
-				action="#{projectDetail.addWildcard(actionReplacement)}" />
-
-			<ui:repeat value="#{actionReplacement.replacements}"
-				var="replacement" varStatus="status">
-				<h:panelGrid columns="3" columnClasses="caption,value,help">
-					<h:outputText value="#{messages.actionReplacement_variable}" />
-					<h:inputText value="#{replacement.variable}" />
-					<h:outputText
-						value="#{status.first ? messages.actionReplacement_variable_help : ''}" />
-					<h:outputText value="#{messages.actionReplacement_value}" />
-					<h:inputText value="#{replacement.value}" />
-					<h:outputText
-						value="#{status.first ? messages.actionReplacement_value_help : ''}" />
-				</h:panelGrid>
-			</ui:repeat>
-			<h:commandButton
-				value="#{messages.actionReplacement_add_replacement}"
-				action="#{projectDetail.addReplacement(actionReplacement)}" />
-
-			<ui:repeat value="#{actionReplacement.replacementFiles}"
-				var="replacementFile" varStatus="status">
-				<h:panelGrid columns="3" columnClasses="caption,value,help">
-					<h:outputText
-						value="#{status.first ? messages.actionReplacement_replacementFile : ''}" />
-					<h:inputText value="#{replacementFile.value}" />
-					<h:outputText
-						value="#{status.first ? messages.actionReplacement_replacementFile_help : ''}" />
-				</h:panelGrid>
-			</ui:repeat>
-			<h:commandButton
-				value="#{messages.actionReplacement_add_replacementFile}"
-				action="#{projectDetail.addReplacementFile(actionReplacement)}" />
-
-		</rich:panel>
-	</ui:repeat>
+	<ui:include src="/layout/actionReplacement.xhtml">
+		<ui:param name="entityDetail" value="#{projectDetail}" />
+	</ui:include>
 
 	<h:commandButton value="#{messages.save}"
 		action="#{projectDetail.save}" />

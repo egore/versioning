@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -30,13 +32,35 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "action_replacement")
-public class ActionReplacement extends AbstractAction {
+public class ActionReplacement extends IntegerDbObject {
 
 	private static final long serialVersionUID = 3366431865064864620L;
 
+	private Project project;
+	private Server server;
 	private List<Wildcard> wildcards = new ArrayList<>(0);
 	private List<Replacement> replacements = new ArrayList<>(0);
 	private List<Replacementfile> replacementFiles = new ArrayList<>(0);
+
+	@ManyToOne
+	@JoinColumn(name = "id_project")
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "id_server")
+	public Server getServer() {
+		return server;
+	}
+
+	public void setServer(Server server) {
+		this.server = server;
+	}
 
 	@OneToMany(mappedBy = "actionReplacement", cascade = CascadeType.ALL)
 	@OrderBy("value")

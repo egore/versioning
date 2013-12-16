@@ -15,6 +15,7 @@ public abstract class Server_ extends de.egore911.versioning.persistence.model.I
 	public static volatile SingularAttribute<Server, String> name;
 	public static volatile SingularAttribute<Server, String> targetdir;
 	public static volatile SingularAttribute<Server, String> vcsPath;
+	public static volatile ListAttribute<Server, ActionReplacement> actionReplacements;
 	public static volatile SingularAttribute<Server, VcsHost> vcsHost;
 	public static volatile ListAttribute<Server, Variable> variables;
 

@@ -64,7 +64,7 @@ public class ServerService extends HttpServlet {
 	private static final Pattern PATTERN_SERVERNAME = Pattern
 			.compile(".*/server/([^/]+)\\.xml$");
 
-	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 
 	private static String replaceVariables(String s, Map<String, String> replace) {
 		Matcher m = Variable.VARIABLE_PATTERN.matcher(s);
@@ -197,11 +197,16 @@ public class ServerService extends HttpServlet {
 
 	private static void appendServerConfigurationCheckout(UrlUtil urlUtil,
 			PrintWriter writer, Server server, Map<String, String> replace) {
-		if (server.getVcsHost() != null) {
+		List<ActionReplacement> actionReplacements = server
+				.getActionReplacements();
+		if (server.getVcsHost() != null || !actionReplacements.isEmpty()) {
 			writer.print("		<!-- ");
 			writer.print(server.getName().replace("--", "__"));
 			writer.println("-->");
 			writer.println("		<deployment>");
+		}
+
+		if (server.getVcsHost() != null) {
 			writer.println("			<checkout>");
 			writer.print("				<target>");
 			writer.print(urlUtil.concatenateUrlWithSlashes(
@@ -217,6 +222,11 @@ public class ServerService extends HttpServlet {
 			writer.print(server.getVcsHost().getVcs());
 			writer.println(">");
 			writer.println("			</checkout>");
+		}
+
+		appendReplacementActions(writer, server, actionReplacements);
+
+		if (server.getVcsHost() != null || !actionReplacements.isEmpty()) {
 			writer.println("		</deployment>");
 		}
 	}
@@ -327,7 +337,7 @@ public class ServerService extends HttpServlet {
 			}
 			writer.println("				</replacements>");
 
-			if (!actionReplacement.getWildcards().isEmpty()) {
+			if (!actionReplacement.getReplacementFiles().isEmpty()) {
 				writer.println("				<replacementfiles>");
 				for (Replacementfile replacementFile : actionReplacement
 						.getReplacementFiles()) {

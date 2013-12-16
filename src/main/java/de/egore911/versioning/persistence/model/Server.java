@@ -49,6 +49,7 @@ public class Server extends IntegerDbObject {
 	private String targetPath;
 	private List<Variable> variables = new ArrayList<>(0);
 	private List<Project> configuredProjects = new ArrayList<>(0);
+	private List<ActionReplacement> actionReplacements = new ArrayList<>(0);
 
 	@Column(nullable = false, length = 255)
 	@NotNull
@@ -133,4 +134,14 @@ public class Server extends IntegerDbObject {
 	public void setConfiguredProjects(List<Project> configuredProjects) {
 		this.configuredProjects = configuredProjects;
 	}
+
+	@OneToMany(mappedBy = "server", cascade = CascadeType.ALL)
+	public List<ActionReplacement> getActionReplacements() {
+		return actionReplacements;
+	}
+
+	public void setActionReplacements(List<ActionReplacement> actionReplacements) {
+		this.actionReplacements = actionReplacements;
+	}
+
 }
