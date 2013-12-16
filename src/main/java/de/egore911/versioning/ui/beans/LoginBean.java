@@ -38,8 +38,6 @@ import de.egore911.versioning.util.UserUtil;
 @RequestScoped
 public class LoginBean {
 
-	private final SessionUtil sessionUtil = new SessionUtil();
-
 	private String login;
 	private String password;
 
@@ -56,7 +54,7 @@ public class LoginBean {
 				new UserUtil().hashPassword(password));
 		if (user != null) {
 			// Found our user, show the versions
-			sessionUtil.setLoggedInUser(user);
+			SessionUtil.setLoggedInUser(user);
 			if (user.hasPermission(Permission.CREATE_VERSIONS)) {
 				return "/versions.xhtml";
 			} else if (user.hasPermission(Permission.DEPLOY)) {
@@ -67,7 +65,7 @@ public class LoginBean {
 				return "/users.xthml";
 			} else {
 				FacesContext facesContext = FacesContext.getCurrentInstance();
-				ResourceBundle bundle = sessionUtil.getBundle();
+				ResourceBundle bundle = SessionUtil.getBundle();
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						bundle.getString("missing_permission"),
@@ -78,7 +76,7 @@ public class LoginBean {
 		} else {
 			// Invalid login
 			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = sessionUtil.getBundle();
+			ResourceBundle bundle = SessionUtil.getBundle();
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,
 					bundle.getString("invalid_credentials"),

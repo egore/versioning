@@ -35,7 +35,7 @@ public class ModifiedListener {
 		o.setCreated(LocalDateTime.now());
 		o.setModified(o.getCreated());
 
-		User user = new SessionUtil().getLoggedInUser();
+		User user = SessionUtil.getLoggedInUser();
 		if (user != null) {
 			o.setCreatedBy(user);
 			o.setModifiedBy(user);
@@ -46,7 +46,7 @@ public class ModifiedListener {
 	public void preUpdate(DbObject<?> o) {
 		o.setModified(LocalDateTime.now());
 
-		User user = new SessionUtil().getLoggedInUser();
+		User user = SessionUtil.getLoggedInUser();
 		if (user != null) {
 			o.setModifiedBy(user);
 		}

@@ -98,7 +98,7 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	@PostConstruct
 	public void postConstruct() {
 		super.postConstruct();
-		session = new SessionUtil().getSession();
+		session = SessionUtil.getSession();
 		State previousState = (State) session.getAttribute(this.getClass()
 				.getSimpleName() + "_state");
 		if (previousState != null) {

@@ -40,6 +40,7 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Wildcard;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -201,7 +202,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 				if (!found) {
 					FacesContext facesContext = FacesContext
 							.getCurrentInstance();
-					ResourceBundle bundle = sessionUtil.getBundle();
+					ResourceBundle bundle = SessionUtil.getBundle();
 					FacesMessage message = new FacesMessage(
 							FacesMessage.SEVERITY_WARN,
 							MessageFormat.format(

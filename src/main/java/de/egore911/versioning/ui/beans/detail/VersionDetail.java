@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 import de.egore911.versioning.util.vcs.Provider;
 
@@ -58,7 +59,7 @@ public class VersionDetail extends AbstractDetail<Version> {
 		Provider provider = version.getProject().getProvider();
 		if (!provider.tagExists(version.getProject(), version.getVcsTag())) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = sessionUtil.getBundle();
+			ResourceBundle bundle = SessionUtil.getBundle();
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,
 					bundle.getString("tag_not_found"),

@@ -66,8 +66,7 @@ public class WrappedExceptionHandler extends ExceptionHandlerWrapper {
 			if (t instanceof PermissionException) {
 				FacesContext facesContext = FacesContext.getCurrentInstance();
 				try {
-					SessionUtil sessionUtil = new SessionUtil();
-					ResourceBundle bundle = sessionUtil.getBundle();
+					ResourceBundle bundle = SessionUtil.getBundle();
 					FacesMessage message = new FacesMessage(
 							FacesMessage.SEVERITY_ERROR,
 							bundle.getString("missing_permission"),

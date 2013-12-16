@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.TagTransformer;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -59,7 +60,7 @@ public class TagTransformerDetail extends AbstractDetail<TagTransformer> {
 			Pattern.compile(getInstance().getSearchPattern());
 		} catch (PatternSyntaxException e) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = sessionUtil.getBundle();
+			ResourceBundle bundle = SessionUtil.getBundle();
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,
 					bundle.getString("invalid_search_pattern"),

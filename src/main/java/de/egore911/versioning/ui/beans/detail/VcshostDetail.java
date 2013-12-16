@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -61,7 +62,7 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 				|| StringUtils.isNotEmpty(passwordVerify)) {
 			if (password != null && !password.equals(passwordVerify)) {
 				FacesContext facesContext = FacesContext.getCurrentInstance();
-				ResourceBundle bundle = sessionUtil.getBundle();
+				ResourceBundle bundle = SessionUtil.getBundle();
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						bundle.getString("passwords_dont_match"),

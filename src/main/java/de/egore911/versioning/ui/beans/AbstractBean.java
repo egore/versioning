@@ -38,8 +38,7 @@ public class AbstractBean {
 		RequiresPermission requiresPermission = this.getClass().getAnnotation(
 				RequiresPermission.class);
 		if (requiresPermission != null) {
-			SessionUtil sessionUtil = new SessionUtil();
-			User user = sessionUtil.getLoggedInUser();
+			User user = SessionUtil.getLoggedInUser();
 			if (user == null) {
 				throw new PermissionException();
 			}
@@ -47,7 +46,7 @@ public class AbstractBean {
 			for (Role role : user.getRoles()) {
 				Hibernate.initialize(role.getPermissions());
 			}
-			sessionUtil.setLoggedInUser(user);
+			SessionUtil.setLoggedInUser(user);
 			for (Permission permission : requiresPermission.value()) {
 				if (user.hasPermission(permission)) {
 					return;

@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.User;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.UserUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -59,7 +60,7 @@ public class UserDetail extends AbstractDetail<User> {
 				|| StringUtils.isNotEmpty(passwordVerify)) {
 			if (password != null && !password.equals(passwordVerify)) {
 				FacesContext facesContext = FacesContext.getCurrentInstance();
-				ResourceBundle bundle = sessionUtil.getBundle();
+				ResourceBundle bundle = SessionUtil.getBundle();
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						bundle.getString("passwords_dont_match"),
@@ -83,7 +84,7 @@ public class UserDetail extends AbstractDetail<User> {
 			if (user != null && !getInstance().getId().equals(user.getId())) {
 				// Login already taken
 				FacesContext facesContext = FacesContext.getCurrentInstance();
-				ResourceBundle bundle = sessionUtil.getBundle();
+				ResourceBundle bundle = SessionUtil.getBundle();
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						bundle.getString("duplicate_login"),
@@ -98,7 +99,7 @@ public class UserDetail extends AbstractDetail<User> {
 			if (user != null) {
 				// Login already taken
 				FacesContext facesContext = FacesContext.getCurrentInstance();
-				ResourceBundle bundle = sessionUtil.getBundle();
+				ResourceBundle bundle = SessionUtil.getBundle();
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
 						bundle.getString("duplicate_login"),

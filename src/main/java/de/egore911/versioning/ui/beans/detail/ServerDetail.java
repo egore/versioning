@@ -59,7 +59,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 
 	@Override
 	protected Server createEmpty() {
-		HttpSession session = new SessionUtil().getSession();
+		HttpSession session = SessionUtil.getSession();
 		session.setAttribute("server_" + null + "_origProjects",
 				new ArrayList<>());
 		return new Server();
@@ -69,7 +69,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 	protected Server load() {
 		Server server = super.load();
 		if (server != null) {
-			HttpSession session = new SessionUtil().getSession();
+			HttpSession session = SessionUtil.getSession();
 			session.setAttribute("server_" + server.getId() + "_origProjects",
 					new ArrayList<>(server.getConfiguredProjects()));
 		}
@@ -138,7 +138,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 
 		if (getInstance().getName().contains("/")) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = sessionUtil.getBundle();
+			ResourceBundle bundle = SessionUtil.getBundle();
 			FacesMessage message = new FacesMessage(
 					FacesMessage.SEVERITY_ERROR,
 					bundle.getString("invalid_chars_in_name"),
@@ -153,7 +153,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 			}
 		}
 
-		HttpSession session = new SessionUtil().getSession();
+		HttpSession session = SessionUtil.getSession();
 		List<Project> origProjects = (List<Project>) session
 				.getAttribute("server_" + getInstance().getId()
 						+ "_origProjects");

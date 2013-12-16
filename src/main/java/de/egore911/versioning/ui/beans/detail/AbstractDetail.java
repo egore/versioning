@@ -42,14 +42,12 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 	@ManagedProperty(value = "#{param.id}")
 	private Integer id;
 
-	protected final SessionUtil sessionUtil = new SessionUtil();
-
 	protected T instance;
 
 	public T getInstance() {
 		// No request cache yet, determine it
 		if (instance == null) {
-			HttpSession session = new SessionUtil().getSession();
+			HttpSession session = SessionUtil.getSession();
 			instance = (T) session.getAttribute(this.getClass().getSimpleName()
 					+ "_instance");
 			if (instance == null) {
@@ -71,7 +69,7 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 	}
 
 	public void setInstance(T instance) {
-		HttpSession session = new SessionUtil().getSession();
+		HttpSession session = SessionUtil.getSession();
 		session.setAttribute(this.getClass().getSimpleName() + "_instance",
 				instance);
 		this.instance = instance;
@@ -105,7 +103,7 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 				.validate(getInstance());
 		if (!constraintVioalations.isEmpty()) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = sessionUtil.getBundle();
+			ResourceBundle bundle = SessionUtil.getBundle();
 			for (ConstraintViolation<T> constraintVioalation : constraintVioalations) {
 
 				FacesMessage message = new FacesMessage(

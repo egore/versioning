@@ -30,7 +30,7 @@ import de.egore911.versioning.persistence.model.User;
  */
 public class SessionUtil {
 
-	public HttpSession getSession() {
+	public static HttpSession getSession() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (facesContext != null) {
 			ExternalContext externalContext = facesContext.getExternalContext();
@@ -44,7 +44,7 @@ public class SessionUtil {
 		return null;
 	}
 
-	public User getLoggedInUser() {
+	public static User getLoggedInUser() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (facesContext != null) {
 			ExternalContext externalContext = facesContext.getExternalContext();
@@ -60,7 +60,7 @@ public class SessionUtil {
 		return null;
 	}
 
-	public void setLoggedInUser(User user) {
+	public static void setLoggedInUser(User user) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (facesContext != null) {
 			ExternalContext externalContext = facesContext.getExternalContext();
@@ -76,7 +76,7 @@ public class SessionUtil {
 		}
 	}
 
-	public ResourceBundle getBundle() {
+	public static ResourceBundle getBundle() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		Locale locale = facesContext.getViewRoot().getLocale();
 		return ResourceBundle.getBundle("messages", locale);
