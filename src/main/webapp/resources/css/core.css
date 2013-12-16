@@ -43,3 +43,12 @@ div.rf-p {
 table.rf-dt {
 	margin-bottom: 12px;
 }
+
+/* Nice looking links */
+a .linktext, a .linkimage {
+	vertical-align: middle;
+}
+
+a .linkimage {
+	margin-right: 3px;
+}

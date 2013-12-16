@@ -95,8 +95,14 @@
 			</h:panelGrid>
 		</ui:repeat>
 
-		<h:commandButton action="#{serverDetail.addVariable}"
-			value="#{messages.server_add_variable}" />
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
+			<h:outputText value="" />
+			<h:commandLink action="#{serverDetail.addVariable}">
+				<h:graphicImage value="/images/elementary/add.png" styleClass="linkimage" />
+				<h:outputText value="#{messages.server_add_variable}" styleClass="linktext" />
+			</h:commandLink>
+			<h:outputText value="" />
+		</h:panelGrid>
 
 	</rich:panel>
 
