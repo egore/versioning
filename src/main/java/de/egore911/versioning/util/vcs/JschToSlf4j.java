@@ -20,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Logger to pipe the jsch-logging into slf4j. Will be using the logging
+ * category <code>com.jcraft.jsch</code>.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 final class JschToSlf4j implements com.jcraft.jsch.Logger {

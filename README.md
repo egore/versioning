@@ -80,6 +80,10 @@ Supported VCSs
 * Git
 * Subversion
 
+Support for other VCS systems is not yet planned. If you need support for
+another VCS you can implement the *Provider* interface. As of now the VCS
+only needs to implement a method to verify a tag exists.
+
 Used software
 -------------
 

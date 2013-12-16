@@ -18,6 +18,9 @@ package de.egore911.versioning.util.vcs;
 
 import java.util.Collection;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.dfs.DfsRepositoryDescription;
@@ -33,6 +36,8 @@ import com.jcraft.jsch.JSch;
 import de.egore911.versioning.persistence.model.Project;
 
 /**
+ * Git based information provider, based on jgit.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class GitProvider extends Provider {
@@ -41,6 +46,7 @@ public class GitProvider extends Provider {
 			.getLogger(GitProvider.class);
 
 	static {
+		// Wire up our logging redirection
 		JSch.setLogger(new JschToSlf4j());
 	}
 
@@ -52,6 +58,10 @@ public class GitProvider extends Provider {
 		InMemoryRepository repo = new InMemoryRepository(repoDesc) {
 			@Override
 			public org.eclipse.jgit.util.FS getFS() {
+				// Hack the InMemoryRepository to have a valid FS, eventhough it
+				// does not have one. Otherwise the LsRemoteCommand will crash
+				// with a NPE
+
 				FS fs = super.getFS();
 				if (fs == null) {
 					fs = FS.DETECTED;
@@ -59,20 +69,33 @@ public class GitProvider extends Provider {
 				return fs;
 			}
 		};
+
+		// Mock the configuration to contain the origin url
 		StoredConfig config = repo.getConfig();
 		config.setString("remote", "origin", "url",
 				project.getCompleteVcsPath());
+
+		// Ask for the remote tags
 		LsRemoteCommand command = new LsRemoteCommand(repo);
 		command.setTags(true);
 		try {
 			Collection<Ref> tags = command.call();
 			for (Ref tag : tags) {
+				// Tag found, all is fine
 				if (tag.getName().equals("refs/tags/" + tagName)) {
 					return true;
 				}
 			}
+			// Tag not found
 			return false;
 		} catch (GitAPIException e) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			if (facesContext != null) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
+						e.getLocalizedMessage());
+				facesContext.addMessage("main", message);
+			}
 			log.error(e.getMessage(), e);
 			return false;
 		}

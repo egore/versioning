@@ -30,12 +30,24 @@ import org.slf4j.LoggerFactory;
 import de.egore911.versioning.persistence.model.Project;
 
 /**
+ * Core infrastructure for VCS information providers.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public abstract class Provider {
 
 	private static final Logger log = LoggerFactory.getLogger(Provider.class);
 
+	/**
+	 * Checks if a given tag exists. If this will take more than 10 seconds, it
+	 * will be aborted and the tag is reported not to exist.
+	 * 
+	 * @param project
+	 *            the project that has to have the tag
+	 * @param tagName
+	 *            the name of the tag
+	 * @return <code>true</code>, if the tag exists
+	 */
 	public boolean tagExists(final Project project, final String tagName) {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<Boolean> future = executor.submit(new Callable<Boolean>() {
@@ -54,6 +66,15 @@ public abstract class Provider {
 		}
 	}
 
+	/**
+	 * Checks if a given tag exists.
+	 * 
+	 * @param project
+	 *            the project that has to have the tag
+	 * @param tagName
+	 *            the name of the tag
+	 * @return <code>true</code>, if the tag exists
+	 */
 	protected abstract boolean tagExistsImpl(Project project, String tagName);
 
 }

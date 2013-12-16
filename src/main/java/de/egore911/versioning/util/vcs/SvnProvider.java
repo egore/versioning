@@ -33,6 +33,8 @@ import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.VcsHost;
 
 /**
+ * Subversion based information provider, based on SVNKit.
+ * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class SvnProvider extends Provider {
@@ -44,32 +46,35 @@ public class SvnProvider extends Provider {
 	public boolean tagExistsImpl(Project project, String tagName) {
 		try {
 			String completeVcsPath = project.getCompleteVcsPath();
-			if (!completeVcsPath.contains("trunk")) {
-				SVNURL svnurl = SVNURL.parseURIEncoded(completeVcsPath);
-				SVNRepository repo = SVNRepositoryFactory.create(svnurl);
-				VcsHost vcsHost = project.getVcsHost();
-				if (vcsHost.isCredentialsAvailable()) {
-					ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
-							vcsHost.getUsername(), vcsHost.getPassword());
-					repo.setAuthenticationManager(authManager);
-				}
-				SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
-						repo.getLatestRevision());
-				return checkPath == SVNNodeKind.DIR;
+			SVNURL svnurl;
+			if (!completeVcsPath.contains("/trunk")) {
+				// If the URL does not contain trunk anywhere, assume that
+				// trunk/tags/branches are the folder right below the
+				// completeVcsPath
+
+				svnurl = SVNURL.parseURIEncoded(completeVcsPath);
 			} else {
-				SVNURL svnurl = SVNURL.parseURIEncoded(completeVcsPath.replace(
-						"/trunk", "/tags"));
-				SVNRepository repo = SVNRepositoryFactory.create(svnurl);
-				VcsHost vcsHost = project.getVcsHost();
-				if (vcsHost.isCredentialsAvailable()) {
-					ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
-							vcsHost.getUsername(), vcsHost.getPassword());
-					repo.setAuthenticationManager(authManager);
-				}
-				SVNNodeKind checkPath = repo.checkPath(tagName,
-						repo.getLatestRevision());
-				return checkPath == SVNNodeKind.DIR;
+				// If the URL contains trunk remove everything starting from it
+				// so we get the folder above, as the tags folder is located at
+				// this level
+
+				svnurl = SVNURL.parseURIEncoded(completeVcsPath.replaceAll(
+						"/trunk.*", ""));
 			}
+			SVNRepository repo = SVNRepositoryFactory.create(svnurl);
+			VcsHost vcsHost = project.getVcsHost();
+
+			// If the VCS host has credentials available use them
+			if (vcsHost.isCredentialsAvailable()) {
+				ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
+						vcsHost.getUsername(), vcsHost.getPassword());
+				repo.setAuthenticationManager(authManager);
+			}
+
+			// Check if the tag exists by verifying it's a directory
+			SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
+					repo.getLatestRevision());
+			return checkPath == SVNNodeKind.DIR;
 		} catch (SVNException e) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			if (facesContext != null) {
