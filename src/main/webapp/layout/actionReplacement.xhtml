@@ -9,9 +9,6 @@
 
 	<!-- Parameter: entityDetail -->
 
-	<h:commandButton action="#{entityDetail.chooseReplacement}"
-		value="#{messages.actionReplacement_add}" />
-
 	<ui:repeat var="actionReplacement"
 		value="#{entityDetail.instance.actionReplacements}">
 
@@ -79,7 +76,8 @@
 					action="#{entityDetail.addReplacementFile(actionReplacement)}">
 					<h:graphicImage value="/images/elementary/add.png"
 						styleClass="linkimage" />
-					<h:outputText value="#{messages.actionReplacement_add_replacementFile}"
+					<h:outputText
+						value="#{messages.actionReplacement_add_replacementFile}"
 						styleClass="linktext" />
 				</h:commandLink>
 				<h:outputText value="" />
@@ -87,5 +85,8 @@
 
 		</rich:panel>
 	</ui:repeat>
+
+	<h:commandButton action="#{entityDetail.chooseReplacement}"
+		value="#{messages.actionReplacement_add}" />
 
 </ui:composition>

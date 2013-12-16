@@ -59,7 +59,10 @@
 		</f:facet>
 	</rich:dataTable>
 
-	<h:commandLink action="/role.xhtml" value="#{messages.add}">
+	<h:commandLink action="/role.xhtml">
 		<f:param name="id" value="-1" />
+		<h:graphicImage value="/images/elementary/add.png"
+			styleClass="linkimage" />
+		<h:outputText value="#{messages.add}" styleClass="linktext" />
 	</h:commandLink>
 </ui:composition>

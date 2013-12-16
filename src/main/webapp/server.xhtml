@@ -70,50 +70,55 @@
 		</h:panelGrid>
 	</rich:panel>
 
-	<rich:panel header="#{messages.variables}">
+	<rich:tabPanel>
+		<rich:tab header="#{messages.variables} (#{serverDetail.instance.variables.size()})">
 
-		<h:outputFormat value="#{messages.server_variables_for}"
-			escape="false">
-			<f:param value="#{messages.actionCopy}" />
-			<f:param value="#{messages.actionCopy_targetPath}" />
-			<f:param value="#{messages.actionExtraction}" />
-			<f:param value="#{messages.actionExtraction_source}" />
-			<f:param value="#{messages.actionExtraction_destination}" />
-		</h:outputFormat>
+			<h:outputFormat value="#{messages.server_variables_for}"
+				escape="false">
+				<f:param value="#{messages.actionCopy}" />
+				<f:param value="#{messages.actionCopy_targetPath}" />
+				<f:param value="#{messages.actionExtraction}" />
+				<f:param value="#{messages.actionExtraction_source}" />
+				<f:param value="#{messages.actionExtraction_destination}" />
+			</h:outputFormat>
 
-		<ui:repeat var="variable" value="#{serverDetail.instance.variables}"
-			varStatus="status">
+			<ui:repeat var="variable" value="#{serverDetail.instance.variables}"
+				varStatus="status">
+				<h:panelGrid columns="3" columnClasses="caption,value,help">
+					<h:outputText value="#{messages.variable_name}" />
+					<h:inputText value="#{variable.name}" />
+					<h:outputText
+						value="#{status.first ? messages.variable_name_help : ''}" />
+					<h:outputText value="#{messages.variable_value}" />
+					<h:inputText value="#{variable.value}" />
+					<h:outputText
+						value="#{status.first ? messages.variable_value_help : ''}" />
+				</h:panelGrid>
+			</ui:repeat>
+
 			<h:panelGrid columns="3" columnClasses="caption,value,help">
-				<h:outputText value="#{messages.variable_name}" />
-				<h:inputText value="#{variable.name}" />
-				<h:outputText
-					value="#{status.first ? messages.variable_name_help : ''}" />
-				<h:outputText value="#{messages.variable_value}" />
-				<h:inputText value="#{variable.value}" />
-				<h:outputText
-					value="#{status.first ? messages.variable_value_help : ''}" />
+				<h:outputText value="" />
+				<h:commandLink action="#{serverDetail.addVariable}">
+					<h:graphicImage value="/images/elementary/add.png"
+						styleClass="linkimage" />
+					<h:outputText value="#{messages.server_add_variable}"
+						styleClass="linktext" />
+				</h:commandLink>
+				<h:outputText value="" />
 			</h:panelGrid>
-		</ui:repeat>
-
-		<h:panelGrid columns="3" columnClasses="caption,value,help">
-			<h:outputText value="" />
-			<h:commandLink action="#{serverDetail.addVariable}">
-				<h:graphicImage value="/images/elementary/add.png" styleClass="linkimage" />
-				<h:outputText value="#{messages.server_add_variable}" styleClass="linktext" />
-			</h:commandLink>
-			<h:outputText value="" />
-		</h:panelGrid>
-
-	</rich:panel>
-
-	<ui:include src="/layout/actionReplacement.xhtml">
-		<ui:param name="entityDetail" value="#{serverDetail}" />
-	</ui:include>
+		</rich:tab>
+		<rich:tab
+			header="#{messages.actionReplacements} (#{serverDetail.instance.actionReplacements.size()})">
+			<ui:include src="/layout/actionReplacement.xhtml">
+				<ui:param name="entityDetail" value="#{serverDetail}" />
+			</ui:include>
+		</rich:tab>
+	</rich:tabPanel>
 
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{serverDetail.save}" />
 
-	<rich:panel header="#{messages.deployments}"
+	<rich:collapsiblePanel header="#{messages.deployments}"
 		rendered="#{serverDetail.managed}">
 		<h3>
 			<h:outputText value="#{messages.server_currently_deployed}" />
@@ -151,6 +156,6 @@
 				<h:outputText value="#{version.transformedVcsTag}" />
 			</rich:column>
 		</rich:dataTable>
-	</rich:panel>
+	</rich:collapsiblePanel>
 
 </ui:composition>
