@@ -104,7 +104,8 @@ public class Version extends IntegerDbObject {
 		String[] otherSplit = otherTransformedVcsTag.split("\\.");
 		int length = Math.min(mySplit.length, otherSplit.length);
 		for (int i = 0; i < length; i++) {
-			int compare = mySplit[i].compareTo(otherSplit[i]);
+			int compare = Integer.valueOf(mySplit[i]).compareTo(
+					Integer.valueOf(otherSplit[i]));
 			if (compare > 0) {
 				return true;
 			} else if (compare < 0) {

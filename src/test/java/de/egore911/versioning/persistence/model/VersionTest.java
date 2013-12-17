@@ -46,6 +46,14 @@ public class VersionTest {
 		other.setVcsTag("1.0.0");
 		Assert.assertFalse(version.isNewerThan(other));
 		Assert.assertFalse(other.isNewerThan(version));
+
+		// 1.0.0 is older than 1.0.10
+		other.setVcsTag("1.0.10");
+		Assert.assertFalse(version.isNewerThan(other));
+
+		// 1.0.9 is older than 1.0.10
+		version.setVcsTag("1.0.9");
+		Assert.assertFalse(version.isNewerThan(other));
 	}
 
 	@Test
