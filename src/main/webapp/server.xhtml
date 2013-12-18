@@ -6,6 +6,8 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="layout/core.xhtml">
+	
+	<ui:param name="formencoding" value="multipart/form-data" />
 
 	<ui:define name="title">
 		<h:outputText value="#{messages.server}" />
@@ -27,6 +29,13 @@
 				id="server_targetdir" />
 			<h:outputText value="#{messages.server_targetdir_help}" />
 
+			<h:outputText value="#{messages.server_icon}" />
+			<h:panelGroup>
+				<h:graphicImage value="/service/resources/server/#{serverDetail.instance.iconId}"
+						height="16" rendered="#{not empty serverDetail.instance.iconId}" />
+				<h:inputFile value="#{serverDetail.icon}"/>
+			</h:panelGroup>
+			<h:outputText value="#{messages.server_icon_help}" />
 
 			<h:outputText value="#{messages.server_configuredProjects}" />
 			<rich:pickList value="#{serverDetail.instance.configuredProjects}"

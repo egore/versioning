@@ -16,6 +16,10 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,10 +30,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.ActionReplacement;
+import de.egore911.versioning.persistence.model.BinaryData;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Replacement;
@@ -49,6 +59,9 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerDetail extends AbstractDetail<Server> {
+
+	private static final Logger log = LoggerFactory
+			.getLogger(ServerDetail.class);
 
 	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 
@@ -147,6 +160,30 @@ public class ServerDetail extends AbstractDetail<Server> {
 			return "";
 		}
 
+		if (icon != null) {
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			String filename = getFilename(icon);
+			try (InputStream inputStream = icon.getInputStream()) {
+				IOUtils.copy(inputStream, byteArrayOutputStream);
+			} catch (IOException e) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
+						e.getLocalizedMessage());
+				facesContext.addMessage("main", message);
+				log.error(e.getMessage(), e);
+				return "";
+			}
+			BinaryData binaryData = new BinaryData();
+			binaryData.setFilename(filename);
+			byte[] bytes = byteArrayOutputStream.toByteArray();
+			binaryData.setSize(bytes.length);
+			binaryData.setData(bytes);
+			binaryData.setContentType(URLConnection
+					.guessContentTypeFromName(filename));
+			getInstance().setIcon(binaryData);
+		}
+
 		for (Project project : getInstance().getConfiguredProjects()) {
 			if (!project.getConfiguredServers().contains(getInstance())) {
 				project.getConfiguredServers().add(getInstance());
@@ -171,6 +208,31 @@ public class ServerDetail extends AbstractDetail<Server> {
 		getDao().save(getInstance());
 		setInstance(null);
 		return "/servers.xhtml";
+	}
+
+	private Part icon;
+
+	public Part getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Part icon) {
+		this.icon = icon;
+	}
+
+	private static String getFilename(Part part) {
+		for (String cd : part.getHeader("content-disposition").split(";")) {
+			System.out.println(cd);
+		}
+		for (String cd : part.getHeader("content-disposition").split(";")) {
+			if (cd.trim().startsWith("filename")) {
+				String filename = cd.substring(cd.indexOf('=') + 1).trim()
+						.replace("\"", "");
+				return filename.substring(filename.lastIndexOf('/') + 1)
+						.substring(filename.lastIndexOf('\\') + 1); // MSIE fix.
+			}
+		}
+		return null;
 	}
 
 }

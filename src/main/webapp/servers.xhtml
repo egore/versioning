@@ -21,8 +21,11 @@
 					<ui:param name="whichColumn" value="name" />
 				</ui:include>
 			</f:facet>
-			<h:link outcome="server" value="#{server.name}"
+			<h:link outcome="server"
 				title="#{server.description}">
+				<h:graphicImage value="/service/resources/server/#{server.iconId}"
+					height="16" styleClass="linkimage" rendered="#{not empty server.iconId}" />
+				<h:outputText value="#{server.name}" styleClass="linktext" />
 				<f:param name="id" value="#{server.id}" />
 			</h:link>
 		</rich:column>
@@ -54,7 +57,8 @@
 
 	<h:commandLink action="/server.xhtml">
 		<f:param name="id" value="-1" />
-		<h:graphicImage value="/images/elementary/add.png" styleClass="linkimage" />
+		<h:graphicImage value="/images/elementary/add.png"
+			styleClass="linkimage" />
 		<h:outputText value="#{messages.add}" styleClass="linktext" />
 	</h:commandLink>
 </ui:composition>

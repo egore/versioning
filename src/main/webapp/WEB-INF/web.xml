@@ -55,6 +55,14 @@
 		<servlet-name>InfoService</servlet-name>
 		<url-pattern>/service/info</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>ResourceServlet</servlet-name>
+		<servlet-class>de.egore911.versioning.ui.servlets.ResourceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ResourceServlet</servlet-name>
+		<url-pattern>/service/resources/server/*</url-pattern>
+	</servlet-mapping>
 
 	<filter>
 		<filter-name>EntityManagerFilter</filter-name>

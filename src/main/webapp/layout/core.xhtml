@@ -12,7 +12,7 @@
 	<h:outputStylesheet library="css" name="core.css" />
 </h:head>
 <h:body>
-	<h:form id="main">
+	<h:form id="main" enctype="#{empty formencoding ? 'application/x-www-form-urlencoded' : formencoding}">
 		<h1>
 			<ui:insert name="title" />
 		</h1>

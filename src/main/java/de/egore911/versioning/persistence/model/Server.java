@@ -50,6 +50,8 @@ public class Server extends IntegerDbObject {
 	private List<Variable> variables = new ArrayList<>(0);
 	private List<Project> configuredProjects = new ArrayList<>(0);
 	private List<ActionReplacement> actionReplacements = new ArrayList<>(0);
+	private BinaryData icon;
+	private Integer iconId;
 
 	@Column(nullable = false, length = 255)
 	@NotNull
@@ -142,6 +144,25 @@ public class Server extends IntegerDbObject {
 
 	public void setActionReplacements(List<ActionReplacement> actionReplacements) {
 		this.actionReplacements = actionReplacements;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_binary_data_icon")
+	public BinaryData getIcon() {
+		return icon;
+	}
+
+	public void setIcon(BinaryData icon) {
+		this.icon = icon;
+	}
+
+	@Column(name = "id_binary_data_icon", updatable = false, insertable = false)
+	public Integer getIconId() {
+		return iconId;
+	}
+
+	public void setIconId(Integer iconId) {
+		this.iconId = iconId;
 	}
 
 }
