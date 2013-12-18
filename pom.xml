@@ -19,8 +19,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/egore/versioning.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/egore/versioning.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+	</scm>
 
 	<build>
 		<finalName>versioning</finalName>
