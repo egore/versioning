@@ -13,8 +13,19 @@
 		value="#{entityDetail.instance.actionReplacements}">
 
 		<rich:panel header="#{messages.actionReplacement}">
+			<h:commandLink
+				action="#{entityDetail.deleteActionReplacement(actionReplacement)}"
+				class="deletionlink" title="#{messages.actionReplacement_delete}">
+				<h:graphicImage value="/images/elementary/edit-delete.png" />
+			</h:commandLink>
+
 			<ui:repeat value="#{actionReplacement.wildcards}" var="wildcard"
 				varStatus="status">
+				<h:commandLink action="#{entityDetail.deleteWildcard(wildcard)}"
+					class="deletionlink"
+					title="#{messages.actionReplacement_delete_wildcard}">
+					<h:graphicImage value="/images/elementary/edit-delete.png" />
+				</h:commandLink>
 				<h:panelGrid columns="3" columnClasses="caption,value,help">
 					<h:outputText
 						value="#{status.first ? messages.actionReplacement_wildcard : ''}" />
@@ -37,6 +48,12 @@
 
 			<ui:repeat value="#{actionReplacement.replacements}"
 				var="replacement" varStatus="status">
+				<h:commandLink
+					action="#{entityDetail.deleteReplacement(replacement)}"
+					class="deletionlink"
+					title="#{messages.actionReplacement_delete_replacement}">
+					<h:graphicImage value="/images/elementary/edit-delete.png" />
+				</h:commandLink>
 				<h:panelGrid columns="3" columnClasses="caption,value,help">
 					<h:outputText value="#{messages.actionReplacement_variable}" />
 					<h:inputText value="#{replacement.variable}" />
@@ -62,6 +79,12 @@
 
 			<ui:repeat value="#{actionReplacement.replacementFiles}"
 				var="replacementFile" varStatus="status">
+				<h:commandLink
+					action="#{entityDetail.deleteReplacementfile(replacementFile)}"
+					class="deletionlink"
+					title="#{messages.actionReplacement_delete_replacementFile}">
+					<h:graphicImage value="/images/elementary/edit-delete.png" />
+				</h:commandLink>
 				<h:panelGrid columns="3" columnClasses="caption,value,help">
 					<h:outputText
 						value="#{status.first ? messages.actionReplacement_replacementFile : ''}" />

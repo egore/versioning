@@ -27,7 +27,8 @@
 
 		<h:outputText value="#{messages.mavenArtifact_mavenRepository}" />
 		<h:selectOneMenu value="#{actionEntity.mavenArtifact.mavenRepository}"
-			id="mavenArtifact_mavenRepository" converter="mavenrepositoryConverter">
+			id="mavenArtifact_mavenRepository"
+			converter="mavenrepositoryConverter">
 			<f:selectItems
 				value="#{selectItemBean.allMavenRepositoriesSelectItems}" />
 		</h:selectOneMenu>

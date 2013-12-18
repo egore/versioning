@@ -52,3 +52,8 @@ a .linktext, a .linkimage {
 a .linkimage {
 	margin-right: 3px;
 }
+
+/* deletion links */
+a.deletionlink {
+	float: right;
+}

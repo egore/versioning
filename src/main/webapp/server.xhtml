@@ -6,7 +6,7 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="layout/core.xhtml">
-	
+
 	<ui:param name="formencoding" value="multipart/form-data" />
 
 	<ui:define name="title">
@@ -31,9 +31,10 @@
 
 			<h:outputText value="#{messages.server_icon}" />
 			<h:panelGroup>
-				<h:graphicImage value="/service/resources/server/#{serverDetail.instance.iconId}"
-						height="16" rendered="#{not empty serverDetail.instance.iconId}" />
-				<h:inputFile value="#{serverDetail.icon}"/>
+				<h:graphicImage
+					value="/service/resources/server/#{serverDetail.instance.iconId}"
+					height="16" rendered="#{not empty serverDetail.instance.iconId}" />
+				<h:inputFile value="#{serverDetail.icon}" />
 			</h:panelGroup>
 			<h:outputText value="#{messages.server_icon_help}" />
 
@@ -79,8 +80,9 @@
 		</h:panelGrid>
 	</rich:panel>
 
-	<rich:tabPanel>
-		<rich:tab header="#{messages.variables} (#{serverDetail.instance.variables.size()})">
+	<rich:tabPanel switchType="client">
+		<rich:tab
+			header="#{messages.variables} (#{serverDetail.instance.variables.size()})">
 
 			<h:outputFormat value="#{messages.server_variables_for}"
 				escape="false">
@@ -93,6 +95,11 @@
 
 			<ui:repeat var="variable" value="#{serverDetail.instance.variables}"
 				varStatus="status">
+				<h:commandLink
+					action="#{serverDetail.deleteVariable(variable)}"
+					class="deletionlink" title="#{messages.variable_delete}">
+					<h:graphicImage value="/images/elementary/edit-delete.png" />
+				</h:commandLink>
 				<h:panelGrid columns="3" columnClasses="caption,value,help">
 					<h:outputText value="#{messages.variable_name}" />
 					<h:inputText value="#{variable.name}" />
@@ -110,7 +117,7 @@
 				<h:commandLink action="#{serverDetail.addVariable}">
 					<h:graphicImage value="/images/elementary/add.png"
 						styleClass="linkimage" />
-					<h:outputText value="#{messages.server_add_variable}"
+					<h:outputText value="#{messages.variable_add}"
 						styleClass="linktext" />
 				</h:commandLink>
 				<h:outputText value="" />

@@ -45,7 +45,8 @@
 				id="project_tagTransformer" converter="tagtransformerConverter">
 				<f:selectItem itemValue="#{null}"
 					itemLabel="#{messages.tagtransformer_none}" />
-				<f:selectItems value="#{selectItemBean.allTagTransformerSelectItems}" />
+				<f:selectItems
+					value="#{selectItemBean.allTagTransformerSelectItems}" />
 			</h:selectOneMenu>
 			<h:outputText value="#{messages.project_tagTransformer_help}" />
 
@@ -61,13 +62,19 @@
 		</h:panelGrid>
 	</rich:panel>
 
-	<rich:tabPanel>
+	<rich:tabPanel switchType="client">
 		<rich:tab
 			header="#{messages.actionCopies} (#{projectDetail.instance.actionCopies.size()})">
 			<ui:repeat var="actionCopy"
 				value="#{projectDetail.instance.actionCopies}">
 
 				<rich:panel header="#{messages.actionCopy}">
+					<h:commandLink
+						action="#{projectDetail.deleteActionCopy(actionCopy)}"
+						class="deletionlink" title="#{messages.actionCopy_delete}">
+						<h:graphicImage value="/images/elementary/edit-delete.png" />
+					</h:commandLink>
+
 					<h:panelGrid columns="3" columnClasses="caption,value,help"
 						style="padding-bottom: 15px;">
 						<h:outputText value="#{messages.actionCopy_targetPath}" />
@@ -90,6 +97,19 @@
 						value="#{messages.add_spacerurl}"
 						rendered="#{empty actionCopy.mavenArtifact and empty actionCopy.spacerUrl}" />
 
+					<h:commandLink
+						action="#{projectDetail.deleteMavenArtifact(actionCopy.mavenArtifact)}"
+						class="deletionlink"
+						rendered="#{not empty actionCopy.mavenArtifact}"
+						title="#{messages.mavenArtifact_delete}">
+						<h:graphicImage value="/images/elementary/edit-delete.png" />
+					</h:commandLink>
+					<h:commandLink
+						action="#{projectDetail.deleteSpacerUrl(actionCopy.spacerUrl)}"
+						class="deletionlink" rendered="#{not empty actionCopy.spacerUrl}"
+						title="#{messages.spacerUrl_delete}">
+						<h:graphicImage value="/images/elementary/edit-delete.png" />
+					</h:commandLink>
 					<ui:include src="/layout/mavenArtifact_or_spacerUrl.xhtml">
 						<ui:param name="actionEntity" value="#{actionCopy}" />
 						<ui:param name="idPrefix" value="actionCopy_" />
@@ -106,7 +126,19 @@
 				value="#{projectDetail.instance.actionExtractions}">
 
 				<rich:panel header="#{messages.actionExtraction}">
+					<h:commandLink
+						action="#{projectDetail.deleteActionExtraction(actionExtraction)}"
+						class="deletionlink" title="#{messages.actionExtraction_delete}">
+						<h:graphicImage value="/images/elementary/edit-delete.png" />
+					</h:commandLink>
+
 					<ui:repeat value="#{actionExtraction.extractions}" var="extraction">
+						<h:commandLink
+							action="#{projectDetail.deleteExtraction(extraction)}"
+							class="deletionlink"
+							title="#{messages.actionExtraction_extraction_delete}">
+							<h:graphicImage value="/images/elementary/edit-delete.png" />
+						</h:commandLink>
 						<h:panelGrid columns="3" columnClasses="caption,value,help">
 							<h:outputText value="#{messages.actionExtraction_source}" />
 							<h:inputText value="#{extraction.source}" />
@@ -136,10 +168,24 @@
 						value="#{messages.add_mavenartifact}"
 						rendered="#{empty actionExtraction.mavenArtifact and empty actionExtraction.spacerUrl}" />
 					<h:commandButton
-						action="#{projectDetail.chooseExtractionSpacerUrl}"
+						action="#{projectDetail.chooseExtractionSpacerUrl(actionExtraction)}"
 						value="#{messages.add_spacerurl}"
 						rendered="#{empty actionExtraction.mavenArtifact and empty actionExtraction.spacerUrl}" />
 
+					<h:commandLink
+						action="#{projectDetail.deleteMavenArtifact(actionExtraction.mavenArtifact)}"
+						class="deletionlink"
+						rendered="#{not empty actionExtraction.mavenArtifact}"
+						title="#{messages.mavenArtifact_delete}">
+						<h:graphicImage value="/images/elementary/edit-delete.png" />
+					</h:commandLink>
+					<h:commandLink
+						action="#{projectDetail.deleteSpacerUrl(actionExtraction.spacerUrl)}"
+						class="deletionlink"
+						rendered="#{not empty actionExtraction.spacerUrl}"
+						title="#{messages.spacerUrl_delete}">
+						<h:graphicImage value="/images/elementary/edit-delete.png" />
+					</h:commandLink>
 					<ui:include src="/layout/mavenArtifact_or_spacerUrl.xhtml">
 						<ui:param name="actionEntity" value="#{actionExtraction}" />
 						<ui:param name="idPrefix" value="actionExtraction_" />
@@ -159,6 +205,12 @@
 			<ui:repeat var="actionCheckout"
 				value="#{projectDetail.instance.actionCheckouts}">
 				<rich:panel header="#{messages.actionCheckout}">
+					<h:commandLink
+						action="#{projectDetail.deleteActionCheckout(actionCheckout)}"
+						class="deletionlink" title="#{messages.actionCheckout_delete}">
+						<h:graphicImage value="/images/elementary/edit-delete.png" />
+					</h:commandLink>
+
 					<h:panelGrid columns="3" columnClasses="caption,value,help">
 						<h:outputText value="#{messages.actionCheckout_source}" />
 						<h:outputText
@@ -172,7 +224,8 @@
 				</rich:panel>
 			</ui:repeat>
 		</rich:tab>
-		<rich:tab header="#{messages.actionReplacements} (#{projectDetail.instance.actionReplacements.size()})">
+		<rich:tab
+			header="#{messages.actionReplacements} (#{projectDetail.instance.actionReplacements.size()})">
 			<ui:include src="/layout/actionReplacement.xhtml">
 				<ui:param name="entityDetail" value="#{projectDetail}" />
 			</ui:include>

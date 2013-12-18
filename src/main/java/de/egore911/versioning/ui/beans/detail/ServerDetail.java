@@ -29,6 +29,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
@@ -40,6 +41,7 @@ import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.ActionReplacement;
 import de.egore911.versioning.persistence.model.BinaryData;
+import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Replacement;
@@ -49,6 +51,7 @@ import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.persistence.model.Wildcard;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
+import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -110,6 +113,14 @@ public class ServerDetail extends AbstractDetail<Server> {
 		return "";
 	}
 
+	public String deleteVariable(Variable variable) {
+		Server server = getInstance();
+		server.getVariables().remove(variable);
+		markDelete(variable);
+		setInstance(server);
+		return "";
+	}
+
 	// Replacement
 	public String chooseReplacement() {
 		Server server = getInstance();
@@ -122,10 +133,24 @@ public class ServerDetail extends AbstractDetail<Server> {
 		return "";
 	}
 
+	public String deleteActionReplacement(ActionReplacement actionReplacement) {
+		Server server = getInstance();
+		server.getActionReplacements().remove(actionReplacement);
+		markDelete(actionReplacement);
+		setInstance(server);
+		return "";
+	}
+
 	public String addWildcard(ActionReplacement actionReplacement) {
 		Wildcard wildcard = new Wildcard();
 		wildcard.setActionReplacement(actionReplacement);
 		actionReplacement.getWildcards().add(wildcard);
+		return "";
+	}
+
+	public String deleteWildcard(Wildcard wildcard) {
+		wildcard.getActionReplacement().getWildcards().remove(wildcard);
+		markDelete(wildcard);
 		return "";
 	}
 
@@ -136,10 +161,24 @@ public class ServerDetail extends AbstractDetail<Server> {
 		return "";
 	}
 
+	public String deleteReplacement(Replacement replacement) {
+		replacement.getActionReplacement().getReplacements()
+				.remove(replacement);
+		markDelete(replacement);
+		return "";
+	}
+
 	public String addReplacementFile(ActionReplacement actionReplacement) {
 		Replacementfile replacementFile = new Replacementfile();
 		replacementFile.setActionReplacement(actionReplacement);
 		actionReplacement.getReplacementFiles().add(replacementFile);
+		return "";
+	}
+
+	public String deleteReplacementfile(Replacementfile replacementfile) {
+		replacementfile.getActionReplacement().getReplacementFiles()
+				.remove(replacementfile);
+		markDelete(replacementfile);
 		return "";
 	}
 
@@ -197,15 +236,33 @@ public class ServerDetail extends AbstractDetail<Server> {
 		session.setAttribute("server_" + getInstance().getId()
 				+ "_origProjects", null);
 		ProjectDao projectDao = new ProjectDao();
-		for (Project project : origProjects) {
-			if (!getInstance().getConfiguredProjects().contains(project)) {
-				project = projectDao.reattach(project);
-				project.getConfiguredServers().remove(getInstance());
-				projectDao.save(project);
+
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
+		try {
+			for (Project project : origProjects) {
+				if (!getInstance().getConfiguredProjects().contains(project)) {
+					project = projectDao.reattach(project);
+					project.getConfiguredServers().remove(getInstance());
+					projectDao.save(project);
+				}
+			}
+
+			getDao().save(getInstance());
+
+			for (IntegerDbObject deletion : getDeletions()) {
+				if (deletion.getId() != null) {
+					deletion = em.merge(deletion);
+					em.remove(deletion);
+				}
+			}
+
+			em.getTransaction().commit();
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
 			}
 		}
-
-		getDao().save(getInstance());
 		setInstance(null);
 		return "/servers.xhtml";
 	}

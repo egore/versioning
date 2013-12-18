@@ -16,6 +16,8 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -53,9 +55,13 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 			if (instance == null) {
 				if (id != null) {
 					instance = load();
+					session.setAttribute(this.getClass().getSimpleName()
+							+ "_deletions", new ArrayList<>());
 				}
 				if (instance == null) {
 					instance = createEmpty();
+					session.setAttribute(this.getClass().getSimpleName()
+							+ "_deletions", new ArrayList<>());
 				}
 			}
 			session.setAttribute(this.getClass().getSimpleName() + "_instance",
@@ -116,6 +122,24 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 			return false;
 		}
 		return true;
+	}
+
+	protected <U extends IntegerDbObject> void markDelete(U entity) {
+		List<U> deletions = getDeletions();
+		deletions.add(entity);
+		HttpSession session = SessionUtil.getSession();
+		session.setAttribute(this.getClass().getSimpleName() + "_deletions",
+				deletions);
+	}
+
+	protected <U extends IntegerDbObject> List<U> getDeletions() {
+		HttpSession session = SessionUtil.getSession();
+		List<U> deletions = (List<U>) session.getAttribute(this.getClass()
+				.getSimpleName() + "_deletions");
+		if (deletions == null) {
+			deletions = new ArrayList<>();
+		}
+		return deletions;
 	}
 
 }

@@ -83,13 +83,21 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 
 	public T save(T entity) {
 		EntityManager em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
+		boolean ourOwnTransaction = true;
+		if (em.getTransaction().isActive()) {
+			ourOwnTransaction = false;
+		}
+		if (ourOwnTransaction) {
+			em.getTransaction().begin();
+		}
 		try {
 			entity = em.merge(entity);
-			em.getTransaction().commit();
+			if (ourOwnTransaction) {
+				em.getTransaction().commit();
+			}
 			return entity;
 		} finally {
-			if (em.getTransaction().isActive()) {
+			if (ourOwnTransaction && em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
 			}
 		}

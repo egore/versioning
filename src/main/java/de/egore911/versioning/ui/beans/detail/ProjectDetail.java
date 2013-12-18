@@ -24,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.ActionCheckout;
@@ -31,6 +32,7 @@ import de.egore911.versioning.persistence.model.ActionCopy;
 import de.egore911.versioning.persistence.model.ActionExtraction;
 import de.egore911.versioning.persistence.model.ActionReplacement;
 import de.egore911.versioning.persistence.model.Extraction;
+import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
@@ -40,6 +42,7 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Wildcard;
+import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
@@ -87,6 +90,42 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
+	public String deleteActionCopy(ActionCopy actionCopy) {
+		Project project = getInstance();
+		project.getActionCopies().remove(actionCopy);
+		markDelete(actionCopy);
+		setInstance(project);
+		return "";
+	}
+
+	public String deleteMavenArtifact(MavenArtifact mavenArtifact) {
+		if (mavenArtifact.getActionCopy() != null) {
+			mavenArtifact.getActionCopy().setMavenArtifact(null);
+		} else if (mavenArtifact.getActionExtraction() != null) {
+			mavenArtifact.getActionExtraction().setMavenArtifact(null);
+		} else {
+			throw new IllegalArgumentException(
+					"Neither attached to copy or extraction action");
+		}
+		markDelete(mavenArtifact);
+		setInstance(getInstance());
+		return "";
+	}
+
+	public String deleteSpacerUrl(SpacerUrl spacerUrl) {
+		if (spacerUrl.getActionCopy() != null) {
+			spacerUrl.getActionCopy().setSpacerUrl(null);
+		} else if (spacerUrl.getActionExtraction() != null) {
+			spacerUrl.getActionExtraction().setSpacerUrl(null);
+		} else {
+			throw new IllegalArgumentException(
+					"Neither attached to copy or extraction action");
+		}
+		markDelete(spacerUrl);
+		setInstance(getInstance());
+		return "";
+	}
+
 	// Extraction
 	public String chooseExtraction() {
 		Project project = getInstance();
@@ -122,6 +161,21 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
+	public String deleteActionExtraction(ActionExtraction actionExtraction) {
+		Project project = getInstance();
+		project.getActionExtractions().remove(actionExtraction);
+		markDelete(actionExtraction);
+		setInstance(project);
+		return "";
+	}
+
+	public String deleteExtraction(Extraction extraction) {
+		extraction.getActionExtraction().getExtractions().remove(extraction);
+		markDelete(extraction);
+		setInstance(getInstance());
+		return "";
+	}
+
 	// Replacement
 	public String chooseReplacement() {
 		Project project = getInstance();
@@ -134,10 +188,24 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
+	public String deleteActionReplacement(ActionReplacement actionReplacement) {
+		Project project = getInstance();
+		project.getActionReplacements().remove(actionReplacement);
+		markDelete(actionReplacement);
+		setInstance(project);
+		return "";
+	}
+
 	public String addWildcard(ActionReplacement actionReplacement) {
 		Wildcard wildcard = new Wildcard();
 		wildcard.setActionReplacement(actionReplacement);
 		actionReplacement.getWildcards().add(wildcard);
+		return "";
+	}
+
+	public String deleteWildcard(Wildcard wildcard) {
+		wildcard.getActionReplacement().getWildcards().remove(wildcard);
+		markDelete(wildcard);
 		return "";
 	}
 
@@ -148,10 +216,24 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
+	public String deleteReplacement(Replacement replacement) {
+		replacement.getActionReplacement().getReplacements()
+				.remove(replacement);
+		markDelete(replacement);
+		return "";
+	}
+
 	public String addReplacementFile(ActionReplacement actionReplacement) {
 		Replacementfile replacementFile = new Replacementfile();
 		replacementFile.setActionReplacement(actionReplacement);
 		actionReplacement.getReplacementFiles().add(replacementFile);
+		return "";
+	}
+
+	public String deleteReplacementfile(Replacementfile replacementfile) {
+		replacementfile.getActionReplacement().getReplacementFiles()
+				.remove(replacementfile);
+		markDelete(replacementfile);
 		return "";
 	}
 
@@ -161,6 +243,14 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		ActionCheckout actionCheckout = new ActionCheckout();
 		project.getActionCheckouts().add(actionCheckout);
 		actionCheckout.setProject(project);
+		setInstance(project);
+		return "";
+	}
+
+	public String deleteActionCheckout(ActionCheckout actionCheckout) {
+		Project project = getInstance();
+		project.getActionCheckouts().remove(actionCheckout);
+		markDelete(actionCheckout);
 		setInstance(project);
 		return "";
 	}
@@ -182,7 +272,25 @@ public class ProjectDetail extends AbstractDetail<Project> {
 			}
 		}
 
-		getDao().save(getInstance());
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
+		try {
+			getDao().save(getInstance());
+
+			for (IntegerDbObject deletion : getDeletions()) {
+				if (deletion.getId() != null) {
+					deletion = em.merge(deletion);
+					em.remove(deletion);
+				}
+			}
+
+			em.getTransaction().commit();
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+		}
+
 		setInstance(null);
 		return "/projects.xhtml";
 	}
