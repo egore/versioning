@@ -23,7 +23,7 @@ import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Server_;
-import de.egore911.versioning.ui.model.SortDirection;
+import de.egore911.versioning.persistence.selector.ServerSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -40,10 +40,11 @@ public class ServerList extends AbstractList<Server> {
 	}
 
 	@Override
-	protected State createInitialState() {
-		State state = new State();
+	protected ServerSelector createInitialSelector() {
+		ServerSelector state = new ServerSelector();
 		state.setSortColumn(Server_.name.getName());
-		state.setSortDirection(SortDirection.ASC);
+		state.setAscending(Boolean.TRUE);
+		state.setLimit(DEFAULT_LIMIT);
 		return state;
 	}
 

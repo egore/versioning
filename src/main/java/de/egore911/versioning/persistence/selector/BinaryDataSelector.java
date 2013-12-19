@@ -31,6 +31,8 @@ import de.egore911.versioning.persistence.model.BinaryData;
  */
 public class BinaryDataSelector extends AbstractSelector<BinaryData> {
 
+	private static final long serialVersionUID = 2872006201650134090L;
+
 	@Override
 	protected Class<BinaryData> getEntityClass() {
 		return BinaryData.class;

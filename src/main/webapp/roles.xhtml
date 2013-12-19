@@ -12,7 +12,7 @@
 	</ui:define>
 
 	<rich:dataTable value="#{roleList.dataModel}" var="role"
-		rows="#{roleList.state.limit}">
+		rows="#{roleList.selector.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.role_name}" />

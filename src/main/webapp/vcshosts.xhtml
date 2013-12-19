@@ -12,7 +12,7 @@
 	</ui:define>
 
 	<rich:dataTable value="#{vcshostList.dataModel}" var="vcshost"
-		rows="#{vcshostList.state.limit}">
+		rows="#{vcshostList.selector.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.vcshost_name}" />

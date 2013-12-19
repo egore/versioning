@@ -35,6 +35,8 @@ import de.egore911.versioning.persistence.model.User_;
  */
 public class UserSelector extends AbstractSelector<User> {
 
+	private static final long serialVersionUID = -897172279970530434L;
+
 	private String login;
 	private String passwordHash;
 

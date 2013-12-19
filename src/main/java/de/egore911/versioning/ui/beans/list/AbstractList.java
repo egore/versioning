@@ -16,8 +16,6 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
-import java.io.Serializable;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.model.DataModel;
@@ -27,9 +25,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
+import de.egore911.versioning.persistence.selector.AbstractSelector;
 import de.egore911.versioning.ui.beans.AbstractBean;
 import de.egore911.versioning.ui.model.PagingDataModel;
-import de.egore911.versioning.ui.model.SortDirection;
 import de.egore911.versioning.util.SessionUtil;
 
 /**
@@ -38,86 +36,37 @@ import de.egore911.versioning.util.SessionUtil;
 public abstract class AbstractList<T extends IntegerDbObject> extends
 		AbstractBean {
 
-	private static final int DEFAULT_LIMIT = 20;
+	protected static final int DEFAULT_LIMIT = 20;
 
-	public static class State implements Serializable {
-
-		private static final long serialVersionUID = -1222436414575029583L;
-
-		private Integer offset;
-		private Integer limit;
-		private String sortColumn;
-		private SortDirection sortDirection;
-
-		public Integer getOffset() {
-			if (offset == null) {
-				return 0;
-			}
-			return offset;
-		}
-
-		public void setOffset(Integer offset) {
-			this.offset = offset;
-		}
-
-		public Integer getLimit() {
-			if (limit == null) {
-				limit = DEFAULT_LIMIT;
-			}
-			return limit;
-		}
-
-		public void setLimit(Integer limit) {
-			this.limit = limit;
-		}
-
-		public String getSortColumn() {
-			return sortColumn;
-		}
-
-		public void setSortColumn(String sortColumn) {
-			this.sortColumn = sortColumn;
-		}
-
-		public SortDirection getSortDirection() {
-			return sortDirection;
-		}
-
-		public void setSortDirection(SortDirection sortDirection) {
-			this.sortDirection = sortDirection;
-		}
-
-	}
-
-	private transient State state = createInitialState();
+	private transient AbstractSelector<T> selector = createInitialSelector();
 	private transient HttpSession session;
 
-	protected abstract State createInitialState();
+	protected abstract AbstractSelector<T> createInitialSelector();
 
 	@Override
 	@PostConstruct
 	public void postConstruct() {
 		super.postConstruct();
 		session = SessionUtil.getSession();
-		State previousState = (State) session.getAttribute(this.getClass()
-				.getSimpleName() + "_state");
+		AbstractSelector<T> previousState = (AbstractSelector<T>) session
+				.getAttribute(this.getClass().getSimpleName() + "_selector");
 		if (previousState != null) {
-			setState(previousState);
+			setSelector(previousState);
 		}
 	}
 
 	@PreDestroy
 	public void preDestroy() {
-		session.setAttribute(this.getClass().getSimpleName() + "_state",
-				getState());
+		session.setAttribute(this.getClass().getSimpleName() + "_selector",
+				getSelector());
 	}
 
-	public State getState() {
-		return state;
+	public AbstractSelector<T> getSelector() {
+		return selector;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public void setSelector(AbstractSelector<T> selector) {
+		this.selector = selector;
 	}
 
 	public long count() {
@@ -125,18 +74,34 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	}
 
 	public Integer getPage() {
-		return (getState().getOffset() / getState().getLimit()) + 1;
+		return (getOffset() / getLimit()) + 1;
+	}
+
+	private Integer getOffset() {
+		Integer offset = getSelector().getOffset();
+		if (offset == null) {
+			offset = 0;
+		}
+		return offset;
+	}
+
+	private Integer getLimit() {
+		Integer limit = getSelector().getLimit();
+		if (limit == null || limit == 0) {
+			limit = DEFAULT_LIMIT;
+		}
+		return limit;
 	}
 
 	public void setPage(Integer page) {
 		if (page == null) {
 			return;
 		}
-		getState().setOffset((page - 1) * getState().getLimit());
+		getSelector().setOffset((page - 1) * getLimit());
 	}
 
 	public Integer getMaxPages() {
-		return (int) Math.ceil((double) count() / getState().getLimit());
+		return (int) Math.ceil((double) count() / getLimit());
 	}
 
 	protected abstract AbstractDao<T> getDao();
@@ -146,23 +111,22 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	public DataModel<T> getDataModel() {
 		if (dataModel == null) {
 			AbstractDao<T> dao = getDao();
-			dataModel = new PagingDataModel<>(dao.count(), dao, getState()
-					.getSortColumn(), getState().getSortDirection());
+			dataModel = new PagingDataModel<>(dao.count(), getSelector());
 		}
 		return dataModel;
 	}
 
 	public String orderBy(String sortColumn) {
-		if (StringUtils.equals(getState().getSortColumn(), sortColumn)) {
-			getState()
-					.setSortDirection(
-							getState().getSortDirection() == SortDirection.ASC ? SortDirection.DESC
-									: SortDirection.ASC);
+		if (StringUtils.equals(getSelector().getSortColumn(), sortColumn)) {
+			getSelector()
+					.setAscending(
+							getSelector().getAscending() == Boolean.TRUE ? Boolean.FALSE
+									: Boolean.TRUE);
 		} else {
 			// XXX is ASC by default a good idea?
-			getState().setSortDirection(SortDirection.ASC);
+			getSelector().setAscending(Boolean.TRUE);
 		}
-		getState().setSortColumn(sortColumn);
+		getSelector().setSortColumn(sortColumn);
 		dataModel = null;
 		return "";
 	}

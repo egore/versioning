@@ -23,7 +23,7 @@ import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.persistence.model.User_;
-import de.egore911.versioning.ui.model.SortDirection;
+import de.egore911.versioning.persistence.selector.UserSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -40,10 +40,11 @@ public class UserList extends AbstractList<User> {
 	}
 
 	@Override
-	protected State createInitialState() {
-		State state = new State();
+	protected UserSelector createInitialSelector() {
+		UserSelector state = new UserSelector();
 		state.setSortColumn(User_.name.getName());
-		state.setSortDirection(SortDirection.ASC);
+		state.setAscending(Boolean.TRUE);
+		state.setLimit(DEFAULT_LIMIT);
 		return state;
 	}
 

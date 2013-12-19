@@ -35,6 +35,8 @@ import de.egore911.versioning.persistence.model.Role_;
  */
 public class RoleSelector extends AbstractSelector<Role> {
 
+	private static final long serialVersionUID = 606314701178462313L;
+
 	private Permission permission;
 
 	@Override

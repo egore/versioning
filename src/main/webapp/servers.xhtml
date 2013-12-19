@@ -12,13 +12,14 @@
 	</ui:define>
 
 	<rich:dataTable value="#{serverList.dataModel}" var="server"
-		rows="#{serverList.state.limit}">
+		rows="#{serverList.selector.limit}" id="dataTable">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.server_name}" />
-				<ui:include src="/layout/sorting.xhtml">
+				<ui:include src="/layout/sorting_and_filtering.xhtml">
 					<ui:param name="whichList" value="#{serverList}" />
 					<ui:param name="whichColumn" value="name" />
+					<ui:param name="filterField" value="#{serverList.selector.nameLike}" />
 				</ui:include>
 			</f:facet>
 			<h:link outcome="server"
@@ -28,6 +29,17 @@
 				<h:outputText value="#{server.name}" styleClass="linktext" />
 				<f:param name="id" value="#{server.id}" />
 			</h:link>
+		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.server_description}" />
+				<ui:include src="/layout/sorting_and_filtering.xhtml">
+					<ui:param name="whichList" value="#{serverList}" />
+					<ui:param name="whichColumn" value="description" />
+					<ui:param name="filterField" value="#{serverList.selector.descriptionLike}" />
+				</ui:include>
+			</f:facet>
+			<h:outputText value="#{server.description}" />
 		</rich:column>
 		<rich:column>
 			<f:facet name="header">

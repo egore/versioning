@@ -23,7 +23,7 @@ import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.VcsHost_;
-import de.egore911.versioning.ui.model.SortDirection;
+import de.egore911.versioning.persistence.selector.VcshostSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -40,10 +40,11 @@ public class VcshostList extends AbstractList<VcsHost> {
 	}
 
 	@Override
-	protected State createInitialState() {
-		State state = new State();
+	protected VcshostSelector createInitialSelector() {
+		VcshostSelector state = new VcshostSelector();
 		state.setSortColumn(VcsHost_.name.getName());
-		state.setSortDirection(SortDirection.ASC);
+		state.setAscending(Boolean.TRUE);
+		state.setLimit(DEFAULT_LIMIT);
 		return state;
 	}
 

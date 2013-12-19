@@ -35,6 +35,8 @@ import de.egore911.versioning.persistence.model.Server;
  */
 public class ProjectSelector extends AbstractSelector<Project> {
 
+	private static final long serialVersionUID = 6585242967556404330L;
+
 	private Server configuredForServer;
 
 	@Override

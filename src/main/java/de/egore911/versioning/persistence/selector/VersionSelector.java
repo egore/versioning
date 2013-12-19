@@ -32,6 +32,9 @@ import de.egore911.versioning.persistence.model.Version_;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class VersionSelector extends AbstractSelector<Version> {
+
+	private static final long serialVersionUID = -2047907469123340003L;
+
 	@Override
 	protected Class<Version> getEntityClass() {
 		return Version.class;

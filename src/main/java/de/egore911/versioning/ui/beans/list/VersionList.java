@@ -23,7 +23,7 @@ import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.DbObject_;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Version;
-import de.egore911.versioning.ui.model.SortDirection;
+import de.egore911.versioning.persistence.selector.VersionSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -40,10 +40,11 @@ public class VersionList extends AbstractList<Version> {
 	}
 
 	@Override
-	protected State createInitialState() {
-		State state = new State();
+	protected VersionSelector createInitialSelector() {
+		VersionSelector state = new VersionSelector();
 		state.setSortColumn(DbObject_.created.getName());
-		state.setSortDirection(SortDirection.DESC);
+		state.setAscending(Boolean.FALSE);
+		state.setLimit(DEFAULT_LIMIT);
 		return state;
 	}
 

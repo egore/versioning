@@ -35,6 +35,8 @@ import de.egore911.versioning.persistence.model.Server_;
  */
 public class ServerSelector extends AbstractSelector<Server> {
 
+	private static final long serialVersionUID = 4957078336902492971L;
+
 	private String name;
 	private String nameLike;
 	private String descriptionLike;

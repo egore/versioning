@@ -35,6 +35,8 @@ import de.egore911.versioning.persistence.model.TagTransformer_;
  */
 public class TagTransformerSelector extends AbstractSelector<TagTransformer> {
 
+	private static final long serialVersionUID = -8032360585214192038L;
+
 	private String name;
 
 	@Override

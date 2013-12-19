@@ -26,8 +26,8 @@ import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
 import org.ajax4jsf.model.SequenceRange;
 
-import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
+import de.egore911.versioning.persistence.selector.AbstractSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -39,17 +39,12 @@ public class PagingDataModel<T extends IntegerDbObject> extends
 
 	private List<T> dataList;
 	private final long count;
-	private final AbstractDao<T> dao;
-	private final String sortColumn;
-	private final SortDirection sortDirection;
+	private final AbstractSelector<T> selector;
 	private Integer rowKey;
 
-	public PagingDataModel(long count, AbstractDao<T> dao, String sortColumn,
-			SortDirection sortDirection) {
+	public PagingDataModel(long count, AbstractSelector<T> selector) {
 		this.count = count;
-		this.dao = dao;
-		this.sortColumn = sortColumn;
-		this.sortDirection = sortDirection;
+		this.selector = selector;
 	}
 
 	@Override
@@ -102,9 +97,9 @@ public class PagingDataModel<T extends IntegerDbObject> extends
 	public void walk(FacesContext context, DataVisitor visitor, Range range,
 			Object argument) {
 		SequenceRange sequenceRange = (SequenceRange) range;
-		dataList = dao.findAll(sequenceRange.getFirstRow(),
-				sequenceRange.getRows(), sortColumn,
-				sortDirection == SortDirection.ASC);
+		selector.setOffset(sequenceRange.getFirstRow());
+		selector.setLimit(sequenceRange.getRows());
+		dataList = selector.findAll();
 		for (int index = 0; index < dataList.size(); index++) {
 			visitor.process(context, index, argument);
 		}

@@ -23,7 +23,7 @@ import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Project_;
-import de.egore911.versioning.ui.model.SortDirection;
+import de.egore911.versioning.persistence.selector.ProjectSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -40,10 +40,11 @@ public class ProjectList extends AbstractList<Project> {
 	}
 
 	@Override
-	protected State createInitialState() {
-		State state = new State();
+	protected ProjectSelector createInitialSelector() {
+		ProjectSelector state = new ProjectSelector();
 		state.setSortColumn(Project_.name.getName());
-		state.setSortDirection(SortDirection.ASC);
+		state.setAscending(Boolean.TRUE);
+		state.setLimit(DEFAULT_LIMIT);
 		return state;
 	}
 

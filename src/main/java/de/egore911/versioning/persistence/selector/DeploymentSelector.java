@@ -36,6 +36,8 @@ import de.egore911.versioning.persistence.model.Version_;
  */
 public class DeploymentSelector extends AbstractSelector<Deployment> {
 
+	private static final long serialVersionUID = 84030583640758463L;
+
 	private Server deployedOn;
 	private Boolean isUneployed;
 	private Project project;

@@ -12,7 +12,7 @@
 	</ui:define>
 
 	<rich:dataTable value="#{tagtransformerList.dataModel}"
-		var="tagtransformer" rows="#{tagtransformerList.state.limit}">
+		var="tagtransformer" rows="#{tagtransformerList.selector.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.tagtransformer_name}" />

@@ -12,7 +12,7 @@
 	</ui:define>
 
 	<rich:dataTable value="#{versionList.dataModel}" var="version"
-		rows="#{versionList.state.limit}">
+		rows="#{versionList.selector.limit}">
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.version_project}" />

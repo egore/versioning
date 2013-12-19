@@ -35,6 +35,8 @@ import de.egore911.versioning.persistence.model.MavenRepository_;
  */
 public class MavenRepositorySelector extends AbstractSelector<MavenRepository> {
 
+	private static final long serialVersionUID = 1467355656953767923L;
+
 	private String name;
 
 	@Override

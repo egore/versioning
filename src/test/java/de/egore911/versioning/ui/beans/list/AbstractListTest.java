@@ -22,7 +22,7 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import de.egore911.versioning.persistence.model.IntegerDbObject;
-import de.egore911.versioning.ui.beans.list.AbstractList.State;
+import de.egore911.versioning.persistence.selector.AbstractSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -31,14 +31,15 @@ public class AbstractListTest {
 
 	@Test
 	public void testPaging() {
-		State state = Mockito.mock(State.class);
+		AbstractSelector<IntegerDbObject> state = Mockito
+				.mock(AbstractSelector.class);
 		Mockito.doCallRealMethod().when(state).setLimit(Matchers.anyInt());
 		Mockito.when(state.getLimit()).thenCallRealMethod();
 		Mockito.doCallRealMethod().when(state).setOffset(Matchers.anyInt());
 		Mockito.when(state.getOffset()).thenCallRealMethod();
 
 		AbstractList<IntegerDbObject> list = Mockito.mock(AbstractList.class);
-		Mockito.when(list.getState()).thenReturn(state);
+		Mockito.when(list.getSelector()).thenReturn(state);
 
 		Mockito.doCallRealMethod().when(list).setPage(Matchers.anyInt());
 		Mockito.when(list.getPage()).thenCallRealMethod();
