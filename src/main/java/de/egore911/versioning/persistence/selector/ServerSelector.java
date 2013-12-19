@@ -36,6 +36,8 @@ import de.egore911.versioning.persistence.model.Server_;
 public class ServerSelector extends AbstractSelector<Server> {
 
 	private String name;
+	private String nameLike;
+	private String descriptionLike;
 
 	@Override
 	protected Class<Server> getEntityClass() {
@@ -49,6 +51,16 @@ public class ServerSelector extends AbstractSelector<Server> {
 
 		if (StringUtils.isNotEmpty(name)) {
 			predicates.add(builder.equal(from.get(Server_.name), name));
+		}
+
+		if (StringUtils.isNotEmpty(nameLike)) {
+			predicates.add(builder.like(from.get(Server_.name), "%" + nameLike
+					+ "%"));
+		}
+
+		if (StringUtils.isNotEmpty(descriptionLike)) {
+			predicates.add(builder.like(from.get(Server_.description), "%"
+					+ descriptionLike + "%"));
 		}
 
 		return predicates;
@@ -66,6 +78,22 @@ public class ServerSelector extends AbstractSelector<Server> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getNameLike() {
+		return nameLike;
+	}
+
+	public void setNameLike(String nameLike) {
+		this.nameLike = nameLike;
+	}
+
+	public String getDescriptionLike() {
+		return descriptionLike;
+	}
+
+	public void setDescriptionLike(String descriptionLike) {
+		this.descriptionLike = descriptionLike;
 	}
 
 }
