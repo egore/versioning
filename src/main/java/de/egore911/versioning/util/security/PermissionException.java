@@ -16,6 +16,8 @@
  */
 package de.egore911.versioning.util.security;
 
+import java.util.Arrays;
+
 import de.egore911.versioning.persistence.model.Permission;
 
 /**
@@ -35,7 +37,7 @@ public class PermissionException extends RuntimeException {
 	 *            list of permissions
 	 */
 	public PermissionException(Permission[] permissions) {
-		super("Missing any of the permission: " + permissions);
+		super("Missing any of the permission: " + Arrays.toString(permissions));
 	}
 
 	/**
