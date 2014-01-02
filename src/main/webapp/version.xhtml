@@ -18,8 +18,25 @@
 				id="version_project" converter="projectConverter"
 				disabled="#{versionDetail.managed}">
 				<f:selectItems value="#{selectItemBean.allProjectSelectItems}" />
+				<f:ajax render="rerendermepleasenow" />
 			</h:selectOneMenu>
 			<h:outputText value="#{messages.version_project_help}" />
+
+			<h:panelGroup />
+			<h:panelGroup id="rerendermepleasenow">
+				<a4j:repeat
+					value="#{versionDetail.instance.project.provider.getTags(versionDetail.instance.project)}"
+					rendered="#{not empty versionDetail.instance.project}" var="tag">
+					<h:outputText value="#{tag.name}" rendered="#{tag.exists}"
+						style="font-size: 11px; margin-right: 4px;" />
+					<h:outputLink value="#"
+						onclick="$('#main\\:version_vcsTag').val('#{tag.name}'); return false;"
+						rendered="#{not tag.exists}" style="margin-right: 4px;">
+						<h:outputText value="#{tag.name}" />
+					</h:outputLink>
+				</a4j:repeat>
+			</h:panelGroup>
+			<h:panelGroup />
 
 			<h:outputText value="#{messages.version_vcsTag}" />
 			<h:inputText value="#{versionDetail.instance.vcsTag}"
