@@ -16,6 +16,7 @@
  */
 package de.egore911.versioning.persistence.dao;
 
+import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.persistence.selector.VersionSelector;
 
@@ -32,6 +33,13 @@ public class VersionDao extends AbstractDao<Version> {
 	@Override
 	protected VersionSelector createSelector() {
 		return new VersionSelector();
+	}
+
+	public boolean tagExists(Project project, String vcsTag) {
+		VersionSelector versionSelector = new VersionSelector();
+		versionSelector.setProject(project);
+		versionSelector.setVcsTag(vcsTag);
+		return versionSelector.count() > 0;
 	}
 
 }

@@ -25,6 +25,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.persistence.model.Version_;
 
@@ -35,6 +36,9 @@ public class VersionSelector extends AbstractSelector<Version> {
 
 	private static final long serialVersionUID = -2047907469123340003L;
 
+	private Project project;
+	private String vcsTag;
+
 	@Override
 	protected Class<Version> getEntityClass() {
 		return Version.class;
@@ -44,6 +48,15 @@ public class VersionSelector extends AbstractSelector<Version> {
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
 			Root<Version> from) {
 		List<Predicate> predicates = new ArrayList<>();
+
+		if (project != null) {
+			predicates.add(builder.equal(from.get(Version_.project), project));
+		}
+
+		if (vcsTag != null) {
+			predicates.add(builder.equal(from.get(Version_.vcsTag), vcsTag));
+		}
+
 		return predicates;
 	}
 
@@ -52,6 +65,22 @@ public class VersionSelector extends AbstractSelector<Version> {
 			Root<Version> from) {
 		return Arrays.asList(builder.asc(from.get(Version_.project)),
 				builder.asc(from.get(Version_.vcsTag)));
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public String getVcsTag() {
+		return vcsTag;
+	}
+
+	public void setVcsTag(String vcsTag) {
+		this.vcsTag = vcsTag;
 	}
 
 }
