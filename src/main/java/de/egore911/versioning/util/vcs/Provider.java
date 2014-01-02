@@ -31,6 +31,7 @@ import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.util.VersionUtil;
 
@@ -87,14 +88,19 @@ public abstract class Provider {
 		Future<List<Tag>> future = executor.submit(new Callable<List<Tag>>() {
 			@Override
 			public List<Tag> call() {
-				List<Tag> tags = getTagsImpl(project);
-				Collections.sort(tags);
-				Collections.reverse(tags);
-				return tags;
+				return getTagsImpl(project);
 			}
 		});
 		try {
-			return future.get(10, TimeUnit.SECONDS);
+			List<Tag> tags = future.get(10, TimeUnit.SECONDS);
+			Collections.sort(tags);
+			Collections.reverse(tags);
+			tags = tags.subList(0, Math.min(tags.size(), 20));
+			VersionDao versionDao = new VersionDao();
+			for (Tag tag : tags) {
+				tag.setExists(versionDao.tagExists(project, tag.getName()));
+			}
+			return tags;
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			log.error(e.getMessage(), e);
 			return Collections.emptyList();
@@ -111,10 +117,19 @@ public abstract class Provider {
 
 		private final Date date;
 		private final String name;
+		private Boolean exists;
 
 		public Tag(Date date, String name) {
 			this.date = date;
 			this.name = name;
+		}
+
+		public void setExists(Boolean exists) {
+			this.exists = exists;
+		}
+
+		public Boolean getExists() {
+			return exists;
 		}
 
 		public Date getDate() {
