@@ -29,7 +29,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.StringUtils;
+import de.egore911.versioning.util.VersionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -98,36 +98,7 @@ public class Version extends IntegerDbObject {
 			throw new IllegalArgumentException(
 					"Given versions VCS tag cannot be null");
 		}
-		int myDots = StringUtils.countMatches(transformedVcsTag, ".");
-		int otherDots = StringUtils.countMatches(otherTransformedVcsTag, ".");
-		String[] mySplit = transformedVcsTag.split("\\.");
-		String[] otherSplit = otherTransformedVcsTag.split("\\.");
-		int length = Math.min(mySplit.length, otherSplit.length);
-		for (int i = 0; i < length; i++) {
-			int compare = Integer.valueOf(mySplit[i]).compareTo(
-					Integer.valueOf(otherSplit[i]));
-			if (compare > 0) {
-				return true;
-			} else if (compare < 0) {
-				return false;
-			}
-		}
-
-		// Same version
-		if (myDots == otherDots) {
-			return false;
-		} else if (myDots > otherDots) {
-			// Controversial: Right now "1.0" is the same as "1.0.0.0.0"
-			for (int i = otherDots; i < myDots; i++) {
-				if (mySplit[i].equals("0")) {
-					continue;
-				}
-				return true;
-			}
-			return false;
-		} else {
-			return false;
-		}
-
+		return VersionUtil.isNewerThan(transformedVcsTag,
+				otherTransformedVcsTag);
 	}
 }

@@ -19,6 +19,7 @@ package de.egore911.versioning.util;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.model.Version;
 
@@ -50,5 +51,38 @@ public class VersionUtil {
 			}
 		}
 		return latest;
+	}
+
+	public static boolean isNewerThan(String tagA, String tagB) {
+		int myDots = StringUtils.countMatches(tagA, ".");
+		int otherDots = StringUtils.countMatches(tagB, ".");
+		String[] mySplit = tagA.split("\\.");
+		String[] otherSplit = tagB.split("\\.");
+		int length = Math.min(mySplit.length, otherSplit.length);
+		for (int i = 0; i < length; i++) {
+			int compare = Integer.valueOf(mySplit[i]).compareTo(
+					Integer.valueOf(otherSplit[i]));
+			if (compare > 0) {
+				return true;
+			} else if (compare < 0) {
+				return false;
+			}
+		}
+
+		// Same version
+		if (myDots == otherDots) {
+			return false;
+		} else if (myDots > otherDots) {
+			// Controversial: Right now "1.0" is the same as "1.0.0.0.0"
+			for (int i = otherDots; i < myDots; i++) {
+				if (mySplit[i].equals("0")) {
+					continue;
+				}
+				return true;
+			}
+			return false;
+		} else {
+			return false;
+		}
 	}
 }
