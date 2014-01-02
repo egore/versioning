@@ -16,11 +16,17 @@
  */
 package de.egore911.versioning.util.vcs;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNNodeKind;
 import org.tmatesoft.svn.core.SVNURL;
@@ -45,31 +51,7 @@ public class SvnProvider extends Provider {
 	@Override
 	public boolean tagExistsImpl(Project project, String tagName) {
 		try {
-			String completeVcsPath = project.getCompleteVcsPath();
-			SVNURL svnurl;
-			if (!completeVcsPath.contains("/trunk")) {
-				// If the URL does not contain trunk anywhere, assume that
-				// trunk/tags/branches are the folder right below the
-				// completeVcsPath
-
-				svnurl = SVNURL.parseURIEncoded(completeVcsPath);
-			} else {
-				// If the URL contains trunk remove everything starting from it
-				// so we get the folder above, as the tags folder is located at
-				// this level
-
-				svnurl = SVNURL.parseURIEncoded(completeVcsPath.replaceAll(
-						"/trunk.*", ""));
-			}
-			SVNRepository repo = SVNRepositoryFactory.create(svnurl);
-			VcsHost vcsHost = project.getVcsHost();
-
-			// If the VCS host has credentials available use them
-			if (vcsHost.isCredentialsAvailable()) {
-				ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
-						vcsHost.getUsername(), vcsHost.getPassword());
-				repo.setAuthenticationManager(authManager);
-			}
+			SVNRepository repo = initRepository(project);
 
 			// Check if the tag exists by verifying it's a directory
 			SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
@@ -85,6 +67,60 @@ public class SvnProvider extends Provider {
 			}
 			log.error(e.getMessage(), e);
 			return false;
+		}
+	}
+
+	private SVNRepository initRepository(Project project) throws SVNException {
+		String completeVcsPath = project.getCompleteVcsPath();
+		SVNURL svnurl;
+		if (!completeVcsPath.contains("/trunk")) {
+			// If the URL does not contain trunk anywhere, assume that
+			// trunk/tags/branches are the folder right below the
+			// completeVcsPath
+
+			svnurl = SVNURL.parseURIEncoded(completeVcsPath);
+		} else {
+			// If the URL contains trunk remove everything starting from it
+			// so we get the folder above, as the tags folder is located at
+			// this level
+
+			svnurl = SVNURL.parseURIEncoded(completeVcsPath.replaceAll(
+					"/trunk.*", ""));
+		}
+		SVNRepository repo = SVNRepositoryFactory.create(svnurl);
+		VcsHost vcsHost = project.getVcsHost();
+
+		// If the VCS host has credentials available use them
+		if (vcsHost.isCredentialsAvailable()) {
+			ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
+					vcsHost.getUsername(), vcsHost.getPassword());
+			repo.setAuthenticationManager(authManager);
+		}
+		return repo;
+	}
+
+	@Override
+	protected List<Tag> getTagsImpl(Project project) {
+		try {
+			SVNRepository repo = initRepository(project);
+
+			Collection<SVNDirEntry> entries = new ArrayList<>();
+			repo.getDir("tags", repo.getLatestRevision(), false, entries);
+			List<Tag> result = new ArrayList<>();
+			for (SVNDirEntry entry : entries) {
+				result.add(new Tag(entry.getDate(), entry.getName()));
+			}
+			return result;
+		} catch (SVNException e) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			if (facesContext != null) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
+						e.getLocalizedMessage());
+				facesContext.addMessage("main", message);
+			}
+			log.error(e.getMessage(), e);
+			return Collections.emptyList();
 		}
 	}
 }

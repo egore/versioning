@@ -16,7 +16,10 @@
  */
 package de.egore911.versioning.util.vcs;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -52,28 +55,7 @@ public class GitProvider extends Provider {
 
 	@Override
 	public boolean tagExistsImpl(Project project, String tagName) {
-		DfsRepositoryDescription repoDesc = new DfsRepositoryDescription(
-				"git - " + project.getName() + " on "
-						+ project.getVcsHost().getName());
-		InMemoryRepository repo = new InMemoryRepository(repoDesc) {
-			@Override
-			public org.eclipse.jgit.util.FS getFS() {
-				// Hack the InMemoryRepository to have a valid FS, eventhough it
-				// does not have one. Otherwise the LsRemoteCommand will crash
-				// with a NPE
-
-				FS fs = super.getFS();
-				if (fs == null) {
-					fs = FS.DETECTED;
-				}
-				return fs;
-			}
-		};
-
-		// Mock the configuration to contain the origin url
-		StoredConfig config = repo.getConfig();
-		config.setString("remote", "origin", "url",
-				project.getCompleteVcsPath());
+		InMemoryRepository repo = initRepository(project);
 
 		// Ask for the remote tags
 		LsRemoteCommand command = new LsRemoteCommand(repo);
@@ -98,6 +80,60 @@ public class GitProvider extends Provider {
 			}
 			log.error(e.getMessage(), e);
 			return false;
+		}
+	}
+
+	private InMemoryRepository initRepository(Project project) {
+		DfsRepositoryDescription repoDesc = new DfsRepositoryDescription(
+				"git - " + project.getName() + " on "
+						+ project.getVcsHost().getName());
+		InMemoryRepository repo = new InMemoryRepository(repoDesc) {
+			@Override
+			public org.eclipse.jgit.util.FS getFS() {
+				// Hack the InMemoryRepository to have a valid FS, eventhough it
+				// does not have one. Otherwise the LsRemoteCommand will crash
+				// with a NPE
+
+				FS fs = super.getFS();
+				if (fs == null) {
+					fs = FS.DETECTED;
+				}
+				return fs;
+			}
+		};
+
+		// Mock the configuration to contain the origin url
+		StoredConfig config = repo.getConfig();
+		config.setString("remote", "origin", "url",
+				project.getCompleteVcsPath());
+		return repo;
+	}
+
+	@Override
+	protected List<Tag> getTagsImpl(Project project) {
+		InMemoryRepository repo = initRepository(project);
+		List<Tag> result = new ArrayList<>();
+
+		// Ask for the remote tags
+		LsRemoteCommand command = new LsRemoteCommand(repo);
+		command.setTags(true);
+		try {
+			Collection<Ref> tags = command.call();
+			for (Ref tag : tags) {
+				result.add(new Tag(null, tag.getName()
+						.replace("refs/tags/", "")));
+			}
+			return result;
+		} catch (GitAPIException e) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			if (facesContext != null) {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
+						e.getLocalizedMessage());
+				facesContext.addMessage("main", message);
+			}
+			log.error(e.getMessage(), e);
+			return Collections.emptyList();
 		}
 	}
 }

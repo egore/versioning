@@ -16,6 +16,10 @@
  */
 package de.egore911.versioning.util.vcs;
 
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -28,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.util.VersionUtil;
 
 /**
  * Core infrastructure for VCS information providers.
@@ -77,4 +82,67 @@ public abstract class Provider {
 	 */
 	protected abstract boolean tagExistsImpl(Project project, String tagName);
 
+	public List<Tag> getTags(final Project project) {
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		Future<List<Tag>> future = executor.submit(new Callable<List<Tag>>() {
+			@Override
+			public List<Tag> call() {
+				List<Tag> tags = getTagsImpl(project);
+				Collections.sort(tags);
+				Collections.reverse(tags);
+				return tags;
+			}
+		});
+		try {
+			return future.get(10, TimeUnit.SECONDS);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			log.error(e.getMessage(), e);
+			return Collections.emptyList();
+		} finally {
+			executor.shutdownNow();
+		}
+	}
+
+	protected abstract List<Tag> getTagsImpl(Project project);
+
+	public static class Tag implements Serializable, Comparable<Tag> {
+
+		private static final long serialVersionUID = 7107245776731571047L;
+
+		private final Date date;
+		private final String name;
+
+		public Tag(Date date, String name) {
+			this.date = date;
+			this.name = name;
+		}
+
+		public Date getDate() {
+			return date;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public int compareTo(Tag o) {
+			if (this.getDate() != null && o.getDate() != null) {
+				return this.getDate().compareTo(o.getDate());
+			}
+			try {
+				return VersionUtil.isNewerThan(this.getName(), o.getName()) ? 1
+						: (VersionUtil.isNewerThan(o.getName(), this.getName()) ? -1
+								: 0);
+			} catch (Exception e) {
+				return this.getName().compareTo(o.getName());
+			}
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
+
+	}
 }
