@@ -78,9 +78,9 @@ CREATE TABLE project (
   CONSTRAINT FK_lvhq256oh6xeukhjrhnorukq4 FOREIGN KEY (id_modificator) REFERENCES [user] (id)
 );
 CREATE UNIQUE INDEX project__name ON project (name);
-CREATE UNIQUE INDEX FK_74pb5ee6fww1w9nq9j2ywdsbh ON project (id_creator);
-CREATE UNIQUE INDEX FK_lvhq256oh6xeukhjrhnorukq4 ON project (id_modificator);
-CREATE UNIQUE INDEX FK_1nd9om0ro9vonffewmcip7uwb ON project (id_vcshost);
+CREATE INDEX FK_74pb5ee6fww1w9nq9j2ywdsbh ON project (id_creator);
+CREATE INDEX FK_lvhq256oh6xeukhjrhnorukq4 ON project (id_modificator);
+CREATE INDEX FK_1nd9om0ro9vonffewmcip7uwb ON project (id_vcshost);
 GO
 
 CREATE TABLE server (
