@@ -70,10 +70,8 @@ public class StartupListener implements ServletContextListener {
 				flyway.setLocations("db/migration/mssql");
 				break;
 			case "org.apache.tomcat.dbcp.dbcp.BasicDataSource":
-
-				// Wrapped by Tomcat
+				// Wrapped by Tomcat, get a connection to identify it
 				try (Connection connection = dataSource.getConnection()) {
-					// Deal with raw
 					if (connection.toString().startsWith("jdbc:mysql://")) {
 						flyway.setLocations("db/migration/mysql");
 					} else if (connection.toString().startsWith("jdbc:hsqldb")) {
@@ -91,30 +89,31 @@ public class StartupListener implements ServletContextListener {
 					return;
 				}
 				break;
-
 			case "org.jboss.jca.adapters.jdbc.WrapperDataSource":
-				try {
-					if (dataSource
-							.isWrapperFor(com.mysql.jdbc.jdbc2.optional.MysqlDataSource.class)
-							|| dataSource
-									.isWrapperFor(com.mysql.jdbc.jdbc2.optional.MysqlXADataSource.class)) {
+				// Wrapped by JBoss
+				try (Connection connection = dataSource.getConnection()) {
+					if (connection.getMetaData().getClass().getName()
+							.startsWith("com.mysql.jdbc.")) {
 						flyway.setLocations("db/migration/mysql");
-					}
-				} catch (Exception e) {
-					// Do nothing
-				}
-				try {
-					if (flyway.getLocations().length == 0
-							&& dataSource
-									.isWrapperFor(org.hsqldb.jdbc.JDBCDataSource.class)) {
+					} else if (connection.getMetaData().getClass().getName()
+							.equals("org.hsqldb.jdbc.JDBCDatabaseMetaData")) {
 						flyway.setLocations("db/migration/hsqldb");
+					} else if (connection
+							.getMetaData()
+							.getClass()
+							.getName()
+							.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData")) {
+						flyway.setLocations("db/migration/mssql");
+					} else {
+						throw new RuntimeException(
+								"Unsupported database detected, please report this: "
+										+ connection.getMetaData().getClass()
+												.getName());
 					}
-				} catch (Exception e) {
-					// Do nothing
+				} catch (SQLException e) {
+					log.error("Error opening connection :{}", e.getMessage(), e);
+					return;
 				}
-
-				// FIXME: hack because the upper code refuses to work
-				flyway.setLocations("db/migration/mysql");
 
 				if (flyway.getLocations().length == 0) {
 					throw new RuntimeException(
