@@ -52,6 +52,9 @@ Servletcontainers
 * Tomcat 7: This container is used for development and likely to be supported
   best at the moment.
 
+* JBoss EAP 6.1: This container has been tested during development and will
+  also be supported as of now.
+
 The following containers are not supported right now
 
 * Jetty 9: The JSF 2 reference implementation (Mojarra) only supports Jetty up
@@ -59,6 +62,74 @@ The following containers are not supported right now
   causing injection to fail.
 
 All other containers are untested.
+
+### Tomcat 7
+
+To run *versioning* on Tomcat 7 you need to create a context.xml for it. When your
+doing development you can create the file as src/main/webapp/META-INF/context.xml,
+when in production it might be something like /etc/tomcat7/Catalina/localhost/versioning.xml.
+See the Tomcat documentation for further details. An example context.xml looks like this:
+
+    <Context docBase="/var/lib/tomcat7/versioning.war" path="/versioning">
+        <Resource
+                name="jdbc/versioningDS"
+                auth="Container"
+                type="javax.sql.DataSource"
+                maxActive="10"
+                maxIdle="5"
+                maxWait="10000"
+                username="myuser"
+                password="secrectpassword"
+                driverClassName="com.mysql.jdbc.Driver"
+                url="jdbc:mysql://mydatabase:3306/versioning" />
+    </Context>
+
+### JBoss EAP 6.1
+
+Setting up versioning on JBoss EAP 6.1 is a little bit more complicated than running it on
+Tomcat 7. It involves creating a module for your JDBC driver, adding it to the standalone.xml
+and deploying the application.
+
+#### JDBC module
+
+Start of by creating the directory *modules/com/mysql/main* in your EAP 6.1 installation. Create
+a file named *module.xml* within that directory with the following content:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <module xmlns="urn:jboss:module:1.1" name="com.mysql">
+        <resources>
+            <resource-root path="mysql-connector-java.jar"/>
+        </resources>
+        <dependencies>
+            <module name="javax.api"/>
+            <module name="javax.transaction.api"/>
+        </dependencies>
+    </module>
+
+Now get a copy of the mysql-connector-java (e.g. from http://search.maven.org) and save it in the
+same folder under the name *mysql-connector-java.jar*.
+
+#### standalone.xml
+
+Create a datasource in the subsystem *urn:jboss:domain:datasources:1.1* like the following:
+
+    <datasource jta="false" jndi-name="java:/comp/env/jdbc/versioningDS" pool-name="versioningDS" enabled="true" use-ccm="true">
+        <connection-url>jdbc:mysql://mydatabase:3306/versioning_test</connection-url>
+        <driver-class>com.mysql.jdbc.Driver</driver-class>
+        <driver>mysql</driver>
+        <security>
+            <user-name>myuser</user-name>
+            <password>secrectpassword</password>
+        </security>
+    </datasource>
+
+Afterwards create a driver in the same subsystem for your JDBC driver:
+
+    <driver name="mysql" module="com.mysql">
+        <xa-datasource-class>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</xa-datasource-class>
+    </driver>
+
+The last step is to deploy the application.
 
 Supported Databases
 -------------------

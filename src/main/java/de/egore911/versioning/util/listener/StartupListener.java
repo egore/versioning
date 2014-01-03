@@ -51,7 +51,7 @@ public class StartupListener implements ServletContextListener {
 		try {
 			InitialContext initialContext = new InitialContext();
 			DataSource dataSource = (DataSource) initialContext
-					.lookup("java:comp/env/jdbc/versioningDS");
+					.lookup("java:/comp/env/jdbc/versioningDS");
 			Flyway flyway = new Flyway();
 			flyway.setDataSource(dataSource);
 
@@ -61,10 +61,12 @@ public class StartupListener implements ServletContextListener {
 				flyway.setLocations("db/migration/hsqldb");
 				break;
 			case "com.mysql.jdbc.jdbc2.optional.MysqlDataSource":
+			case "com.mysql.jdbc.jdbc2.optional.MysqlXADataSource":
 				// Plain datasource for MySQL/MariaDB
 				flyway.setLocations("db/migration/mysql");
 				break;
 			case "org.apache.tomcat.dbcp.dbcp.BasicDataSource":
+
 				// Wrapped by Tomcat
 				try (Connection connection = dataSource.getConnection()) {
 					// Deal with raw
@@ -81,6 +83,38 @@ public class StartupListener implements ServletContextListener {
 					log.error("Error opening connection :{}", e.getMessage(), e);
 					return;
 				}
+				break;
+
+			case "org.jboss.jca.adapters.jdbc.WrapperDataSource":
+				try {
+					if (dataSource
+							.isWrapperFor(com.mysql.jdbc.jdbc2.optional.MysqlDataSource.class)
+							|| dataSource
+									.isWrapperFor(com.mysql.jdbc.jdbc2.optional.MysqlXADataSource.class)) {
+						flyway.setLocations("db/migration/mysql");
+					}
+				} catch (Exception e) {
+					// Do nothing
+				}
+				try {
+					if (flyway.getLocations().length == 0
+							&& dataSource
+									.isWrapperFor(org.hsqldb.jdbc.JDBCDataSource.class)) {
+						flyway.setLocations("db/migration/hsqldb");
+					}
+				} catch (Exception e) {
+					// Do nothing
+				}
+
+				// FIXME: hack because the upper code refuses to work
+				flyway.setLocations("db/migration/mysql");
+
+				if (flyway.getLocations().length == 0) {
+					throw new RuntimeException(
+							"Unsupported database detected, please report this: "
+									+ dataSource.getClass().getName());
+				}
+
 				break;
 			default:
 				throw new RuntimeException(
