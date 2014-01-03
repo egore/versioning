@@ -65,6 +65,10 @@ public class StartupListener implements ServletContextListener {
 				// Plain datasource for MySQL/MariaDB
 				flyway.setLocations("db/migration/mysql");
 				break;
+			case "net.sourceforge.jtds.jdbcx.JtdsDataSource":
+				// Plain datasource for MSSQL
+				flyway.setLocations("db/migration/mssql");
+				break;
 			case "org.apache.tomcat.dbcp.dbcp.BasicDataSource":
 
 				// Wrapped by Tomcat
@@ -74,6 +78,9 @@ public class StartupListener implements ServletContextListener {
 						flyway.setLocations("db/migration/mysql");
 					} else if (connection.toString().startsWith("jdbc:hsqldb")) {
 						flyway.setLocations("db/migration/hsqldb");
+					} else if (connection.toString().startsWith(
+							"jdbc:jtds:sqlserver")) {
+						flyway.setLocations("db/migration/mssql");
 					} else {
 						throw new RuntimeException(
 								"Unsupported database detected, please report this: "
