@@ -19,6 +19,13 @@ package de.egore911.versioning.util;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ResourceBundle;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import de.egore911.versioning.persistence.model.Permission;
+import de.egore911.versioning.persistence.model.User;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -61,5 +68,26 @@ public class UserUtil {
 					.substring(1));
 		}
 		return result.toString();
+	}
+
+	public static String getStartpage(User user) {
+		if (user.hasPermission(Permission.CREATE_VERSIONS)) {
+			return "/versions.xhtml";
+		} else if (user.hasPermission(Permission.DEPLOY)) {
+			return "/deployments.xhtml";
+		} else if (user.hasPermission(Permission.ADMIN_SETTINGS)) {
+			return "/projects.xthml";
+		} else if (user.hasPermission(Permission.ADMIN_USERS)) {
+			return "/users.xthml";
+		} else {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ResourceBundle bundle = SessionUtil.getBundle();
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					bundle.getString("missing_permission"),
+					bundle.getString("missing_permission_detail"));
+			facesContext.addMessage("main:user_login", message);
+			return "";
+		}
 	}
 }

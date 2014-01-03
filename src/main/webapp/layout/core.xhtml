@@ -22,11 +22,14 @@
 				<h:graphicImage value="/images/richfaces/ai.gif" alt="#{messages.request_in_progress}" />
 			</f:facet>
 		</a4j:status>
-		<span id="logged_in_as"><h:outputFormat
-				value="#{messages.logged_in_as_x}" rendered="#{not empty user}">
-				<f:param value="#{user.name}" />
-			</h:outputFormat> <h:link outcome="login" rendered="#{empty user}"
-				value="#{messages.not_logged_in}" /></span>
+		<span id="logged_in_as">
+			<h:link outcome="profile" rendered="#{not empty user}">
+				<h:outputFormat value="#{messages.logged_in_as_x}">
+					<f:param value="#{user.name}" />
+				</h:outputFormat>
+			</h:link>
+			<h:link outcome="login" rendered="#{empty user}" value="#{messages.not_logged_in}" />
+		</span>
 		<ui:include src="menu.xhtml" />
 		<ui:insert />
 	</h:form>

@@ -35,6 +35,6 @@ import de.egore911.versioning.persistence.model.Permission;
 @Inherited
 public @interface RequiresPermission {
 
-	Permission[] value();
+	Permission[] value() default {};
 
 }

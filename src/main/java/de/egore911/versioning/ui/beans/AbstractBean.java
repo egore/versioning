@@ -37,16 +37,12 @@ public class AbstractBean {
 	public void postConstruct() {
 		RequiresPermission requiresPermission = this.getClass().getAnnotation(
 				RequiresPermission.class);
-		if (requiresPermission != null) {
+		if (requiresPermission != null && requiresPermission.value().length > 0) {
 			User user = SessionUtil.getLoggedInUser();
 			if (user == null) {
 				throw new PermissionException();
 			}
-			user = new UserDao().reattach(user);
-			for (Role role : user.getRoles()) {
-				Hibernate.initialize(role.getPermissions());
-			}
-			SessionUtil.setLoggedInUser(user);
+			user = reattachUser(user);
 			for (Permission permission : requiresPermission.value()) {
 				if (user.hasPermission(permission)) {
 					return;
@@ -54,6 +50,15 @@ public class AbstractBean {
 			}
 			throw new PermissionException(requiresPermission.value());
 		}
+	}
+
+	protected User reattachUser(User user) {
+		user = new UserDao().reattach(user);
+		for (Role role : user.getRoles()) {
+			Hibernate.initialize(role.getPermissions());
+		}
+		SessionUtil.setLoggedInUser(user);
+		return user;
 	}
 
 }
