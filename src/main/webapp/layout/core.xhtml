@@ -12,10 +12,16 @@
 	<h:outputStylesheet library="css" name="core.css" />
 </h:head>
 <h:body>
-	<h:form id="main" enctype="#{empty formencoding ? 'application/x-www-form-urlencoded' : formencoding}">
+	<h:form id="main"
+		enctype="#{empty formencoding ? 'application/x-www-form-urlencoded' : formencoding}">
 		<h1>
 			<ui:insert name="title" />
 		</h1>
+		<a4j:status startStyle="position: absolute; top: 15px; right: 14px;">
+			<f:facet name="start">
+				<h:graphicImage value="/images/richfaces/ai.gif" alt="#{messages.request_in_progress}" />
+			</f:facet>
+		</a4j:status>
 		<span id="logged_in_as"><h:outputFormat
 				value="#{messages.logged_in_as_x}" rendered="#{not empty user}">
 				<f:param value="#{user.name}" />
