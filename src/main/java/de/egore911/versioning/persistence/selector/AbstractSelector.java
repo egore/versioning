@@ -82,7 +82,6 @@ public abstract class AbstractSelector<T> implements Serializable {
 		Root<T> from = cq.from(getEntityClass());
 		List<Predicate> predicates = generatePredicateList(builder, from);
 		cq.where(predicates.toArray(new Predicate[predicates.size()]));
-		cq.orderBy(generateOrderList(builder, from));
 		cq.select(builder.count(from));
 		TypedQuery<Long> q = em.createQuery(cq);
 		return q.getSingleResult();
