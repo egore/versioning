@@ -35,7 +35,7 @@ import org.apache.commons.collections4.CollectionUtils;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 public class User extends IntegerDbObject {
 
 	private static final long serialVersionUID = 5341258879773745459L;
