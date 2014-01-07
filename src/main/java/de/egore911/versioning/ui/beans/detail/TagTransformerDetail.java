@@ -26,6 +26,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.TagTransformer;
@@ -74,6 +76,30 @@ public class TagTransformerDetail extends AbstractDetail<TagTransformer> {
 		getDao().save(getInstance());
 		setInstance(null);
 		return "/tagtransformers.xhtml";
+	}
+
+	private String testPattern;
+	private String testPatternEvaluated;
+
+	public String getTestPattern() {
+		return testPattern;
+	}
+
+	public void setTestPattern(String testPattern) {
+		this.testPattern = testPattern;
+		if (StringUtils.isEmpty(testPattern)) {
+			return;
+		}
+		try {
+			testPatternEvaluated = testPattern.replaceAll(getInstance()
+					.getSearchPattern(), getInstance().getReplacementPattern());
+		} catch (PatternSyntaxException e) {
+			testPatternEvaluated = e.getMessage();
+		}
+	}
+
+	public String getTestPatternEvaluated() {
+		return testPatternEvaluated;
 	}
 
 }

@@ -32,6 +32,16 @@
 		</h:panelGrid>
 	</rich:panel>
 
+	<rich:panel header="#{messages.tagtransformer_test}">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
+			<h:outputText value="#{messages.tagtransformer_test}" />
+			<h:inputText value="#{tagtransformerDetail.testPattern}">
+				<f:ajax execute="@form" event="keyup" render="testPattern" />
+			</h:inputText>
+			<h:outputText id="testPattern" value="#{tagtransformerDetail.testPatternEvaluated}" />
+		</h:panelGrid>
+	</rich:panel>
+
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{tagtransformerDetail.save}" />
 
