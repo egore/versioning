@@ -23,6 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.Deployment;
@@ -44,8 +47,8 @@ public class DeploymentCalculator {
 		}
 	};
 
-	private ProjectDao projectDao = new ProjectDao();
-	private DeploymentDao deploymentDao = new DeploymentDao();
+	private final ProjectDao projectDao = new ProjectDao();
+	private final DeploymentDao deploymentDao = new DeploymentDao();
 
 	public List<Version> getDeployedVersions(Server server) {
 		List<Version> result = new ArrayList<>();
@@ -71,8 +74,21 @@ public class DeploymentCalculator {
 				.getConfiguredProjects(server);
 		List<Version> result = new ArrayList<>();
 		for (Project configuredProject : configuredProjects) {
-			Version latest = VersionUtil.getLatestVersion(configuredProject
-					.getVersions());
+			Version latest;
+			try {
+				latest = VersionUtil.getLatestVersion(configuredProject
+						.getVersions());
+			} catch (Exception e) {
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				if (facesContext != null) {
+					FacesMessage message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR, e.getMessage(),
+							e.getMessage());
+					facesContext.addMessage("main", message);
+				}
+
+				latest = null;
+			}
 
 			// No version for a project yet
 			if (latest == null) {

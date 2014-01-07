@@ -98,7 +98,13 @@ public class Version extends IntegerDbObject {
 			throw new IllegalArgumentException(
 					"Given versions VCS tag cannot be null");
 		}
-		return VersionUtil.isNewerThan(transformedVcsTag,
-				otherTransformedVcsTag);
+		try {
+			return VersionUtil.isNewerThan(transformedVcsTag,
+					otherTransformedVcsTag);
+		} catch (RuntimeException e) {
+			throw new RuntimeException(getProject().getName() + " "
+					+ getVcsTag() + " is invalid, check tag transformer: "
+					+ e.getMessage(), e);
+		}
 	}
 }
