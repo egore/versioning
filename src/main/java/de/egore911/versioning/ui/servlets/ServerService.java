@@ -176,9 +176,7 @@ public class ServerService extends HttpServlet {
 					writer.println("	</deployments>");
 					writer.println("</server>");
 				} else {
-					// TODO send proper 404
-					writer.println("Not-Found: ");
-					writer.println(serverName);
+					resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not-Found: serverName");
 				}
 			} else {
 
