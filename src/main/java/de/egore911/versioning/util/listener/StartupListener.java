@@ -66,6 +66,7 @@ public class StartupListener implements ServletContextListener {
 				flyway.setLocations("db/migration/mysql");
 				break;
 			case "net.sourceforge.jtds.jdbcx.JtdsDataSource":
+			case "com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData":
 				// Plain datasource for MSSQL
 				flyway.setLocations("db/migration/mssql");
 				break;
@@ -76,8 +77,8 @@ public class StartupListener implements ServletContextListener {
 						flyway.setLocations("db/migration/mysql");
 					} else if (connection.toString().startsWith("jdbc:hsqldb")) {
 						flyway.setLocations("db/migration/hsqldb");
-					} else if (connection.toString().startsWith(
-							"jdbc:jtds:sqlserver")) {
+					} else if (connection.toString().startsWith("jdbc:jtds:sqlserver") ||
+							connection.toString().startsWith("jdbc:sqlserver")) {
 						flyway.setLocations("db/migration/mssql");
 					} else {
 						throw new RuntimeException(
@@ -102,7 +103,12 @@ public class StartupListener implements ServletContextListener {
 							.getMetaData()
 							.getClass()
 							.getName()
-							.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData")) {
+							.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData") ||
+							connection
+							.getMetaData()
+							.getClass()
+							.getName()
+							.equals("com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData")) {
 						flyway.setLocations("db/migration/mssql");
 					} else {
 						throw new RuntimeException(
