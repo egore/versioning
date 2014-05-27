@@ -108,6 +108,9 @@ public class Server extends IntegerDbObject {
 		this.vcsPath = vcsPath;
 	}
 
+	/**
+	 * @return path of the servers configuration checkout directory relative to {@link #getTargetdir()}
+	 */
 	@Column(length = 511, name = "target_path")
 	@Size(max = 511)
 	public String getTargetPath() {

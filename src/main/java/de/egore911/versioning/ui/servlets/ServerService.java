@@ -117,6 +117,9 @@ public class ServerService extends HttpServlet {
 					writer.print("	<name>");
 					writer.print(server.getName());
 					writer.println("</name>");
+					writer.print("	<targetdir>");
+					writer.print(server.getTargetdir());
+					writer.println("</targetdir>");
 					if (StringUtils.isNotEmpty(server.getDescription())) {
 						writer.print("	<!-- ");
 						writer.print(server.getDescription()
