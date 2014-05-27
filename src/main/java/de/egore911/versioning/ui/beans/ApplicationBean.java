@@ -17,6 +17,7 @@
 package de.egore911.versioning.ui.beans;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.jar.Manifest;
 
 import javax.faces.bean.ApplicationScoped;
@@ -44,9 +45,12 @@ public class ApplicationBean {
 
 	public static String readVersion(ServletContext servletContext) {
 		Manifest manifest = new Manifest();
-		try {
-			manifest.read(servletContext
-					.getResourceAsStream("/META-INF/MANIFEST.MF"));
+		try (InputStream manifestFile = servletContext
+					.getResourceAsStream("/META-INF/MANIFEST.MF")) {
+			manifest.read(manifestFile);
+			if (manifestFile == null) {
+				return "development";
+			}
 			return manifest.getMainAttributes().getValue(
 					"Implementation-Version");
 		} catch (IOException e) {
