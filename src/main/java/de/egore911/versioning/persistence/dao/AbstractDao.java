@@ -111,6 +111,27 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 		return entity;
 	}
 
+	public void remove(T entity) {
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		boolean ourOwnTransaction = true;
+		if (em.getTransaction().isActive()) {
+			ourOwnTransaction = false;
+		}
+		if (ourOwnTransaction) {
+			em.getTransaction().begin();
+		}
+		try {
+			em.remove(entity);
+			if (ourOwnTransaction) {
+				em.getTransaction().commit();
+			}
+		} finally {
+			if (ourOwnTransaction && em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+		}
+	}
+
 	protected abstract Class<T> getEntityClass();
 
 	protected abstract AbstractSelector<T> createSelector();
