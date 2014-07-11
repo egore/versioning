@@ -52,6 +52,12 @@
 			<h:selectBooleanCheckbox value="#{vcshost.credentialsAvailable}"
 				disabled="true" />
 		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.actions}" />
+			</f:facet>
+			<h:commandButton value="#{messages.delete}" action="#{vcshostList.delete(vcshost.id)}" disabled="#{not empty vcshost.projects}" />
+		</rich:column>
 		<f:facet name="footer">
 			<rich:dataScroller maxPages="#{vcshostList.maxPages}"
 				page="#{vcshostList.page}" />
