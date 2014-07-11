@@ -60,16 +60,18 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 
 	public void replace(Deployment currentDeployment, Deployment newDeployment) {
 		EntityManager em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
+		boolean ourOwnTransaction = !em.getTransaction().isActive();
+		if (ourOwnTransaction) {
+			em.getTransaction().begin();
+		}
 		try {
 			if (currentDeployment != null) {
 				currentDeployment.setUndeployment(LocalDateTime.now());
 				em.merge(currentDeployment);
 			}
 			em.merge(newDeployment);
-			em.getTransaction().commit();
 		} finally {
-			if (em.getTransaction().isActive()) {
+			if (ourOwnTransaction && em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
 			}
 		}
