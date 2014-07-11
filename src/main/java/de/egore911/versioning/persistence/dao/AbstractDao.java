@@ -83,10 +83,7 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 
 	public T save(T entity) {
 		EntityManager em = EntityManagerUtil.getEntityManager();
-		boolean ourOwnTransaction = true;
-		if (em.getTransaction().isActive()) {
-			ourOwnTransaction = false;
-		}
+		boolean ourOwnTransaction = !em.getTransaction().isActive();
 		if (ourOwnTransaction) {
 			em.getTransaction().begin();
 		}
@@ -113,10 +110,7 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 
 	public void remove(T entity) {
 		EntityManager em = EntityManagerUtil.getEntityManager();
-		boolean ourOwnTransaction = true;
-		if (em.getTransaction().isActive()) {
-			ourOwnTransaction = false;
-		}
+		boolean ourOwnTransaction = !em.getTransaction().isActive();
 		if (ourOwnTransaction) {
 			em.getTransaction().begin();
 		}
