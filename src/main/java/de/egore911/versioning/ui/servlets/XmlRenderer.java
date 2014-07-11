@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class XmlRenderer extends Renderer {
 
+	@Override
 	protected void renderHeader(StringBuilder builder, HttpServletRequest req, HttpServletResponse resp) {
 		resp.setContentType("application/xml;charset=UTF-8");
 		builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
