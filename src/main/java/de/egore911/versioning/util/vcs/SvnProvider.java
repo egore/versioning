@@ -53,8 +53,10 @@ public class SvnProvider extends Provider {
 		try {
 			SVNRepository repo = initRepository(project);
 
+			String list = getTagsDir(project);
+
 			// Check if the tag exists by verifying it's a directory
-			SVNNodeKind checkPath = repo.checkPath("tags/" + tagName,
+			SVNNodeKind checkPath = repo.checkPath(list + "/" + tagName,
 					repo.getLatestRevision());
 			return checkPath == SVNNodeKind.DIR;
 		} catch (SVNException e) {
@@ -68,6 +70,18 @@ public class SvnProvider extends Provider {
 			log.error(e.getMessage(), e);
 			return false;
 		}
+	}
+
+	private String getTagsDir(Project project) {
+		String list = "tags";
+		String completeVcsPath = project.getCompleteVcsPath();
+		int indexOf = completeVcsPath.indexOf("/trunk");
+		if (indexOf >= 0) {
+			list = "tags/"
+					+ completeVcsPath
+							.substring(indexOf + "/trunk".length() + 1);
+		}
+		return list;
 	}
 
 	private SVNRepository initRepository(Project project) throws SVNException {
@@ -104,8 +118,10 @@ public class SvnProvider extends Provider {
 		try {
 			SVNRepository repo = initRepository(project);
 
+			String list = getTagsDir(project);
+
 			Collection<SVNDirEntry> entries = new ArrayList<>();
-			repo.getDir("tags", repo.getLatestRevision(), false, entries);
+			repo.getDir(list, repo.getLatestRevision(), false, entries);
 			List<Tag> result = new ArrayList<>();
 			for (SVNDirEntry entry : entries) {
 				result.add(new Tag(entry.getDate(), entry.getName()));
