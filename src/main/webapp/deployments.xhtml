@@ -39,6 +39,9 @@
 						value="#{messages.deploy}" />
 				</rich:column>
 			</rich:dataTable>
+			<h:commandButton
+					action="#{deploymentsBean.deployAll(serverVersions.server)}"
+					value="#{messages.deploy}" />
 		</rich:panel>
 	</a4j:repeat>
 </ui:composition>

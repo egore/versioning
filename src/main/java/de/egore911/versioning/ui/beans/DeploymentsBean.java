@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.persistence.EntityManager;
 
 import org.joda.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
+import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 @ManagedBean(name = "deploymentsBean")
@@ -54,14 +56,32 @@ public class DeploymentsBean extends AbstractBean {
 
 	public String deploy(Server server, Version version) {
 		DeploymentDao deploymentDao = new DeploymentDao();
-		Deployment currentDeployment = deploymentDao
-				.getCurrentDeployment(server, version.getProject());
+		Deployment currentDeployment = deploymentDao.getCurrentDeployment(
+				server, version.getProject());
 
 		Deployment newDeployment = new Deployment();
 		newDeployment.setVersion(version);
 		newDeployment.setServer(server);
 		newDeployment.setDeployment(LocalDateTime.now());
 		deploymentDao.replace(currentDeployment, newDeployment);
+		return "";
+	}
+
+	public String deployAll(Server server) {
+		List<Version> versions = deploymentCalculator
+				.getDeployableVersions(server);
+		EntityManager em = EntityManagerUtil.getEntityManager();
+		em.getTransaction().begin();
+		try {
+			for (Version version : versions) {
+				deploy(server, version);
+			}
+			em.getTransaction().commit();
+		} finally {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+		}
 		return "";
 	}
 
