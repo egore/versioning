@@ -44,7 +44,20 @@
 		</h:panelGrid>
 	</rich:panel>
 
+	<rich:panel header="#{messages.projects}"
+		rendered="#{not empty vcshostDetail.instance.projects}">
+		<ul>
+			<a4j:repeat value="#{vcshostDetail.instance.projects}" var="project">
+				<li>#{project.name}</li>
+			</a4j:repeat>
+		</ul>
+	</rich:panel>
+
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{vcshostDetail.save}" />
+
+	<h:commandButton value="#{messages.delete}" id="delete"
+		action="#{vcshostDetail.delete}"
+		disabled="#{not empty vcshostDetail.instance.projects}" />
 
 </ui:composition>
