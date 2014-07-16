@@ -50,6 +50,14 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		return deploymentSelector.findAll();
 	}
 
+	public List<Deployment> getAllDeployments(Server server, LocalDateTime maxAge) {
+		DeploymentSelector deploymentSelector = createSelector();
+		deploymentSelector.setDeployedOn(server);
+		deploymentSelector.withDeployedAfter(maxAge);
+		deploymentSelector.withUndeployedAfter(maxAge);
+		return deploymentSelector.findAll();
+	}
+
 	public Deployment getCurrentDeployment(Server server, Project project) {
 		DeploymentSelector deploymentSelector = createSelector();
 		deploymentSelector.setDeployedOn(server);

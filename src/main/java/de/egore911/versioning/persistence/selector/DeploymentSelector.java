@@ -24,6 +24,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.joda.time.LocalDateTime;
+
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Deployment_;
 import de.egore911.versioning.persistence.model.Project;
@@ -39,6 +41,8 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 	private static final long serialVersionUID = 84030583640758463L;
 
 	private Server deployedOn;
+	private LocalDateTime deployedAfter;
+	private LocalDateTime undeployedAfter;
 	private Boolean isUneployed;
 	private Project project;
 
@@ -55,6 +59,20 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 		if (deployedOn != null) {
 			predicates.add(builder.equal(from.get(Deployment_.server),
 					deployedOn));
+		}
+
+		if (deployedAfter != null) {
+			predicates.add(builder.or(
+					builder.isNull(from.get(Deployment_.deployment)),
+					builder.greaterThanOrEqualTo(
+							from.get(Deployment_.deployment), deployedAfter)));
+		}
+
+		if (undeployedAfter != null) {
+			predicates.add(builder.or(builder.isNull(from
+					.get(Deployment_.undeployment)), builder
+					.greaterThanOrEqualTo(from.get(Deployment_.undeployment),
+							undeployedAfter)));
 		}
 
 		if (isUneployed != null) {
@@ -99,5 +117,15 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public DeploymentSelector withUndeployedAfter(LocalDateTime undeployedAfter) {
+		this.undeployedAfter = undeployedAfter;
+		return this;
+	}
+
+	public DeploymentSelector withDeployedAfter(LocalDateTime deployedAfter) {
+		this.deployedAfter = deployedAfter;
+		return this;
 	}
 }
