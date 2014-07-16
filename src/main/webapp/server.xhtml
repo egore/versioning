@@ -13,6 +13,17 @@
 		<h:outputText value="#{messages.server}" />
 	</ui:define>
 
+	<ui:define name="head">
+		<style type="text/css">
+.history_entry {
+	position: absolute;
+	height: 20px;
+	top: 0;
+	text-shadow: 0 0 4px #ffffff;
+}
+</style>
+	</ui:define>
+
 	<rich:panel header="#{messages.server}">
 		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.server_name}" />
@@ -95,8 +106,7 @@
 
 			<ui:repeat var="variable" value="#{serverDetail.instance.variables}"
 				varStatus="status">
-				<h:commandLink
-					action="#{serverDetail.deleteVariable(variable)}"
+				<h:commandLink action="#{serverDetail.deleteVariable(variable)}"
 					class="deletionlink" title="#{messages.variable_delete}">
 					<h:graphicImage value="/images/elementary/edit-delete.png" />
 				</h:commandLink>
@@ -135,43 +145,77 @@
 		action="#{serverDetail.save}" />
 
 	<rich:collapsiblePanel header="#{messages.deployments}"
-		rendered="#{serverDetail.managed}">
-		<h3>
-			<h:outputText value="#{messages.server_currently_deployed}" />
-		</h3>
-		<rich:dataTable value="#{serverDetail.deployedVersions}" var="version">
-			<rich:column>
-				<f:facet name="header">
-					<h:outputText value="#{messages.project}" />
-				</f:facet>
-				<h:outputText value="#{version.project.name}" />
-			</rich:column>
-			<rich:column>
-				<f:facet name="header">
-					<h:outputText value="#{messages.version}" />
-				</f:facet>
-				<h:outputText value="#{version.transformedVcsTag}" />
-			</rich:column>
-		</rich:dataTable>
+		rendered="#{serverDetail.managed}" switchType="client">
+		<table>
+			<tr>
+				<td>
+					<h3>
+						<h:outputText value="#{messages.server_currently_deployed}" />
+					</h3>
+				</td>
+				<td>
+					<h3>
+						<h:outputText value="#{messages.server_deployable}" />
+					</h3>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top"><rich:dataTable
+						value="#{serverDetail.deployedVersions}" var="version">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{messages.project}" />
+							</f:facet>
+							<h:outputText value="#{version.project.name}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{messages.version}" />
+							</f:facet>
+							<h:outputText value="#{version.transformedVcsTag}" />
+						</rich:column>
+					</rich:dataTable></td>
+				<td style="vertical-align: top"><rich:dataTable
+						value="#{serverDetail.deployableVersions}" var="version">
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{messages.project}" />
+							</f:facet>
+							<h:outputText value="#{version.project.name}" />
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{messages.version}" />
+							</f:facet>
+							<h:outputText value="#{version.transformedVcsTag}" />
+						</rich:column>
+					</rich:dataTable></td>
+			</tr>
+		</table>
+	</rich:collapsiblePanel>
 
+	<rich:collapsiblePanel header="#{messages.server_deployment_history}"
+		rendered="#{serverDetail.managed}" switchType="client">
 		<h3>
-			<h:outputText value="#{messages.server_deployable}" />
+			<h:outputText
+				value="#{messages.server_deployment_history_detail} (#{deploymentHistoryBean.readableDate(deploymentHistoryBean.getDeploymentHistory(serverDetail.instance).minDate)} - #{deploymentHistoryBean.readableDate(deploymentHistoryBean.getDeploymentHistory(serverDetail.instance).maxDate)})" />
 		</h3>
-		<rich:dataTable value="#{serverDetail.deployableVersions}"
-			var="version">
-			<rich:column>
-				<f:facet name="header">
-					<h:outputText value="#{messages.project}" />
-				</f:facet>
-				<h:outputText value="#{version.project.name}" />
-			</rich:column>
-			<rich:column>
-				<f:facet name="header">
-					<h:outputText value="#{messages.version}" />
-				</f:facet>
-				<h:outputText value="#{version.transformedVcsTag}" />
-			</rich:column>
-		</rich:dataTable>
+		<table>
+			<a4j:repeat
+				value="#{deploymentHistoryBean.getDeploymentHistory(serverDetail.instance).entries}"
+				var="entry">
+				<tr>
+					<th style="text-align: left; height: 18px;">#{entry.project.name}</th>
+					<th style="position: relative;"><a4j:repeat
+							value="#{entry.deploymentDurations}" var="deploymentDuration">
+							<div class="history_entry"
+								style="background-color: #{deploymentDuration.color"
+								title="#{deploymentDuration.deployment.version.vcsTag}: #{deploymentHistoryBean.readableDate(deploymentDuration.deployment.deployment)} - #{deploymentHistoryBean.readableDate(deploymentDuration.deployment.undeployment)}">
+								#{deploymentDuration.deployment.version.vcsTag}</div>
+						</a4j:repeat></th>
+				</tr>
+			</a4j:repeat>
+		</table>
 	</rich:collapsiblePanel>
 
 </ui:composition>
