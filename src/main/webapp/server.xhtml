@@ -209,7 +209,7 @@
 					<th style="position: relative;"><a4j:repeat
 							value="#{entry.deploymentDurations}" var="deploymentDuration">
 							<div class="history_entry"
-								style="background-color: #{deploymentDuration.color"
+								style="background-color: #{deploymentDuration.color}; left: #{deploymentDuration.offset * 2}px; width: #{deploymentDuration.length * 2}px;"
 								title="#{deploymentDuration.deployment.version.vcsTag}: #{deploymentHistoryBean.readableDate(deploymentDuration.deployment.deployment)} - #{deploymentHistoryBean.readableDate(deploymentDuration.deployment.undeployment)}">
 								#{deploymentDuration.deployment.version.vcsTag}</div>
 						</a4j:repeat></th>
