@@ -16,14 +16,20 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
+import java.util.ResourceBundle;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
+import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.MavenRepository_;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.selector.MavenRepositorySelector;
+import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -41,6 +47,32 @@ public class MavenRepositoryList extends AbstractList<MavenRepository> {
 		state.setAscending(Boolean.TRUE);
 		state.setLimit(DEFAULT_LIMIT);
 		return state;
+	}
+
+	public void delete(Integer id) {
+		MavenRepositoryDao mavenRepositoryDao = new MavenRepositoryDao();
+		MavenRepository mavenRepository = mavenRepositoryDao.findById(id);
+		if (!mavenRepository.getMavenArtifacts().isEmpty()) {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ResourceBundle bundle = SessionUtil.getBundle();
+			StringBuilder projectNames = new StringBuilder();
+			for (MavenArtifact mavenArtifact : mavenRepository.getMavenArtifacts()) {
+				if (projectNames.length() > 0) {
+					projectNames.append(", ");
+				}
+				projectNames.append(mavenArtifact.getGroupId());
+				projectNames.append(':');
+				projectNames.append(mavenArtifact.getArtifactId());
+			}
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR,
+					bundle.getString("mavenrepository_delete_not_possible_used_by_artifacts"),
+					projectNames.toString());
+			facesContext.addMessage("main:table", message);
+			return;
+		}
+
+		mavenRepositoryDao.remove(mavenRepository);
 	}
 
 }

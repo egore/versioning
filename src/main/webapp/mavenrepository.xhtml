@@ -28,4 +28,8 @@
 	<h:commandButton value="#{messages.save}" id="save"
 		action="#{mavenrepositoryDetail.save}" />
 
+	<h:commandButton value="#{messages.delete}" id="delete"
+		action="#{mavenrepositoryDetail.delete}"
+		disabled="#{not empty mavenrepositoryDetail.instance.mavenArtifacts}" />
+
 </ui:composition>

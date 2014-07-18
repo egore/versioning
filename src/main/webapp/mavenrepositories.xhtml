@@ -35,6 +35,12 @@
 			</f:facet>
 			<h:outputText value="#{mavenrepository.baseUrl}" />
 		</rich:column>
+		<rich:column>
+			<f:facet name="header">
+				<h:outputText value="#{messages.actions}" />
+			</f:facet>
+			<h:commandButton value="#{messages.delete}" action="#{mavenrepositoryList.delete(mavenrepository.id)}" />
+		</rich:column>
 		<f:facet name="footer">
 			<rich:dataScroller maxPages="#{mavenrepositoryList.maxPages}"
 				page="#{projectList.page}" />
