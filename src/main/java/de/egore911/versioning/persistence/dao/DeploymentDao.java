@@ -78,6 +78,9 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 				em.merge(currentDeployment);
 			}
 			em.merge(newDeployment);
+			if (ourOwnTransaction) {
+				em.getTransaction().commit();
+			}
 		} finally {
 			if (ourOwnTransaction && em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
