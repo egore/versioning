@@ -16,6 +16,11 @@
 		<rich:column>
 			<f:facet name="header">
 				<h:outputText value="#{messages.version_project}" />
+				<ui:include src="/layout/sorting_and_filtering.xhtml">
+					<ui:param name="whichList" value="#{versionList}" />
+					<ui:param name="whichColumn" value="projectname" />
+					<ui:param name="filterField" value="#{versionList.selector.projectNameLike}" />
+				</ui:include>
 			</f:facet>
 			<h:outputText value="#{version.project.name}" />
 		</rich:column>

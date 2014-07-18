@@ -92,7 +92,7 @@ public abstract class AbstractSelector<T> implements Serializable {
 	protected abstract List<Predicate> generatePredicateList(
 			CriteriaBuilder builder, Root<T> from);
 
-	private List<Order> generateOrderList(CriteriaBuilder builder, Root<T> from) {
+	protected List<Order> generateOrderList(CriteriaBuilder builder, Root<T> from) {
 		if (StringUtils.isNotEmpty(getSortColumn())) {
 			if (!Boolean.FALSE.equals(getAscending())) {
 				return Collections.singletonList(builder.asc(from
