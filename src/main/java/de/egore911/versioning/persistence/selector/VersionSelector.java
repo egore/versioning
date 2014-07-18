@@ -43,6 +43,7 @@ public class VersionSelector extends AbstractSelector<Version> {
 	private Project project;
 	private String vcsTag;
 	private String projectNameLike;
+	private String vcsTagLike;
 
 	@Override
 	protected Class<Version> getEntityClass() {
@@ -66,6 +67,11 @@ public class VersionSelector extends AbstractSelector<Version> {
 			predicates.add(builder.like(
 					from.get(Version_.project).get(Project_.name), "%"
 							+ projectNameLike + "%"));
+		}
+
+		if (StringUtils.isNotEmpty(vcsTagLike)) {
+			predicates.add(builder.like(from.get(Version_.vcsTag), "%"
+					+ vcsTagLike + "%"));
 		}
 
 		return predicates;
@@ -127,6 +133,14 @@ public class VersionSelector extends AbstractSelector<Version> {
 
 	public void setProjectNameLike(String projectNameLike) {
 		this.projectNameLike = projectNameLike;
+	}
+
+	public String getVcsTagLike() {
+		return vcsTagLike;
+	}
+
+	public void setVcsTagLike(String vcsTagLike) {
+		this.vcsTagLike = vcsTagLike;
 	}
 
 }
