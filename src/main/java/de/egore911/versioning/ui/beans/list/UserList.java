@@ -19,7 +19,6 @@ package de.egore911.versioning.ui.beans.list;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.persistence.model.User_;
