@@ -54,7 +54,7 @@
 				<h:outputText value="#{messages.version_currently_deployed}" />
 			</f:facet>
 			<ui:repeat var="deployment" value="#{version.deployments}">
-				<h:outputText value="#{deployment.server.name}"
+				<h:outputText value="#{deployment.server.name} "
 					rendered="#{empty deployment.undeployment}" />
 			</ui:repeat>
 		</rich:column>
