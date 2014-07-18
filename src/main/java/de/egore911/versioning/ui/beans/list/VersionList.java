@@ -35,11 +35,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class VersionList extends AbstractList<Version> {
 
 	@Override
-	protected VersionDao getDao() {
-		return new VersionDao();
-	}
-
-	@Override
 	protected VersionSelector createInitialSelector() {
 		VersionSelector state = new VersionSelector();
 		state.setSortColumn(DbObject_.created.getName());

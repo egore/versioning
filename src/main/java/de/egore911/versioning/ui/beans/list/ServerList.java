@@ -35,11 +35,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class ServerList extends AbstractList<Server> {
 
 	@Override
-	protected ServerDao getDao() {
-		return new ServerDao();
-	}
-
-	@Override
 	protected ServerSelector createInitialSelector() {
 		ServerSelector state = new ServerSelector();
 		state.setSortColumn(Server_.name.getName());

@@ -35,11 +35,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class ProjectList extends AbstractList<Project> {
 
 	@Override
-	protected ProjectDao getDao() {
-		return new ProjectDao();
-	}
-
-	@Override
 	protected ProjectSelector createInitialSelector() {
 		ProjectSelector state = new ProjectSelector();
 		state.setSortColumn(Project_.name.getName());

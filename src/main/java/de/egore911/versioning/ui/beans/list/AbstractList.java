@@ -23,7 +23,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.persistence.selector.AbstractSelector;
 import de.egore911.versioning.ui.beans.AbstractBean;
@@ -70,7 +69,7 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	}
 
 	public long count() {
-		return getDao().count();
+		return getSelector().count();
 	}
 
 	public Integer getPage() {
@@ -104,14 +103,12 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 		return (int) Math.ceil((double) count() / getLimit());
 	}
 
-	protected abstract AbstractDao<T> getDao();
-
 	private DataModel<T> dataModel;
 
 	public DataModel<T> getDataModel() {
 		if (dataModel == null) {
-			AbstractDao<T> dao = getDao();
-			dataModel = new PagingDataModel<>(dao.count(), getSelector());
+			AbstractSelector<T> selector = getSelector();
+			dataModel = new PagingDataModel<>(selector.count(), getSelector());
 		}
 		return dataModel;
 	}

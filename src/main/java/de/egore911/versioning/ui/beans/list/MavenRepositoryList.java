@@ -35,11 +35,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class MavenRepositoryList extends AbstractList<MavenRepository> {
 
 	@Override
-	protected MavenRepositoryDao getDao() {
-		return new MavenRepositoryDao();
-	}
-
-	@Override
 	protected MavenRepositorySelector createInitialSelector() {
 		MavenRepositorySelector state = new MavenRepositorySelector();
 		state.setSortColumn(MavenRepository_.name.getName());

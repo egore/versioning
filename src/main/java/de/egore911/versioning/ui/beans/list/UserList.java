@@ -35,11 +35,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class UserList extends AbstractList<User> {
 
 	@Override
-	protected UserDao getDao() {
-		return new UserDao();
-	}
-
-	@Override
 	protected UserSelector createInitialSelector() {
 		UserSelector state = new UserSelector();
 		state.setSortColumn(User_.name.getName());

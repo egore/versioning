@@ -41,11 +41,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class VcshostList extends AbstractList<VcsHost> {
 
 	@Override
-	protected VcshostDao getDao() {
-		return new VcshostDao();
-	}
-
-	@Override
 	protected VcshostSelector createInitialSelector() {
 		VcshostSelector state = new VcshostSelector();
 		state.setSortColumn(VcsHost_.name.getName());
@@ -55,7 +50,7 @@ public class VcshostList extends AbstractList<VcsHost> {
 	}
 
 	public void delete(Integer id) {
-		VcshostDao vcshostDao = getDao();
+		VcshostDao vcshostDao = new VcshostDao();
 		VcsHost vcshost = vcshostDao.findById(id);
 		if (!vcshost.getProjects().isEmpty()) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();

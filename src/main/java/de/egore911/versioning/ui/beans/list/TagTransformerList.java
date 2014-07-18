@@ -35,11 +35,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class TagTransformerList extends AbstractList<TagTransformer> {
 
 	@Override
-	protected TagTransformerDao getDao() {
-		return new TagTransformerDao();
-	}
-
-	@Override
 	protected TagTransformerSelector createInitialSelector() {
 		TagTransformerSelector state = new TagTransformerSelector();
 		state.setSortColumn(TagTransformer_.name.getName());

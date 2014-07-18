@@ -35,11 +35,6 @@ import de.egore911.versioning.util.security.RequiresPermission;
 public class RoleList extends AbstractList<Role> {
 
 	@Override
-	protected RoleDao getDao() {
-		return new RoleDao();
-	}
-
-	@Override
 	protected RoleSelector createInitialSelector() {
 		RoleSelector state = new RoleSelector();
 		state.setSortColumn(Role_.name.getName());
