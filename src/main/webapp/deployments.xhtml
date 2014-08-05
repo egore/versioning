@@ -13,11 +13,15 @@
 
 	<a4j:repeat value="#{deploymentsBean.deployableVersionsPerServer}"
 		var="serverVersions">
-		<rich:panel header="#{messages.server}: #{serverVersions.server.name} (#{serverVersions.server.description})">
-			<h:outputText value="Nothing"
-				rendered="#{empty serverVersions.versions}" />
-			<rich:dataTable value="#{serverVersions.versions}" var="version"
-				rendered="#{not empty serverVersions.versions}">
+		<rich:panel rendered="#{not empty serverVersions.versions}">
+			<f:facet name="header">
+				<h:outputText value="#{serverVersions.server.name}" />
+				<h:outputText value=" - #{serverVersions.server.description}"
+					rendered="#{not empty serverVersions.server.description}" />
+				<h:outputText
+					value=": #{serverVersions.versions.size()} #{messages.deployments}" />
+			</f:facet>
+			<rich:dataTable value="#{serverVersions.versions}" var="version">
 				<rich:column>
 					<f:facet name="header">
 						<h:outputText value="#{messages.project}" />
@@ -40,8 +44,8 @@
 				</rich:column>
 			</rich:dataTable>
 			<h:commandButton
-					action="#{deploymentsBean.deployAll(serverVersions.server)}"
-					value="#{messages.deploy_all}" />
+				action="#{deploymentsBean.deployAll(serverVersions.server)}"
+				value="#{messages.deploy_all}"/>
 		</rich:panel>
 	</a4j:repeat>
 </ui:composition>
