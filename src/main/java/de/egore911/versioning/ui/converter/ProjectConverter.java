@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.Project;
@@ -30,11 +31,14 @@ import de.egore911.versioning.persistence.model.Project;
 @FacesConverter("projectConverter")
 public class ProjectConverter implements Converter {
 
+	@Inject
+	private ProjectDao projectDao;
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return new ProjectDao().findById(Integer.valueOf(value));
+			return projectDao.findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}

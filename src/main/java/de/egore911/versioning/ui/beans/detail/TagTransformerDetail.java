@@ -22,11 +22,11 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -37,14 +37,15 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "tagtransformerDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class TagTransformerDetail extends AbstractDetail<TagTransformer> {
 
+	private static final long serialVersionUID = 6727124243253519584L;
+
 	@Override
 	protected TagTransformerDao getDao() {
-		return new TagTransformerDao();
+		return BeanProvider.getContextualReference(TagTransformerDao.class);
 	}
 
 	@Override

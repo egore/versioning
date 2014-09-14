@@ -19,9 +19,10 @@ package de.egore911.versioning.ui.beans.detail;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
+
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -33,14 +34,15 @@ import de.egore911.versioning.util.vcs.Provider;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "versionDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.CREATE_VERSIONS)
 public class VersionDetail extends AbstractDetail<Version> {
 
+	private static final long serialVersionUID = -8013532862663771870L;
+
 	@Override
 	protected VersionDao getDao() {
-		return new VersionDao();
+		return BeanProvider.getContextualReference(VersionDao.class);
 	}
 
 	@Override

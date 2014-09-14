@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.egore911.versioning</groupId>
@@ -146,6 +147,11 @@
 			<artifactId>jul-to-slf4j</artifactId>
 			<version>1.7.7</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.7.7</version>
+		</dependency>
 
 		<!-- Hibernate -->
 		<dependency>
@@ -182,7 +188,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.27</version>
+			<version>5.1.32</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -268,11 +274,44 @@
 			<groupId>org.eclipse.jgit</groupId>
 			<artifactId>org.eclipse.jgit</artifactId>
 			<version>3.4.1.201406201815-r</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.tmatesoft.svnkit</groupId>
 			<artifactId>svnkit</artifactId>
 			<version>1.7.8</version>
+		</dependency>
+
+		<!-- CDI -->
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet</artifactId>
+			<version>2.2.4.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.deltaspike.core</groupId>
+			<artifactId>deltaspike-core-impl</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-jpa-module-impl</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-jsf-module-impl</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.deltaspike.modules</groupId>
+			<artifactId>deltaspike-security-module-impl</artifactId>
+			<version>1.0.2</version>
 		</dependency>
 
 		<!-- Unit testing -->
@@ -286,6 +325,12 @@
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<version>1.1.5.Final</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

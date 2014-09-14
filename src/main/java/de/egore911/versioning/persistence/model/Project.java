@@ -35,6 +35,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.util.vcs.GitProvider;
 import de.egore911.versioning.util.vcs.Provider;
@@ -194,9 +195,9 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 		}
 		switch (getVcsHost().getVcs()) {
 		case git:
-			return new GitProvider();
+			return BeanProvider.getContextualReference(GitProvider.class);
 		case svn:
-			return new SvnProvider();
+			return BeanProvider.getContextualReference(SvnProvider.class);
 		default:
 			throw new RuntimeException("not implemented yet");
 		}

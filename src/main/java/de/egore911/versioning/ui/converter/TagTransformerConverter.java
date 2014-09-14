@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.model.TagTransformer;
@@ -30,11 +31,14 @@ import de.egore911.versioning.persistence.model.TagTransformer;
 @FacesConverter("tagtransformerConverter")
 public class TagTransformerConverter implements Converter {
 
+	@Inject
+	private TagTransformerDao tagTransformerDao;
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return new TagTransformerDao().findById(Integer.valueOf(value));
+			return tagTransformerDao.findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}

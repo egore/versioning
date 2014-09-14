@@ -20,11 +20,11 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.persistence.dao.UserDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -36,17 +36,18 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "userDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.ADMIN_USERS)
 public class UserDetail extends AbstractDetail<User> {
+
+	private static final long serialVersionUID = -1774987900374210610L;
 
 	private String password;
 	private String passwordVerify;
 
 	@Override
 	protected UserDao getDao() {
-		return new UserDao();
+		return  BeanProvider.getContextualReference(UserDao.class);
 	}
 
 	@Override
@@ -78,7 +79,7 @@ public class UserDetail extends AbstractDetail<User> {
 			return "";
 		}
 
-		User user = new UserDao().findByLogin(getInstance().getLogin());
+		User user = getDao().findByLogin(getInstance().getLogin());
 		if (isManaged()) {
 			if (user != null && !getInstance().getId().equals(user.getId())) {
 				// Login already taken

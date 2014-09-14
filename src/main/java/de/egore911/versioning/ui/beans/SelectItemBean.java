@@ -18,9 +18,10 @@ package de.egore911.versioning.ui.beans;
 
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
@@ -40,12 +41,23 @@ import de.egore911.versioning.persistence.model.VcsHost;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "selectItemBean")
+@Named
 @RequestScoped
 public class SelectItemBean {
 
+	@Inject
+	private MavenRepositoryDao mavenRepositoryDao;
+	@Inject
+	private ProjectDao projectDao;
+	@Inject
+	private ServerDao serverDao;
+	@Inject
+	private TagTransformerDao tagTransformerDao;
+	@Inject
+	private VcshostDao vcshostDao;
+
 	public SelectItem[] getAllProjectSelectItems() {
-		List<Project> projects = new ProjectDao().findAll();
+		List<Project> projects = projectDao.findAll();
 		SelectItem[] items = new SelectItem[projects.size()];
 		int i = 0;
 		for (Project project : projects) {
@@ -55,7 +67,7 @@ public class SelectItemBean {
 	}
 
 	public SelectItem[] getAllVcshostSelectItems() {
-		List<VcsHost> vcshosts = new VcshostDao().findAll();
+		List<VcsHost> vcshosts = vcshostDao.findAll();
 		SelectItem[] items = new SelectItem[vcshosts.size()];
 		int i = 0;
 		for (VcsHost vcshost : vcshosts) {
@@ -65,7 +77,7 @@ public class SelectItemBean {
 	}
 
 	public SelectItem[] getAllServerSelectItems() {
-		List<Server> servers = new ServerDao().findAll();
+		List<Server> servers = serverDao.findAll();
 		SelectItem[] items = new SelectItem[servers.size()];
 		int i = 0;
 		for (Server server : servers) {
@@ -75,8 +87,7 @@ public class SelectItemBean {
 	}
 
 	public SelectItem[] getAllMavenRepositoriesSelectItems() {
-		List<MavenRepository> mavenRepositories = new MavenRepositoryDao()
-				.findAll();
+		List<MavenRepository> mavenRepositories = mavenRepositoryDao.findAll();
 		SelectItem[] items = new SelectItem[mavenRepositories.size()];
 		int i = 0;
 		for (MavenRepository mavenRepository : mavenRepositories) {
@@ -87,8 +98,7 @@ public class SelectItemBean {
 	}
 
 	public SelectItem[] getAllTagTransformerSelectItems() {
-		List<TagTransformer> tagTransformers = new TagTransformerDao()
-				.findAll();
+		List<TagTransformer> tagTransformers = tagTransformerDao.findAll();
 		SelectItem[] items = new SelectItem[tagTransformers.size()];
 		int i = 0;
 		for (TagTransformer tagTransformer : tagTransformers) {

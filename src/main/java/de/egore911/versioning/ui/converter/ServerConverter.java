@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Server;
@@ -30,11 +31,14 @@ import de.egore911.versioning.persistence.model.Server;
 @FacesConverter("serverConverter")
 public class ServerConverter implements Converter {
 
+	@Inject
+	private ServerDao serverDao;
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return new ServerDao().findById(Integer.valueOf(value));
+			return serverDao.findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}

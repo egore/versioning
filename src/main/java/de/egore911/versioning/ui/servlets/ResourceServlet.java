@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -42,13 +43,15 @@ public class ResourceServlet extends HttpServlet {
 	private static final Pattern PATTERN_SERVERICON = Pattern
 			.compile(".*/resources/server/([\\d+])$");
 
+	@Inject
+	private BinaryDataDao binaryDataDao;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Matcher matcher = PATTERN_SERVERICON.matcher(req.getRequestURI());
 		if (matcher.matches()) {
 			Integer iconId = Integer.valueOf(matcher.group(1));
-			BinaryDataDao binaryDataDao = new BinaryDataDao();
 			BinaryData binaryData = binaryDataDao.findById(iconId);
 			if (binaryData != null) {
 				resp.setContentLength((int) binaryData.getSize());

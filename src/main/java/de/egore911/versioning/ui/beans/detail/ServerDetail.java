@@ -26,14 +26,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,33 +52,35 @@ import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.persistence.model.Wildcard;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
-import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "serverDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ServerDetail extends AbstractDetail<Server> {
+
+	private static final long serialVersionUID = 8312067615354733025L;
 
 	private static final Logger log = LoggerFactory
 			.getLogger(ServerDetail.class);
 
 	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 
+	@Inject
+	private EntityManager entityManager;
+	private List<Project> origProjects;
+
 	@Override
 	protected ServerDao getDao() {
-		return new ServerDao();
+		return BeanProvider.getContextualReference(ServerDao.class);
 	}
 
 	@Override
 	protected Server createEmpty() {
-		HttpSession session = SessionUtil.getSession();
-		session.setAttribute("server_" + null + "_origProjects",
-				new ArrayList<>());
+		origProjects = new ArrayList<>();
 		return new Server();
 	}
 
@@ -85,9 +88,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 	protected Server load() {
 		Server server = super.load();
 		if (server != null) {
-			HttpSession session = SessionUtil.getSession();
-			session.setAttribute("server_" + server.getId() + "_origProjects",
-					new ArrayList<>(server.getConfiguredProjects()));
+			origProjects = new ArrayList<>(server.getConfiguredProjects());
 		}
 		return server;
 	}
@@ -182,6 +183,7 @@ public class ServerDetail extends AbstractDetail<Server> {
 		return "";
 	}
 
+	@Transactional
 	public String save() {
 
 		if (!validate("server")) {
@@ -229,40 +231,27 @@ public class ServerDetail extends AbstractDetail<Server> {
 			}
 		}
 
-		HttpSession session = SessionUtil.getSession();
-		List<Project> origProjects = (List<Project>) session
-				.getAttribute("server_" + getInstance().getId()
-						+ "_origProjects");
-		session.setAttribute("server_" + getInstance().getId()
-				+ "_origProjects", null);
-		ProjectDao projectDao = new ProjectDao();
-
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		try {
-			for (Project project : origProjects) {
-				if (!getInstance().getConfiguredProjects().contains(project)) {
-					project = projectDao.reattach(project);
-					project.getConfiguredServers().remove(getInstance());
-					projectDao.save(project);
-				}
-			}
-
-			getDao().save(getInstance());
-
-			for (IntegerDbObject deletion : getDeletions()) {
-				if (deletion.getId() != null) {
-					deletion = em.merge(deletion);
-					em.remove(deletion);
-				}
-			}
-
-			em.getTransaction().commit();
-		} finally {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
+		ProjectDao projectDao = BeanProvider
+				.getContextualReference(ProjectDao.class);
+		for (Project project : origProjects) {
+			if (!getInstance().getConfiguredProjects().contains(project)) {
+				project = projectDao.reattach(project);
+				project.getConfiguredServers().remove(getInstance());
+				projectDao.save(project);
 			}
 		}
+
+		getDao().save(getInstance());
+
+		origProjects = null;
+
+		for (IntegerDbObject deletion : getDeletions()) {
+			if (deletion.getId() != null) {
+				deletion = entityManager.merge(deletion);
+				entityManager.remove(deletion);
+			}
+		}
+
 		setInstance(null);
 		return "/servers.xhtml";
 	}

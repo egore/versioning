@@ -18,10 +18,11 @@ package de.egore911.versioning.ui.beans;
 
 import java.util.ResourceBundle;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,12 +34,15 @@ import de.egore911.versioning.util.UserUtil;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "loginBean")
+@Named
 @RequestScoped
 public class LoginBean {
 
 	private String login;
 	private String password;
+
+	@Inject
+	private UserDao userDao;
 
 	public String performLogin() {
 
@@ -48,7 +52,6 @@ public class LoginBean {
 		}
 
 		// Check if the user exists
-		UserDao userDao = new UserDao();
 		User user = userDao.getUser(login, UserUtil.hashPassword(password));
 		if (user != null) {
 			// Found our user, show the versions
@@ -78,6 +81,14 @@ public class LoginBean {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public String getLogout() {
+		SessionUtil.setLoggedInUser(null);
+		return "";
+	}
+
+	public void setLogout(String logout) {
 	}
 
 	public String getPassword() {

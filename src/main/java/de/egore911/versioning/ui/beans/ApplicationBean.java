@@ -20,16 +20,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Manifest;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.ServletContext;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "applicationBean")
-@ApplicationScoped
+@Named
+@RequestScoped
 public class ApplicationBean {
 
 	private String versionNumber;

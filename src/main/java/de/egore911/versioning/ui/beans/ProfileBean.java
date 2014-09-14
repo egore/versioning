@@ -17,9 +17,13 @@
 
 package de.egore911.versioning.ui.beans;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.inject.Named;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.hibernate.Hibernate;
+
+import de.egore911.versioning.persistence.dao.UserDao;
+import de.egore911.versioning.persistence.model.Role;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.ui.beans.detail.UserDetail;
 import de.egore911.versioning.util.SessionUtil;
@@ -29,10 +33,21 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "profileBean")
-@RequestScoped
+@Named
 @RequiresPermission
 public class ProfileBean extends UserDetail {
+
+	private static final long serialVersionUID = 2084487975831873551L;
+
+	private User reattachUser(User user) {
+		user = BeanProvider.getContextualReference(UserDao.class)
+				.reattach(user);
+		for (Role role : user.getRoles()) {
+			Hibernate.initialize(role.getPermissions());
+		}
+		SessionUtil.setLoggedInUser(user);
+		return user;
+	}
 
 	@Override
 	protected User createEmpty() {

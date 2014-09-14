@@ -3,10 +3,11 @@ package de.egore911.versioning.ui.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.persistence.EntityManager;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.joda.time.LocalDateTime;
 
 import de.egore911.versioning.persistence.dao.DeploymentDao;
@@ -16,15 +17,19 @@ import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
-import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
-@ManagedBean(name = "deploymentsBean")
+@Named
 @RequestScoped
 @RequiresPermission({ Permission.CREATE_VERSIONS, Permission.DEPLOY })
-public class DeploymentsBean extends AbstractBean {
+public class DeploymentsBean {
 
 	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+
+	@Inject
+	private DeploymentDao deploymentDao;
+	@Inject
+	private ServerDao serverDao;
 
 	public static class ServerVersions {
 		private final Server server;
@@ -45,7 +50,7 @@ public class DeploymentsBean extends AbstractBean {
 	}
 
 	public List<ServerVersions> getDeployableVersionsPerServer() {
-		List<Server> servers = new ServerDao().findAll();
+		List<Server> servers = serverDao.findAll();
 		List<ServerVersions> result = new ArrayList<>();
 		for (Server server : servers) {
 			result.add(new ServerVersions(server, deploymentCalculator
@@ -55,7 +60,6 @@ public class DeploymentsBean extends AbstractBean {
 	}
 
 	public String deploy(Server server, Version version) {
-		DeploymentDao deploymentDao = new DeploymentDao();
 		Deployment currentDeployment = deploymentDao.getCurrentDeployment(
 				server, version.getProject());
 
@@ -67,20 +71,12 @@ public class DeploymentsBean extends AbstractBean {
 		return "";
 	}
 
+	@Transactional
 	public String deployAll(Server server) {
 		List<Version> versions = deploymentCalculator
 				.getDeployableVersions(server);
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		try {
-			for (Version version : versions) {
-				deploy(server, version);
-			}
-			em.getTransaction().commit();
-		} finally {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
+		for (Version version : versions) {
+			deploy(server, version);
 		}
 		return "";
 	}

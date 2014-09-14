@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.VcsHost;
@@ -30,11 +31,14 @@ import de.egore911.versioning.persistence.model.VcsHost;
 @FacesConverter("vcshostConverter")
 public class VcshostConverter implements Converter {
 
+	@Inject
+	private VcshostDao vcshostDao;
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return new VcshostDao().findById(Integer.valueOf(value));
+			return vcshostDao.findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}

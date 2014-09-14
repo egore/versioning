@@ -18,16 +18,20 @@ package de.egore911.versioning.ui.beans.list;
 
 import java.util.ResourceBundle;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.VcsHost_;
+import de.egore911.versioning.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.selector.VcshostSelector;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
@@ -35,22 +39,38 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "vcshostList")
+@Named
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostList extends AbstractList<VcsHost> {
 
+	@Inject
+	private VcshostDao vcshostDao;
+
+	@Inject
+	@SessionScoped
+	private VcshostSelector selector;
+
 	@Override
-	protected VcshostSelector createInitialSelector() {
-		VcshostSelector state = new VcshostSelector();
-		state.setSortColumn(VcsHost_.name.getName());
-		state.setAscending(Boolean.TRUE);
-		state.setLimit(DEFAULT_LIMIT);
-		return state;
+	public VcshostSelector getSelector() {
+		return selector;
+	}
+
+	@Override
+	public void setSelector(AbstractSelector<VcsHost> selector) {
+		this.selector = (VcshostSelector) selector;
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		if (selector.getSortColumn() == null) {
+			selector.setSortColumn(VcsHost_.name.getName());
+			selector.setAscending(Boolean.TRUE);
+			selector.setLimit(DEFAULT_LIMIT);
+		}
 	}
 
 	public void delete(Integer id) {
-		VcshostDao vcshostDao = new VcshostDao();
 		VcsHost vcshost = vcshostDao.findById(id);
 		if (!vcshost.getProjects().isEmpty()) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();

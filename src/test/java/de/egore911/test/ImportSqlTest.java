@@ -20,15 +20,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
 import org.hibernate.tool.hbm2ddl.SimpleSchemaExport;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +41,6 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
-import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.listener.StartupListener;
 
 /**
@@ -55,7 +51,14 @@ public class ImportSqlTest {
 	private static final Logger log = LoggerFactory
 			.getLogger(ImportSqlTest.class);
 
-	private EntityManagerFactory emf;
+	@Inject
+	private ProjectDao projectDao;
+	@Inject
+	private ServerDao serverDao;
+	@Inject
+	private VcshostDao vcshostDao;
+	@Inject
+	private VersionDao versionDao;
 
 	@Before
 	public void before() {
@@ -75,42 +78,28 @@ public class ImportSqlTest {
 			log.error(e.getMessage(), e);
 		}
 
-		emf = Persistence.createEntityManagerFactory("versioning");
-		EntityManager em = emf.createEntityManager();
-		EntityManagerUtil.setEntityManager(em);
-	}
-
-	@After
-	public void after() {
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		EntityManagerUtil.clearEntityManager();
-		em.close();
-		emf.close();
+		// TODO create entitymanagerfactory
 	}
 
 	@Test
 	public void testImportSql() {
 
 		// We have 2 VCS hosts in our import.sql
-		VcshostDao vcshostDao = new VcshostDao();
 		List<VcsHost> vcshosts = vcshostDao.findAll();
 		Assert.assertNotNull(vcshosts);
 		Assert.assertEquals(2, vcshosts.size());
 
 		// We have 3 projects in our import.sql
-		ProjectDao projectDao = new ProjectDao();
 		List<Project> projects = projectDao.findAll();
 		Assert.assertNotNull(projects);
 		Assert.assertEquals(3, projects.size());
 
 		// We have 5 versions in our import.sql
-		VersionDao versionDao = new VersionDao();
 		List<Version> versions = versionDao.findAll();
 		Assert.assertNotNull(versions);
 		Assert.assertEquals(5, versions.size());
 
 		// We have 5 versions in our import.sql
-		ServerDao serverDao = new ServerDao();
 		List<Server> servers = serverDao.findAll();
 		Assert.assertNotNull(servers);
 		Assert.assertEquals(2, servers.size());

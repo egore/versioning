@@ -21,10 +21,13 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
+
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.ActionCheckout;
@@ -42,21 +45,24 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Wildcard;
-import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "projectDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class ProjectDetail extends AbstractDetail<Project> {
 
+	private static final long serialVersionUID = 8323695136698374637L;
+
+	@Inject
+	private EntityManager entityManager;
+
 	@Override
 	protected ProjectDao getDao() {
-		return new ProjectDao();
+		return BeanProvider.getContextualReference(ProjectDao.class);
 	}
 
 	@Override
@@ -255,6 +261,7 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "";
 	}
 
+	@Transactional
 	public String save() {
 
 		if (!validate("project")) {
@@ -272,22 +279,12 @@ public class ProjectDetail extends AbstractDetail<Project> {
 			}
 		}
 
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		em.getTransaction().begin();
-		try {
-			getDao().save(getInstance());
+		getDao().save(getInstance());
 
-			for (IntegerDbObject deletion : getDeletions()) {
-				if (deletion.getId() != null) {
-					deletion = em.merge(deletion);
-					em.remove(deletion);
-				}
-			}
-
-			em.getTransaction().commit();
-		} finally {
-			if (em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
+		for (IntegerDbObject deletion : getDeletions()) {
+			if (deletion.getId() != null) {
+				deletion = entityManager.merge(deletion);
+				entityManager.remove(deletion);
 			}
 		}
 

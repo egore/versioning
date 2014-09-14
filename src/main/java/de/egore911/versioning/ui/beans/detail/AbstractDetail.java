@@ -16,69 +16,60 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import de.egore911.versioning.cdi.HttpParam;
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
-import de.egore911.versioning.ui.beans.AbstractBean;
 import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractDetail<T extends IntegerDbObject> extends
-		AbstractBean {
+@SessionScoped
+public abstract class AbstractDetail<T extends IntegerDbObject> implements Serializable {
 
-	@ManagedProperty(value = "#{param.id}")
-	private Integer id;
+	private static final long serialVersionUID = -6467847796483360650L;
+
+	@Inject
+	@HttpParam
+	private String id;
 
 	protected T instance;
 
 	public T getInstance() {
 		// No request cache yet, determine it
 		if (instance == null) {
-			HttpSession session = SessionUtil.getSession();
-			instance = (T) session.getAttribute(this.getClass().getSimpleName()
-					+ "_instance");
-			if (instance == null) {
-				if (id != null) {
-					instance = load();
-					session.setAttribute(this.getClass().getSimpleName()
-							+ "_deletions", new ArrayList<>());
-				}
-				if (instance == null) {
-					instance = createEmpty();
-					session.setAttribute(this.getClass().getSimpleName()
-							+ "_deletions", new ArrayList<>());
-				}
+			if (id != null) {
+				instance = load();
 			}
-			session.setAttribute(this.getClass().getSimpleName() + "_instance",
-					instance);
+			if (instance == null) {
+				instance = createEmpty();
+			}
 		}
 		return instance;
 	}
 
-	protected T load() {
-		return getDao().findById(id);
+	public void setInstance(T instance) {
+		this.instance = instance;
 	}
 
-	public void setInstance(T instance) {
-		HttpSession session = SessionUtil.getSession();
-		session.setAttribute(this.getClass().getSimpleName() + "_instance",
-				instance);
-		this.instance = instance;
+	protected T load() {
+		return getDao().findById(Integer.valueOf(id));
 	}
 
 	public boolean isManaged() {
@@ -88,18 +79,6 @@ public abstract class AbstractDetail<T extends IntegerDbObject> extends
 	protected abstract AbstractDao<T> getDao();
 
 	protected abstract T createEmpty();
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-		// If a ID got passed we were called with a parameter in the URL
-		if (id != null) {
-			setInstance(null);
-		}
-	}
 
 	protected boolean validate(String prefix) {
 		ValidatorFactory validatorFactory = Validation

@@ -18,14 +18,15 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.persistence.selector.AbstractSelector;
-import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -34,6 +35,9 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(AbstractDao.class);
+
+	@Inject
+	protected EntityManager entityManager;
 
 	public List<T> findAll() {
 		if (log.isTraceEnabled()) {
@@ -70,8 +74,7 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 		if (log.isTraceEnabled()) {
 			log.trace("Selecting {}", getClass().getSimpleName());
 		}
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		return em.find(getEntityClass(), id);
+		return entityManager.find(getEntityClass(), id);
 	}
 
 	public long count() {
@@ -81,49 +84,21 @@ public abstract class AbstractDao<T extends IntegerDbObject> {
 		return createSelector().count();
 	}
 
+	@Transactional
 	public T save(T entity) {
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		boolean ourOwnTransaction = !em.getTransaction().isActive();
-		if (ourOwnTransaction) {
-			em.getTransaction().begin();
-		}
-		try {
-			entity = em.merge(entity);
-			if (ourOwnTransaction) {
-				em.getTransaction().commit();
-			}
-			return entity;
-		} finally {
-			if (ourOwnTransaction && em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-		}
+		return entityManager.merge(entity);
 	}
 
 	public T reattach(T entity) {
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		if (!em.contains(entity)) {
-			entity = em.merge(entity);
+		if (!entityManager.contains(entity)) {
+			entity = entityManager.merge(entity);
 		}
 		return entity;
 	}
 
+	@Transactional
 	public void remove(T entity) {
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		boolean ourOwnTransaction = !em.getTransaction().isActive();
-		if (ourOwnTransaction) {
-			em.getTransaction().begin();
-		}
-		try {
-			em.remove(entity);
-			if (ourOwnTransaction) {
-				em.getTransaction().commit();
-			}
-		} finally {
-			if (ourOwnTransaction && em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-		}
+		entityManager.remove(entity);
 	}
 
 	protected abstract Class<T> getEntityClass();

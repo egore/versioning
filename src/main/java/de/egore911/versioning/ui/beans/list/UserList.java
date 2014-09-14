@@ -16,30 +16,48 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.persistence.model.User_;
+import de.egore911.versioning.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.selector.UserSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "userList")
+@Named
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_USERS)
 public class UserList extends AbstractList<User> {
 
+	@Inject
+	@SessionScoped
+	private UserSelector selector;
+
 	@Override
-	protected UserSelector createInitialSelector() {
-		UserSelector state = new UserSelector();
-		state.setSortColumn(User_.name.getName());
-		state.setAscending(Boolean.TRUE);
-		state.setLimit(DEFAULT_LIMIT);
-		return state;
+	public UserSelector getSelector() {
+		return selector;
+	}
+
+	@Override
+	public void setSelector(AbstractSelector<User> selector) {
+		this.selector = (UserSelector) selector;
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		if (selector.getSortColumn() == null) {
+			selector.setSortColumn(User_.name.getName());
+			selector.setAscending(Boolean.TRUE);
+			selector.setLimit(DEFAULT_LIMIT);
+		}
 	}
 
 }

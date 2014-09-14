@@ -36,7 +36,7 @@ public class VersionDao extends AbstractDao<Version> {
 	}
 
 	public boolean tagExists(Project project, String vcsTag) {
-		VersionSelector versionSelector = new VersionSelector();
+		VersionSelector versionSelector = createSelector();
 		versionSelector.setProject(project);
 		versionSelector.setVcsTag(vcsTag);
 		return versionSelector.count() > 0;

@@ -28,6 +28,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +45,9 @@ import de.egore911.versioning.util.VersionUtil;
 public abstract class Provider {
 
 	private static final Logger log = LoggerFactory.getLogger(Provider.class);
+
+	@Inject
+	private VersionDao versionDao;
 
 	/**
 	 * Checks if a given tag exists. If this will take more than 10 seconds, it
@@ -96,7 +101,6 @@ public abstract class Provider {
 			Collections.sort(tags);
 			Collections.reverse(tags);
 			tags = tags.subList(0, Math.min(tags.size(), 20));
-			VersionDao versionDao = new VersionDao();
 			for (Tag tag : tags) {
 				tag.setExists(versionDao.tagExists(project, tag.getName()));
 			}

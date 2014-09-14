@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +41,9 @@ public class ServerService extends HttpServlet {
 	private static final Pattern PATTERN_SERVERNAME = Pattern
 			.compile(".*/server/([^/]+)\\.(xml|json)$");
 
+	@Inject
+	private ServerDao serverDao;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -49,7 +53,7 @@ public class ServerService extends HttpServlet {
 			if (matcher.matches()) {
 				String serverName = matcher.group(1);
 				serverName = URLDecoder.decode(serverName, "UTF-8");
-				Server server = new ServerDao().findByName(serverName);
+				Server server = serverDao.findByName(serverName);
 				if (server != null) {
 					if ("xml".equals(matcher.group(2))) {
 						renderXml(req, resp, writer, server);
@@ -65,7 +69,7 @@ public class ServerService extends HttpServlet {
 				}
 			} else {
 
-				List<Server> servers = new ServerDao().findAll();
+				List<Server> servers = serverDao.findAll();
 				for (Server server : servers) {
 					writer.println(server.getName() + ".xml");
 					writer.println(server.getName() + ".json");

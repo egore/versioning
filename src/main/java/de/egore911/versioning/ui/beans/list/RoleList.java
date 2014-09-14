@@ -16,30 +16,48 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Role;
 import de.egore911.versioning.persistence.model.Role_;
+import de.egore911.versioning.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.selector.RoleSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "roleList")
+@Named
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_USERS)
 public class RoleList extends AbstractList<Role> {
 
+	@Inject
+	@SessionScoped
+	private RoleSelector selector;
+
 	@Override
-	protected RoleSelector createInitialSelector() {
-		RoleSelector state = new RoleSelector();
-		state.setSortColumn(Role_.name.getName());
-		state.setAscending(Boolean.TRUE);
-		state.setLimit(DEFAULT_LIMIT);
-		return state;
+	public RoleSelector getSelector() {
+		return selector;
+	}
+
+	@Override
+	public void setSelector(AbstractSelector<Role> selector) {
+		this.selector = (RoleSelector) selector;
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		if (selector.getSortColumn() == null) {
+			selector.setSortColumn(Role_.name.getName());
+			selector.setAscending(Boolean.TRUE);
+			selector.setLimit(DEFAULT_LIMIT);
+		}
 	}
 
 }

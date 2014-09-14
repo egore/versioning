@@ -30,6 +30,7 @@
 				</h:outputFormat>
 			</h:link>
 			<h:link outcome="login" rendered="#{empty user}" value="#{messages.not_logged_in}" />
+			<h:link outcome="logout" rendered="#{not empty user}" value="#{messages.logout}" />
 		</span>
 		<ui:include src="menu.xhtml" />
 		<ui:insert />

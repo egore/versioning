@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
 
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.model.MavenRepository;
@@ -30,11 +31,14 @@ import de.egore911.versioning.persistence.model.MavenRepository;
 @FacesConverter("mavenrepositoryConverter")
 public class MavenRepositoryConverter implements Converter {
 
+	@Inject
+	private MavenRepositoryDao mavenRepositoryDao;
+
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) {
 		try {
-			return new MavenRepositoryDao().findById(Integer.valueOf(value));
+			return mavenRepositoryDao.findById(Integer.valueOf(value));
 		} catch (NumberFormatException e) {
 			return null;
 		}

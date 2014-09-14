@@ -19,11 +19,11 @@ package de.egore911.versioning.ui.beans.detail;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -35,17 +35,18 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "vcshostDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class VcshostDetail extends AbstractDetail<VcsHost> {
+
+	private static final long serialVersionUID = -6183158793589999497L;
 
 	private String password;
 	private String passwordVerify;
 
 	@Override
 	protected VcshostDao getDao() {
-		return new VcshostDao();
+		return BeanProvider.getContextualReference(VcshostDao.class);
 	}
 
 	@Override

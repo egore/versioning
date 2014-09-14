@@ -21,14 +21,17 @@ import java.sql.SQLException;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-
 import org.flywaydb.core.Flyway;
 
 /**
@@ -37,10 +40,15 @@ import org.flywaydb.core.Flyway;
  * 
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
+@WebListener
 public class StartupListener implements ServletContextListener {
 
 	private static final Logger log = LoggerFactory
 			.getLogger(StartupListener.class);
+
+	// @PersistenceUnit(unitName = "versioning")
+	private static EntityManagerFactory entityManagerFactory;
+	private boolean selfBootstrapped = false;
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
@@ -77,8 +85,10 @@ public class StartupListener implements ServletContextListener {
 						flyway.setLocations("db/migration/mysql");
 					} else if (connection.toString().startsWith("jdbc:hsqldb")) {
 						flyway.setLocations("db/migration/hsqldb");
-					} else if (connection.toString().startsWith("jdbc:jtds:sqlserver") ||
-							connection.toString().startsWith("jdbc:sqlserver")) {
+					} else if (connection.toString().startsWith(
+							"jdbc:jtds:sqlserver")
+							|| connection.toString().startsWith(
+									"jdbc:sqlserver")) {
 						flyway.setLocations("db/migration/mssql");
 					} else {
 						throw new RuntimeException(
@@ -103,12 +113,12 @@ public class StartupListener implements ServletContextListener {
 							.getMetaData()
 							.getClass()
 							.getName()
-							.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData") ||
-							connection
-							.getMetaData()
-							.getClass()
-							.getName()
-							.equals("com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData")) {
+							.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData")
+							|| connection
+									.getMetaData()
+									.getClass()
+									.getName()
+									.equals("com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData")) {
 						flyway.setLocations("db/migration/mssql");
 					} else {
 						throw new RuntimeException(
@@ -138,11 +148,23 @@ public class StartupListener implements ServletContextListener {
 		} catch (NamingException e) {
 			log.error(e.getMessage(), e);
 		}
+
+		if (entityManagerFactory == null) {
+			entityManagerFactory = Persistence
+					.createEntityManagerFactory("versioning");
+			selfBootstrapped = true;
+		}
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		// Nothing
+		if (selfBootstrapped && entityManagerFactory != null) {
+			entityManagerFactory.close();
+		}
+	}
+
+	public static EntityManager createEntityManager() {
+		return entityManagerFactory.createEntityManager();
 	}
 
 }

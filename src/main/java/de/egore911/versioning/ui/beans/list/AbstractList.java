@@ -16,57 +16,28 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.faces.model.DataModel;
-import javax.servlet.http.HttpSession;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.persistence.selector.AbstractSelector;
-import de.egore911.versioning.ui.beans.AbstractBean;
 import de.egore911.versioning.ui.model.PagingDataModel;
-import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractList<T extends IntegerDbObject> extends
-		AbstractBean {
+public abstract class AbstractList<T extends IntegerDbObject> {
 
 	protected static final int DEFAULT_LIMIT = 20;
 
-	private transient AbstractSelector<T> selector = createInitialSelector();
-	private transient HttpSession session;
+	@Inject
+	protected EntityManager entityManager;
 
-	protected abstract AbstractSelector<T> createInitialSelector();
-
-	@Override
-	@PostConstruct
-	public void postConstruct() {
-		super.postConstruct();
-		session = SessionUtil.getSession();
-		AbstractSelector<T> previousState = (AbstractSelector<T>) session
-				.getAttribute(this.getClass().getSimpleName() + "_selector");
-		if (previousState != null) {
-			setSelector(previousState);
-		}
-	}
-
-	@PreDestroy
-	public void preDestroy() {
-		session.setAttribute(this.getClass().getSimpleName() + "_selector",
-				getSelector());
-	}
-
-	public AbstractSelector<T> getSelector() {
-		return selector;
-	}
-
-	public void setSelector(AbstractSelector<T> selector) {
-		this.selector = selector;
-	}
+	public abstract AbstractSelector<T> getSelector();
+	public abstract void setSelector(AbstractSelector<T> selector);
 
 	public long count() {
 		return getSelector().count();
@@ -108,7 +79,7 @@ public abstract class AbstractList<T extends IntegerDbObject> extends
 	public DataModel<T> getDataModel() {
 		if (dataModel == null) {
 			AbstractSelector<T> selector = getSelector();
-			dataModel = new PagingDataModel<>(selector.count(), getSelector());
+			dataModel = new PagingDataModel<>(selector.count(), selector);
 		}
 		return dataModel;
 	}

@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
@@ -22,12 +23,15 @@ import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.util.security.RequiresPermission;
 
-@ManagedBean(name = "deploymentHistoryBean")
+@Named
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class DeploymentHistoryBean {
-	
+
 	private Map<Server, DeploymentHistory> historyCache = new HashMap<>(1);
+
+	@Inject
+	private DeploymentDao deploymentDao;
 
 	public class DeploymentHistory {
 		private List<DeploymentHistoryEntry> entries = new ArrayList<>(0);
@@ -61,8 +65,8 @@ public class DeploymentHistoryBean {
 		public int getLeft() {
 			return 0;
 		}
-		
-		public int getRight () {
+
+		public int getRight() {
 			return Days.daysBetween(minDate, maxDate).getDays();
 		}
 
@@ -101,11 +105,11 @@ public class DeploymentHistoryBean {
 		public void setLength(int length) {
 			this.length = length;
 		}
-		
+
 		public String getColor() {
 			return color;
 		}
-		
+
 		public void setColor(String color) {
 			this.color = color;
 		}
@@ -137,7 +141,7 @@ public class DeploymentHistoryBean {
 				List<DeploymentDuration> deploymentDurations) {
 			this.deploymentDurations = deploymentDurations;
 		}
-		
+
 	}
 
 	public DeploymentHistory getDeploymentHistory(Server server) {
@@ -145,10 +149,9 @@ public class DeploymentHistoryBean {
 		if (result != null) {
 			return result;
 		}
-		
-		DeploymentDao deploymentDao = new DeploymentDao();
-		List<Deployment> allDeployments = deploymentDao
-				.getAllDeployments(server, LocalDateTime.now().minusYears(2));
+
+		List<Deployment> allDeployments = deploymentDao.getAllDeployments(
+				server, LocalDateTime.now().minusYears(2));
 
 		result = new DeploymentHistory();
 
@@ -179,7 +182,7 @@ public class DeploymentHistoryBean {
 			}
 			entry.getDeploymentDurations().add(new DeploymentDuration(d));
 		}
-		
+
 		for (DeploymentHistoryEntry entry : result.getEntries()) {
 			Collections.sort(entry.getDeploymentDurations(),
 					new Comparator<DeploymentDuration>() {
@@ -193,16 +196,24 @@ public class DeploymentHistoryBean {
 											o2.getDeployment().getDeployment());
 						}
 					});
-			for (DeploymentDuration deploymentDuration : entry.getDeploymentDurations()) {
+			for (DeploymentDuration deploymentDuration : entry
+					.getDeploymentDurations()) {
 				if (deploymentDuration.getDeployment().getDeployment() == null) {
 					deploymentDuration.offset = 0;
 				} else {
-					deploymentDuration.offset = Days.daysBetween(result.getMinDate(), deploymentDuration.getDeployment().getDeployment()).getDays();
+					deploymentDuration.offset = Days.daysBetween(
+							result.getMinDate(),
+							deploymentDuration.getDeployment().getDeployment())
+							.getDays();
 				}
 				if (deploymentDuration.getDeployment().getUndeployment() == null) {
 					deploymentDuration.length = result.getRight();
 				} else {
-					deploymentDuration.length = result.getRight() - Days.daysBetween(deploymentDuration.getDeployment().getUndeployment(), result.getMaxDate()).getDays();
+					deploymentDuration.length = result.getRight()
+							- Days.daysBetween(
+									deploymentDuration.getDeployment()
+											.getUndeployment(),
+									result.getMaxDate()).getDays();
 				}
 				deploymentDuration.length -= deploymentDuration.offset;
 				deploymentDuration.color = randomColor(deploymentDuration.deployment);
@@ -217,14 +228,15 @@ public class DeploymentHistoryBean {
 								.compareTo(o2.getProject().getName());
 					}
 				});
-		
+
 		historyCache.put(server, result);
-		
+
 		return result;
 	}
-	
+
 	private String randomColor(Deployment d) {
-		Random random = new Random(d.getVersion().getId().hashCode() | d.getVersion().getProject().getId());
+		Random random = new Random(d.getVersion().getId().hashCode()
+				| d.getVersion().getProject().getId());
 		StringBuilder builder = new StringBuilder();
 		builder.append('#');
 		String r = Integer.toHexString(random.nextInt(255));
@@ -244,13 +256,12 @@ public class DeploymentHistoryBean {
 		builder.append(b);
 		return builder.toString();
 	}
-	
+
 	public String readableDate(LocalDateTime localDateTime) {
 		if (localDateTime == null) {
 			return null;
 		}
 		return DateTimeFormat.forStyle("SS").print(localDateTime);
 	}
-
 
 }

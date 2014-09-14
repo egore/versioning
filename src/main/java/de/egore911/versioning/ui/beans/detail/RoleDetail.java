@@ -16,8 +16,9 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.inject.Named;
+
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.persistence.dao.RoleDao;
 import de.egore911.versioning.persistence.model.Permission;
@@ -27,14 +28,15 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "roleDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.ADMIN_USERS)
 public class RoleDetail extends AbstractDetail<Role> {
 
+	private static final long serialVersionUID = -6029046643729679120L;
+
 	@Override
 	protected RoleDao getDao() {
-		return new RoleDao();
+		return BeanProvider.getContextualReference(RoleDao.class);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
@@ -47,8 +48,10 @@ public class DeploymentCalculator {
 		}
 	};
 
-	private final ProjectDao projectDao = new ProjectDao();
-	private final DeploymentDao deploymentDao = new DeploymentDao();
+	@Inject
+	private ProjectDao projectDao;
+	@Inject
+	private DeploymentDao deploymentDao;
 
 	public List<Version> getDeployedVersions(Server server) {
 		List<Version> result = new ArrayList<>();

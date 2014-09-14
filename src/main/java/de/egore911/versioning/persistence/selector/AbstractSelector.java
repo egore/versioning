@@ -30,8 +30,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
-
-import de.egore911.versioning.util.EntityManagerUtil;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -41,7 +40,7 @@ public abstract class AbstractSelector<T> implements Serializable {
 	private static final long serialVersionUID = 3479024193093886962L;
 
 	public List<T> findAll() {
-		EntityManager em = EntityManagerUtil.getEntityManager();
+		EntityManager em = BeanProvider.getContextualReference(EntityManager.class);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = builder.createQuery(getEntityClass());
 		Root<T> from = cq.from(getEntityClass());
@@ -60,7 +59,7 @@ public abstract class AbstractSelector<T> implements Serializable {
 	}
 
 	public T find() {
-		EntityManager em = EntityManagerUtil.getEntityManager();
+		EntityManager em = BeanProvider.getContextualReference(EntityManager.class);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = builder.createQuery(getEntityClass());
 		Root<T> from = cq.from(getEntityClass());
@@ -76,7 +75,7 @@ public abstract class AbstractSelector<T> implements Serializable {
 	}
 
 	public long count() {
-		EntityManager em = EntityManagerUtil.getEntityManager();
+		EntityManager em = BeanProvider.getContextualReference(EntityManager.class);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = builder.createQuery(Long.class);
 		Root<T> from = cq.from(getEntityClass());

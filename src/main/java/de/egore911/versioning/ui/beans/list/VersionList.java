@@ -16,30 +16,48 @@
  */
 package de.egore911.versioning.ui.beans.list;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import de.egore911.versioning.persistence.model.DbObject_;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.selector.VersionSelector;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "versionList")
+@Named
 @RequestScoped
 @RequiresPermission({ Permission.CREATE_VERSIONS, Permission.DEPLOY })
 public class VersionList extends AbstractList<Version> {
 
+	@Inject
+	@SessionScoped
+	private VersionSelector selector;
+
 	@Override
-	protected VersionSelector createInitialSelector() {
-		VersionSelector state = new VersionSelector();
-		state.setSortColumn(DbObject_.created.getName());
-		state.setAscending(Boolean.FALSE);
-		state.setLimit(DEFAULT_LIMIT);
-		return state;
+	public VersionSelector getSelector() {
+		return selector;
+	}
+
+	@Override
+	public void setSelector(AbstractSelector<Version> selector) {
+		this.selector = (VersionSelector) selector;
+	}
+
+	@PostConstruct
+	public void postConstruct() {
+		if (selector.getSortColumn() == null) {
+			selector.setSortColumn(DbObject_.created.getName());
+			selector.setAscending(Boolean.FALSE);
+			selector.setLimit(DEFAULT_LIMIT);
+		}
 	}
 
 }

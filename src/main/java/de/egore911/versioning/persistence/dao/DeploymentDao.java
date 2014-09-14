@@ -18,15 +18,13 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.joda.time.LocalDateTime;
 
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.selector.DeploymentSelector;
-import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -50,7 +48,8 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		return deploymentSelector.findAll();
 	}
 
-	public List<Deployment> getAllDeployments(Server server, LocalDateTime maxAge) {
+	public List<Deployment> getAllDeployments(Server server,
+			LocalDateTime maxAge) {
 		DeploymentSelector deploymentSelector = createSelector();
 		deploymentSelector.setDeployedOn(server);
 		deploymentSelector.withDeployedAfter(maxAge);
@@ -66,26 +65,13 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		return deploymentSelector.find();
 	}
 
+	@Transactional
 	public void replace(Deployment currentDeployment, Deployment newDeployment) {
-		EntityManager em = EntityManagerUtil.getEntityManager();
-		boolean ourOwnTransaction = !em.getTransaction().isActive();
-		if (ourOwnTransaction) {
-			em.getTransaction().begin();
+		if (currentDeployment != null) {
+			currentDeployment.setUndeployment(LocalDateTime.now());
+			entityManager.merge(currentDeployment);
 		}
-		try {
-			if (currentDeployment != null) {
-				currentDeployment.setUndeployment(LocalDateTime.now());
-				em.merge(currentDeployment);
-			}
-			em.merge(newDeployment);
-			if (ourOwnTransaction) {
-				em.getTransaction().commit();
-			}
-		} finally {
-			if (ourOwnTransaction && em.getTransaction().isActive()) {
-				em.getTransaction().rollback();
-			}
-		}
+		entityManager.merge(newDeployment);
 	}
 
 }

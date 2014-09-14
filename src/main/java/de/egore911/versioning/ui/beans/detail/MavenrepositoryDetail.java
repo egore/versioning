@@ -19,9 +19,10 @@ package de.egore911.versioning.ui.beans.detail;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
+
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.model.MavenArtifact;
@@ -33,14 +34,15 @@ import de.egore911.versioning.util.security.RequiresPermission;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@ManagedBean(name = "mavenrepositoryDetail")
-@RequestScoped
+@Named
 @RequiresPermission(Permission.ADMIN_SETTINGS)
 public class MavenrepositoryDetail extends AbstractDetail<MavenRepository> {
 
+	private static final long serialVersionUID = 7344865258148748519L;
+
 	@Override
 	protected MavenRepositoryDao getDao() {
-		return new MavenRepositoryDao();
+		return BeanProvider.getContextualReference(MavenRepositoryDao.class);
 	}
 
 	@Override
