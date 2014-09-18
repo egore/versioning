@@ -83,11 +83,11 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 	}
 
 	public void delete() {
-		if (!instance.getProjects().isEmpty()) {
+		if (!getInstance().getProjects().isEmpty()) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ResourceBundle bundle = SessionUtil.getBundle();
 			StringBuilder projectNames = new StringBuilder();
-			for (Project project : instance.getProjects()) {
+			for (Project project : getInstance().getProjects()) {
 				if (projectNames.length() > 0) {
 					projectNames.append(", ");
 				}
@@ -101,7 +101,7 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 			return;
 		}
 
-		getDao().remove(instance);
+		getDao().remove(getInstance());
 	}
 
 	public String getPassword() {

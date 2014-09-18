@@ -25,14 +25,15 @@ import java.util.Set;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import de.egore911.versioning.cdi.HttpParam;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.deltaspike.security.api.authorization.Secured;
+
+import de.egore911.versioning.cdi.RoleAccessDecisionVoter;
 import de.egore911.versioning.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.util.SessionUtil;
@@ -41,20 +42,20 @@ import de.egore911.versioning.util.SessionUtil;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @SessionScoped
+@Secured({RoleAccessDecisionVoter.class})
 public abstract class AbstractDetail<T extends IntegerDbObject> implements Serializable {
 
 	private static final long serialVersionUID = -6467847796483360650L;
 
-	@Inject
-	@HttpParam
-	private String id;
+	private T instance;
 
-	protected T instance;
+	private List<IntegerDbObject> deletions;
 
 	public T getInstance() {
 		// No request cache yet, determine it
-		if (instance == null) {
-			if (id != null) {
+		if (instance == null || notSameId()) {
+			if (FacesContext.getCurrentInstance().getExternalContext()
+					.getRequestParameterMap().get("id") != null) {
 				instance = load();
 			}
 			if (instance == null) {
@@ -64,12 +65,26 @@ public abstract class AbstractDetail<T extends IntegerDbObject> implements Seria
 		return instance;
 	}
 
+	private boolean notSameId() {
+		Integer intId = null;
+		try {
+			intId = Integer.valueOf(FacesContext.getCurrentInstance()
+					.getExternalContext().getRequestParameterMap().get("id"));
+		} catch (NumberFormatException | NullPointerException e) {
+			// Nothing
+		}
+		return ObjectUtils.notEqual(instance.getId(), intId);
+	}
+
 	public void setInstance(T instance) {
 		this.instance = instance;
 	}
 
 	protected T load() {
-		return getDao().findById(Integer.valueOf(id));
+		return getDao().findById(
+				Integer.valueOf(FacesContext.getCurrentInstance()
+						.getExternalContext().getRequestParameterMap()
+						.get("id")));
 	}
 
 	public boolean isManaged() {
@@ -104,17 +119,10 @@ public abstract class AbstractDetail<T extends IntegerDbObject> implements Seria
 	}
 
 	protected <U extends IntegerDbObject> void markDelete(U entity) {
-		List<U> deletions = getDeletions();
-		deletions.add(entity);
-		HttpSession session = SessionUtil.getSession();
-		session.setAttribute(this.getClass().getSimpleName() + "_deletions",
-				deletions);
+		getDeletions().add(entity);
 	}
 
-	protected <U extends IntegerDbObject> List<U> getDeletions() {
-		HttpSession session = SessionUtil.getSession();
-		List<U> deletions = (List<U>) session.getAttribute(this.getClass()
-				.getSimpleName() + "_deletions");
+	protected List<IntegerDbObject> getDeletions() {
 		if (deletions == null) {
 			deletions = new ArrayList<>();
 		}

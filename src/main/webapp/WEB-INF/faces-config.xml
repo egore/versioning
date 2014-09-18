@@ -12,8 +12,4 @@
 
 	</application>
 
-	<factory>
-		<exception-handler-factory>de.egore911.versioning.util.security.WrappedExceptionHandlerFactory</exception-handler-factory>
-	</factory>
-
 </faces-config>

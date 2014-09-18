@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -39,6 +41,7 @@ public abstract class AbstractSelector<T> implements Serializable {
 
 	private static final long serialVersionUID = 3479024193093886962L;
 
+	@Nonnull
 	public List<T> findAll() {
 		EntityManager em = BeanProvider.getContextualReference(EntityManager.class);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -58,6 +61,7 @@ public abstract class AbstractSelector<T> implements Serializable {
 		return q.getResultList();
 	}
 
+	@Nullable
 	public T find() {
 		EntityManager em = BeanProvider.getContextualReference(EntityManager.class);
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -70,7 +74,7 @@ public abstract class AbstractSelector<T> implements Serializable {
 		try {
 			return q.getSingleResult();
 		} catch (NoResultException e) {
-			return null;
+			return (T)null;
 		}
 	}
 

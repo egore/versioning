@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,7 +35,8 @@ public abstract class Renderer {
 	private static final Logger log = LoggerFactory
 			.getLogger(XmlRenderer.class);
 
-	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+	@Inject
+	private DeploymentCalculator deploymentCalculator;
 
 	private static String replaceVariables(String s, Map<String, String> replace) {
 		Matcher m = Variable.VARIABLE_PATTERN.matcher(s);

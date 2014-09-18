@@ -62,11 +62,11 @@ public class MavenrepositoryDetail extends AbstractDetail<MavenRepository> {
 	}
 
 	public void delete() {
-		if (!instance.getMavenArtifacts().isEmpty()) {
+		if (!getInstance().getMavenArtifacts().isEmpty()) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ResourceBundle bundle = SessionUtil.getBundle();
 			StringBuilder projectNames = new StringBuilder();
-			for (MavenArtifact mavenArtifact : instance.getMavenArtifacts()) {
+			for (MavenArtifact mavenArtifact : getInstance().getMavenArtifacts()) {
 				if (projectNames.length() > 0) {
 					projectNames.append(", ");
 				}
@@ -82,7 +82,7 @@ public class MavenrepositoryDetail extends AbstractDetail<MavenRepository> {
 			return;
 		}
 
-		getDao().remove(instance);
+		getDao().remove(getInstance());
 	}
 
 }

@@ -24,8 +24,8 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @RequiresPermission({ Permission.CREATE_VERSIONS, Permission.DEPLOY })
 public class DeploymentsBean {
 
-	private DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
-
+	@Inject
+	private DeploymentCalculator deploymentCalculator;
 	@Inject
 	private DeploymentDao deploymentDao;
 	@Inject

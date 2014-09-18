@@ -67,7 +67,8 @@ public class ServerDetail extends AbstractDetail<Server> {
 	private static final Logger log = LoggerFactory
 			.getLogger(ServerDetail.class);
 
-	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
+	@Inject
+	private DeploymentCalculator deploymentCalculator;
 
 	@Inject
 	private EntityManager entityManager;
@@ -97,14 +98,14 @@ public class ServerDetail extends AbstractDetail<Server> {
 		if (!isManaged()) {
 			return Collections.emptyList();
 		}
-		return deploymentCalculator.getDeployedVersions(instance);
+		return deploymentCalculator.getDeployedVersions(getInstance());
 	}
 
 	public List<Version> getDeployableVersions() {
 		if (!isManaged()) {
 			return Collections.emptyList();
 		}
-		return deploymentCalculator.getDeployableVersions(instance);
+		return deploymentCalculator.getDeployableVersions(getInstance());
 	}
 
 	public String addVariable() {

@@ -16,6 +16,7 @@
  */
 package de.egore911.versioning.ui.logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +26,8 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
+
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
@@ -38,7 +40,9 @@ import de.egore911.versioning.util.VersionUtil;
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class DeploymentCalculator {
+public class DeploymentCalculator implements Serializable {
+
+	private static final long serialVersionUID = 488865407571381111L;
 
 	private static final Comparator<Version> COMPARATOR_BY_PROJECT = new Comparator<Version>() {
 
@@ -48,13 +52,9 @@ public class DeploymentCalculator {
 		}
 	};
 
-	@Inject
-	private ProjectDao projectDao;
-	@Inject
-	private DeploymentDao deploymentDao;
-
 	public List<Version> getDeployedVersions(Server server) {
 		List<Version> result = new ArrayList<>();
+		DeploymentDao deploymentDao = BeanProvider.getContextualReference(DeploymentDao.class);
 		for (Deployment deployment : deploymentDao
 				.getCurrentDeployments(server)) {
 			result.add(deployment.getVersion());
@@ -64,6 +64,9 @@ public class DeploymentCalculator {
 	}
 
 	public List<Version> getDeployableVersions(Server server) {
+
+		DeploymentDao deploymentDao = BeanProvider.getContextualReference(DeploymentDao.class);
+		ProjectDao projectDao = BeanProvider.getContextualReference(ProjectDao.class);
 
 		Map<Project, Version> currentlyDeployedVersions = new HashMap<>();
 		List<Deployment> currentDeployments = deploymentDao

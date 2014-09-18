@@ -22,6 +22,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.enterprise.inject.Stereotype;
+
+import org.apache.deltaspike.security.api.authorization.Secured;
+
+import de.egore911.versioning.cdi.RoleAccessDecisionVoter;
 import de.egore911.versioning.persistence.model.Permission;
 
 /**
@@ -33,6 +38,8 @@ import de.egore911.versioning.persistence.model.Permission;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
+@Stereotype
+@Secured({RoleAccessDecisionVoter.class})
 public @interface RequiresPermission {
 
 	Permission[] value() default {};

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Manifest;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -29,7 +29,7 @@ import javax.servlet.ServletContext;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Named
-@RequestScoped
+@ApplicationScoped
 public class ApplicationBean {
 
 	private String versionNumber;
@@ -46,7 +46,7 @@ public class ApplicationBean {
 	public static String readVersion(ServletContext servletContext) {
 		Manifest manifest = new Manifest();
 		try (InputStream manifestFile = servletContext
-					.getResourceAsStream("/META-INF/MANIFEST.MF")) {
+				.getResourceAsStream("/META-INF/MANIFEST.MF")) {
 			manifest.read(manifestFile);
 			if (manifestFile == null) {
 				return "development";

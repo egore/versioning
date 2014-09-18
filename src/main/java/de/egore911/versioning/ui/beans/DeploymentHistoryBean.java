@@ -12,10 +12,12 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.deltaspike.security.api.authorization.Secured;
 import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 
+import de.egore911.versioning.cdi.RoleAccessDecisionVoter;
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Permission;
@@ -26,6 +28,7 @@ import de.egore911.versioning.util.security.RequiresPermission;
 @Named
 @RequestScoped
 @RequiresPermission(Permission.ADMIN_SETTINGS)
+@Secured({RoleAccessDecisionVoter.class})
 public class DeploymentHistoryBean {
 
 	private Map<Server, DeploymentHistory> historyCache = new HashMap<>(1);

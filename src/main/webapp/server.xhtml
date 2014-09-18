@@ -218,4 +218,14 @@
 		</table>
 	</rich:collapsiblePanel>
 
+	<rich:collapsiblePanel header="#{messages.server_deployment_descriptors}">
+		<h:outputLink value="service/server/#{serverDetail.instance.name}.xml" target="_blank">
+			<h:outputText value="service/server/#{serverDetail.instance.name}.xml" />
+		</h:outputLink>
+		<br/>
+		<h:outputLink value="service/server/#{serverDetail.instance.name}.json" target="_blank">
+			<h:outputText value="service/server/#{serverDetail.instance.name}.json" />
+		</h:outputLink>
+	</rich:collapsiblePanel>
+
 </ui:composition>

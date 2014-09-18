@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Server;
 
@@ -81,12 +83,12 @@ public class ServerService extends HttpServlet {
 
 	private void renderJson(HttpServletRequest req, HttpServletResponse resp,
 			PrintWriter writer, Server server) {
-		writer.print(new JsonRenderer().render(req, resp, server));
+		writer.print(BeanProvider.getContextualReference(JsonRenderer.class).render(req, resp, server));
 	}
 
 	private void renderXml(HttpServletRequest req, HttpServletResponse resp,
 			PrintWriter writer, Server server) {
-		writer.print(new XmlRenderer().render(req, resp, server));
+		writer.print(BeanProvider.getContextualReference(XmlRenderer.class).render(req, resp, server));
 	}
 
 }

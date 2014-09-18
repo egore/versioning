@@ -107,6 +107,7 @@
 				<version.jsp>2.3.1</version.jsp>
 				<packaging.servlet>provided</packaging.servlet>
 				<version.servlet>3.1.0</version.servlet>
+				<version.el>2.2.5</version.el>
 			</properties>
 		</profile>
 		<profile>
@@ -121,6 +122,7 @@
 				<version.jsp>2.2.1</version.jsp>
 				<packaging.servlet>provided</packaging.servlet>
 				<version.servlet>3.0.1</version.servlet>
+				<version.el>2.2.5</version.el>
 			</properties>
 		</profile>
 	</profiles>
@@ -130,6 +132,11 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 		<!-- Logging -->
 		<dependency>
@@ -267,6 +274,12 @@
 			<groupId>org.richfaces.ui</groupId>
 			<artifactId>richfaces-components-ui</artifactId>
 			<version>4.3.4.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>${version.el}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- VCS support -->

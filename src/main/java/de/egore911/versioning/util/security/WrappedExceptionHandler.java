@@ -16,71 +16,60 @@
  */
 package de.egore911.versioning.util.security;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.ResourceBundle;
-
-import javax.faces.FacesException;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExceptionHandler;
-import javax.faces.context.ExceptionHandlerWrapper;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ExceptionQueuedEvent;
+import javax.inject.Inject;
 
+import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.deltaspike.core.api.exception.control.ExceptionHandler;
+import org.apache.deltaspike.core.api.exception.control.Handles;
+import org.apache.deltaspike.core.api.exception.control.event.ExceptionEvent;
+import org.apache.deltaspike.security.api.authorization.ErrorViewAwareAccessDeniedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class WrappedExceptionHandler extends ExceptionHandlerWrapper {
+@ExceptionHandler
+public class WrappedExceptionHandler {
+
+	@Inject
+	private ViewConfigResolver viewConfigResolver;
 
 	private static final Logger log = LoggerFactory
 			.getLogger(WrappedExceptionHandler.class);
 
-	private final ExceptionHandler wrapped;
+	public void onIllegalStateException(
+			@Handles ExceptionEvent<ErrorViewAwareAccessDeniedException> e) {
 
-	public WrappedExceptionHandler(ExceptionHandler wrapped) {
-		this.wrapped = wrapped;
-	}
+		FacesContext facesContext = FacesContext.getCurrentInstance();
 
-	@Override
-	public ExceptionHandler getWrapped() {
-		return this.wrapped;
-	}
+		String viewId = viewConfigResolver
+				.getDefaultErrorViewConfigDescriptor().getViewId();
+		UIViewRoot viewRoot = facesContext.getApplication().getViewHandler()
+				.createView(facesContext, viewId);
+		facesContext.setViewRoot(viewRoot);
 
-	@Override
-	public void handle() throws FacesException {
-		for (Iterator<ExceptionQueuedEvent> iter = getUnhandledExceptionQueuedEvents()
-				.iterator(); iter.hasNext();) {
-
-			// Determine root cause
-			Throwable t = iter.next().getContext().getException();
-			while (t.getCause() != null) {
-				t = t.getCause();
-			}
-
-			// If it was because of permissions, redirect to the login
-			if (t instanceof PermissionException) {
-				FacesContext facesContext = FacesContext.getCurrentInstance();
-				try {
-					ResourceBundle bundle = SessionUtil.getBundle();
-					FacesMessage message = new FacesMessage(
-							FacesMessage.SEVERITY_ERROR,
-							bundle.getString("missing_permission"),
-							bundle.getString("missing_permission_detail"));
-					facesContext.addMessage("main:user_login", message);
-					facesContext.getExternalContext().redirect("login.xhtml");
-					facesContext.responseComplete();
-				} catch (IOException e) {
-					log.error(e.getMessage(), e);
-				} finally {
-					iter.remove();
-				}
-			}
-		}
-		wrapped.handle();
+		/*
+		 * for (Iterator<ExceptionQueuedEvent> iter =
+		 * getUnhandledExceptionQueuedEvents() .iterator(); iter.hasNext();) {
+		 * 
+		 * // Determine root cause Throwable t =
+		 * iter.next().getContext().getException(); while (t.getCause() != null)
+		 * { t = t.getCause(); }
+		 * 
+		 * // If it was because of permissions, redirect to the login if (t
+		 * instanceof PermissionException) { FacesContext facesContext =
+		 * FacesContext.getCurrentInstance(); try { ResourceBundle bundle =
+		 * SessionUtil.getBundle(); FacesMessage message = new FacesMessage(
+		 * FacesMessage.SEVERITY_ERROR, bundle.getString("missing_permission"),
+		 * bundle.getString("missing_permission_detail"));
+		 * facesContext.addMessage("main:user_login", message);
+		 * facesContext.getExternalContext().redirect("login.xhtml");
+		 * facesContext.responseComplete(); } catch (IOException e) {
+		 * log.error(e.getMessage(), e); } finally { iter.remove(); } } }
+		 * wrapped.handle();
+		 */
 	}
 }
