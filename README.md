@@ -142,6 +142,8 @@ are only available and tested on on the following databases right now:
 * MySQL 5.0+
 * MariaDB 5.5+
 * hsqldb 2.3+
+* Microsoft SQL Server 2008+
+* PostgreSQL 9.3+
 
 Further database systems are going to be supported at a later point.
 
