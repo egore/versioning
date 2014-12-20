@@ -166,7 +166,7 @@ The following components were used to develop *versioning*:
 * hibernate 4.2, hibernate validator 5.0
 * joda-time 2.6
 * commons-lang 3.1 and commons-collections 4.0
-* JSF 2.2 and RichFaces 4.3
+* JSF 2.2 and RichFaces 4.5
 * jgit 3.6 and svnkit 1.8
 * junit 4.12, mockito 1.10 and hsqldb 2.3
 * flyway 3.0
