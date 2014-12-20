@@ -164,9 +164,9 @@ The following components were used to develop *versioning*:
 
 * slf4j 1.7
 * hibernate 4.2, hibernate validator 5.0
-* joda-time 2.3
+* joda-time 2.6
 * commons-lang 3.1 and commons-collections 4.0
 * JSF 2.2 and RichFaces 4.3
-* jgit 3.1 and svnkit 1.7
-* junit 4.11, mockito 1.9 and hsqldb 2.3
-* flyway 2.2
+* jgit 3.6 and svnkit 1.8
+* junit 4.12, mockito 1.10 and hsqldb 2.3
+* flyway 3.0
