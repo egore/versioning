@@ -8,10 +8,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(BinaryData.class)
 public abstract class BinaryData_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
-	public static volatile SingularAttribute<BinaryData, byte[]> data;
 	public static volatile SingularAttribute<BinaryData, String> filename;
-	public static volatile SingularAttribute<BinaryData, String> contentType;
 	public static volatile SingularAttribute<BinaryData, Long> size;
+	public static volatile SingularAttribute<BinaryData, byte[]> data;
+	public static volatile SingularAttribute<BinaryData, String> contentType;
 
 }
 

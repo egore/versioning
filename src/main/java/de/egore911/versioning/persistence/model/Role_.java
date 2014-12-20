@@ -9,10 +9,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Role.class)
 public abstract class Role_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
-	public static volatile ListAttribute<Role, User> users;
+	public static volatile ListAttribute<Role, Permission> permissions;
 	public static volatile SingularAttribute<Role, Boolean> hasPermission;
 	public static volatile SingularAttribute<Role, String> name;
-	public static volatile ListAttribute<Role, Permission> permissions;
+	public static volatile ListAttribute<Role, User> users;
 
 }
 

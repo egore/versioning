@@ -10,8 +10,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class ActionExtraction_ extends de.egore911.versioning.persistence.model.AbstractAction_ {
 
 	public static volatile SingularAttribute<ActionExtraction, SpacerUrl> spacerUrl;
-	public static volatile SingularAttribute<ActionExtraction, MavenArtifact> mavenArtifact;
 	public static volatile ListAttribute<ActionExtraction, Extraction> extractions;
+	public static volatile SingularAttribute<ActionExtraction, MavenArtifact> mavenArtifact;
 
 }
 

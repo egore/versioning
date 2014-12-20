@@ -9,12 +9,12 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(VcsHost.class)
 public abstract class VcsHost_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
+	public static volatile SingularAttribute<VcsHost, String> password;
 	public static volatile ListAttribute<VcsHost, Project> projects;
-	public static volatile SingularAttribute<VcsHost, String> username;
 	public static volatile SingularAttribute<VcsHost, Vcs> vcs;
 	public static volatile SingularAttribute<VcsHost, String> name;
-	public static volatile SingularAttribute<VcsHost, String> password;
 	public static volatile SingularAttribute<VcsHost, String> uri;
+	public static volatile SingularAttribute<VcsHost, String> username;
 
 }
 

@@ -9,13 +9,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(User.class)
 public abstract class User_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
-	public static volatile SingularAttribute<User, Boolean> hasRole;
-	public static volatile SingularAttribute<User, Boolean> hasPermission;
-	public static volatile SingularAttribute<User, String> email;
-	public static volatile ListAttribute<User, Role> roles;
-	public static volatile SingularAttribute<User, String> name;
-	public static volatile SingularAttribute<User, String> login;
 	public static volatile SingularAttribute<User, String> password;
+	public static volatile ListAttribute<User, Role> roles;
+	public static volatile SingularAttribute<User, Boolean> hasPermission;
+	public static volatile SingularAttribute<User, String> name;
+	public static volatile SingularAttribute<User, Boolean> hasRole;
+	public static volatile SingularAttribute<User, String> login;
+	public static volatile SingularAttribute<User, String> email;
 
 }
 

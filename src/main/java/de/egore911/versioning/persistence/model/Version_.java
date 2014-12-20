@@ -9,9 +9,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Version.class)
 public abstract class Version_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
-	public static volatile SingularAttribute<Version, Project> project;
 	public static volatile SingularAttribute<Version, String> vcsTag;
 	public static volatile ListAttribute<Version, Deployment> deployments;
+	public static volatile SingularAttribute<Version, Project> project;
 
 }
 

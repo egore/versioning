@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Variable.class)
 public abstract class Variable_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
+	public static volatile SingularAttribute<Variable, Server> server;
 	public static volatile SingularAttribute<Variable, String> name;
 	public static volatile SingularAttribute<Variable, String> value;
-	public static volatile SingularAttribute<Variable, Server> server;
 
 }
 

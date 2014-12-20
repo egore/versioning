@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Extraction.class)
 public abstract class Extraction_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
-	public static volatile SingularAttribute<Extraction, String> source;
 	public static volatile SingularAttribute<Extraction, ActionExtraction> actionExtraction;
 	public static volatile SingularAttribute<Extraction, String> destination;
+	public static volatile SingularAttribute<Extraction, String> source;
 
 }
 

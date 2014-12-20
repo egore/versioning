@@ -8,8 +8,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(SpacerUrl.class)
 public abstract class SpacerUrl_ extends de.egore911.versioning.persistence.model.IntegerDbObject_ {
 
-	public static volatile SingularAttribute<SpacerUrl, ActionExtraction> actionExtraction;
 	public static volatile SingularAttribute<SpacerUrl, ActionCopy> actionCopy;
+	public static volatile SingularAttribute<SpacerUrl, ActionExtraction> actionExtraction;
 	public static volatile SingularAttribute<SpacerUrl, String> url;
 
 }
