@@ -54,4 +54,17 @@ public class SvnProviderTest {
 		Assert.assertFalse(provider.tagExists(project, "maven-1234"));
 	}
 
+	@Test
+	public void testTagExistsHttpsWithTrunkSlash() {
+		VcsHost vcsHost = new VcsHost();
+		vcsHost.setVcs(Vcs.svn);
+		vcsHost.setUri("https://svn.apache.org/repos/asf/");
+		Project project = new Project();
+		project.setVcsHost(vcsHost);
+		project.setVcsPath("maven/maven-3/trunk/");
+		Provider provider = project.getProvider();
+		Assert.assertTrue(provider.tagExists(project, "maven-3.0.4"));
+		Assert.assertFalse(provider.tagExists(project, "maven-1234"));
+	}
+
 }
