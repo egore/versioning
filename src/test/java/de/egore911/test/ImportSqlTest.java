@@ -66,7 +66,7 @@ public class ImportSqlTest {
 		try {
 			InitialContext initialContext = new InitialContext();
 			DataSource dataSource = (DataSource) initialContext
-					.lookup("java:comp/env/jdbc/versioningDS");
+					.lookup("java:/comp/env/jdbc/versioningDS");
 			try (Connection connection = dataSource.getConnection()) {
 				new SimpleSchemaExport()
 						.importScript(connection, "/import.sql");
