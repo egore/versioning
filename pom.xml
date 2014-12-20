@@ -108,6 +108,7 @@
 				<packaging.servlet>provided</packaging.servlet>
 				<version.servlet>3.1.0</version.servlet>
 				<version.el>2.2.5</version.el>
+				<packaging.el>provided</packaging.el>
 			</properties>
 		</profile>
 		<profile>
@@ -123,6 +124,7 @@
 				<packaging.servlet>provided</packaging.servlet>
 				<version.servlet>3.0.1</version.servlet>
 				<version.el>2.2.5</version.el>
+				<packaging.el>provided</packaging.el>
 			</properties>
 		</profile>
 	</profiles>
@@ -266,6 +268,12 @@
 			<scope>${packaging.servlet}</scope>
 		</dependency>
 		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>${version.el}</version>
+			<scope>${packaging.el}</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.richfaces.core</groupId>
 			<artifactId>richfaces-core-impl</artifactId>
 			<version>4.3.4.Final</version>
@@ -274,12 +282,6 @@
 			<groupId>org.richfaces.ui</groupId>
 			<artifactId>richfaces-components-ui</artifactId>
 			<version>4.3.4.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>javax.el-api</artifactId>
-			<version>${version.el}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- VCS support -->
