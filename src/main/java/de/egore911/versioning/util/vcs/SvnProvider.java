@@ -75,11 +75,18 @@ public class SvnProvider extends Provider {
 	private String getTagsDir(Project project) {
 		String list = "tags";
 		String completeVcsPath = project.getCompleteVcsPath();
-		int indexOf = completeVcsPath.indexOf("/trunk");
+		int indexOf = completeVcsPath.indexOf("/trunk/");
 		if (indexOf >= 0) {
-			list = "tags/"
+			list = "tags"
 					+ completeVcsPath
-							.substring(indexOf + "/trunk".length() + 1);
+							.substring(indexOf + "/trunk/".length());
+		} else {
+			indexOf = completeVcsPath.indexOf("/trunk");
+			if (indexOf >= 0) {
+				list = "tags"
+						+ completeVcsPath
+								.substring(indexOf + "/trunk".length());
+			}
 		}
 		return list;
 	}

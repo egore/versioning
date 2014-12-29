@@ -78,6 +78,12 @@ public class StartupListener implements ServletContextListener {
 				// Plain datasource for MSSQL
 				flyway.setLocations("db/migration/mssql");
 				break;
+			case "org.postgresql.jdbc2.optional.PoolingDataSource":
+			case "org.postgresql.jdbc2.optional.SimpleDataSource":
+			case "org.postgresql.ds.PGPoolingDataSource":
+			case "org.postgresql.ds.PGSimpleDataSource":
+				flyway.setLocations("db/migration/pgsql");
+				break;
 			case "org.apache.tomcat.dbcp.dbcp.BasicDataSource":
 				// Wrapped by Tomcat, get a connection to identify it
 				try (Connection connection = dataSource.getConnection()) {
@@ -90,6 +96,8 @@ public class StartupListener implements ServletContextListener {
 							|| connection.toString().startsWith(
 									"jdbc:sqlserver")) {
 						flyway.setLocations("db/migration/mssql");
+					} else if (connection.toString().startsWith("jdbc:postgresql")) {
+						flyway.setLocations("db/migration/pgsql");
 					} else {
 						throw new RuntimeException(
 								"Unsupported database detected, please report this: "

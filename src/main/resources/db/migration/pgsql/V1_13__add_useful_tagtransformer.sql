@@ -1,0 +1,2 @@
+INSERT INTO tag_transformer(created, modified, name, searchPattern, replacementPattern, id_creator, id_modificator)
+  VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'Remove leading text', '[\\w-]*-([\\d\\.]+)', '$1', (SELECT id FROM "user" WHERE login = 'admin'), (SELECT id FROM "user" WHERE login = 'admin'));
