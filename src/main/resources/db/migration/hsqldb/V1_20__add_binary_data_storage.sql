@@ -3,7 +3,7 @@ CREATE TABLE binary_data (
   created datetime DEFAULT NULL,
   modified datetime DEFAULT NULL,
   contentType varchar(511) DEFAULT NULL,
-  data blob,
+  data varbinary(65534),
   filename varchar(255) DEFAULT NULL,
   size bigint NOT NULL,
   id_creator int DEFAULT NULL,
