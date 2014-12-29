@@ -16,6 +16,7 @@
  */
 package de.egore911.test;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -26,31 +27,61 @@ import javax.naming.spi.InitialContextFactory;
 
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class JndiFactory implements InitialContextFactory {
+	private static final String DATASOURCE_NAME = "java:/comp/env/jdbc/versioningDS";
+
 	@Override
 	public Context getInitialContext(Hashtable<?, ?> environment)
 			throws NamingException {
 
-		JDBCDataSource jdbcDataSource = new JDBCDataSource();
+		// SQLDB
+		final JDBCDataSource jdbcDataSource = new JDBCDataSource();
 		jdbcDataSource.setUrl("jdbc:hsqldb:mem:testdb");
 		jdbcDataSource.setUser("sa");
 		jdbcDataSource.setPassword("");
 
-		Name name = Mockito.mock(Name.class);
+
+		final Name name = Mockito.mock(Name.class);
 
 		NameParser nameParser = Mockito.mock(NameParser.class);
-		Mockito.when(nameParser.parse("java:/comp/env/jdbc/versioningDS"))
-				.thenReturn(name);
+		Mockito.when(nameParser.parse(DATASOURCE_NAME)).thenReturn(name);
 
 		Context context = Mockito.mock(Context.class);
 		Mockito.when(context.getNameParser("")).thenReturn(nameParser);
-		Mockito.when(context.lookup(name)).thenReturn(jdbcDataSource);
-		Mockito.when(context.lookup("java:/comp/env/jdbc/versioningDS"))
-				.thenReturn(jdbcDataSource);
+		Mockito.when(context.lookup(Mockito.any(Name.class))).then(
+				new Answer<Object>() {
+
+					@Override
+					public Object answer(InvocationOnMock invocation)
+							throws Throwable {
+						if (invocation.getArguments()[0] == name) {
+							return jdbcDataSource;
+						}
+						System.err.println(Arrays.toString(invocation
+								.getArguments()));
+						return null;
+					}
+				});
+		Mockito.when(context.lookup(Mockito.anyString())).then(
+				new Answer<Object>() {
+
+					@Override
+					public Object answer(InvocationOnMock invocation)
+							throws Throwable {
+						if (DATASOURCE_NAME.equals(invocation.getArguments()[0])) {
+							return jdbcDataSource;
+						}
+						System.err.println(Arrays.toString(invocation
+								.getArguments()));
+						return null;
+					}
+				});
 
 		return context;
 	}
