@@ -131,23 +131,16 @@ public class StartupListener implements ServletContextListener {
 			case "org.jboss.jca.adapters.jdbc.WrapperDataSource":
 				// Wrapped by JBoss
 				try (Connection connection = dataSource.getConnection()) {
-					if (connection.getMetaData().getClass().getName()
-							.startsWith("com.mysql.jdbc.")) {
+					String name = connection.getMetaData().getClass().getName();
+					if (name.startsWith("com.mysql.jdbc.")) {
 						flyway.setLocations("db/migration/mysql");
-					} else if (connection.getMetaData().getClass().getName()
-							.equals("org.hsqldb.jdbc.JDBCDatabaseMetaData")) {
+					} else if (name.equals("org.hsqldb.jdbc.JDBCDatabaseMetaData")) {
 						flyway.setLocations("db/migration/hsqldb");
-					} else if (connection
-							.getMetaData()
-							.getClass()
-							.getName()
-							.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData")
-							|| connection
-									.getMetaData()
-									.getClass()
-									.getName()
-									.equals("com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData")) {
+					} else if (name.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData")
+							|| name.equals("com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData")) {
 						flyway.setLocations("db/migration/mssql");
+					} else if (name.equals("org.postgresql.jdbc4.Jdbc4DatabaseMetaData")) {
+						flyway.setLocations("db/migration/pgsql");
 					} else {
 						throw new RuntimeException(
 								"Unsupported database detected, please report this: "
