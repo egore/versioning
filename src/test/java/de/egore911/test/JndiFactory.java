@@ -46,6 +46,23 @@ public class JndiFactory implements InitialContextFactory {
 		jdbcDataSource.setUser("sa");
 		jdbcDataSource.setPassword("");
 
+		// MySQL
+		// final MysqlDataSource jdbcDataSource = new MysqlDataSource();
+		// jdbcDataSource.setUrl("jdbc:mysql://localhost/versioning");
+		// jdbcDataSource.setUser("versioning");
+		// jdbcDataSource.setPassword("versioning");
+
+		// MySQL
+		// final PGSimpleDataSource jdbcDataSource = new PGSimpleDataSource();
+		// try {
+		// jdbcDataSource.setUrl("jdbc:postgresql://localhost/versioning");
+		// } catch (SQLException e) {
+		// NamingException ex = new NamingException(e.getMessage());
+		// ex.setRootCause(e);
+		// throw ex;
+		// }
+		// jdbcDataSource.setUser("versioning");
+		// jdbcDataSource.setPassword("versioning");
 
 		final Name name = Mockito.mock(Name.class);
 
