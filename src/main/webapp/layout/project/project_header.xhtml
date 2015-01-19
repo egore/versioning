@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Parameter: project -->
+<!-- Parameter: idPostfix -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<rich:panel header="#{messages.project}" id="projectHeader#{idPostfix}">
+		<h:panelGrid columns="3" columnClasses="caption,value,help">
+			<h:outputText value="#{messages.project_name}" />
+			<h:inputText value="#{project.name}" id="project_name#{idPostfix}" />
+			<h:outputText value="#{messages.project_name_help}" />
+
+			<h:outputText value="#{messages.project_description}" />
+			<h:inputTextarea value="#{project.description}"
+				id="project_description#{idPostfix}" rows="2" cols="40" />
+			<h:outputText value="#{messages.project_description_help}" />
+
+			<h:outputText value="#{messages.project_vcsHost}" />
+			<h:selectOneMenu value="#{project.vcsHost}"
+				id="project_vcsHost#{idPostfix}" converter="vcshostConverter">
+				<f:selectItems value="#{selectItemBean.allVcshostSelectItems}" />
+				<f:ajax event="change" render="server_uri#{idPostfix}" />
+			</h:selectOneMenu>
+			<h:outputText value="#{messages.project_vcsHost_help}" />
+			<h:outputText value="" />
+			<h:outputText id="server_uri#{idPostfix}"
+				value="#{project.vcsHost.uri}" />
+			<h:outputText value="" />
+
+			<h:outputText value="#{messages.project_vcsPath}" />
+			<h:inputText value="#{project.vcsPath}"
+				id="project_vcsPath#{idPostfix}" disabled="#{projectDetail.managed}" />
+			<h:outputText value="#{messages.project_vcsPath_help}" />
+
+			<h:outputText value="#{messages.project_tagTransformer}" />
+			<h:selectOneMenu value="#{project.tagTransformer}"
+				id="project_tagTransformer#{idPostfix}" converter="tagtransformerConverter">
+				<f:selectItem itemValue="#{null}"
+					itemLabel="#{messages.tagtransformer_none}" />
+				<f:selectItems
+					value="#{selectItemBean.allTagTransformerSelectItems}" />
+			</h:selectOneMenu>
+			<h:outputText value="#{messages.project_tagTransformer_help}" />
+
+			<h:outputText value="#{messages.project_configuredServers}" />
+			<h:selectManyMenu value="#{project.configuredServers}"
+				id="project_configuredServers#{idPostfix}" converter="serverConverter"
+				style="height: 100px;">
+				<f:selectItems value="#{selectItemBean.allServerSelectItems}" />
+				<!-- JSF 2 creates a clone of a completely valid PersistentBag making it lose it's entitymanager, see http://stackoverflow.com/questions/5610908/selectmanycheckbox-lazyinitializationexception-on-process-validation -->
+				<f:attribute name="collectionType" value="java.util.ArrayList" />
+			</h:selectManyMenu>
+			<h:outputText value="#{messages.project_configuredServers_help}" />
+		</h:panelGrid>
+	</rich:panel>
+
+</ui:composition>
