@@ -21,6 +21,13 @@
 				<h:outputText
 					value=": #{serverVersions.versions.size()} #{messages.deployments}" />
 			</f:facet>
+			<h:outputLink value="service/server/#{serverVersions.server.name}.json" target="_blank">
+				#{messages.deployment_download_as_json}
+			</h:outputLink>
+			<h:outputText value=" "/>
+			<h:outputLink value="service/server/#{serverVersions.server.name}.xml" target="_blank">
+				#{messages.deployment_download_as_xml}
+			</h:outputLink>
 			<rich:dataTable value="#{serverVersions.versions}" var="version">
 				<rich:column>
 					<f:facet name="header">
