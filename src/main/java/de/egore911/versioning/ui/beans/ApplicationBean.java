@@ -47,10 +47,10 @@ public class ApplicationBean {
 		Manifest manifest = new Manifest();
 		try (InputStream manifestFile = servletContext
 					.getResourceAsStream("/META-INF/MANIFEST.MF")) {
-			manifest.read(manifestFile);
 			if (manifestFile == null) {
 				return "development";
 			}
+			manifest.read(manifestFile);
 			return manifest.getMainAttributes().getValue(
 					"Implementation-Version");
 		} catch (IOException e) {
