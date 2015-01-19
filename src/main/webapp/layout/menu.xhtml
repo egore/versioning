@@ -33,6 +33,9 @@
 			<rich:menuItem label="#{messages.tagtransformers}"
 				action="/tagtransformers.xthml"
 				id="administration_menu_tagtransformers" />
+			<rich:menuItem label="#{messages.compare_projects}"
+				action="/compare_projects.xthml"
+				id="administration_menu_compare_projects" />
 		</rich:dropDownMenu>
 		<rich:dropDownMenu mode="server" id="users_menu"
 			rendered="#{user.hasPermission('ADMIN_USERS')}">
