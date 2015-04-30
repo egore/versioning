@@ -20,6 +20,7 @@ public abstract class Project_ extends de.egore911.versioning.persistence.model.
 	public static volatile SingularAttribute<Project, TagTransformer> tagTransformer;
 	public static volatile ListAttribute<Project, ActionReplacement> actionReplacements;
 	public static volatile SingularAttribute<Project, VcsHost> vcsHost;
+	public static volatile SingularAttribute<Project, Boolean> deleted;
 
 }
 

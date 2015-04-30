@@ -65,6 +65,7 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 	private TagTransformer tagTransformer;
 	private List<Server> configuredServers = new ArrayList<>(0);
 	private List<Version> versions = new ArrayList<>(0);
+	private boolean deleted;
 
 	@Column(nullable = false, length = 255)
 	@NotNull
@@ -173,6 +174,14 @@ public class Project extends IntegerDbObject implements Comparable<Project> {
 
 	public void setVersions(List<Version> versions) {
 		this.versions = versions;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

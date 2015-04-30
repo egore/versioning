@@ -23,6 +23,8 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.selector.ProjectSelector;
@@ -46,6 +48,15 @@ public class ProjectDao extends AbstractDao<Project> {
 		ProjectSelector projectSelector = createSelector();
 		projectSelector.setConfiguredForServer(server);
 		return projectSelector.findAll();
+	}
+
+	public void delete(@Nonnull Project project) {
+		project.setDeleted(true);
+		save(project);
+	}
+
+	public List<Project> findAllNonDeleted() {
+		return createSelector().setExcludeDeleted(Boolean.TRUE).findAll();
 	}
 
 }

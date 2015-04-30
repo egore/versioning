@@ -23,4 +23,7 @@
 	<h:commandButton value="#{messages.save}"
 		action="#{projectDetail.save}" />
 
+	<h:commandButton value="#{messages.delete}" rendered="#{!projectDetails.instance.deleted}"
+		action="#{projectDetail.delete}" />
+
 </ui:composition>

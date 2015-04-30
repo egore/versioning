@@ -1,0 +1,2 @@
+ALTER TABLE project ADD deleted BOOLEAN NOT NULL DEFAULT FALSE;
+UPDATE project SET deleted = 0;

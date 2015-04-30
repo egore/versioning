@@ -300,6 +300,13 @@ public class ProjectDetail extends AbstractDetail<Project> {
 		return "/projects.xhtml";
 	}
 
+	public String delete() {
+		getDao().delete(getInstance());
+
+		setInstance(null);
+		return "/projects.xhtml";
+	}
+
 	private void checkVariableExists(String s) {
 		Matcher m = Variable.VARIABLE_PATTERN.matcher(s);
 		while (m.find()) {

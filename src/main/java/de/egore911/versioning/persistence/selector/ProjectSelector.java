@@ -44,6 +44,8 @@ public class ProjectSelector extends AbstractSelector<Project> {
 
 	private Server configuredForServer;
 
+	private Boolean excludeDeleted;
+
 	@Override
 	protected Class<Project> getEntityClass() {
 		return Project.class;
@@ -58,6 +60,10 @@ public class ProjectSelector extends AbstractSelector<Project> {
 			ListJoin<Project, Server> fromServer = from
 					.join(Project_.configuredServers);
 			predicates.add(fromServer.in(configuredForServer));
+		}
+
+		if (Boolean.TRUE.equals(excludeDeleted)) {
+			predicates.add(builder.notEqual(from.get(Project_.deleted), Boolean.TRUE));
 		}
 
 		return predicates;
@@ -75,6 +81,11 @@ public class ProjectSelector extends AbstractSelector<Project> {
 
 	public void setConfiguredForServer(Server configuredForServer) {
 		this.configuredForServer = configuredForServer;
+	}
+
+	public ProjectSelector setExcludeDeleted(Boolean excludeDeleted) {
+		this.excludeDeleted = excludeDeleted;
+		return this;
 	}
 
 }

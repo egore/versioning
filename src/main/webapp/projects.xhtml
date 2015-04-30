@@ -22,7 +22,7 @@
 				</ui:include>
 			</f:facet>
 			<h:link outcome="project" value="#{project.name}"
-				title="#{project.description}">
+				title="#{project.description}" style="#{project.deleted ? 'text-decoration: line-through;' : ''}">
 				<f:param name="id" value="#{project.id}" />
 			</h:link>
 		</rich:column>

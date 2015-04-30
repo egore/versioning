@@ -22,7 +22,7 @@
 					<ui:param name="filterField" value="#{versionList.selector.projectNameLike}" />
 				</ui:include>
 			</f:facet>
-			<h:outputText value="#{version.project.name}" />
+			<h:outputText value="#{version.project.name}" style="#{version.project.deleted ? 'text-decoration: line-through;' : ''}" />
 		</rich:column>
 		<rich:column>
 			<f:facet name="header">

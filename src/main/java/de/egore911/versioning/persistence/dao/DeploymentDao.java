@@ -52,6 +52,7 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		DeploymentSelector deploymentSelector = createSelector();
 		deploymentSelector.setDeployedOn(server);
 		deploymentSelector.setUneployed(Boolean.FALSE);
+		deploymentSelector.setExcludeDeleted(Boolean.TRUE);
 		return deploymentSelector.findAll();
 	}
 

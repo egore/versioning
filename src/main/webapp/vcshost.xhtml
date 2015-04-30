@@ -48,7 +48,7 @@
 		rendered="#{not empty vcshostDetail.instance.projects}">
 		<ul>
 			<a4j:repeat value="#{vcshostDetail.instance.projects}" var="project">
-				<li>#{project.name}</li>
+				<li style="#{project.deleted ? 'text-decoration: line-through;' : ''}">#{project.name}</li>
 			</a4j:repeat>
 		</ul>
 	</rich:panel>

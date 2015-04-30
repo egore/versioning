@@ -50,7 +50,7 @@ import de.egore911.versioning.persistence.model.VcsHost;
 public class SelectItemBean {
 
 	public SelectItem[] getAllProjectSelectItems() {
-		List<Project> projects = new ProjectDao().findAll();
+		List<Project> projects = new ProjectDao().findAllNonDeleted();
 		SelectItem[] items = new SelectItem[projects.size()];
 		int i = 0;
 		for (Project project : projects) {

@@ -34,6 +34,7 @@ import org.joda.time.LocalDateTime;
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Deployment_;
 import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.Project_;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.persistence.model.Version_;
@@ -50,6 +51,7 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 	private LocalDateTime undeployedAfter;
 	private Boolean isUneployed;
 	private Project project;
+	private Boolean excludeDeleted;
 
 	@Override
 	protected Class<Deployment> getEntityClass() {
@@ -90,6 +92,15 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 			}
 		}
 
+		if (Boolean.TRUE.equals(excludeDeleted)) {
+			Join<Deployment, Version> fromVersion = from
+					.join(Deployment_.version);
+			Join<Version,Project> fromProject = fromVersion
+					.join(Version_.project);
+			predicates.add(builder.notEqual(fromProject.get(Project_.deleted),
+					Boolean.FALSE));
+		}
+
 		if (project != null) {
 			Join<Deployment, Version> fromVersion = from
 					.join(Deployment_.version);
@@ -122,6 +133,14 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public Boolean getExcludeDeleted() {
+		return excludeDeleted;
+	}
+
+	public void setExcludeDeleted(Boolean excludeDeleted) {
+		this.excludeDeleted = excludeDeleted;
 	}
 
 	public DeploymentSelector withUndeployedAfter(LocalDateTime undeployedAfter) {
