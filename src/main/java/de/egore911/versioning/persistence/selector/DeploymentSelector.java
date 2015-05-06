@@ -97,7 +97,7 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 					.join(Deployment_.version);
 			Join<Version,Project> fromProject = fromVersion
 					.join(Version_.project);
-			predicates.add(builder.notEqual(fromProject.get(Project_.deleted),
+			predicates.add(builder.equal(fromProject.get(Project_.deleted),
 					Boolean.FALSE));
 		}
 
