@@ -75,10 +75,15 @@ public class DeploymentCalculator {
 					.getProject(), currentDeployment.getVersion());
 		}
 
+		// Load all projects configured for the server (including deleted ones)
 		List<Project> configuredProjects = projectDao
 				.getConfiguredProjects(server);
 		List<Version> result = new ArrayList<>();
 		for (Project configuredProject : configuredProjects) {
+			// If the project was deleted, it will no longer be suggested to be deployed
+			if (configuredProject.isDeleted()) {
+				continue;
+			}
 			Version latest;
 			try {
 				latest = VersionUtil.getLatestVersion(configuredProject
