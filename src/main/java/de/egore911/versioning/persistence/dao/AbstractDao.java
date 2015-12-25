@@ -28,9 +28,9 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.egore911.persistence.selector.AbstractSelector;
+import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
-import de.egore911.versioning.persistence.selector.AbstractSelector;
-import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;

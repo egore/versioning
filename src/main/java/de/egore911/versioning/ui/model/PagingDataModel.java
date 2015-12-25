@@ -31,8 +31,8 @@ import org.ajax4jsf.model.ExtendedDataModel;
 import org.ajax4jsf.model.Range;
 import org.ajax4jsf.model.SequenceRange;
 
+import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
-import de.egore911.versioning.persistence.selector.AbstractSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;

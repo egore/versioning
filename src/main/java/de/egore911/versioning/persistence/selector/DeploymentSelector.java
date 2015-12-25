@@ -31,6 +31,7 @@ import javax.persistence.criteria.Root;
 
 import org.joda.time.LocalDateTime;
 
+import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Deployment_;
 import de.egore911.versioning.persistence.model.Project;

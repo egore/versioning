@@ -26,8 +26,8 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
+import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
-import de.egore911.versioning.persistence.selector.AbstractSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;

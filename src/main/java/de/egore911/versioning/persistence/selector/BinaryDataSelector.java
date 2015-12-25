@@ -29,6 +29,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.model.BinaryData;
 
 /**

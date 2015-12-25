@@ -27,11 +27,11 @@ import javax.persistence.EntityManager;
 
 import org.joda.time.LocalDateTime;
 
+import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.selector.DeploymentSelector;
-import de.egore911.versioning.util.EntityManagerUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;

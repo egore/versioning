@@ -40,6 +40,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.VcshostDao;
@@ -49,7 +50,6 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
-import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.listener.StartupListener;
 
 /**

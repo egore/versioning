@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 
 import org.joda.time.LocalDateTime;
 
+import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.Deployment;
@@ -16,7 +17,6 @@ import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
-import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 @ManagedBean(name = "deploymentsBean")

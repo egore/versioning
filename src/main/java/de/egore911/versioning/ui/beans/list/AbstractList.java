@@ -28,8 +28,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
+import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
-import de.egore911.versioning.persistence.selector.AbstractSelector;
 import de.egore911.versioning.ui.beans.AbstractBean;
 import de.egore911.versioning.ui.model.PagingDataModel;
 import de.egore911.versioning.util.SessionUtil;

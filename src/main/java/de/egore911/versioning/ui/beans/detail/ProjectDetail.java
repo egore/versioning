@@ -31,6 +31,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
+import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.model.ActionCheckout;
 import de.egore911.versioning.persistence.model.ActionCopy;
@@ -47,7 +48,6 @@ import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.model.SpacerUrl;
 import de.egore911.versioning.persistence.model.Variable;
 import de.egore911.versioning.persistence.model.Wildcard;
-import de.egore911.versioning.util.EntityManagerUtil;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 

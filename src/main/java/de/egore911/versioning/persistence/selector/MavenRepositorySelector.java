@@ -32,6 +32,7 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 
+import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.MavenRepository_;
 
