@@ -27,6 +27,7 @@ import javax.persistence.EntityManager;
 
 import org.joda.time.LocalDateTime;
 
+import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.model.Deployment;
 import de.egore911.versioning.persistence.model.Project;

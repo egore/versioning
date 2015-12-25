@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.Server;
 import de.egore911.versioning.persistence.selector.ProjectSelector;

@@ -23,6 +23,7 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.List;
 
+import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.Role;
 import de.egore911.versioning.persistence.selector.RoleSelector;

@@ -35,7 +35,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import de.egore911.versioning.persistence.dao.AbstractDao;
+import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.IntegerDbObject;
 import de.egore911.versioning.ui.beans.AbstractBean;
 import de.egore911.versioning.util.SessionUtil;

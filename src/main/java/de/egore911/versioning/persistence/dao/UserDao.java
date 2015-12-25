@@ -21,6 +21,7 @@
  */
 package de.egore911.versioning.persistence.dao;
 
+import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.User;
 import de.egore911.versioning.persistence.selector.UserSelector;
 
