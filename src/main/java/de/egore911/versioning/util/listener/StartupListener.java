@@ -103,6 +103,27 @@ public class StartupListener implements ServletContextListener {
 					return;
 				}
 				break;
+			case "org.apache.tomcat.dbcp.dbcp2.BasicDataSource":
+				// Wrapped by Tomcat, get a connection to identify it
+				try (Connection connection = dataSource.getConnection()) {
+					if (connection.toString().contains("URL=jdbc:mysql://")) {
+						flyway.setLocations("db/migration/mysql");
+					} else if (connection.toString().contains("URL=jdbc:hsqldb")) {
+						flyway.setLocations("db/migration/hsqldb");
+					} else if (connection.toString().contains("URL=jdbc:jtds:sqlserver")
+							|| connection.toString().contains("URL=jdbc:sqlserver")) {
+						flyway.setLocations("db/migration/mssql");
+					} else if (connection.toString().contains("URL=jdbc:postgresql")) {
+						flyway.setLocations("db/migration/pgsql");
+					} else {
+						throw new RuntimeException(
+								"Unsupported database detected, please report this: " + connection.toString());
+					}
+				} catch (SQLException e) {
+					log.error("Error opening connection :{}", e.getMessage(), e);
+					return;
+				}
+				break;
 			case "org.jboss.jca.adapters.jdbc.WrapperDataSource":
 				// Wrapped by JBoss
 				try (Connection connection = dataSource.getConnection()) {
