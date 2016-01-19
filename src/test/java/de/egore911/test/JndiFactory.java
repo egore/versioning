@@ -45,7 +45,7 @@ public class JndiFactory implements InitialContextFactory {
 	public Context getInitialContext(Hashtable<?, ?> environment)
 			throws NamingException {
 
-		// SQLDB
+		// HSQLDB
 		final JDBCDataSource jdbcDataSource = new JDBCDataSource();
 		jdbcDataSource.setUrl("jdbc:hsqldb:mem:testdb");
 		jdbcDataSource.setUser("sa");
@@ -57,7 +57,7 @@ public class JndiFactory implements InitialContextFactory {
 		// jdbcDataSource.setUser("versioning");
 		// jdbcDataSource.setPassword("versioning");
 
-		// MySQL
+		// PostgreSQL
 		// final PGSimpleDataSource jdbcDataSource = new PGSimpleDataSource();
 		// try {
 		// jdbcDataSource.setUrl("jdbc:postgresql://localhost/versioning");
