@@ -25,7 +25,9 @@ package de.egore911.versioning.persistence.selector;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -46,7 +48,8 @@ public class BinaryDataSelector extends AbstractSelector<BinaryData> {
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<BinaryData> from) {
+			Root<BinaryData> from,
+			@Nonnull CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = new ArrayList<>();
 		return predicates;
 	}

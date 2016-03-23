@@ -26,7 +26,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -58,7 +60,8 @@ public class VersionSelector extends AbstractSelector<Version> {
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<Version> from) {
+			Root<Version> from,
+			@Nonnull CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (project != null) {

@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -53,7 +55,8 @@ public class UserSelector extends AbstractSelector<User> {
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<User> from) {
+			Root<User> from,
+			@Nonnull CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (StringUtils.isNotEmpty(login)) {

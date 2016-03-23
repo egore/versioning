@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
@@ -52,7 +54,8 @@ public class RoleSelector extends AbstractSelector<Role> {
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<Role> from) {
+			Root<Role> from,
+			@Nonnull CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (permission != null) {
