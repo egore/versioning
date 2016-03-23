@@ -170,3 +170,7 @@ The following components were used to develop *versioning*:
 * jgit 3.6 and svnkit 1.8
 * junit 4.12, mockito 1.10 and hsqldb 2.3
 * flyway 3.0
+
+Build status
+------------
+[![alt text](https://travis-ci.org/egore/versioning.svg "Build status")](https://travis-ci.org/egore/versioning)
