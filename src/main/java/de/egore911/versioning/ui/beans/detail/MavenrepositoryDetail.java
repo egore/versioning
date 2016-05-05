@@ -21,18 +21,13 @@
  */
 package de.egore911.versioning.ui.beans.detail;
 
-import java.util.ResourceBundle;
-
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
-import de.egore911.versioning.persistence.model.MavenArtifact;
 import de.egore911.versioning.persistence.model.MavenRepository;
 import de.egore911.versioning.persistence.model.Permission;
-import de.egore911.versioning.util.SessionUtil;
+import de.egore911.versioning.ui.logic.MavenrepositoryUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
 
 /**
@@ -65,27 +60,9 @@ public class MavenrepositoryDetail extends AbstractDetail<MavenRepository> {
 	}
 
 	public void delete() {
-		if (!instance.getMavenArtifacts().isEmpty()) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = SessionUtil.getBundle();
-			StringBuilder projectNames = new StringBuilder();
-			for (MavenArtifact mavenArtifact : instance.getMavenArtifacts()) {
-				if (projectNames.length() > 0) {
-					projectNames.append(", ");
-				}
-				projectNames.append(mavenArtifact.getGroupId());
-				projectNames.append(':');
-				projectNames.append(mavenArtifact.getArtifactId());
-			}
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					bundle.getString("mavenrepository_delete_not_possible_used_by_artifacts"),
-					projectNames.toString());
-			facesContext.addMessage("main:table", message);
-			return;
+		if (MavenrepositoryUtil.isDeletable(instance)) {
+			getDao().remove(instance);
 		}
-
-		getDao().remove(instance);
 	}
 
 }

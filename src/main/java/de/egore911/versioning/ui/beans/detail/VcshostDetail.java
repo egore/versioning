@@ -28,11 +28,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import de.egore911.versioning.ui.logic.VcshostUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.versioning.persistence.dao.VcshostDao;
 import de.egore911.versioning.persistence.model.Permission;
-import de.egore911.versioning.persistence.model.Project;
 import de.egore911.versioning.persistence.model.VcsHost;
 import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.security.RequiresPermission;
@@ -87,25 +87,9 @@ public class VcshostDetail extends AbstractDetail<VcsHost> {
 	}
 
 	public void delete() {
-		if (!instance.getProjects().isEmpty()) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ResourceBundle bundle = SessionUtil.getBundle();
-			StringBuilder projectNames = new StringBuilder();
-			for (Project project : instance.getProjects()) {
-				if (projectNames.length() > 0) {
-					projectNames.append(", ");
-				}
-				projectNames.append(project.getName());
-			}
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					bundle.getString("vcshost_delete_not_possible_used_by_projects"),
-					projectNames.toString());
-			facesContext.addMessage("main:table", message);
-			return;
+		if (VcshostUtil.isDeletable(instance)) {
+			getDao().remove(instance);
 		}
-
-		getDao().remove(instance);
 	}
 
 	public String getPassword() {
