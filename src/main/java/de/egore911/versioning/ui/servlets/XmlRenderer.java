@@ -46,9 +46,9 @@ public class XmlRenderer extends Renderer {
 		for (int i = 0; i < indent; i++) {
 			builder.append("	");
 		}
-		builder.append("<" + name + ">");
+		builder.append("<").append(name).append(">");
 		builder.append(value);
-		builder.append("</" + name + ">\n");
+		builder.append("</").append(name).append(">\n");
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class XmlRenderer extends Renderer {
 		for (int i = 0; i < indent; i++) {
 			builder.append("	");
 		}
-		builder.append("<" + name + ">\n");
+		builder.append("<").append(name).append(">\n");
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class XmlRenderer extends Renderer {
 		for (int i = 0; i < indent; i++) {
 			builder.append("	");
 		}
-		builder.append("</" + name + ">\n");
+		builder.append("</").append(name).append(">\n");
 	}
 	
 	@Override
