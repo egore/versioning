@@ -102,11 +102,11 @@ public abstract class AbstractSelector<T> implements Serializable {
 
 	@Nonnull
 	protected List<Order> generateOrderList(@Nonnull CriteriaBuilder builder, @Nonnull Root<T> from) {
-		if (StringUtils.isNotEmpty(getSortColumn())) {
-			if (!Boolean.FALSE.equals(getAscending())) {
-				return Collections.singletonList(builder.asc(from.get(getSortColumn())));
+		if (StringUtils.isNotEmpty(sortColumn)) {
+			if (!Boolean.FALSE.equals(ascending)) {
+				return Collections.singletonList(builder.asc(from.get(sortColumn)));
 			}
-			return Collections.singletonList(builder.desc(from.get(getSortColumn())));
+			return Collections.singletonList(builder.desc(from.get(sortColumn)));
 		}
 		return getDefaultOrderList(builder, from);
 	}
