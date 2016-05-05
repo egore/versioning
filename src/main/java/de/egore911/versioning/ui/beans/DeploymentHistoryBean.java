@@ -2,7 +2,6 @@ package de.egore911.versioning.ui.beans;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,17 +181,7 @@ public class DeploymentHistoryBean {
 		
 		for (DeploymentHistoryEntry entry : result.getEntries()) {
 			Collections.sort(entry.getDeploymentDurations(),
-					new Comparator<DeploymentDuration>() {
-						@Override
-						public int compare(DeploymentDuration o1,
-								DeploymentDuration o2) {
-							return o1
-									.getDeployment()
-									.getDeployment()
-									.compareTo(
-											o2.getDeployment().getDeployment());
-						}
-					});
+					(o1, o2) -> o1.getDeployment().getDeployment().compareTo(o2.getDeployment().getDeployment()));
 			for (DeploymentDuration deploymentDuration : entry.getDeploymentDurations()) {
 				if (deploymentDuration.getDeployment().getDeployment() == null) {
 					deploymentDuration.offset = 0;
@@ -209,14 +198,7 @@ public class DeploymentHistoryBean {
 			}
 		}
 		Collections.sort(result.getEntries(),
-				new Comparator<DeploymentHistoryEntry>() {
-					@Override
-					public int compare(DeploymentHistoryEntry o1,
-							DeploymentHistoryEntry o2) {
-						return o1.getProject().getName()
-								.compareTo(o2.getProject().getName());
-					}
-				});
+				(o1, o2) -> o1.getProject().getName().compareTo(o2.getProject().getName()));
 		
 		historyCache.put(server, result);
 		
