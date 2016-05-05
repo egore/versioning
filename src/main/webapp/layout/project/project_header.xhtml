@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Parameter: project -->
-<!-- Parameter: idPostfix -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
+	<!--@elvariable id="idPostfix" type="java.lang.String"-->
+	<!--@elvariable id="project" type="de.egore911.versioning.persistence.model.Project"-->
 	<rich:panel header="#{messages.project}" id="projectHeader#{idPostfix}">
 		<h:panelGrid columns="3" columnClasses="caption,value,help">
 			<h:outputText value="#{messages.project_name}" />

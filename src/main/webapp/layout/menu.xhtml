@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<!--@elvariable id="user" type="de.egore911.versioning.persistence.model.User"-->
 	<rich:toolbar id="navigationbar">
 		<rich:dropDownMenu mode="server" id="core_menu"
 			rendered="#{user.hasPermission('CREATE_VERSIONS') or user.hasPermission('DEPLOY')}">
