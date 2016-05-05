@@ -1,7 +1,7 @@
 package de.egore911.versioning.ui.beans;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -46,12 +46,9 @@ public class DeploymentsBean extends AbstractBean {
 
 	public List<ServerVersions> getDeployableVersionsPerServer() {
 		List<Server> servers = new ServerDao().findAll();
-		List<ServerVersions> result = new ArrayList<>();
-		for (Server server : servers) {
-			result.add(new ServerVersions(server, deploymentCalculator
-					.getDeployableVersions(server)));
-		}
-		return result;
+		return servers.stream()
+				.map(server -> new ServerVersions(server, deploymentCalculator.getDeployableVersions(server)))
+				.collect(Collectors.toList());
 	}
 
 	public String deploy(Server server, Version version) {
