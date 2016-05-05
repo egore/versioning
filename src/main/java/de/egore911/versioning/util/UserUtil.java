@@ -62,14 +62,14 @@ public class UserUtil {
 	/**
 	 * Convert a byte array to a hexadecimal represenation.
 	 * 
-	 * @param b
+	 * @param bytes
 	 *            the byte array
 	 * @return the hexadecimal represenation
 	 */
-	public static String byteArrayToHexString(byte[] b) {
-		StringBuilder result = new StringBuilder(b.length);
-		for (int i = 0; i < b.length; i++) {
-			result.append(Integer.toString((b[i] & 0xff) + 0x100, 16)
+	public static String byteArrayToHexString(byte[] bytes) {
+		StringBuilder result = new StringBuilder(bytes.length);
+		for (byte b : bytes) {
+			result.append(Integer.toString((b & 0xff) + 0x100, 16)
 					.substring(1));
 		}
 		return result.toString();
