@@ -52,8 +52,7 @@ public class VcshostSelector extends AbstractSelector<VcsHost> {
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
 			Root<VcsHost> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
-		return predicates;
+		return new ArrayList<>();
 	}
 
 	@Override

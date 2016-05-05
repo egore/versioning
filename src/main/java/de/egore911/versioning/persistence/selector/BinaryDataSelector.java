@@ -50,8 +50,7 @@ public class BinaryDataSelector extends AbstractSelector<BinaryData> {
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
 			Root<BinaryData> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
-		return predicates;
+		return new ArrayList<>();
 	}
 
 }
