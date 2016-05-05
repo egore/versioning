@@ -34,22 +34,22 @@ public class MessagesTest {
 		// "Assert.assertTrue(messages.keySet().equals(messagesDe.keySet()));"
 		// but with nicer error output
 		StringBuilder errors = new StringBuilder();
-		for (Object key : messagesKeySet) {
-			if (!messagesDeKeySet.contains(key)) {
-				errors.append(key);
-				errors.append(" exists in messages.properties, but not messages_de.properties");
-				errors.append('\n');
-			}
-		}
+		messagesKeySet.stream()
+				.filter(key -> !messagesDeKeySet.contains(key))
+				.forEach(key -> {
+			errors.append(key);
+			errors.append(" exists in messages.properties, but not messages_de.properties");
+			errors.append('\n');
+		});
 		Assert.assertTrue(errors.toString(), errors.length() == 0);
 
-		for (Object key : messagesDeKeySet) {
-			if (!messagesKeySet.contains(key)) {
-				errors.append(key);
-				errors.append(" exists in messages_de.properties, but not messages.properties");
-				errors.append('\n');
-			}
-		}
+		messagesDeKeySet.stream()
+				.filter(key -> !messagesKeySet.contains(key))
+				.forEach(key -> {
+			errors.append(key);
+			errors.append(" exists in messages_de.properties, but not messages.properties");
+			errors.append('\n');
+		});
 		Assert.assertTrue(errors.toString(), errors.length() == 0);
 	}
 }

@@ -32,8 +32,6 @@ import javax.naming.spi.InitialContextFactory;
 
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -77,32 +75,22 @@ public class JndiFactory implements InitialContextFactory {
 		Context context = Mockito.mock(Context.class);
 		Mockito.when(context.getNameParser("")).thenReturn(nameParser);
 		Mockito.when(context.lookup(Mockito.any(Name.class))).then(
-				new Answer<Object>() {
-
-					@Override
-					public Object answer(InvocationOnMock invocation)
-							throws Throwable {
-						if (invocation.getArguments()[0] == name) {
-							return jdbcDataSource;
-						}
-						System.err.println(Arrays.toString(invocation
-								.getArguments()));
-						return null;
+				invocation -> {
+					if (invocation.getArguments()[0] == name) {
+						return jdbcDataSource;
 					}
+					System.err.println(Arrays.toString(invocation
+							.getArguments()));
+					return null;
 				});
 		Mockito.when(context.lookup(Mockito.anyString())).then(
-				new Answer<Object>() {
-
-					@Override
-					public Object answer(InvocationOnMock invocation)
-							throws Throwable {
-						if (DATASOURCE_NAME.equals(invocation.getArguments()[0])) {
-							return jdbcDataSource;
-						}
-						System.err.println(Arrays.toString(invocation
-								.getArguments()));
-						return null;
+				invocation -> {
+					if (DATASOURCE_NAME.equals(invocation.getArguments()[0])) {
+						return jdbcDataSource;
 					}
+					System.err.println(Arrays.toString(invocation
+							.getArguments()));
+					return null;
 				});
 
 		return context;
