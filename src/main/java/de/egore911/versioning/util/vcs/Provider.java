@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,12 +60,7 @@ public abstract class Provider {
 	 */
 	public boolean tagExists(final Project project, final String tagName) {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
-		Future<Boolean> future = executor.submit(new Callable<Boolean>() {
-			@Override
-			public Boolean call() {
-				return tagExistsImpl(project, tagName);
-			}
-		});
+		Future<Boolean> future = executor.submit(() -> tagExistsImpl(project, tagName));
 		try {
 			return future.get(10, TimeUnit.SECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -90,12 +84,7 @@ public abstract class Provider {
 
 	public List<Tag> getTags(final Project project) {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
-		Future<List<Tag>> future = executor.submit(new Callable<List<Tag>>() {
-			@Override
-			public List<Tag> call() {
-				return getTagsImpl(project);
-			}
-		});
+		Future<List<Tag>> future = executor.submit(() -> getTagsImpl(project));
 		try {
 			List<Tag> tags = future.get(10, TimeUnit.SECONDS);
 			Collections.sort(tags);

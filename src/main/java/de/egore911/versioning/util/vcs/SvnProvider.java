@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -134,11 +135,9 @@ public class SvnProvider extends Provider {
 
 			Collection<SVNDirEntry> entries = new ArrayList<>();
 			repo.getDir(list, repo.getLatestRevision(), false, entries);
-			List<Tag> result = new ArrayList<>();
-			for (SVNDirEntry entry : entries) {
-				result.add(new Tag(entry.getDate(), entry.getName()));
-			}
-			return result;
+			return entries.stream()
+					.map(entry -> new Tag(entry.getDate(), entry.getName()))
+					.collect(Collectors.toList());
 		} catch (SVNException e) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			if (facesContext != null) {

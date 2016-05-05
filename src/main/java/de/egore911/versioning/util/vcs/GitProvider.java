@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -124,10 +125,9 @@ public class GitProvider extends Provider {
 		command.setTags(true);
 		try {
 			Collection<Ref> tags = command.call();
-			for (Ref tag : tags) {
-				result.add(new Tag(null, tag.getName()
-						.replace("refs/tags/", "")));
-			}
+			result.addAll(tags.stream()
+					.map(tag -> new Tag(null, tag.getName().replace("refs/tags/", "")))
+					.collect(Collectors.toList()));
 			return result;
 		} catch (GitAPIException e) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
