@@ -60,8 +60,7 @@ public class SessionUtil {
 				Object session = externalContext.getSession(false);
 				if (session instanceof HttpSession) {
 					HttpSession httpSession = (HttpSession) session;
-					User user = (User) httpSession.getAttribute("user");
-					return user;
+					return (User) httpSession.getAttribute("user");
 				}
 			}
 		}
