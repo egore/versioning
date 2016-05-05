@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -44,25 +45,16 @@ import de.egore911.versioning.util.VersionUtil;
  */
 public class DeploymentCalculator {
 
-	private static final Comparator<Version> COMPARATOR_BY_PROJECT = new Comparator<Version>() {
-
-		@Override
-		public int compare(Version o1, Version o2) {
-			return o1.getProject().compareTo(o2.getProject());
-		}
-	};
+	private static final Comparator<Version> COMPARATOR_BY_PROJECT = (o1, o2) -> o1.getProject().compareTo(o2.getProject());
 
 	private final ProjectDao projectDao = new ProjectDao();
 	private final DeploymentDao deploymentDao = new DeploymentDao();
 
 	public List<Version> getDeployedVersions(Server server) {
-		List<Version> result = new ArrayList<>();
-		for (Deployment deployment : deploymentDao
-				.getCurrentDeployments(server)) {
-			result.add(deployment.getVersion());
-		}
-		Collections.sort(result, COMPARATOR_BY_PROJECT);
-		return result;
+		return deploymentDao
+				.getCurrentDeployments(server).stream().map(Deployment::getVersion)
+				.sorted(COMPARATOR_BY_PROJECT)
+				.collect(Collectors.toList());
 	}
 
 	public List<Version> getDeployableVersions(Server server) {
