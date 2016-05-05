@@ -228,11 +228,9 @@ public class ServerDetail extends AbstractDetail<Server> {
 			getInstance().setIcon(binaryData);
 		}
 
-		for (Project project : getInstance().getConfiguredProjects()) {
-			if (!project.getConfiguredServers().contains(getInstance())) {
-				project.getConfiguredServers().add(getInstance());
-			}
-		}
+		getInstance().getConfiguredProjects().stream()
+				.filter(project -> !project.getConfiguredServers().contains(getInstance()))
+				.forEach(project -> project.getConfiguredServers().add(getInstance()));
 
 		HttpSession session = SessionUtil.getSession();
 		List<Project> origProjects = (List<Project>) session
