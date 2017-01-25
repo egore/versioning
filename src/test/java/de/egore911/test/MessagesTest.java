@@ -1,55 +1,44 @@
 package de.egore911.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class MessagesTest {
 
 	@Test
-	public void testPropertiesKeys() throws IOException {
-		Properties messages = new Properties();
-		try (InputStream messageProperties = MessagesTest.class
-				.getResourceAsStream("/messages.properties")) {
-			Assert.assertNotNull(messageProperties);
-			messages.load(messageProperties);
+	public void testDeAndEnMatch() throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+
+		Map<String, String> messagesEn;
+		try (InputStream messageFile = new FileInputStream("src/main/webapp/app/scripts/i18n/en.json")) {
+			Assert.assertNotNull(messageFile);
+			messagesEn = mapper.readValue(messageFile, new TypeReference<Map<String, String>>() {});
+		}
+		
+		Map<String, String> messagesDe;
+		try (InputStream messageFile = new FileInputStream("src/main/webapp/app/scripts/i18n/de.json")) {
+			Assert.assertNotNull(messageFile);
+			messagesDe = mapper.readValue(messageFile, new TypeReference<Map<String, String>>() { });
 		}
 
-		Properties messagesDe = new Properties();
-		try (InputStream messageDeProperties = MessagesTest.class
-				.getResourceAsStream("/messages_de.properties")) {
-			Assert.assertNotNull(messageDeProperties);
-			messagesDe.load(messageDeProperties);
-		}
+		Set<String> messagesEnKeySet = messagesEn.keySet();
+		Set<String> messagesDeKeySet = messagesDe.keySet();
+		assertThat(messagesEnKeySet, hasSize(messagesDeKeySet.size()));
 
-		Set<Object> messagesKeySet = messages.keySet();
-		Set<Object> messagesDeKeySet = messagesDe.keySet();
-		Assert.assertEquals(messagesKeySet.size(), messagesDeKeySet.size());
-
-		// Basically
-		// "Assert.assertTrue(messages.keySet().equals(messagesDe.keySet()));"
-		// but with nicer error output
-		StringBuilder errors = new StringBuilder();
-		messagesKeySet.stream()
-				.filter(key -> !messagesDeKeySet.contains(key))
-				.forEach(key -> {
-			errors.append(key);
-			errors.append(" exists in messages.properties, but not messages_de.properties");
-			errors.append('\n');
-		});
-		Assert.assertTrue(errors.toString(), errors.length() == 0);
-
-		messagesDeKeySet.stream()
-				.filter(key -> !messagesKeySet.contains(key))
-				.forEach(key -> {
-			errors.append(key);
-			errors.append(" exists in messages_de.properties, but not messages.properties");
-			errors.append('\n');
-		});
-		Assert.assertTrue(errors.toString(), errors.length() == 0);
+		assertThat(messagesEnKeySet, containsInAnyOrder(messagesDeKeySet.toArray(new String[messagesDeKeySet.size()])));
+		assertThat(messagesDeKeySet, containsInAnyOrder(messagesEnKeySet.toArray(new String[messagesEnKeySet.size()])));
 	}
 }

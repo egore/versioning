@@ -1,0 +1,32 @@
+<h1 class="page-header"><i class="fa fa-user"></i>{{'users' | translate}}</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            <span ng-click="vm.order('name')" class="sortable" translate="name"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('login')" class="sortable" translate="login"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'login'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('email')" class="sortable" translate="email"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'email'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th translate="roles"></th>
+        <th class="col-sm-1" translate="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in vm.users | filter: search | orderBy:vm.predicate:vm.reverse">
+        <td><a href="#users/{{user.id}}" ng-bind="user.name"></a></td>
+        <td ng-bind="user.login"></td>
+        <td ng-bind="user.email"></td>
+        <td><span ng-repeat="roleId in user.roleIds">{{vm.roleLookup[roleId].name}}{{$last ? '' : ', '}}</span></td>
+        <td><button ng-click="vm.remove(user)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button></td>
+    </tr>
+    </tbody>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>

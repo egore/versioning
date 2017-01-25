@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +36,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 
 import de.egore911.versioning.persistence.dao.BinaryDataDao;
-import de.egore911.versioning.persistence.model.BinaryData;
+import de.egore911.versioning.persistence.model.BinaryDataEntity;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
+@WebServlet(name = "ResourceServlet", urlPatterns = "/service/resources/server/*")
 public class ResourceServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 498864582614855618L;
@@ -54,7 +56,7 @@ public class ResourceServlet extends HttpServlet {
 		if (matcher.matches()) {
 			Integer iconId = Integer.valueOf(matcher.group(1));
 			BinaryDataDao binaryDataDao = new BinaryDataDao();
-			BinaryData binaryData = binaryDataDao.findById(iconId);
+			BinaryDataEntity binaryData = binaryDataDao.findById(iconId);
 			if (binaryData != null) {
 				resp.setContentLength((int) binaryData.getSize());
 				resp.setContentType(binaryData.getContentType());

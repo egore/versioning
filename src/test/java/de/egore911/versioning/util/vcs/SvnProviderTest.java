@@ -24,9 +24,9 @@ package de.egore911.versioning.util.vcs;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.Vcs;
-import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.VcsHostEntity;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -35,41 +35,41 @@ public class SvnProviderTest {
 
 	@Test
 	public void testTagExistsHttps() {
-		VcsHost vcsHost = new VcsHost();
+		VcsHostEntity vcsHost = new VcsHostEntity();
 		vcsHost.setVcs(Vcs.svn);
 		vcsHost.setUri("https://svn.apache.org/repos/asf/");
-		Project project = new Project();
+		ProjectEntity project = new ProjectEntity();
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("maven/maven-3/");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists(project, "maven-3.0.4"));
-		Assert.assertFalse(provider.tagExists(project, "maven-1234"));
+		Assert.assertTrue(provider.tagExists("maven-3.0.4"));
+		Assert.assertFalse(provider.tagExists("maven-1234"));
 	}
 
 	@Test
 	public void testTagExistsHttpsWithTrunk() {
-		VcsHost vcsHost = new VcsHost();
+		VcsHostEntity vcsHost = new VcsHostEntity();
 		vcsHost.setVcs(Vcs.svn);
 		vcsHost.setUri("https://svn.apache.org/repos/asf/");
-		Project project = new Project();
+		ProjectEntity project = new ProjectEntity();
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("maven/maven-3/trunk");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists(project, "maven-3.0.4"));
-		Assert.assertFalse(provider.tagExists(project, "maven-1234"));
+		Assert.assertTrue(provider.tagExists("maven-3.0.4"));
+		Assert.assertFalse(provider.tagExists("maven-1234"));
 	}
 
 	@Test
 	public void testTagExistsHttpsWithTrunkSlash() {
-		VcsHost vcsHost = new VcsHost();
+		VcsHostEntity vcsHost = new VcsHostEntity();
 		vcsHost.setVcs(Vcs.svn);
 		vcsHost.setUri("https://svn.apache.org/repos/asf/");
-		Project project = new Project();
+		ProjectEntity project = new ProjectEntity();
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("maven/maven-3/trunk/");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists(project, "maven-3.0.4"));
-		Assert.assertFalse(provider.tagExists(project, "maven-1234"));
+		Assert.assertTrue(provider.tagExists("maven-3.0.4"));
+		Assert.assertFalse(provider.tagExists("maven-1234"));
 	}
 
 }

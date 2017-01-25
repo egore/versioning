@@ -1,0 +1,30 @@
+<h1 class="page-header"><i class="fa fa-exchange"></i>{{'tag_transformers' | translate}}</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            <span ng-click="vm.order('name')" class="sortable" translate="name"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('searchPattern')" class="sortable" translate="searchPattern"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'searchPattern'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('replacementPattern')" class="sortable" translate="replacementPattern">Ersetzungsmuster</span>
+            <span class="sortorder" ng-show="vm.predicate === 'replacementPattern'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th translate="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="tag_transformer in vm.tag_transformers | filter: search | orderBy:vm.predicate:vm.reverse">
+        <td><a href="#tag_transformers/{{tag_transformer.id}}" ng-bind="tag_transformer.name"></a></td>
+        <td ng-bind="tag_transformer.searchPattern"></td>
+        <td ng-bind="tag_transformer.replacementPattern"></td>
+        <td><button ng-click="vm.remove(tag_transformer)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button></td>
+    </tr>
+    </tbody>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>

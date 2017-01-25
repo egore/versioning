@@ -34,6 +34,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.egore911.persistence.util.EntityManagerUtil;
 
 /**
@@ -41,9 +44,12 @@ import de.egore911.persistence.util.EntityManagerUtil;
  */
 public class EntityManagerFilter implements Filter {
 
+	private static final Logger LOG = LoggerFactory
+			.getLogger(EntityManagerFilter.class);
+
 	@PersistenceUnit(unitName = "versioning")
 	public EntityManagerFactory entityManagerFactory;
-	private boolean selfBootstrapped = false;
+	private boolean selfBootstrapped;
 
 	@Override
 	public void init(FilterConfig filterConfig) {
@@ -64,8 +70,15 @@ public class EntityManagerFilter implements Filter {
 			EntityManagerUtil.setEntityManager(entityManager);
 			filterChain.doFilter(servletRequest, servletResponse);
 		} finally {
-			EntityManagerUtil.clearEntityManager();
-			entityManager.close();
+			entityManager = EntityManagerUtil.getEntityManager();
+			if (entityManager != null) {
+				EntityManagerUtil.clearEntityManager();
+				try {
+					entityManager.close();
+				} catch (IllegalStateException e) {
+					LOG.warn("Could not close entity manager, likely it was closes before");
+				}
+			}
 		}
 	}
 

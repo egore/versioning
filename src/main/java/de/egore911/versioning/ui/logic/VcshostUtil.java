@@ -21,13 +21,14 @@
  */
 package de.egore911.versioning.ui.logic;
 
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.VcsHost;
-import de.egore911.versioning.util.SessionUtil;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import java.util.ResourceBundle;
+
+import javax.annotation.Nullable;
+
+import de.egore911.appframework.ui.exceptions.BadArgumentException;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.VcsHostEntity;
+import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -37,25 +38,18 @@ public final class VcshostUtil {
 	private VcshostUtil() {
 	}
 
-	public static boolean isDeletable(VcsHost vcshost) {
-		if (!vcshost.getProjects().isEmpty()) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
+	public static void checkDeletable(@Nullable VcsHostEntity vcshost) {
+		if (vcshost != null && !vcshost.getProjects().isEmpty()) {
 			ResourceBundle bundle = SessionUtil.getBundle();
 			StringBuilder projectNames = new StringBuilder();
-			for (Project project : vcshost.getProjects()) {
+			for (ProjectEntity project : vcshost.getProjects()) {
 				if (projectNames.length() > 0) {
 					projectNames.append(", ");
 				}
 				projectNames.append(project.getName());
 			}
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					bundle.getString("vcshost_delete_not_possible_used_by_projects"),
-					projectNames.toString());
-			facesContext.addMessage("main:table", message);
-			return false;
+			throw new BadArgumentException(bundle.getString("vcshost_delete_not_possible_used_by_projects") + ": (" + projectNames.toString() + ")");
 		}
-		return true;
 	}
 
 }

@@ -1,0 +1,134 @@
+<h1 class="page-header"><i class="fa fa-server"></i>{{!vm.server.name ? '&nbsp;' : vm.server.name}}</h1>
+
+<form class="form-horizontal" name="form">
+	<label-group label="{{'name' | translate}}" ng-class="{'has-error': form.name.$touched && form.name.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.server.name" name="name" required />
+		</p>
+	</label-group>
+	<label-group label="{{'description' | translate}}" ng-class="{'has-error': form.description.$touched && form.description.$error.required}">
+		<p>
+			<textarea class="form-control" ng-model="vm.server.description" name="description"></textarea>
+		</p>
+	</label-group>
+	<label-group label="{{'targetdir' | translate}}" ng-class="{'has-error': form.targetdir.$touched && form.targetdir.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.server.targetdir" name="targetdir" required />
+		</p>
+	</label-group>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="icon">{{'icon' | translate}}</label>
+		<div class="col-sm-10 label-group-content">
+			<div class="col-sm-10 label-group-content drop-box" ngf-drop="vm.file = $file" ngf-multiple="false" ngf-accept="'image/*'" ng-show="!vm.file">{{'drop_files_to_upload' | translate}}</div>
+			<img ngf-src="vm.file" ng-show="vm.file" ng-click="vm.file = undefined"/>
+		</div>
+	</div>
+	<label-group label="{{'projects' | translate}}">
+		<table class="table table-striped">
+			<tr ng-repeat="project in vm.projects | orderBy: 'name'" ng-class="{selected: vm.isSelected(project.id)}">
+				<td class="col-sm-6 sortable" ng-bind="project.name" ng-click="vm.toggleSelection(project.id)"></td>
+			</tr>
+		</table>
+	</label-group>
+	
+	<h2 class="sub-header" translate="vcsConfiguration"></h2>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="control_id_vcs_host" translate="vcs_host"></label>
+		<div class="col-sm-10 label-group-content">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{vm.server.vcsHostId != undefined ? vm.vcs_hosts[vm.server.vcsHostId].name : 'None'}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href ng-click="vm.server.vcsHostId = undefined">None</a></li>
+					<li role="separator" class="divider"></li>
+					<li ng-repeat="vcs_host in vm.vcs_hosts | orderBy: 'start':true"><a href ng-click="vm.server.vcsHostId = vcs_host.id">{{vcs_host.name}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<label-group label="{{'vcsPath' | translate}}" ng-class="{'has-error': form.vcsPath.$touched && form.vcsPath.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.server.vcsPath" name="vcsPath" />
+		</p>
+	</label-group>
+	<label-group label="{{'targetdir' | translate}}" ng-class="{'has-error': form.targetPath.$touched && form.targetPath.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.server.targetPath" name="targetPath" />
+		</p>
+	</label-group>
+
+	<h2 class="sub-header" translate="variables"></h2>
+	<div>
+		<div ng-repeat="variable in vm.server.variables">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" style="height: 34px;">{{'name' | translate}}</label>
+				<div class="col-sm-4 label-group-content">
+					<input type="text" class="form-control" ng-model="variable.name" required />
+				</div>
+				<label class="col-sm-1 control-label" style="height: 34px;">{{'value' | translate}}</label>
+				<div class="col-sm-4 label-group-content">
+					<input type="text" class="form-control" ng-model="variable.value" required />
+				</div>
+				<div class="col-sm-1">
+					<button type="button" ng-click="vm.removeVariable(variable)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-10">
+				<button type="button" ng-click="vm.addVariable()" class="btn btn-default"><i class="fa fa-plus"></i> {{'add' | translate}}</button>
+			</div>
+		</div>
+	</div>
+	
+	<action-replacement entity="vm.server" service="vm.ActionReplacementService" />
+
+	<button type="submit" ng-click="vm.save()" class="btn btn-primary" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> {{'save' | translate}}</button>
+
+	<h2 class="sub-header" translate="deployments"></h2>
+	<div style="float: left; width: 100%;">
+		<div class="col-sm-6">
+			<h3 translate="currently_deployed"></h3>
+			<table class="table table-striped">
+				<tr>
+					<th translate="project"></th>
+					<th translate="version"></th>
+				</tr>
+				<tr ng-repeat="version in vm.deployedVersions">
+					<td ng-bind="version.project.name"></td>
+					<td ng-bind="version.transformedVcsTag"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-sm-6">
+			<h3 translate="deployable"></h3>
+			<table class="table table-striped">
+				<tr>
+					<th translate="project"></th>
+					<th translate="version"></th>
+				</tr>
+				<tr ng-repeat="version in vm.deployableVersions">
+					<td ng-bind="version.project.name"></td>
+					<td ng-bind="version.transformedVcsTag"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<h3>{{'deployment_history_detail' | translate}} ({{vm.history.minDate | amDateFormat:'LLL'}} - {{vm.history.maxDate | amDateFormat:'LLL'}})</h3>
+	<table>
+		<tr ng-repeat="entry in vm.history.entries">
+			<th style="text-align: left; height: 18px;" ng-bind="entry.project.name"></th>
+			<th style="position: relative;">
+				<div ng-repeat="deploymentDuration in entry.deploymentDurations" class="history_entry"
+					style="background-color: {{deploymentDuration.color}}; left: {{deploymentDuration.offset}}px; width: {{deploymentDuration.length}}px;"
+					title="{{deploymentDuration.deployment.version.vcsTag}}: {{deploymentDuration.deployment.deployment | amDateFormat:'LLL'}} - {{deploymentDuration.deployment.undeployment | amDateFormat:'LLL'}}">
+					{{deploymentDuration.deployment.version.vcsTag}}
+				</div>
+			</th>
+		</tr>
+	</table>
+
+</form>

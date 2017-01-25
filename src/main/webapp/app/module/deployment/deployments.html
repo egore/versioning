@@ -1,0 +1,23 @@
+<h1 class="page-header"><i class="fa fa-download"></i>{{'deployments' | translate}}</h1>
+
+<div class="panel panel-default" ng-repeat="serverVersions in vm.deployableVersionsPerServer">
+	<div class="panel-heading" ng-bind="serverVersions.server.name"></div>
+	<div class="panel-body">
+		<h4 ng-bind="serverVersions.server.description"></h4>
+		<a href="rest/server/{{serverVersions.server.name}}.json" translate="download_as_json"></a>
+		<a href="rest/server/{{serverVersions.server.name}}.xml" translate="download_as_xml"></a>
+		<table class="table table-striped">
+			<tr>
+				<th translate="project"></th>
+				<th translate="version"></th>
+				<th translate="action"></th>
+			</tr>
+			<tr ng-repeat="version in serverVersions.versions">
+				<td ng-bind="version.project.name"></td>
+				<td ng-bind="version.transformedVcsTag"></td>
+				<td><button type="button" class="btn btn-default" ng-click="vm.deploy(serverVersions.server, version)" translate="deploy" /></td>
+			</tr>
+		</table>
+		<button type="button" class="btn btn-default" ng-click="vm.deployAll(serverVersions.server)" translate="deploy_all" />
+	</div>
+</div>

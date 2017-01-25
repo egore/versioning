@@ -21,7 +21,6 @@
  */
 package de.egore911.versioning.persistence.selector;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,33 +33,34 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.egore911.persistence.selector.AbstractSelector;
-import de.egore911.versioning.persistence.model.MavenRepository;
-import de.egore911.versioning.persistence.model.MavenRepository_;
+import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
+import de.egore911.versioning.persistence.model.MavenRepositoryEntity;
+import de.egore911.versioning.persistence.model.MavenRepositoryEntity_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class MavenRepositorySelector extends AbstractSelector<MavenRepository> {
+public class MavenRepositorySelector
+		extends AbstractResourceSelector<MavenRepositoryEntity> {
 
 	private static final long serialVersionUID = 1467355656953767923L;
 
 	private String name;
 
 	@Override
-	protected Class<MavenRepository> getEntityClass() {
-		return MavenRepository.class;
+	protected Class<MavenRepositoryEntity> getEntityClass() {
+		return MavenRepositoryEntity.class;
 	}
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<MavenRepository> from,
+			Root<MavenRepositoryEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (StringUtils.isNotEmpty(name)) {
 			predicates
-					.add(builder.equal(from.get(MavenRepository_.name), name));
+					.add(builder.equal(from.get(MavenRepositoryEntity_.name), name));
 		}
 
 		return predicates;
@@ -68,17 +68,14 @@ public class MavenRepositorySelector extends AbstractSelector<MavenRepository> {
 
 	@Override
 	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
-			Root<MavenRepository> from) {
-		return Collections.singletonList(builder.asc(from
-				.get(MavenRepository_.name)));
+			Root<MavenRepositoryEntity> from) {
+		return Collections
+				.singletonList(builder.asc(from.get(MavenRepositoryEntity_.name)));
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
+	public MavenRepositorySelector withName(String name) {
 		this.name = name;
+		return this;
 	}
 
 }

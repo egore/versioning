@@ -1,0 +1,71 @@
+<div>
+	<h2 class="sub-header" translate="extraction"></h2>
+	<div class="panel panel-default" ng-repeat="actionExtraction in entity.actionExtractions">
+		<div class="panel-heading"><button type="button" ng-click="service.removeActionExtraction(entity, actionExtraction)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'removeActionExtraction' | translate}}</button></div>
+		<div class="panel-body">
+			<div class="panel panel-default" ng-repeat="extraction in actionExtraction.extractions">
+				<div class="panel-heading"><button type="button" ng-click="service.removeExtraction(actionExtraction, extraction)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'removeExtraction' | translate}}</button></div>
+				<div class="panel-body">
+					<label-group label="{{'source' | translate}}">
+						<p>
+							<input type="text" class="form-control" ng-model="extraction.source" name="source" required />
+						</p>
+					</label-group>
+					<label-group label="{{'destination' | translate}}">
+						<p>
+							<input type="text" class="form-control" ng-model="extraction.destination" name="destination" required />
+						</p>
+					</label-group>
+
+				</div>
+			</div>
+			<button type="button" ng-click="service.addMavenArtifact(actionExtraction)" ng-if="!actionExtraction.mavenArtifact && actionExtraction.spacerUrl === undefined" class="btn btn-default"><i class="fa fa-plus"></i> {{'addMavenArtifact' | translate}}</button>
+			<button type="button" ng-click="service.addSpacerUrl(actionExtraction)" ng-if="!actionExtraction.mavenArtifact && actionExtraction.spacerUrl === undefined" class="btn btn-default"><i class="fa fa-plus"></i> {{'addSpacerUrl' | translate}}</button>
+
+			<div ng-if="actionExtraction.mavenArtifact">
+			<button type="button" ng-click="service.removeMavenArtifact(actionExtraction)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'removeMavenArtifact' | translate}}</button>
+			<label-group label="groupId">
+				<p>
+					<input type="text" class="form-control" ng-model="actionExtraction.mavenArtifact.groupId" name="groupId" required />
+				</p>
+			</label-group>
+			<label-group label="artifactId">
+				<p>
+					<input type="text" class="form-control" ng-model="actionExtraction.mavenArtifact.artifactId" name="artifactId" required />
+				</p>
+			</label-group>
+			<label-group label="packaging">
+				<p>
+					<input type="text" class="form-control" ng-model="actionExtraction.mavenArtifact.packaging" name="packaging" placeholder="jar" />
+				</p>
+			</label-group>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="control_id_vcs_host" translate="maven_repository"></label>
+				<div class="col-sm-10 label-group-content">
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							{{maven_repository_lookup[actionExtraction.mavenArtifact.mavenRepositoryId].name}} <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li ng-repeat="maven_repository in maven_repositories"><a href ng-click="actionExtraction.mavenArtifact.mavenRepositoryId = maven_repository.id">{{maven_repository.name}}</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			</div>
+
+			<div ng-if="actionExtraction.spacerUrl != undefined">
+			<button type="button" ng-click="service.removeSpacerUrl(actionExtraction)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'removeSpacerUrl' | translate}}</button>
+			<label-group label="{{'spacerUrl' | translate}}">
+				<p>
+					<input type="text" class="form-control" ng-model="actionExtraction.mavenArtifact.spacerUrl" name="spacerUrl" />
+				</p>
+			</label-group>
+			</div>
+
+			<button type="button" ng-click="service.addExtraction(actionExtraction)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addExtraction' | translate}}</button>
+
+		</div>
+	</div>
+	<button type="button" ng-click="service.addActionExtraction(entity)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addActionExtraction' | translate}}</button>
+</div>

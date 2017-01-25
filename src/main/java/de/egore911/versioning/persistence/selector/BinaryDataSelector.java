@@ -32,23 +32,23 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import de.egore911.persistence.selector.AbstractSelector;
-import de.egore911.versioning.persistence.model.BinaryData;
+import de.egore911.versioning.persistence.model.BinaryDataEntity;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class BinaryDataSelector extends AbstractSelector<BinaryData> {
+public class BinaryDataSelector extends AbstractSelector<BinaryDataEntity> {
 
 	private static final long serialVersionUID = 2872006201650134090L;
 
 	@Override
-	protected Class<BinaryData> getEntityClass() {
-		return BinaryData.class;
+	protected Class<BinaryDataEntity> getEntityClass() {
+		return BinaryDataEntity.class;
 	}
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<BinaryData> from,
+			Root<BinaryDataEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
 		return new ArrayList<>();
 	}

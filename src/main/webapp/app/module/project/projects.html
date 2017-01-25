@@ -1,0 +1,45 @@
+<h1 class="page-header"><i class="fa fa-barcode"></i>{{'projects' | translate}}</h1>
+
+<div style="text-align: center;" ng-show="vm.is_loading">
+	<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
+	<span class="sr-only" translate="loading"></span>
+</div>
+
+<div ng-hide="vm.is_loading">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            <span ng-click="vm.order('name')" class="sortable" translate="name"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th translate="vcs_host"></th>
+        <th>
+            <span ng-click="vm.order('vcsPath')" class="sortable" translate="vcsPath"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'vcsPath'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th translate="deploy_on"></th>
+        <th translate="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="project in vm.projects | filter: search">
+        <td><a href="#projects/{{project.id}}"><project-name project="project" /></a></td>
+        <td>{{vm.vcs_hosts[project.vcsHostId].name}}</td>
+        <td ng-bind="project.vcsPath"></td>
+        <td><span ng-repeat="serverId in project.configuredServerIds">{{vm.servers[serverId].name}} </span></td>
+        <td><button ng-click="vm.remove(project)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5" style="text-align: center;">
+            <ul uib-pagination total-items="vm.total" items-per-page="vm.pagesize" max-size="vm.maxPages" force-ellipses="true"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="vm.currentPage" ng-change="vm.loadData()" ng-show="vm.total > 0 && vm.total > vm.pagesize"></ul>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>
+</div>

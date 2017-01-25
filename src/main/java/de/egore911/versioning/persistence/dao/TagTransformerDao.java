@@ -22,17 +22,17 @@
 package de.egore911.versioning.persistence.dao;
 
 import de.egore911.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.TagTransformer;
+import de.egore911.versioning.persistence.model.TagTransformerEntity;
 import de.egore911.versioning.persistence.selector.TagTransformerSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class TagTransformerDao extends AbstractDao<TagTransformer> {
+public class TagTransformerDao extends AbstractDao<TagTransformerEntity> {
 
 	@Override
-	protected Class<TagTransformer> getEntityClass() {
-		return TagTransformer.class;
+	protected Class<TagTransformerEntity> getEntityClass() {
+		return TagTransformerEntity.class;
 	}
 
 	@Override
@@ -40,10 +40,10 @@ public class TagTransformerDao extends AbstractDao<TagTransformer> {
 		return new TagTransformerSelector();
 	}
 
-	public TagTransformer findByName(String name) {
-		TagTransformerSelector serverSelector = createSelector();
-		serverSelector.setName(name);
-		return serverSelector.find();
+	public TagTransformerEntity findByName(String name) {
+		return createSelector()
+				.withName(name)
+				.find();
 	}
 
 }

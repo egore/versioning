@@ -1,0 +1,20 @@
+<div>
+	<h2 class="sub-header" translate="checkout"></h2>
+	<div class="panel panel-default" ng-repeat="actionCheckout in entity.actionCheckouts">
+		<div class="panel-heading"><button type="button" ng-click="service.removeActionCheckout(entity, actionCheckout)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'removeActionCheckout' | translate}}</button></div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="control_id_vcs_host" translate="vcs_host"></label>
+				<div class="col-sm-10 label-group-content">
+					{{entity.vcsHost.uri}}{{entity.vcsPath}}
+				</div>
+			</div>
+			<label-group label="{{'targetPath' | translate}}">
+				<p>
+					<input type="text" class="form-control" ng-model="actionCheckout.targetPath" name="targetPath" required />
+				</p>
+			</label-group>
+		</div>
+	</div>
+	<button type="button" ng-click="service.addActionCheckout(entity)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addActionCheckout' | translate}}</button>
+</div>

@@ -21,13 +21,12 @@
  */
 package de.egore911.versioning.ui.logic;
 
-import de.egore911.versioning.persistence.model.MavenArtifact;
-import de.egore911.versioning.persistence.model.MavenRepository;
-import de.egore911.versioning.util.SessionUtil;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import java.util.ResourceBundle;
+
+import de.egore911.appframework.ui.exceptions.BadArgumentException;
+import de.egore911.versioning.persistence.model.MavenArtifactEntity;
+import de.egore911.versioning.persistence.model.MavenRepositoryEntity;
+import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -37,12 +36,11 @@ public final class MavenrepositoryUtil {
 	private MavenrepositoryUtil() {
 	}
 
-	public static boolean isDeletable(MavenRepository mavenRepository) {
+	public static void checkDeletable(MavenRepositoryEntity mavenRepository) {
 		if (!mavenRepository.getMavenArtifacts().isEmpty()) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ResourceBundle bundle = SessionUtil.getBundle();
 			StringBuilder projectNames = new StringBuilder();
-			for (MavenArtifact mavenArtifact : mavenRepository.getMavenArtifacts()) {
+			for (MavenArtifactEntity mavenArtifact : mavenRepository.getMavenArtifacts()) {
 				if (projectNames.length() > 0) {
 					projectNames.append(", ");
 				}
@@ -50,14 +48,8 @@ public final class MavenrepositoryUtil {
 				projectNames.append(':');
 				projectNames.append(mavenArtifact.getArtifactId());
 			}
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR,
-					bundle.getString("mavenrepository_delete_not_possible_used_by_artifacts"),
-					projectNames.toString());
-			facesContext.addMessage("main:table", message);
-			return false;
+			throw new BadArgumentException(bundle.getString("mavenrepository_delete_not_possible_used_by_artifacts") + ": (" + projectNames.toString() + ")");
 		}
-		return true;
 	}
 
 }

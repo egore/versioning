@@ -25,12 +25,15 @@ package de.egore911.versioning.persistence.model;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public enum Permission {
+	/** Users, Roles */
+	SHOW_USERS,
+	ADMIN_USERS,
+	SHOW_ROLES,
+	ADMIN_ROLES,
 	/** VCS Hosts, Projects, and Servers */
 	ADMIN_SETTINGS,
-	/** Users, Roles */
-	ADMIN_USERS,
 	/** Create versions */
 	CREATE_VERSIONS,
 	/** Create versions */
-	DEPLOY,
+	DEPLOY
 }

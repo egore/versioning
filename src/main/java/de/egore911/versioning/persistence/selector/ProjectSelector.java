@@ -21,7 +21,6 @@
  */
 package de.egore911.versioning.persistence.selector;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,41 +32,41 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import de.egore911.persistence.selector.AbstractSelector;
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Project_;
-import de.egore911.versioning.persistence.model.Server;
+import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ProjectEntity_;
+import de.egore911.versioning.persistence.model.ServerEntity;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class ProjectSelector extends AbstractSelector<Project> {
+public class ProjectSelector extends AbstractResourceSelector<ProjectEntity> {
 
 	private static final long serialVersionUID = 6585242967556404330L;
 
-	private Server configuredForServer;
+	private ServerEntity configuredForServer;
 
 	private Boolean excludeDeleted;
 
 	@Override
-	protected Class<Project> getEntityClass() {
-		return Project.class;
+	protected Class<ProjectEntity> getEntityClass() {
+		return ProjectEntity.class;
 	}
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<Project> from,
+			Root<ProjectEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (configuredForServer != null) {
-			ListJoin<Project, Server> fromServer = from
-					.join(Project_.configuredServers);
+			ListJoin<ProjectEntity, ServerEntity> fromServer = from
+					.join(ProjectEntity_.configuredServers);
 			predicates.add(fromServer.in(configuredForServer));
 		}
 
 		if (Boolean.TRUE.equals(excludeDeleted)) {
-			predicates.add(builder.notEqual(from.get(Project_.deleted), Boolean.TRUE));
+			predicates.add(builder.notEqual(from.get(ProjectEntity_.deleted), Boolean.TRUE));
 		}
 
 		return predicates;
@@ -75,19 +74,16 @@ public class ProjectSelector extends AbstractSelector<Project> {
 
 	@Override
 	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
-			Root<Project> from) {
-		return Collections.singletonList(builder.asc(from.get(Project_.name)));
+			Root<ProjectEntity> from) {
+		return Collections.singletonList(builder.asc(from.get(ProjectEntity_.name)));
 	}
 
-	public Server getConfiguredForServer() {
-		return configuredForServer;
-	}
-
-	public void setConfiguredForServer(Server configuredForServer) {
+	public ProjectSelector withConfiguredForServer(ServerEntity configuredForServer) {
 		this.configuredForServer = configuredForServer;
+		return this;
 	}
 
-	public ProjectSelector setExcludeDeleted(Boolean excludeDeleted) {
+	public ProjectSelector withExcludeDeleted(Boolean excludeDeleted) {
 		this.excludeDeleted = excludeDeleted;
 		return this;
 	}

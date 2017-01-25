@@ -1,0 +1,79 @@
+<div>
+	<h2 class="sub-header" translate="replacements"></h2>
+	<div class="panel panel-default" ng-repeat="actionReplacement in entity.actionReplacements">
+		<div class="panel-heading"><button type="button" ng-click="service.removeActionReplacement(entity, actionReplacement)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'removeActionReplacement' | translate}}</button></div>
+		<div class="panel-body">
+			<div class="panel panel-default">
+				<div class="panel-heading" translate="wildcards"></div>
+				<div class="panel-body">
+					<div ng-repeat="wildcard in actionReplacement.wildcards track by $index">
+						<div class="form-group">
+							<label class="col-sm-2 control-label" style="height: 34px;">{{'searchPattern' | translate}}</label>
+							<div class="col-sm-9 label-group-content">
+								<input type="text" class="form-control" ng-model="actionReplacement.wildcards[$index]" required />
+							</div>
+							<div class="col-sm-1">
+								<button type="button" ng-click="service.removeWildcard(actionReplacement, wildcard)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-10">
+							<button type="button" ng-click="service.addWildcard(actionReplacement)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addWildcard' | translate}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" translate="replacement_pairs"></div>
+				<div class="panel-body">
+					<div ng-repeat="replacement in actionReplacement.replacements">
+						<div class="form-group">
+							<label class="col-sm-2 control-label" style="height: 34px;">{{'name' | translate}}</label>
+							<div class="col-sm-4 label-group-content">
+								<input type="text" class="form-control" ng-model="replacement.variable" required />
+							</div>
+							<label class="col-sm-1 control-label" style="height: 34px;">{{'value' | translate}}</label>
+							<div class="col-sm-4 label-group-content">
+								<input type="text" class="form-control" ng-model="replacement.value" required />
+							</div>
+							<div class="col-sm-1">
+								<button type="button" ng-click="service.removeReplacement(actionReplacement, replacement)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-10">
+							<button type="button" ng-click="service.addReplacement(actionReplacement)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addReplacement' | translate}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading" translate="replacement_pair_files"></div>
+				<div class="panel-body">
+					<div ng-repeat="replacementfile in actionReplacement.replacementfiles track by $index">
+						<div class="form-group">
+							<label class="col-sm-2 control-label" style="height: 34px;">{{'searchPattern' | translate}}</label>
+							<div class="col-sm-9 label-group-content">
+								<input type="text" class="form-control" ng-model="actionReplacement.replacementfiles[$index]" required />
+							</div>
+							<div class="col-sm-1">
+								<button type="button" ng-click="service.removeReplacementfile(actionReplacement, replacementfile)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-10">
+							<button type="button" ng-click="service.addReplacementfile(actionReplacement)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addReplacementFile' | translate}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button type="button" ng-click="service.addActionReplacement(entity)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addActionReplacement' | translate}}</button>
+</div>

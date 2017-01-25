@@ -22,17 +22,17 @@
 package de.egore911.versioning.persistence.dao;
 
 import de.egore911.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.BinaryData;
+import de.egore911.versioning.persistence.model.BinaryDataEntity;
 import de.egore911.versioning.persistence.selector.BinaryDataSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class BinaryDataDao extends AbstractDao<BinaryData> {
+public class BinaryDataDao extends AbstractDao<BinaryDataEntity> {
 
 	@Override
-	protected Class<BinaryData> getEntityClass() {
-		return BinaryData.class;
+	protected Class<BinaryDataEntity> getEntityClass() {
+		return BinaryDataEntity.class;
 	}
 
 	@Override

@@ -1,0 +1,34 @@
+<h1 class="page-header"><i class="fa fa-exchange"></i>{{!vm.tag_transformer.name ? '&nbsp;' : vm.tag_transformer.name}}</h1>
+
+<form class="form-horizontal" name="form">
+	<label-group label="{{'name' | translate}}" ng-class="{'has-error': form.name.$touched && form.name.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.tag_transformer.name" name="name" required />
+		</p>
+	</label-group>
+	<label-group label="{{'searchPattern' | translate}}" ng-class="{'has-error': form.searchPattern.$touched && form.searchPattern.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.tag_transformer.searchPattern" name="searchPattern" required />
+		</p>
+	</label-group>
+	<label-group label="{{'replacementPattern' | translate}}" ng-class="{'has-error': form.replacementPattern.$touched && form.replacementPattern.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.tag_transformer.replacementPattern" name="replacementPattern" required />
+		</p>
+	</label-group>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
+</form>
+
+<h2 class="sub-header" translate="interactive_test"></h1>
+
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="interactive_test" translate="interactive_test"></label>
+	<div class="col-sm-5 label-group-content">
+		<p>
+			<input id="interactive_test" type="text" class="form-control" ng-model="vm.testInput" name="interactive_test" ng-change="vm.performTest()"/>
+		</p>
+	</div>
+	<div class="col-sm-5 label-group-content">
+		<p ng-bind="vm.testOutput"></p>
+	</div>
+</div>

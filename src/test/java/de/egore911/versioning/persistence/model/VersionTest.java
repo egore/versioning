@@ -31,12 +31,12 @@ public class VersionTest {
 
 	@Test
 	public void testIsNewerThan2Dots() {
-		Project project = new Project();
-		Version version = new Version();
+		ProjectEntity project = new ProjectEntity();
+		VersionEntity version = new VersionEntity();
 		version.setProject(project);
 		version.setVcsTag("1.0.0");
 
-		Version other = new Version();
+		VersionEntity other = new VersionEntity();
 		other.setProject(project);
 
 		// 1.0.0 is newer than 0.9.9
@@ -63,12 +63,12 @@ public class VersionTest {
 
 	@Test
 	public void testIsNewerThan1Dot() {
-		Project project = new Project();
-		Version version = new Version();
+		ProjectEntity project = new ProjectEntity();
+		VersionEntity version = new VersionEntity();
 		version.setProject(project);
 		version.setVcsTag("1.0");
 
-		Version other = new Version();
+		VersionEntity other = new VersionEntity();
 		other.setProject(project);
 
 		// 1.0 is newer than 0.9.9

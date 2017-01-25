@@ -21,7 +21,7 @@
  */
 package de.egore911.versioning.persistence.selector;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,95 +31,93 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.joda.time.LocalDateTime;
-
-import de.egore911.persistence.selector.AbstractSelector;
-import de.egore911.versioning.persistence.model.Deployment;
-import de.egore911.versioning.persistence.model.Deployment_;
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Project_;
-import de.egore911.versioning.persistence.model.Server;
-import de.egore911.versioning.persistence.model.Version;
-import de.egore911.versioning.persistence.model.Version_;
+import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
+import de.egore911.versioning.persistence.model.DeploymentEntity;
+import de.egore911.versioning.persistence.model.DeploymentEntity_;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ProjectEntity_;
+import de.egore911.versioning.persistence.model.ServerEntity;
+import de.egore911.versioning.persistence.model.VersionEntity;
+import de.egore911.versioning.persistence.model.VersionEntity_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class DeploymentSelector extends AbstractSelector<Deployment> {
+public class DeploymentSelector extends AbstractResourceSelector<DeploymentEntity> {
 
 	private static final long serialVersionUID = 84030583640758463L;
 
-	private Server deployedOn;
+	private ServerEntity deployedOn;
 	private LocalDateTime deployedAfter;
 	private LocalDateTime undeployedAfter;
 	private Boolean isUneployed;
-	private Project project;
+	private ProjectEntity project;
 	private Boolean excludeDeleted;
 
 	@Override
-	protected Class<Deployment> getEntityClass() {
-		return Deployment.class;
+	protected Class<DeploymentEntity> getEntityClass() {
+		return DeploymentEntity.class;
 	}
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<Deployment> from,
+			Root<DeploymentEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (deployedOn != null) {
-			predicates.add(builder.equal(from.get(Deployment_.server),
+			predicates.add(builder.equal(from.get(DeploymentEntity_.server),
 					deployedOn));
 		}
 
 		if (deployedAfter != null) {
 			predicates.add(builder.or(
-					builder.isNull(from.get(Deployment_.deployment)),
+					builder.isNull(from.get(DeploymentEntity_.deployment)),
 					builder.greaterThanOrEqualTo(
-							from.get(Deployment_.deployment), deployedAfter)));
+							from.get(DeploymentEntity_.deployment), deployedAfter)));
 		}
 
 		if (undeployedAfter != null) {
 			predicates.add(builder.or(builder.isNull(from
-					.get(Deployment_.undeployment)), builder
-					.greaterThanOrEqualTo(from.get(Deployment_.undeployment),
+					.get(DeploymentEntity_.undeployment)), builder
+					.greaterThanOrEqualTo(from.get(DeploymentEntity_.undeployment),
 							undeployedAfter)));
 		}
 
 		if (isUneployed != null) {
 			if (isUneployed) {
 				predicates.add(builder.isNotNull(from
-						.get(Deployment_.undeployment)));
+						.get(DeploymentEntity_.undeployment)));
 			} else {
 				predicates.add(builder.isNull(from
-						.get(Deployment_.undeployment)));
+						.get(DeploymentEntity_.undeployment)));
 			}
 		}
 
 		if (Boolean.TRUE.equals(excludeDeleted)) {
-			Join<Deployment, Version> fromVersion = from
-					.join(Deployment_.version);
-			Join<Version,Project> fromProject = fromVersion
-					.join(Version_.project);
-			predicates.add(builder.equal(fromProject.get(Project_.deleted),
+			Join<DeploymentEntity, VersionEntity> fromVersion = from
+					.join(DeploymentEntity_.version);
+			Join<VersionEntity,ProjectEntity> fromProject = fromVersion
+					.join(VersionEntity_.project);
+			predicates.add(builder.equal(fromProject.get(ProjectEntity_.deleted),
 					Boolean.FALSE));
 		}
 
 		if (project != null) {
-			Join<Deployment, Version> fromVersion = from
-					.join(Deployment_.version);
-			predicates.add(builder.equal(fromVersion.get(Version_.project),
+			Join<DeploymentEntity, VersionEntity> fromVersion = from
+					.join(DeploymentEntity_.version);
+			predicates.add(builder.equal(fromVersion.get(VersionEntity_.project),
 					project));
 		}
 
 		return predicates;
 	}
 
-	public Server getDeployedOn() {
+	public ServerEntity getDeployedOn() {
 		return deployedOn;
 	}
 
-	public void setDeployedOn(Server deployedOn) {
+	public void setDeployedOn(ServerEntity deployedOn) {
 		this.deployedOn = deployedOn;
 	}
 
@@ -131,11 +129,11 @@ public class DeploymentSelector extends AbstractSelector<Deployment> {
 		isUneployed = uneployed;
 	}
 
-	public Project getProject() {
+	public ProjectEntity getProject() {
 		return project;
 	}
 
-	public void setProject(Project project) {
+	public void setProject(ProjectEntity project) {
 		this.project = project;
 	}
 

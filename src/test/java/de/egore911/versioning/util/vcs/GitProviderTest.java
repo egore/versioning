@@ -25,9 +25,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.Vcs;
-import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.VcsHostEntity;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -37,28 +37,28 @@ public class GitProviderTest {
 	@Test
 	@Ignore
 	public void testTagExistsSsh() {
-		VcsHost vcsHost = new VcsHost();
+		VcsHostEntity vcsHost = new VcsHostEntity();
 		vcsHost.setVcs(Vcs.git);
 		vcsHost.setUri("git@github.com:");
-		Project project = new Project();
+		ProjectEntity project = new ProjectEntity();
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("egore/dri-log-client.git");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists(project, "dri-log-0.5.0"));
-		Assert.assertFalse(provider.tagExists(project, "dri-log-1234"));
+		Assert.assertTrue(provider.tagExists("dri-log-0.5.0"));
+		Assert.assertFalse(provider.tagExists("dri-log-1234"));
 	}
 
 	@Test
 	public void testTagExistsHttps() {
-		VcsHost vcsHost = new VcsHost();
+		VcsHostEntity vcsHost = new VcsHostEntity();
 		vcsHost.setVcs(Vcs.git);
 		vcsHost.setUri("https://github.com/");
-		Project project = new Project();
+		ProjectEntity project = new ProjectEntity();
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("egore/dri-log-client.git");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists(project, "dri-log-0.5.0"));
-		Assert.assertFalse(provider.tagExists(project, "dri-log-1234"));
+		Assert.assertTrue(provider.tagExists("dri-log-0.5.0"));
+		Assert.assertFalse(provider.tagExists("dri-log-1234"));
 	}
 
 }

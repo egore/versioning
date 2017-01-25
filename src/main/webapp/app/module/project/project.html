@@ -1,0 +1,61 @@
+<h1 class="page-header"><i class="fa fa-barcode"></i>{{!vm.project.name ? '&nbsp;' : vm.project.name}}</h1>
+
+<form class="form-horizontal" name="form">
+	<label-group label="{{'name' | translate}}" ng-class="{'has-error': form.name.$touched && form.name.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.project.name" name="name" required />
+		</p>
+	</label-group>
+	<label-group label="{{'description' | translate}}" ng-class="{'has-error': form.description.$touched && form.description.$error.required}">
+		<p>
+			<textarea class="form-control" ng-model="vm.project.description" name="description"></textarea>
+		</p>
+	</label-group>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="control_id_vcs_host" translate="vcs_host"></label>
+		<div class="col-sm-10 label-group-content">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{vm.vcs_hosts_lookup[vm.project.vcsHostId].name}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li ng-repeat="vcs_host in vm.vcs_hosts | orderBy: 'start':true"><a href ng-click="vm.project.vcsHostId = vcs_host.id">{{vcs_host.name}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<label-group label="{{'vcsPath' | translate}}" ng-class="{'has-error': form.vcsPath.$touched && form.vcsPath.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.project.vcsPath" name="vcsPath" />
+		</p>
+	</label-group>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="control_id_tag_transformer" translate="tag_transformer"></label>
+		<div class="col-sm-10 label-group-content">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{vm.project.tagTransformerId != undefined ? vm.tag_transformers_lookup[vm.project.tagTransformerId].name : ('no_tag_transformer' | translate)}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href ng-click="vm.project.tagTransformerId = undefined" translate="no_tag_transformer"></a></li>
+					<li role="separator" class="divider"></li>
+					<li ng-repeat="tag_transformer in vm.tag_transformers | orderBy: 'start':true"><a href ng-click="vm.project.tagTransformerId = tag_transformer.id">{{tag_transformer.name}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<label-group label="{{'deploy_on' | translate}}">
+		<table class="table table-striped">
+			<tr ng-repeat="server in vm.servers | orderBy: 'name'" ng-class="{selected: vm.isSelectedServer(server.id)}">
+				<td class="col-sm-6 sortable" ng-bind="server.name" ng-click="vm.toggleSelectionServer(server.id)"></td>
+			</tr>
+		</table>
+	</label-group>
+
+	<action-copy entity="vm.project" maven_repository_lookup="vm.maven_repository_lookup" maven_repositories="vm.maven_repositories"/>
+	<action-extraction entity="vm.project" maven_repository_lookup="vm.maven_repository_lookup" maven_repositories="vm.maven_repositories"/>
+	<action-checkout entity="vm.project" />
+	<action-replacement entity="vm.project" />
+
+	<button type="submit" ng-click="vm.save()" class="btn btn-default" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
+</form>

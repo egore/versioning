@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.model.VersionEntity;
 
 /**
  * Utility containing helper methods regarding versions.
@@ -45,12 +45,12 @@ public class VersionUtil {
 	 *            the list of versions
 	 * @return the latest version in the given list
 	 */
-	public static Version getLatestVersion(List<Version> versions) {
+	public static VersionEntity getLatestVersion(List<VersionEntity> versions) {
 		if (CollectionUtils.isEmpty(versions)) {
 			return null;
 		}
-		Version latest = versions.get(0);
-		for (Version v : versions) {
+		VersionEntity latest = versions.get(0);
+		for (VersionEntity v : versions) {
 			if (v.isNewerThan(latest)) {
 				latest = v;
 			}

@@ -21,27 +21,26 @@
  */
 package de.egore911.versioning.persistence.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import org.joda.time.LocalDateTime;
-
 import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.persistence.util.EntityManagerUtil;
-import de.egore911.versioning.persistence.model.Deployment;
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.DeploymentEntity;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.selector.DeploymentSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class DeploymentDao extends AbstractDao<Deployment> {
+public class DeploymentDao extends AbstractDao<DeploymentEntity> {
 
 	@Override
-	protected Class<Deployment> getEntityClass() {
-		return Deployment.class;
+	protected Class<DeploymentEntity> getEntityClass() {
+		return DeploymentEntity.class;
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		return new DeploymentSelector();
 	}
 
-	public List<Deployment> getCurrentDeployments(Server server) {
+	public List<DeploymentEntity> getCurrentDeployments(ServerEntity server) {
 		DeploymentSelector deploymentSelector = createSelector();
 		deploymentSelector.setDeployedOn(server);
 		deploymentSelector.setUneployed(Boolean.FALSE);
@@ -57,7 +56,7 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		return deploymentSelector.findAll();
 	}
 
-	public List<Deployment> getAllDeployments(Server server, LocalDateTime maxAge) {
+	public List<DeploymentEntity> getAllDeployments(ServerEntity server, LocalDateTime maxAge) {
 		DeploymentSelector deploymentSelector = createSelector();
 		deploymentSelector.setDeployedOn(server);
 		deploymentSelector.withDeployedAfter(maxAge);
@@ -65,7 +64,7 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		return deploymentSelector.findAll();
 	}
 
-	public Deployment getCurrentDeployment(Server server, Project project) {
+	public DeploymentEntity getCurrentDeployment(ServerEntity server, ProjectEntity project) {
 		DeploymentSelector deploymentSelector = createSelector();
 		deploymentSelector.setDeployedOn(server);
 		deploymentSelector.setProject(project);
@@ -73,7 +72,7 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 		return deploymentSelector.find();
 	}
 
-	public void replace(Deployment currentDeployment, Deployment newDeployment) {
+	public void replace(DeploymentEntity currentDeployment, DeploymentEntity newDeployment) {
 		EntityManager em = EntityManagerUtil.getEntityManager();
 		boolean ourOwnTransaction = !em.getTransaction().isActive();
 		if (ourOwnTransaction) {
@@ -93,6 +92,10 @@ public class DeploymentDao extends AbstractDao<Deployment> {
 				em.getTransaction().rollback();
 			}
 		}
+	}
+
+	public List<DeploymentEntity> findByIds(List<Integer> ids) {
+		return createSelector().withIds(ids).findAll();
 	}
 
 }

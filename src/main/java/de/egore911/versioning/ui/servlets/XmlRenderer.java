@@ -1,15 +1,19 @@
 package de.egore911.versioning.ui.servlets;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
 public class XmlRenderer extends Renderer {
 
+	private final HttpServletRequest req;
+
+	public XmlRenderer(HttpServletRequest req) {
+		this.req = req;
+	}
+
 	@Override
-	protected void renderHeader(StringBuilder builder, HttpServletRequest req, HttpServletResponse resp) {
-		resp.setContentType("application/xml;charset=UTF-8");
+	protected void renderHeader(StringBuilder builder) {
 		builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		builder.append("<server xmlns=\"http://versioning.egore911.de/server/1.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://versioning.egore911.de/server/1.0 ");
 		builder.append(req.getScheme());

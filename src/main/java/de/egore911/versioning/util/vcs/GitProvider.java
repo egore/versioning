@@ -27,9 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import org.eclipse.jgit.api.LsRemoteCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.dfs.DfsRepositoryDescription;
@@ -42,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jcraft.jsch.JSch;
 
-import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.ProjectEntity;
 
 /**
  * Git based information provider, based on jgit.
@@ -59,9 +56,13 @@ public class GitProvider extends Provider {
 		JSch.setLogger(new JschToSlf4j());
 	}
 
+	public GitProvider(ProjectEntity project) {
+		super(project);
+	}
+
 	@Override
-	public boolean tagExistsImpl(Project project, String tagName) {
-		InMemoryRepository repo = initRepository(project);
+	public boolean tagExistsImpl(String tagName) {
+		InMemoryRepository repo = initRepository();
 
 		// Ask for the remote tags
 		LsRemoteCommand command = new LsRemoteCommand(repo);
@@ -77,19 +78,12 @@ public class GitProvider extends Provider {
 			// Tag not found
 			return false;
 		} catch (GitAPIException e) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			if (facesContext != null) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
-						e.getLocalizedMessage());
-				facesContext.addMessage("main", message);
-			}
 			log.error(e.getMessage(), e);
 			return false;
 		}
 	}
 
-	private InMemoryRepository initRepository(Project project) {
+	private InMemoryRepository initRepository() {
 		DfsRepositoryDescription repoDesc = new DfsRepositoryDescription(
 				"git - " + project.getName() + " on "
 						+ project.getVcsHost().getName());
@@ -116,8 +110,8 @@ public class GitProvider extends Provider {
 	}
 
 	@Override
-	protected List<Tag> getTagsImpl(Project project) {
-		InMemoryRepository repo = initRepository(project);
+	protected List<Tag> getTagsImpl() {
+		InMemoryRepository repo = initRepository();
 		List<Tag> result = new ArrayList<>();
 
 		// Ask for the remote tags
@@ -130,13 +124,6 @@ public class GitProvider extends Provider {
 					.collect(Collectors.toList()));
 			return result;
 		} catch (GitAPIException e) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			if (facesContext != null) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
-						e.getLocalizedMessage());
-				facesContext.addMessage("main", message);
-			}
 			log.error(e.getMessage(), e);
 			return Collections.emptyList();
 		}

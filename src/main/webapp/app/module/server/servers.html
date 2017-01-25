@@ -1,0 +1,34 @@
+<h1 class="page-header"><i class="fa fa-server"></i> {{'servers' | translate}}</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            <span ng-click="vm.order('name')" class="sortable" translate="name"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('description')" class="sortable" translate="description"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'description'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('targetdir')" class="sortable" translate="targetdir"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'targetdir'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th translate="variables"></th>
+        <th translate="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="server in vm.servers | filter: search | orderBy: vm.predicate: vm.reverse">
+        <td><a href="#servers/{{server.id}}" ng-bind="server.name"></a></td>
+        <td ng-bind="server.description"></td>
+        <td ng-bind="server.targetdir"></td>
+        <td>
+            <span ng-repeat="variable in server.variables">{{variable.name}}: {{variable.value}}</span>
+        </td>
+        <td><button ng-click="vm.remove(server)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button></td>
+    </tr>
+    </tbody>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>

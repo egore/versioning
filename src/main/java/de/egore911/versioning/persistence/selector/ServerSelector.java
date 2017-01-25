@@ -21,7 +21,6 @@
  */
 package de.egore911.versioning.persistence.selector;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,44 +33,51 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.egore911.persistence.selector.AbstractSelector;
-import de.egore911.versioning.persistence.model.Server;
-import de.egore911.versioning.persistence.model.Server_;
+import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
+import de.egore911.persistence.dao.AbstractDao;
+import de.egore911.versioning.persistence.model.BinaryDataEntity;
+import de.egore911.versioning.persistence.model.ServerEntity;
+import de.egore911.versioning.persistence.model.ServerEntity_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class ServerSelector extends AbstractSelector<Server> {
+public class ServerSelector extends AbstractResourceSelector<ServerEntity> {
 
 	private static final long serialVersionUID = 4957078336902492971L;
 
 	private String name;
 	private String nameLike;
 	private String descriptionLike;
+	private Integer iconId;
 
 	@Override
-	protected Class<Server> getEntityClass() {
-		return Server.class;
+	protected Class<ServerEntity> getEntityClass() {
+		return ServerEntity.class;
 	}
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<Server> from,
+			Root<ServerEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (StringUtils.isNotEmpty(name)) {
-			predicates.add(builder.equal(from.get(Server_.name), name));
+			predicates.add(builder.equal(from.get(ServerEntity_.name), name));
 		}
 
 		if (StringUtils.isNotEmpty(nameLike)) {
-			predicates.add(builder.like(from.get(Server_.name), "%" + nameLike
+			predicates.add(builder.like(from.get(ServerEntity_.name), "%" + nameLike
 					+ "%"));
 		}
 
 		if (StringUtils.isNotEmpty(descriptionLike)) {
-			predicates.add(builder.like(from.get(Server_.description), "%"
+			predicates.add(builder.like(from.get(ServerEntity_.description), "%"
 					+ descriptionLike + "%"));
+		}
+		
+		if (iconId != null) {
+			predicates.add(builder.equal(from.get(ServerEntity_.iconId), iconId));
 		}
 
 		return predicates;
@@ -79,32 +85,30 @@ public class ServerSelector extends AbstractSelector<Server> {
 
 	@Override
 	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
-			Root<Server> from) {
-		return Collections.singletonList(builder.asc(from.get(Server_.name)));
+			Root<ServerEntity> from) {
+		return Collections.singletonList(builder.asc(from.get(ServerEntity_.name)));
 	}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
+	public ServerSelector withName(String name) {
 		this.name = name;
+		return this;
 	}
 
-	public String getNameLike() {
-		return nameLike;
-	}
 
-	public void setNameLike(String nameLike) {
+	public ServerSelector withNameLike(String nameLike) {
 		this.nameLike = nameLike;
+		return this;
 	}
 
-	public String getDescriptionLike() {
-		return descriptionLike;
-	}
-
-	public void setDescriptionLike(String descriptionLike) {
+	public ServerSelector withDescriptionLike(String descriptionLike) {
 		this.descriptionLike = descriptionLike;
+		return this;
+	}
+
+	public ServerSelector withIconId(Integer iconId) {
+		this.iconId = iconId;
+		return this;
 	}
 
 }

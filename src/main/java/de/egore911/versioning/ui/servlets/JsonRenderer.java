@@ -1,17 +1,12 @@
 package de.egore911.versioning.ui.servlets;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 public class JsonRenderer extends Renderer {
 
 	private boolean nextRequiresComma = false;
 	private boolean nextRequiresNewline = false;
 
 	@Override
-	protected void renderHeader(StringBuilder builder, HttpServletRequest req,
-			HttpServletResponse resp) {
-		resp.setContentType("application/json;charset=UTF-8");
+	protected void renderHeader(StringBuilder builder) {
 		builder.append("{\n");
 	}
 

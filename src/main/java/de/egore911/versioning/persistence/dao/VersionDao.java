@@ -22,18 +22,18 @@
 package de.egore911.versioning.persistence.dao;
 
 import de.egore911.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.persistence.selector.VersionSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class VersionDao extends AbstractDao<Version> {
+public class VersionDao extends AbstractDao<VersionEntity> {
 
 	@Override
-	protected Class<Version> getEntityClass() {
-		return Version.class;
+	protected Class<VersionEntity> getEntityClass() {
+		return VersionEntity.class;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class VersionDao extends AbstractDao<Version> {
 		return new VersionSelector();
 	}
 
-	public boolean tagExists(Project project, String vcsTag) {
+	public boolean tagExists(ProjectEntity project, String vcsTag) {
 		VersionSelector versionSelector = new VersionSelector();
 		versionSelector.setProject(project);
 		versionSelector.setVcsTag(vcsTag);

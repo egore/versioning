@@ -1,0 +1,32 @@
+<h1 class="page-header"><i class="fa fa-code-fork"></i>{{'vcs_hosts' | translate}}</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            <span ng-click="vm.order('name')" class="sortable" translate="name"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('vcs')" class="sortable" translate="vcs_type"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'vcs'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('uri')" class="sortable" translate="uri"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'uri'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th translate="credentials_provided"></th>
+        <th class="col-sm-1" translate="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="vcs_host in vm.vcs_hosts | filter: search | orderBy:vm.predicate:vm.reverse">
+        <td><a href="#vcs_hosts/{{vcs_host.id}}" ng-bind="vcs_host.name"></a></td>
+        <td ng-bind="vcs_host.vcs"></td>
+        <td ng-bind="vcs_host.uri"></td>
+        <td><i class="fa fa-check" ng-if="vcs_host.username != undefined && vcs_host.username.length > 0"></i></td>
+        <td><button ng-click="vm.remove(vcs_host)" class="btn btn-danger" ng-disabled="vcs_host.projectIds.length > 0"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button></td>
+    </tr>
+    </tbody>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>

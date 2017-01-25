@@ -21,23 +21,27 @@
  */
 package de.egore911.versioning.persistence.dao;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import de.egore911.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.selector.ProjectSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class ProjectDao extends AbstractDao<Project> {
+public class ProjectDao extends AbstractDao<ProjectEntity> {
 
 	@Override
-	protected Class<Project> getEntityClass() {
-		return Project.class;
+	protected Class<ProjectEntity> getEntityClass() {
+		return ProjectEntity.class;
 	}
 
 	@Override
@@ -45,19 +49,30 @@ public class ProjectDao extends AbstractDao<Project> {
 		return new ProjectSelector();
 	}
 
-	public List<Project> getConfiguredProjects(Server server) {
-		ProjectSelector projectSelector = createSelector();
-		projectSelector.setConfiguredForServer(server);
-		return projectSelector.findAll();
+	public List<ProjectEntity> getConfiguredProjects(ServerEntity server) {
+		return createSelector()
+				.withConfiguredForServer(server)
+				.findAll();
 	}
 
-	public void delete(@Nonnull Project project) {
+	public void delete(@Nonnull ProjectEntity project) {
 		project.setDeleted(true);
 		save(project);
 	}
 
-	public List<Project> findAllNonDeleted() {
-		return createSelector().setExcludeDeleted(Boolean.TRUE).findAll();
+	public List<ProjectEntity> findAllNonDeleted() {
+		return createSelector()
+				.withExcludeDeleted(Boolean.TRUE)
+				.findAll();
+	}
+
+	public List<ProjectEntity> findByIds(Collection<Integer> ids) {
+		if (CollectionUtils.isEmpty(ids)) {
+			return Collections.emptyList();
+		}
+		return createSelector()
+				.withIds(ids)
+				.findAll();
 	}
 
 }

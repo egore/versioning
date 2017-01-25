@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.egore911.versioning.persistence.dao.VersionDao;
-import de.egore911.versioning.persistence.model.Project;
+import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.util.VersionUtil;
 
 /**
@@ -47,7 +47,13 @@ import de.egore911.versioning.util.VersionUtil;
 public abstract class Provider {
 
 	private static final Logger log = LoggerFactory.getLogger(Provider.class);
+	
+	protected final ProjectEntity project;
 
+	protected Provider(ProjectEntity project) {
+		this.project = project;
+	}
+	
 	/**
 	 * Checks if a given tag exists. If this will take more than 10 seconds, it
 	 * will be aborted and the tag is reported not to exist.
@@ -58,9 +64,9 @@ public abstract class Provider {
 	 *            the name of the tag
 	 * @return <code>true</code>, if the tag exists
 	 */
-	public boolean tagExists(final Project project, final String tagName) {
+	public boolean tagExists(final String tagName) {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
-		Future<Boolean> future = executor.submit(() -> tagExistsImpl(project, tagName));
+		Future<Boolean> future = executor.submit(() -> tagExistsImpl(tagName));
 		try {
 			return future.get(10, TimeUnit.SECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -80,11 +86,11 @@ public abstract class Provider {
 	 *            the name of the tag
 	 * @return <code>true</code>, if the tag exists
 	 */
-	protected abstract boolean tagExistsImpl(Project project, String tagName);
+	protected abstract boolean tagExistsImpl(String tagName);
 
-	public List<Tag> getTags(final Project project) {
+	public List<Tag> getTags() {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
-		Future<List<Tag>> future = executor.submit(() -> getTagsImpl(project));
+		Future<List<Tag>> future = executor.submit(() -> getTagsImpl());
 		try {
 			List<Tag> tags = future.get(10, TimeUnit.SECONDS);
 			Collections.sort(tags);
@@ -103,7 +109,7 @@ public abstract class Provider {
 		}
 	}
 
-	protected abstract List<Tag> getTagsImpl(Project project);
+	protected abstract List<Tag> getTagsImpl();
 
 	public static class Tag implements Serializable, Comparable<Tag> {
 

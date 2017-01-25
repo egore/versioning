@@ -21,7 +21,6 @@
  */
 package de.egore911.versioning.persistence.selector;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,51 +34,56 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.egore911.persistence.selector.AbstractSelector;
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Project_;
-import de.egore911.versioning.persistence.model.Version;
-import de.egore911.versioning.persistence.model.Version_;
+import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ProjectEntity_;
+import de.egore911.versioning.persistence.model.VersionEntity;
+import de.egore911.versioning.persistence.model.VersionEntity_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class VersionSelector extends AbstractSelector<Version> {
+public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 
 	private static final long serialVersionUID = -2047907469123340003L;
 
-	private Project project;
+	private ProjectEntity project;
 	private String vcsTag;
 	private String projectNameLike;
 	private String vcsTagLike;
+	
+	public VersionSelector() {
+		withSortColumn("created");
+		withAscending(false);
+	}
 
 	@Override
-	protected Class<Version> getEntityClass() {
-		return Version.class;
+	protected Class<VersionEntity> getEntityClass() {
+		return VersionEntity.class;
 	}
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<Version> from,
+			Root<VersionEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (project != null) {
-			predicates.add(builder.equal(from.get(Version_.project), project));
+			predicates.add(builder.equal(from.get(VersionEntity_.project), project));
 		}
 
 		if (vcsTag != null) {
-			predicates.add(builder.equal(from.get(Version_.vcsTag), vcsTag));
+			predicates.add(builder.equal(from.get(VersionEntity_.vcsTag), vcsTag));
 		}
 
 		if (StringUtils.isNotEmpty(projectNameLike)) {
 			predicates.add(builder.like(
-					from.get(Version_.project).get(Project_.name), "%"
+					from.get(VersionEntity_.project).get(ProjectEntity_.name), "%"
 							+ projectNameLike + "%"));
 		}
 
 		if (StringUtils.isNotEmpty(vcsTagLike)) {
-			predicates.add(builder.like(from.get(Version_.vcsTag), "%"
+			predicates.add(builder.like(from.get(VersionEntity_.vcsTag), "%"
 					+ vcsTagLike + "%"));
 		}
 
@@ -88,21 +92,20 @@ public class VersionSelector extends AbstractSelector<Version> {
 
 	@Override
 	protected List<Order> generateOrderList(CriteriaBuilder builder,
-			Root<Version> from) {
-		String sortColumn = getSortColumn();
+			Root<VersionEntity> from) {
 		if (StringUtils.isNotEmpty(sortColumn)) {
 			if ("projectname".equals(sortColumn)) {
-				if (!Boolean.FALSE.equals(getAscending())) {
+				if (!Boolean.FALSE.equals(ascending)) {
 					return Arrays
-							.asList(builder.asc(from.get(Version_.project).get(
+							.asList(builder.asc(from.get(VersionEntity_.project).get(
 									"name")),
-									builder.asc(from.get(Version_.created)));
+									builder.asc(from.get(VersionEntity_.created)));
 				}
 				return Arrays.asList(
-						builder.desc(from.get(Version_.project).get("name")),
-						builder.asc(from.get(Version_.created)));
+						builder.desc(from.get(VersionEntity_.project).get("name")),
+						builder.asc(from.get(VersionEntity_.created)));
 			} else {
-				if (!Boolean.FALSE.equals(getAscending())) {
+				if (!Boolean.FALSE.equals(ascending)) {
 					return Collections.singletonList(builder.asc(from
 							.get(sortColumn)));
 				}
@@ -115,16 +118,16 @@ public class VersionSelector extends AbstractSelector<Version> {
 
 	@Override
 	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
-			Root<Version> from) {
-		return Arrays.asList(builder.asc(from.get(Version_.project)),
-				builder.asc(from.get(Version_.vcsTag)));
+			Root<VersionEntity> from) {
+		return Arrays.asList(builder.asc(from.get(VersionEntity_.project)),
+				builder.asc(from.get(VersionEntity_.vcsTag)));
 	}
 
-	public Project getProject() {
+	public ProjectEntity getProject() {
 		return project;
 	}
 
-	public void setProject(Project project) {
+	public void setProject(ProjectEntity project) {
 		this.project = project;
 	}
 

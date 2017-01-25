@@ -21,14 +21,7 @@
  */
 package de.egore911.versioning.util;
 
-import java.util.Locale;
 import java.util.ResourceBundle;
-
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
-
-import de.egore911.versioning.persistence.model.User;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -38,54 +31,7 @@ public class SessionUtil {
 	private SessionUtil() {
 	}
 
-	public static HttpSession getSession() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		if (facesContext != null) {
-			ExternalContext externalContext = facesContext.getExternalContext();
-			if (externalContext != null) {
-				Object session = externalContext.getSession(false);
-				if (session instanceof HttpSession) {
-					return (HttpSession) session;
-				}
-			}
-		}
-		return null;
-	}
-
-	public static User getLoggedInUser() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		if (facesContext != null) {
-			ExternalContext externalContext = facesContext.getExternalContext();
-			if (externalContext != null) {
-				Object session = externalContext.getSession(false);
-				if (session instanceof HttpSession) {
-					HttpSession httpSession = (HttpSession) session;
-					return (User) httpSession.getAttribute("user");
-				}
-			}
-		}
-		return null;
-	}
-
-	public static void setLoggedInUser(User user) {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		if (facesContext != null) {
-			ExternalContext externalContext = facesContext.getExternalContext();
-			if (externalContext != null) {
-				Object session = externalContext.getSession(false);
-				if (session instanceof HttpSession) {
-					HttpSession httpSession = (HttpSession) session;
-					httpSession.setAttribute("user", user);
-					// Keep the session for eight hours once logged in
-					httpSession.setMaxInactiveInterval(28800);
-				}
-			}
-		}
-	}
-
 	public static ResourceBundle getBundle() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		Locale locale = facesContext.getViewRoot().getLocale();
-		return ResourceBundle.getBundle("messages", locale);
+		return ResourceBundle.getBundle("messages");
 	}
 }

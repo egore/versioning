@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="versioningApp">
+
+<head>
+  <meta charset="utf8" />
+  <title>Versioning</title>
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="webjars/jquery/3.1.1/dist/jquery.min.js"></script>
+  <!-- bootstrap -->
+  <script type="text/javascript" src="webjars/bootstrap/3.3.7/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/dist/css/bootstrap.min.css">
+  <!-- font-awesome -->
+  <link rel="stylesheet" type="text/css" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Angular -->
+  <script type="text/javascript" src="webjars/angular/1.6.1/angular.js"></script>
+  <script type="text/javascript" src="webjars/angular-resource/1.6.1/angular-resource.js"></script>
+  <script type="text/javascript" src="webjars/angular-route/1.6.1/angular-route.js"></script>
+  <script type="text/javascript" src="webjars/angular-sanitize/1.6.1/angular-sanitize.js"></script>
+  <!-- angular-translate -->
+  <script type="text/javascript" src="webjars/angular-translate/2.13.1/angular-translate.js"></script>
+  <script type="text/javascript" src="webjars/angular-translate-loader-static-files/2.13.1/angular-translate-loader-static-files.js"></script>
+  <!-- file upload -->
+  <script type="text/javascript" src="webjars/ng-file-upload/12.2.13/ng-file-upload-all.js"></script>
+  <!-- Bootstrap UI -->
+  <script type="text/javascript" src="webjars/angular-ui-bootstrap-bower/2.3.1/ui-bootstrap-tpls.min.js"></script>
+  <!-- awesome-bootstrap-checkbox -->
+  <link rel="stylesheet" href="webjars/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.css"/>
+  <!-- moment -->
+  <script type="text/javascript" src="webjars/moment/2.17.1/min/moment.min.js"></script>
+  <script type="text/javascript" src="webjars/moment/2.17.1/locale/de.js"></script>
+  <script type="text/javascript" src="webjars/angular-moment/1.0.1/angular-moment.min.js"></script>
+  <!-- App basics -->
+  <script type="text/javascript" src="app/scripts/app.js"></script>
+  <script type="text/javascript" src="app/scripts/main.js"></script>
+  <script type="text/javascript" src="app/scripts/routes.js"></script>
+  <script type="text/javascript" src="app/scripts/translate.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" type="text/css" href="app/styles/global.css"/>
+  <link rel="stylesheet" type="text/css" href="app/styles/dashboard.css"/>
+
+  <!-- Directives, factories, fitlers -->
+  <script type="text/javascript" src="app/scripts/directive/actionCheckout.js"></script>
+  <script type="text/javascript" src="app/scripts/directive/actionCopy.js"></script>
+  <script type="text/javascript" src="app/scripts/directive/actionExtraction.js"></script>
+  <script type="text/javascript" src="app/scripts/directive/actionReplacement.js"></script>
+  <script type="text/javascript" src="app/scripts/directive/labelGroup.js"></script>
+  <script type="text/javascript" src="app/scripts/directive/projectName.js"></script>
+  <script type="text/javascript" src="app/scripts/services/actionCheckout.factory.js"></script>
+  <script type="text/javascript" src="app/scripts/services/actionCopy.factory.js"></script>
+  <script type="text/javascript" src="app/scripts/services/actionExtraction.factory.js"></script>
+  <script type="text/javascript" src="app/scripts/services/actionReplacement.factory.js"></script>
+
+  <!-- Modules -->
+  <script type="text/javascript" src="app/module/home/home.controller.js"></script>
+  <script type="text/javascript" src="app/module/deployment/deployments.controller.js"></script>
+  <script type="text/javascript" src="app/module/deployment/deployment.factory.js"></script>
+
+  <script type="text/javascript" src="app/module/version/version.factory.js"></script>
+  <script type="text/javascript" src="app/module/version/version.controller.js"></script>
+  <script type="text/javascript" src="app/module/version/versions.controller.js"></script>
+
+  <script type="text/javascript" src="app/module/vcs_host/vcs_host.factory.js"></script>
+  <script type="text/javascript" src="app/module/vcs_host/vcs_host.controller.js"></script>
+  <script type="text/javascript" src="app/module/vcs_host/vcs_hosts.controller.js"></script>
+
+  <script type="text/javascript" src="app/module/project/project.factory.js"></script>
+  <script type="text/javascript" src="app/module/project/project.controller.js"></script>
+  <script type="text/javascript" src="app/module/project/projects.controller.js"></script>
+
+  <script type="text/javascript" src="app/module/server/server.factory.js"></script>
+  <script type="text/javascript" src="app/module/server/server.controller.js"></script>
+  <script type="text/javascript" src="app/module/server/servers.controller.js"></script>
+
+  <script type="text/javascript" src="app/module/tag_transformer/tag_transformer.factory.js"></script>
+  <script type="text/javascript" src="app/module/tag_transformer/tag_transformer.controller.js"></script>
+  <script type="text/javascript" src="app/module/tag_transformer/tag_transformers.controller.js"></script>
+
+  <script type="text/javascript" src="app/module/maven_repository/maven_repository.factory.js"></script>
+  <script type="text/javascript" src="app/module/maven_repository/maven_repository.controller.js"></script>
+  <script type="text/javascript" src="app/module/maven_repository/maven_repositories.controller.js"></script>
+
+  <script type="text/javascript" src="app/module/role/role.factory.js"></script>
+  <script type="text/javascript" src="app/module/role/role.controller.js"></script>
+  <script type="text/javascript" src="app/module/role/roles.controller.js"></script>
+  <script type="text/javascript" src="app/module/role/permission.filter.js"></script>
+
+  <script type="text/javascript" src="app/module/user/user.factory.js"></script>
+  <script type="text/javascript" src="app/module/user/user.controller.js"></script>
+  <script type="text/javascript" src="app/module/user/users.controller.js"></script>
+  <script type="text/javascript" src="app/module/user/passwords-equal.directive.js"></script>
+
+  <script type="text/javascript" src="app/scripts/controller/confirm.controller.js"></script>
+
+</head>
+<body ng-controller="MainCtrl as main">
+
+<div id="wrapper">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Versioning {{version.maven}}</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/" id="menu_home">Versioning {{version.maven}}</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#/">Home</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search..." ng-model="$root.search" id="site_search"/>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li ng-class="{active : main.currentModule() == 'version'}"><a href="#/versions" id="menu_versions"><i class="fa fa-puzzle-piece"></i> {{'versions' | translate}} <span ng-show="main.currentModule() == 'version'" class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : main.currentModule() == 'deployments'}"><a href="#/deployments" id="menu_deployments"><i class="fa fa-download"></i> {{'deployments' | translate}} <span ng-show="main.currentModule() == 'deployments'" class="sr-only">(current)</span></a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li ng-class="{active : main.currentModule() == 'vcs_hosts'}"><a href="#/vcs_hosts" id="menu_vcshosts"><i class="fa fa-code-fork"></i> {{'vcs_hosts' | translate}} <span ng-show="main.currentModule() == 'vcs_hosts'" class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : main.currentModule() == 'projects'}"><a href="#/projects" id="menu_projects"><i class="fa fa-barcode"></i> {{'projects' | translate}} <span ng-show="main.currentModule() == 'projects'" class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : main.currentModule() == 'servers'}"><a href="#/servers" id="menu_servers"><i class="fa fa-server"></i> {{'servers' | translate}} <span ng-show="main.currentModule() == 'servers'" class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : main.currentModule() == 'maven_repositories'}"><a href="#/maven_repositories" id="menu_maven_repositories"><i class="fa fa-database"></i> {{'maven_repositories' | translate}} <span ng-show="main.currentModule() == 'maven_repositories'" class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : main.currentModule() == 'tag_transformers'}"><a href="#/tag_transformers" id="menu_tag_transformers"><i class="fa fa-exchange"></i> {{'tag_transformers' | translate}} <span ng-show="main.currentModule() == 'tag_transformers'" class="sr-only">(current)</span></a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-cogs"></i> {{'roles' | translate}} <span ng-show="main.currentModule() == 'roles'" class="sr-only">(current)</span></a></li>
+            <li ng-class="{active : main.currentModule() == 'users'}"><a href="#/users" id="menu_users"><i class="fa fa-user"></i> {{'users' | translate}} <span ng-show="main.currentModule() == 'users'" class="sr-only">(current)</span></a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="page-wrapper" ng-view>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

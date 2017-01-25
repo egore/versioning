@@ -27,9 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tmatesoft.svn.core.SVNDirEntry;
@@ -41,8 +38,8 @@ import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.VcsHost;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.VcsHostEntity;
 
 /**
  * Subversion based information provider, based on SVNKit.
@@ -54,31 +51,28 @@ public class SvnProvider extends Provider {
 	private static final Logger log = LoggerFactory
 			.getLogger(SvnProvider.class);
 
-	@Override
-	public boolean tagExistsImpl(Project project, String tagName) {
-		try {
-			SVNRepository repo = initRepository(project);
+	public SvnProvider(ProjectEntity project) {
+		super(project);
+	}
 
-			String list = getTagsDir(project);
+	@Override
+	public boolean tagExistsImpl(String tagName) {
+		try {
+			SVNRepository repo = initRepository();
+
+			String list = getTagsDir();
 
 			// Check if the tag exists by verifying it's a directory
 			SVNNodeKind checkPath = repo.checkPath(list + "/" + tagName,
 					repo.getLatestRevision());
 			return checkPath == SVNNodeKind.DIR;
 		} catch (SVNException e) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			if (facesContext != null) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
-						e.getLocalizedMessage());
-				facesContext.addMessage("main", message);
-			}
 			log.error(e.getMessage(), e);
 			return false;
 		}
 	}
 
-	private String getTagsDir(Project project) {
+	private String getTagsDir() {
 		String list = "tags";
 		String completeVcsPath = project.getCompleteVcsPath();
 		int indexOf = completeVcsPath.indexOf("/trunk/");
@@ -97,7 +91,7 @@ public class SvnProvider extends Provider {
 		return list;
 	}
 
-	private SVNRepository initRepository(Project project) throws SVNException {
+	private SVNRepository initRepository() throws SVNException {
 		String completeVcsPath = project.getCompleteVcsPath();
 		SVNURL svnurl;
 		if (!completeVcsPath.contains("/trunk")) {
@@ -115,7 +109,7 @@ public class SvnProvider extends Provider {
 					"/trunk.*", ""));
 		}
 		SVNRepository repo = SVNRepositoryFactory.create(svnurl);
-		VcsHost vcsHost = project.getVcsHost();
+		VcsHostEntity vcsHost = project.getVcsHost();
 
 		// If the VCS host has credentials available use them
 		if (vcsHost.isCredentialsAvailable()) {
@@ -127,11 +121,11 @@ public class SvnProvider extends Provider {
 	}
 
 	@Override
-	protected List<Tag> getTagsImpl(Project project) {
+	protected List<Tag> getTagsImpl() {
 		try {
-			SVNRepository repo = initRepository(project);
+			SVNRepository repo = initRepository();
 
-			String list = getTagsDir(project);
+			String list = getTagsDir();
 
 			Collection<SVNDirEntry> entries = new ArrayList<>();
 			repo.getDir(list, repo.getLatestRevision(), false, entries);
@@ -139,13 +133,6 @@ public class SvnProvider extends Provider {
 					.map(entry -> new Tag(entry.getDate(), entry.getName()))
 					.collect(Collectors.toList());
 		} catch (SVNException e) {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			if (facesContext != null) {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_WARN, e.getLocalizedMessage(),
-						e.getLocalizedMessage());
-				facesContext.addMessage("main", message);
-			}
 			log.error(e.getMessage(), e);
 			return Collections.emptyList();
 		}

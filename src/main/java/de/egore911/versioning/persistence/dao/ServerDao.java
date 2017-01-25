@@ -21,18 +21,20 @@
  */
 package de.egore911.versioning.persistence.dao;
 
+import java.util.List;
+
 import de.egore911.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.Server;
+import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.selector.ServerSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class ServerDao extends AbstractDao<Server> {
+public class ServerDao extends AbstractDao<ServerEntity> {
 
 	@Override
-	protected Class<Server> getEntityClass() {
-		return Server.class;
+	protected Class<ServerEntity> getEntityClass() {
+		return ServerEntity.class;
 	}
 
 	@Override
@@ -40,10 +42,16 @@ public class ServerDao extends AbstractDao<Server> {
 		return new ServerSelector();
 	}
 
-	public Server findByName(String name) {
-		ServerSelector serverSelector = createSelector();
-		serverSelector.setName(name);
-		return serverSelector.find();
+	public ServerEntity findByName(String name) {
+		return createSelector()
+				.withName(name)
+				.find();
+	}
+
+	public List<ServerEntity> findByIds(List<Integer> ids) {
+		return createSelector()
+				.withIds(ids)
+				.findAll();
 	}
 
 }

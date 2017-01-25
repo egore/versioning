@@ -29,15 +29,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
-import de.egore911.versioning.persistence.model.Deployment;
-import de.egore911.versioning.persistence.model.Project;
-import de.egore911.versioning.persistence.model.Server;
-import de.egore911.versioning.persistence.model.Version;
+import de.egore911.versioning.persistence.model.DeploymentEntity;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ServerEntity;
+import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.util.VersionUtil;
 
 /**
@@ -45,50 +42,42 @@ import de.egore911.versioning.util.VersionUtil;
  */
 public class DeploymentCalculator {
 
-	private static final Comparator<Version> COMPARATOR_BY_PROJECT = (o1, o2) -> o1.getProject().compareTo(o2.getProject());
+	private static final Comparator<VersionEntity> COMPARATOR_BY_PROJECT = (o1, o2) -> o1.getProject().compareTo(o2.getProject());
 
 	private final ProjectDao projectDao = new ProjectDao();
 	private final DeploymentDao deploymentDao = new DeploymentDao();
 
-	public List<Version> getDeployedVersions(Server server) {
+	public List<VersionEntity> getDeployedVersions(ServerEntity server) {
 		return deploymentDao
-				.getCurrentDeployments(server).stream().map(Deployment::getVersion)
+				.getCurrentDeployments(server).stream().map(DeploymentEntity::getVersion)
 				.sorted(COMPARATOR_BY_PROJECT)
 				.collect(Collectors.toList());
 	}
 
-	public List<Version> getDeployableVersions(Server server) {
+	public List<VersionEntity> getDeployableVersions(ServerEntity server) {
 
-		Map<Project, Version> currentlyDeployedVersions = new HashMap<>();
-		List<Deployment> currentDeployments = deploymentDao
+		Map<ProjectEntity, VersionEntity> currentlyDeployedVersions = new HashMap<>();
+		List<DeploymentEntity> currentDeployments = deploymentDao
 				.getCurrentDeployments(server);
-		for (Deployment currentDeployment : currentDeployments) {
+		for (DeploymentEntity currentDeployment : currentDeployments) {
 			currentlyDeployedVersions.put(currentDeployment.getVersion()
 					.getProject(), currentDeployment.getVersion());
 		}
 
 		// Load all projects configured for the server (including deleted ones)
-		List<Project> configuredProjects = projectDao
+		List<ProjectEntity> configuredProjects = projectDao
 				.getConfiguredProjects(server);
-		List<Version> result = new ArrayList<>();
-		for (Project configuredProject : configuredProjects) {
+		List<VersionEntity> result = new ArrayList<>();
+		for (ProjectEntity configuredProject : configuredProjects) {
 			// If the project was deleted, it will no longer be suggested to be deployed
 			if (configuredProject.isDeleted()) {
 				continue;
 			}
-			Version latest;
+			VersionEntity latest;
 			try {
 				latest = VersionUtil.getLatestVersion(configuredProject
 						.getVersions());
 			} catch (Exception e) {
-				FacesContext facesContext = FacesContext.getCurrentInstance();
-				if (facesContext != null) {
-					FacesMessage message = new FacesMessage(
-							FacesMessage.SEVERITY_ERROR, e.getMessage(),
-							e.getMessage());
-					facesContext.addMessage("main", message);
-				}
-
 				latest = null;
 			}
 
@@ -98,7 +87,7 @@ public class DeploymentCalculator {
 			}
 
 			// Test if latest is more up to date than current
-			Version current = currentlyDeployedVersions.get(configuredProject);
+			VersionEntity current = currentlyDeployedVersions.get(configuredProject);
 			if (current == null || latest.isNewerThan(current)) {
 				result.add(latest);
 			}

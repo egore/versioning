@@ -1,0 +1,53 @@
+<h1 class="page-header"><i class="fa fa-puzzle-piece"></i> {{'versions' | translate}}</h1>
+
+<div style="text-align: center;" ng-show="vm.is_loading">
+	<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
+	<span class="sr-only" translate="loading"></span>
+</div>
+
+<div ng-hide="vm.is_loading">
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th class="col-sm-2 sortable">
+            <span ng-click="vm.order('project.name')" class="sortable" id="sort_project" translate="project"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'project.name'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th class="col-sm-1 sortable">
+            <span ng-click="vm.order('vcsTag')" class="sortable" id="sort_vcsTag" translate="vcsTag"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'vcsTag'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th class="col-sm-2 sortable">
+            <span ng-click="vm.order('createdBy')" class="sortable" id="sort_createdBy" translate="createdBy"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'createdBy'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th class="col-sm-2 sortable">
+            <span ng-click="vm.order('created')" class="sortable" id="sort_created" translate="created"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'created'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th translate="deployed_on"></th>
+        <th class="col-sm-1" translate="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="version in vm.versions | filter: search">
+        <td><project-name project="version.project"/></td>
+        <td><a href="#versions/{{version.id}}" ng-bind="version.vcsTag"></a></td>
+        <td ng-bind="version.createdBy"></td>
+        <td ng-bind="version.created | amDateFormat:'LLL'"></td>
+        <td><span ng-repeat="deploymentId in version.deploymentIds" ng-bind="vm.deployments_lookup[deploymentId].server.name" ng-show="!vm.deployments_lookup[deploymentId].undeployment" style="margin-right: 5px;"></span></td>
+        <td><button ng-click="vm.remove(version)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5" style="text-align: center;">
+            <ul uib-pagination total-items="vm.total" items-per-page="vm.pagesize" max-size="vm.maxPages" force-ellipses="true"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                ng-model="vm.currentPage" ng-change="vm.loadData()" ng-show="vm.total > 0 && vm.total > vm.pagesize"></ul>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+<button ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>
+</div>

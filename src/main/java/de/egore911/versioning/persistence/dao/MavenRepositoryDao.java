@@ -22,17 +22,17 @@
 package de.egore911.versioning.persistence.dao;
 
 import de.egore911.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.MavenRepository;
+import de.egore911.versioning.persistence.model.MavenRepositoryEntity;
 import de.egore911.versioning.persistence.selector.MavenRepositorySelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class MavenRepositoryDao extends AbstractDao<MavenRepository> {
+public class MavenRepositoryDao extends AbstractDao<MavenRepositoryEntity> {
 
 	@Override
-	protected Class<MavenRepository> getEntityClass() {
-		return MavenRepository.class;
+	protected Class<MavenRepositoryEntity> getEntityClass() {
+		return MavenRepositoryEntity.class;
 	}
 
 	@Override
@@ -40,10 +40,10 @@ public class MavenRepositoryDao extends AbstractDao<MavenRepository> {
 		return new MavenRepositorySelector();
 	}
 
-	public MavenRepository findByName(String name) {
-		MavenRepositorySelector serverSelector = createSelector();
-		serverSelector.setName(name);
-		return serverSelector.find();
+	public MavenRepositoryEntity findByName(String name) {
+		return createSelector()
+				.withName(name)
+				.find();
 	}
 
 }

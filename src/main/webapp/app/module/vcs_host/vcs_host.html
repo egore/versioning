@@ -1,0 +1,41 @@
+<h1 class="page-header"><i class="fa fa-code-fork"></i>{{!vm.vcs_host.name ? '&nbsp;' : vm.vcs_host.name}}</h1>
+
+<form class="form-horizontal" name="form">
+	<label-group label="{{'name' | translate}}" ng-class="{'has-error': form.name.$touched && form.name.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.vcs_host.name" name="name" required />
+		</p>
+	</label-group>
+	<label-group label="{{'vcs_type' | translate}}">
+		<p>
+			<input type="radio" ng-model="vm.vcs_host.vcs" ng-value="'svn'" name="vcs_svn" id="vcs_svn">
+			<label for="vcs_svn">svn</label>
+			<input type="radio" ng-model="vm.vcs_host.vcs" ng-value="'git'" name="vcs_git" id="vcs_git">
+			<label for="vcs_git">git</label>
+		</p>
+	</label-group>
+	<label-group label="{{'uri' | translate}}" ng-class="{'has-error': form.uri.$touched && (form.uri.$error.pattern || form.uri.$error.required)}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.vcs_host.uri" name="uri" required/>
+		</p>
+	</label-group>
+	<label-group label="{{'login' | translate}}" ng-class="{'has-error': form.username.$touched && (form.username.$error.pattern || form.username.$error.required)}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.vcs_host.username" name="username"/>
+		</p>
+	</label-group>
+	<label-group label="{{'password' | translate}}" ng-class="{'has-error': form.password.$touched && form.password.$error.required}">
+		<input type="password" class="form-control" ng-model="vm.vcs_host.password" name="password" equal="{{vm.vcs_host.passwordVerify}}"/>
+	</label-group>
+	<label-group label="{{'password_repeated' | translate}}" ng-class="{'has-error': form.passwordVerify.$touched && (form.passwordVerify.$error.equal || form.passwordVerify.$error.required)}">
+		<input type="password" class="form-control" ng-model="vm.vcs_host.passwordVerify" name="passwordVerify" equal="{{vm.vcs_host.password}}"/>
+	</label-group>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
+</form>
+
+<div ng-show="vm.assigned_projects.length > 0">
+<h2 class="sub-header" translate="projects"></h2>
+<ul>
+<li ng-repeat="project in vm.assigned_projects"><project-name project="project"></project-name></li>
+</ul>
+</div>

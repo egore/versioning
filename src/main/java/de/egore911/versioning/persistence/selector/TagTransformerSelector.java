@@ -21,7 +21,6 @@
  */
 package de.egore911.versioning.persistence.selector;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,32 +33,32 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.egore911.persistence.selector.AbstractSelector;
-import de.egore911.versioning.persistence.model.TagTransformer;
-import de.egore911.versioning.persistence.model.TagTransformer_;
+import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
+import de.egore911.versioning.persistence.model.TagTransformerEntity;
+import de.egore911.versioning.persistence.model.TagTransformerEntity_;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class TagTransformerSelector extends AbstractSelector<TagTransformer> {
+public class TagTransformerSelector extends AbstractResourceSelector<TagTransformerEntity> {
 
 	private static final long serialVersionUID = -8032360585214192038L;
 
 	private String name;
 
 	@Override
-	protected Class<TagTransformer> getEntityClass() {
-		return TagTransformer.class;
+	protected Class<TagTransformerEntity> getEntityClass() {
+		return TagTransformerEntity.class;
 	}
 
 	@Override
 	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<TagTransformer> from,
+			Root<TagTransformerEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (StringUtils.isNotEmpty(name)) {
-			predicates.add(builder.equal(from.get(TagTransformer_.name), name));
+			predicates.add(builder.equal(from.get(TagTransformerEntity_.name), name));
 		}
 
 		return predicates;
@@ -67,17 +66,14 @@ public class TagTransformerSelector extends AbstractSelector<TagTransformer> {
 
 	@Override
 	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
-			Root<TagTransformer> from) {
+			Root<TagTransformerEntity> from) {
 		return Collections.singletonList(builder.asc(from
-				.get(TagTransformer_.name)));
+				.get(TagTransformerEntity_.name)));
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
+	public TagTransformerSelector withName(String name) {
 		this.name = name;
+		return this;
 	}
 
 }

@@ -1,0 +1,9 @@
+{
+	"startupListernerClassName": "de.egore911.versioning.util.listener.StartupListener",
+	"entityManagerFilterClassName": "de.egore911.versioning.ui.filter.EntityManagerFilter",
+	"extraPermissions": [],
+	"datasourceName": "java:/comp/env/jdbc/versioningDS",
+	"baseUrl": "http://admin:admin@localhost:8080/versioning/",
+	"restProviderPackage": "de.egore911.versioning.ui.rest,de.egore911.appframework.ui.rest",
+	"persistenceUnitName": "versioning"
+}

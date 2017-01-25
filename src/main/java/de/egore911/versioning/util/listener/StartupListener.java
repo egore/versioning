@@ -1,5 +1,5 @@
 /*
- * Copyright 2013  Christoph Brill <egore911@gmail.com>
+ * Copyright 2013-2017  Christoph Brill <egore911@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,162 +21,198 @@
  */
 package de.egore911.versioning.util.listener;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.sql.DataSource;
+import org.apache.commons.collections4.CollectionUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
-
-import org.flywaydb.core.Flyway;
+import de.egore911.appframework.util.FactoryHolder;
+import de.egore911.appframework.util.listener.AbstractStartupListener;
+import de.egore911.versioning.persistence.dao.DeploymentDao;
+import de.egore911.versioning.persistence.dao.ProjectDao;
+import de.egore911.versioning.persistence.dao.ServerDao;
+import de.egore911.versioning.persistence.dao.TagTransformerDao;
+import de.egore911.versioning.persistence.dao.VcsHostDao;
+import de.egore911.versioning.persistence.model.DeploymentEntity;
+import de.egore911.versioning.persistence.model.Permission;
+import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ServerEntity;
+import de.egore911.versioning.persistence.model.VcsHostEntity;
+import de.egore911.versioning.persistence.model.VersionEntity;
+import de.egore911.versioning.ui.dto.Project;
+import de.egore911.versioning.ui.dto.Server;
+import de.egore911.versioning.ui.dto.VcsHost;
+import de.egore911.versioning.ui.dto.Version;
+import ma.glasnost.orika.CustomMapper;
+import ma.glasnost.orika.MappingContext;
 
 /**
  * Listener executed during startup, responsible for setting up the
  * java.util.Logging->SLF4J bridge and updating the database.
- * 
+ *
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class StartupListener implements ServletContextListener {
+public class StartupListener extends AbstractStartupListener {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(StartupListener.class);
-
-	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-
-		SLF4JBridgeHandler.removeHandlersForRootLogger();
-		SLF4JBridgeHandler.install();
-
-		try {
-			InitialContext initialContext = new InitialContext();
-			DataSource dataSource = (DataSource) initialContext
-					.lookup("java:/comp/env/jdbc/versioningDS");
-			Flyway flyway = new Flyway();
-			flyway.setDataSource(dataSource);
-
-			switch (dataSource.getClass().getName()) {
-			case "org.hsqldb.jdbc.JDBCDataSource":
-				// Plain datasource for HSQLDB
-				flyway.setLocations("db/migration/hsqldb");
-				break;
-			case "com.mysql.jdbc.jdbc2.optional.MysqlDataSource":
-			case "com.mysql.jdbc.jdbc2.optional.MysqlXADataSource":
-				// Plain datasource for MySQL/MariaDB
-				flyway.setLocations("db/migration/mysql");
-				break;
-			case "net.sourceforge.jtds.jdbcx.JtdsDataSource":
-			case "com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData":
-				// Plain datasource for MSSQL
-				flyway.setLocations("db/migration/mssql");
-				break;
-			case "org.postgresql.jdbc2.optional.PoolingDataSource":
-			case "org.postgresql.jdbc2.optional.SimpleDataSource":
-			case "org.postgresql.ds.PGPoolingDataSource":
-			case "org.postgresql.ds.PGSimpleDataSource":
-				flyway.setLocations("db/migration/pgsql");
-				break;
-			case "org.apache.tomcat.dbcp.dbcp.BasicDataSource":
-				// Wrapped by Tomcat, get a connection to identify it
-				try (Connection connection = dataSource.getConnection()) {
-					if (connection.toString().startsWith("jdbc:mysql://")) {
-						flyway.setLocations("db/migration/mysql");
-					} else if (connection.toString().startsWith("jdbc:hsqldb")) {
-						flyway.setLocations("db/migration/hsqldb");
-					} else if (connection.toString().startsWith("jdbc:jtds:sqlserver") ||
-							connection.toString().startsWith("jdbc:sqlserver")) {
-						flyway.setLocations("db/migration/mssql");
-					} else if (connection.toString().startsWith("jdbc:postgresql")) {
-						flyway.setLocations("db/migration/pgsql");
-					} else {
-						throw new RuntimeException(
-								"Unsupported database detected, please report this: "
-										+ connection.toString());
+	static {
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(ProjectEntity.class, Project.class)
+				.byDefault()
+				.customize(new CustomMapper<ProjectEntity, Project>() {
+					@Override
+					public void mapAtoB(ProjectEntity a, Project b, MappingContext context) {
+						if (a.getVcsHost() != null) {
+							b.setVcsHostId(a.getVcsHost().getId());
+						} else {
+							b.setVcsHostId(null);
+						}
+						if (a.getTagTransformer() != null) {
+							b.setTagTransformerId(a.getTagTransformer().getId());
+						} else {
+							b.setTagTransformerId(null);
+						}
+						if (a.getConfiguredServers() != null) {
+							b.setConfiguredServerIds(a.getConfiguredServers().stream().map(ServerEntity::getId).collect(Collectors.toList()));
+						} else {
+							b.setConfiguredServerIds(Collections.emptyList());
+						}
 					}
-				} catch (SQLException e) {
-					log.error("Error opening connection :{}", e.getMessage(), e);
-					return;
-				}
-				break;
-			case "org.apache.tomcat.dbcp.dbcp2.BasicDataSource":
-				// Wrapped by Tomcat, get a connection to identify it
-				try (Connection connection = dataSource.getConnection()) {
-					if (connection.toString().contains("URL=jdbc:mysql://")) {
-						flyway.setLocations("db/migration/mysql");
-					} else if (connection.toString().contains("URL=jdbc:hsqldb")) {
-						flyway.setLocations("db/migration/hsqldb");
-					} else if (connection.toString().contains("URL=jdbc:jtds:sqlserver")
-							|| connection.toString().contains("URL=jdbc:sqlserver")) {
-						flyway.setLocations("db/migration/mssql");
-					} else if (connection.toString().contains("URL=jdbc:postgresql")) {
-						flyway.setLocations("db/migration/pgsql");
-					} else {
-						throw new RuntimeException(
-								"Unsupported database detected, please report this: " + connection.toString());
+
+					@Override
+					public void mapBtoA(Project b, ProjectEntity a, MappingContext context) {
+						if (b.getVcsHostId() != null) {
+							a.setVcsHost(new VcsHostDao().findById(b.getVcsHostId()));
+						} else {
+							a.setVcsHost(null);
+						}
+						if (b.getTagTransformerId() != null) {
+							a.setTagTransformer(new TagTransformerDao().findById(b.getTagTransformerId()));
+						} else {
+							a.setTagTransformer(null);
+						}
+						if (CollectionUtils.isNotEmpty(b.getConfiguredServerIds())) {
+							List<ServerEntity> projects = new ServerDao().findByIds(b.getConfiguredServerIds());
+							if (a.getConfiguredServers() == null) {
+								a.setConfiguredServers(projects);
+							} else {
+								a.getConfiguredServers().clear();
+								a.getConfiguredServers().addAll(projects);
+							}
+						} else {
+							if (a.getConfiguredServers() != null) {
+								a.getConfiguredServers().clear();
+							}
+						}
 					}
-				} catch (SQLException e) {
-					log.error("Error opening connection :{}", e.getMessage(), e);
-					return;
-				}
-				break;
-			case "org.jboss.jca.adapters.jdbc.WrapperDataSource":
-				// Wrapped by JBoss
-				try (Connection connection = dataSource.getConnection()) {
-					if (connection.getMetaData().getClass().getName()
-							.startsWith("com.mysql.jdbc.")) {
-						flyway.setLocations("db/migration/mysql");
-					} else if (connection.getMetaData().getClass().getName()
-							.equals("org.hsqldb.jdbc.JDBCDatabaseMetaData")) {
-						flyway.setLocations("db/migration/hsqldb");
-					} else if (connection
-							.getMetaData()
-							.getClass()
-							.getName()
-							.equals("net.sourceforge.jtds.jdbc.JtdsDatabaseMetaData") ||
-							connection
-							.getMetaData()
-							.getClass()
-							.getName()
-							.equals("com.microsoft.sqlserver.jdbc.SQLServerDatabaseMetaData")) {
-						flyway.setLocations("db/migration/mssql");
-					} else {
-						throw new RuntimeException(
-								"Unsupported database detected, please report this: "
-										+ connection.getMetaData().getClass()
-												.getName());
+				}).register();
+
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(VcsHostEntity.class, VcsHost.class)
+				.byDefault()
+				.customize(new CustomMapper<VcsHostEntity, VcsHost>() {
+					@Override
+					public void mapAtoB(VcsHostEntity a, VcsHost b, MappingContext context) {
+						if (a.getProjects() != null) {
+							b.setProjectIds(a.getProjects().stream().map(ProjectEntity::getId).collect(Collectors.toList()));
+						} else {
+							b.setProjectIds(Collections.emptyList());
+						}
 					}
-				} catch (SQLException e) {
-					log.error("Error opening connection :{}", e.getMessage(), e);
-					return;
-				}
+		
+					@Override
+					public void mapBtoA(VcsHost b, VcsHostEntity a, MappingContext context) {
+						if (CollectionUtils.isNotEmpty(b.getProjectIds())) {
+							List<ProjectEntity> projects = new ProjectDao().findByIds(b.getProjectIds());
+							if (a.getProjects() == null) {
+								a.setProjects(projects);
+							} else {
+								a.getProjects().clear();
+								a.getProjects().addAll(projects);
+							}
+						} else {
+							a.setProjects(null);
+						}
+					}
+				}).register();
 
-				if (flyway.getLocations().length == 0) {
-					throw new RuntimeException(
-							"Unsupported database detected, please report this: "
-									+ dataSource.getClass().getName());
-				}
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(ServerEntity.class, Server.class)
+				.byDefault()
+				.customize(new CustomMapper<ServerEntity, Server>() {
+					@Override
+					public void mapAtoB(ServerEntity a, Server b, MappingContext context) {
+						if (a.getVcsHost() != null) {
+							b.setVcsHostId(a.getVcsHost().getId());
+						} else {
+							b.setVcsHostId(null);
+						}
+						if (a.getConfiguredProjects() != null) {
+							b.setConfiguredProjectIds(a.getConfiguredProjects().stream().map(ProjectEntity::getId).collect(Collectors.toList()));
+						} else {
+							b.setConfiguredProjectIds(Collections.emptyList());
+						}
+					}
+		
+					@Override
+					public void mapBtoA(Server b, ServerEntity a, MappingContext context) {
+						if (b.getVcsHostId() != null) {
+							a.setVcsHost(new VcsHostDao().findById(b.getVcsHostId()));
+						} else {
+							a.setVcsHost(null);
+						}
+						if (CollectionUtils.isNotEmpty(b.getConfiguredProjectIds())) {
+							List<ProjectEntity> projects = new ProjectDao().findByIds(b.getConfiguredProjectIds());
+							if (a.getConfiguredProjects() == null) {
+								a.setConfiguredProjects(projects);
+							} else {
+								a.getConfiguredProjects().clear();
+								a.getConfiguredProjects().addAll(projects);
+							}
+						} else {
+							if (a.getConfiguredProjects() != null) {
+								a.getConfiguredProjects().clear();
+							}
+						}
+					}
+				}).register();
 
-				break;
-			default:
-				throw new RuntimeException(
-						"Unsupported database detected, please report this: "
-								+ dataSource.getClass().getName());
-			}
-
-			flyway.migrate();
-		} catch (NamingException e) {
-			log.error(e.getMessage(), e);
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(VersionEntity.class, Version.class)
+				.byDefault()
+				.customize(new CustomMapper<VersionEntity, Version>() {
+					@Override
+					public void mapAtoB(VersionEntity a, Version b, MappingContext context) {
+						if (a.getDeployments() != null) {
+							b.setDeploymentIds(a.getDeployments().stream().map(DeploymentEntity::getId).collect(Collectors.toList()));
+						} else {
+							b.setDeploymentIds(Collections.emptyList());
+						}
+						b.setCreatedBy(a.getCreatedBy().getName());
+						b.setTransformedVcsTag(a.getTransformedVcsTag());
+					}
+					@Override
+					public void mapBtoA(Version b, VersionEntity a, MappingContext context) {
+						if (CollectionUtils.isNotEmpty(b.getDeploymentIds())) {
+							List<DeploymentEntity> deployments = new DeploymentDao().findByIds(b.getDeploymentIds());
+							if (a.getDeployments() == null) {
+								a.setDeployments(deployments);
+							} else {
+								a.getDeployments().clear();
+								a.getDeployments().addAll(deployments);
+							}
+						} else {
+							if (a.getDeployments() != null) {
+								a.getDeployments().clear();
+							}
+						}
+					}
+				}).register();
 		}
-	}
 
 	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-		// Nothing
+	protected Enum<?>[] getPermissions() {
+		return Permission.values();
 	}
 
 }

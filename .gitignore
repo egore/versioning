@@ -17,3 +17,9 @@ release
 
 # Tomcat
 context.xml
+
+# git-commit-id-plugin
+git.properties
+
+# Typings
+/typings
