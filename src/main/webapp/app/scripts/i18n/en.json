@@ -45,6 +45,8 @@
 	"project": "Project",
 	"projects": "Projects",
 	"remove": "Remove",
+	"remove_element": "Remove {{element}}?",
+	"remove_element_long": "Do you really want to remove {{element}}?",
 	"removeActionCheckout": "Remove checkout action",
 	"removeActionCopy": "Remove copy action",
 	"removeActionExtraction": "Remove extraction action",

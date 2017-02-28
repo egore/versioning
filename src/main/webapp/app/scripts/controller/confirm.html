@@ -1,9 +1,7 @@
 <div class="modal-header">
-  <h3 class="modal-title">Remove {{vm.entityname}}?</h3>
+  <h3 class="modal-title" translate="remove_element" translate-values='{element: vm.entityname}'></h3>
 </div>
-<div class="modal-body">
-  Do you really want to remove {{vm.entityname}}?
-</div>
+<div class="modal-body" translate="remove_element_long" translate-values='{element: vm.entityname}'></div>
 <div class="modal-footer">
   <div class="control-content">
     <button ng-repeat="button in vm.confirmButtons" class="btn btn-primary" ng-click="vm.ok(button.value)" ng-bind="button.label"></button>

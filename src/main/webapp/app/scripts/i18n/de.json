@@ -45,6 +45,8 @@
 	"project": "Projekt",
 	"projects": "Projekte",
 	"remove": "Löschen",
+	"remove_element": "{{element}} löschen?",
+	"remove_element_long": "Willst du wirklich {{element}} löschen?",
 	"removeActionCheckout": "Checkoutvorgang löschen",
 	"removeActionCopy": "Kopiervorgang löschen",
 	"removeActionExtraction": "Entpackvorgang löschen",
