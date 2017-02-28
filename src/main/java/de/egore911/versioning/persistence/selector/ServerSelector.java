@@ -34,8 +34,6 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 
 import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
-import de.egore911.persistence.dao.AbstractDao;
-import de.egore911.versioning.persistence.model.BinaryDataEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.ServerEntity_;
 
