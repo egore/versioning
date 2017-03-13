@@ -64,7 +64,7 @@
 
 		function remove(version) {
 			$uibModal.open({
-				templateUrl: 'app/scripts/controller/confirm.html',
+				templateUrl: 'appframework/confirm.html',
 				controller: 'ConfirmController',
 				controllerAs: 'vm',
 				resolve: {

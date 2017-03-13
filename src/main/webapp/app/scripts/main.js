@@ -14,7 +14,23 @@
 		/* jshint validthis: true */
 		var vm = this;
 
-		vm.currentModule = function() {
+		vm.permissions = [];
+
+		vm.currentModule = currentModule;
+		vm.hasPermission = hasPermission;
+
+		activate();
+
+		function activate() {
+			$http.get('rest/version_info').then(function(response) {
+				vm.version = response.data;
+				$http.get('rest/permissions/my').then(function(response) {
+					vm.permissions = response.data;
+				});
+			});
+		}
+
+		function currentModule() {
 			var currentPath = $location.path();
 			if (currentPath.startsWith('/')) {
 				currentPath = currentPath.substring(1);
@@ -26,8 +42,9 @@
 			return currentPath;
 		};
 
-		$http.get('rest/version_info').then(function(response) {
-			vm.version = response.data;
-		});
+		function hasPermission(permission) {
+			return $.inArray(permission, vm.permissions) >= 0;
+		}
+
 	}
 })();

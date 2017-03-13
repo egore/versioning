@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>de.egore911.appframework</groupId>
 		<artifactId>appframework-bom</artifactId>
-		<version>1.0.2</version>
+		<version>1.1.0</version>
 	</parent>
 
 	<groupId>de.egore911.versioning</groupId>
@@ -96,7 +96,12 @@
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework</artifactId>
-			<version>1.0.6</version>
+			<version>1.0.7</version>
+		</dependency>
+		<dependency>
+			<groupId>de.egore911.appframework</groupId>
+			<artifactId>appframework-angular</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 
 		<!-- Apache commons -->
@@ -104,14 +109,6 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
-		</dependency>
-
-		<!-- APIs -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${version.servlet}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- VCS support -->
@@ -127,61 +124,6 @@
 		</dependency>
 
 		<!-- Javascript using Bower -->
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-resource</artifactId>
-			<version>${version.angular}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-route</artifactId>
-			<version>${version.angular}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-sanitize</artifactId>
-			<version>${version.angular}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>ng-file-upload</artifactId>
-			<version>12.2.13</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>bootstrap</artifactId>
-			<version>3.3.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>font-awesome</artifactId>
-			<version>4.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-ui-bootstrap-bower</artifactId>
-			<version>2.3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>awesome-bootstrap-checkbox</artifactId>
-			<version>0.3.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-translate</artifactId>
-			<version>2.13.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-translate-loader-static-files</artifactId>
-			<version>2.13.1</version>
-		</dependency>
 		<dependency>
 			<groupId>org.webjars.bower</groupId>
 			<artifactId>angular-moment</artifactId>

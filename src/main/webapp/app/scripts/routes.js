@@ -42,11 +42,11 @@
 		addRoute('/maven_repositories', 'app/module/maven_repository/maven_repositories.html', 'MavenRepositoryListController');
 		addRoute('/maven_repositories/:id', 'app/module/maven_repository/maven_repository.html', 'MavenRepositoryDetailController');
 
-		addRoute('/roles', 'app/module/role/roles.html', 'RoleListController');
-		addRoute('/roles/:id', 'app/module/role/role.html', 'RoleDetailController');
+		addRoute('/roles', 'appframework/module/role/roles.html', 'RoleListController');
+		addRoute('/roles/:id', 'appframework/module/role/role.html', 'RoleDetailController');
 
-		addRoute('/users', 'app/module/user/users.html', 'UserListController');
-		addRoute('/users/:id', 'app/module/user/user.html', 'UserDetailController');
+		addRoute('/users', 'appframework/module/user/users.html', 'UserListController');
+		addRoute('/users/:id', 'appframework/module/user/user.html', 'UserDetailController');
 	}
 
 })();

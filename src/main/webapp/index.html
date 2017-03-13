@@ -13,17 +13,17 @@
   <!-- font-awesome -->
   <link rel="stylesheet" type="text/css" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Angular -->
-  <script type="text/javascript" src="webjars/angular/1.6.1/angular.js"></script>
-  <script type="text/javascript" src="webjars/angular-resource/1.6.1/angular-resource.js"></script>
-  <script type="text/javascript" src="webjars/angular-route/1.6.1/angular-route.js"></script>
-  <script type="text/javascript" src="webjars/angular-sanitize/1.6.1/angular-sanitize.js"></script>
+  <script type="text/javascript" src="webjars/angular/1.6.3/angular.js"></script>
+  <script type="text/javascript" src="webjars/angular-resource/1.6.3/angular-resource.js"></script>
+  <script type="text/javascript" src="webjars/angular-route/1.6.3/angular-route.js"></script>
+  <script type="text/javascript" src="webjars/angular-sanitize/1.6.3/angular-sanitize.js"></script>
   <!-- angular-translate -->
-  <script type="text/javascript" src="webjars/angular-translate/2.13.1/angular-translate.js"></script>
-  <script type="text/javascript" src="webjars/angular-translate-loader-static-files/2.13.1/angular-translate-loader-static-files.js"></script>
+  <script type="text/javascript" src="webjars/angular-translate/2.15.1/angular-translate.js"></script>
+  <script type="text/javascript" src="webjars/angular-translate-loader-static-files/2.15.1/angular-translate-loader-static-files.js"></script>
   <!-- file upload -->
   <script type="text/javascript" src="webjars/ng-file-upload/12.2.13/ng-file-upload-all.js"></script>
   <!-- Bootstrap UI -->
-  <script type="text/javascript" src="webjars/angular-ui-bootstrap-bower/2.3.1/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="webjars/angular-ui-bootstrap-bower/2.5.0/ui-bootstrap-tpls.min.js"></script>
   <!-- awesome-bootstrap-checkbox -->
   <link rel="stylesheet" href="webjars/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.css"/>
   <!-- moment -->
@@ -31,26 +31,29 @@
   <script type="text/javascript" src="webjars/moment/2.17.1/locale/de.js"></script>
   <script type="text/javascript" src="webjars/angular-moment/1.0.1/angular-moment.min.js"></script>
   <!-- App basics -->
+  <script type="text/javascript" src="appframework/appframework.js"></script>
   <script type="text/javascript" src="app/scripts/app.js"></script>
   <script type="text/javascript" src="app/scripts/main.js"></script>
   <script type="text/javascript" src="app/scripts/routes.js"></script>
-  <script type="text/javascript" src="app/scripts/translate.js"></script>
+  <script type="text/javascript" src="appframework/translate.js"></script>
 
   <!-- Styles -->
+  <link rel="stylesheet" type="text/css" href="appframework/styles/global.css"/>
   <link rel="stylesheet" type="text/css" href="app/styles/global.css"/>
-  <link rel="stylesheet" type="text/css" href="app/styles/dashboard.css"/>
+  <link rel="stylesheet" type="text/css" href="appframework/styles/dashboard.css"/>
 
   <!-- Directives, factories, fitlers -->
   <script type="text/javascript" src="app/scripts/directive/actionCheckout.js"></script>
   <script type="text/javascript" src="app/scripts/directive/actionCopy.js"></script>
   <script type="text/javascript" src="app/scripts/directive/actionExtraction.js"></script>
   <script type="text/javascript" src="app/scripts/directive/actionReplacement.js"></script>
-  <script type="text/javascript" src="app/scripts/directive/labelGroup.js"></script>
+  <script type="text/javascript" src="appframework/directive/labelGroup.js"></script>
   <script type="text/javascript" src="app/scripts/directive/projectName.js"></script>
   <script type="text/javascript" src="app/scripts/services/actionCheckout.factory.js"></script>
   <script type="text/javascript" src="app/scripts/services/actionCopy.factory.js"></script>
   <script type="text/javascript" src="app/scripts/services/actionExtraction.factory.js"></script>
   <script type="text/javascript" src="app/scripts/services/actionReplacement.factory.js"></script>
+  <script type="text/javascript" src="appframework/controller/confirm.controller.js"></script>
 
   <!-- Modules -->
   <script type="text/javascript" src="app/module/home/home.controller.js"></script>
@@ -81,17 +84,15 @@
   <script type="text/javascript" src="app/module/maven_repository/maven_repository.controller.js"></script>
   <script type="text/javascript" src="app/module/maven_repository/maven_repositories.controller.js"></script>
 
-  <script type="text/javascript" src="app/module/role/role.factory.js"></script>
-  <script type="text/javascript" src="app/module/role/role.controller.js"></script>
-  <script type="text/javascript" src="app/module/role/roles.controller.js"></script>
-  <script type="text/javascript" src="app/module/role/permission.filter.js"></script>
+  <script type="text/javascript" src="appframework/module/role/role.factory.js"></script>
+  <script type="text/javascript" src="appframework/module/role/role.controller.js"></script>
+  <script type="text/javascript" src="appframework/module/role/roles.controller.js"></script>
+  <script type="text/javascript" src="appframework/module/role/permission.filter.js"></script>
 
-  <script type="text/javascript" src="app/module/user/user.factory.js"></script>
-  <script type="text/javascript" src="app/module/user/user.controller.js"></script>
-  <script type="text/javascript" src="app/module/user/users.controller.js"></script>
-  <script type="text/javascript" src="app/module/user/passwords-equal.directive.js"></script>
-
-  <script type="text/javascript" src="app/scripts/controller/confirm.controller.js"></script>
+  <script type="text/javascript" src="appframework/module/user/user.factory.js"></script>
+  <script type="text/javascript" src="appframework/module/user/user.controller.js"></script>
+  <script type="text/javascript" src="appframework/module/user/users.controller.js"></script>
+  <script type="text/javascript" src="appframework/module/user/passwords-equal.directive.js"></script>
 
 </head>
 <body ng-controller="MainCtrl as main">
@@ -135,8 +136,8 @@
             <li ng-class="{active : main.currentModule() == 'tag_transformers'}"><a href="#/tag_transformers" id="menu_tag_transformers"><i class="fa fa-exchange"></i> {{'tag_transformers' | translate}} <span ng-show="main.currentModule() == 'tag_transformers'" class="sr-only">(current)</span></a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-cogs"></i> {{'roles' | translate}} <span ng-show="main.currentModule() == 'roles'" class="sr-only">(current)</span></a></li>
-            <li ng-class="{active : main.currentModule() == 'users'}"><a href="#/users" id="menu_users"><i class="fa fa-user"></i> {{'users' | translate}} <span ng-show="main.currentModule() == 'users'" class="sr-only">(current)</span></a></li>
+            <li ng-show="main.hasPermission('ADMIN_ROLES')" ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-cogs"></i> {{'roles' | translate}} <span ng-show="main.currentModule() == 'roles'" class="sr-only">(current)</span></a></li>
+            <li ng-show="main.hasPermission('ADMIN_USERS')" ng-class="{active : main.currentModule() == 'users'}"><a href="#/users" id="menu_users"><i class="fa fa-user"></i> {{'users' | translate}} <span ng-show="main.currentModule() == 'users'" class="sr-only">(current)</span></a></li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="page-wrapper" ng-view>
