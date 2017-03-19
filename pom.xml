@@ -104,6 +104,14 @@
 			<version>1.0.1</version>
 		</dependency>
 
+		<!-- Intentional copy from appframework, otherwise build failes -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${version.servlet}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Apache commons -->
 		<dependency>
 			<groupId>commons-io</groupId>
