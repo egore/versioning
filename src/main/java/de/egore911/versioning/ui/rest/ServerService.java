@@ -31,6 +31,7 @@ import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.ActionReplacementEntity;
 import de.egore911.versioning.persistence.model.BinaryDataEntity;
 import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ReplacementEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.VariableEntity;
 import de.egore911.versioning.persistence.model.VersionEntity;
@@ -97,10 +98,16 @@ public class ServerService
 				variable.setServer(entity);
 			}
 		}
-		if (entity.getActionReplacements() != null) {
-			for (ActionReplacementEntity actionReplacement : entity
-					.getActionReplacements()) {
+		List<ActionReplacementEntity> actionReplacements = entity.getActionReplacements();
+		if (actionReplacements != null) {
+			for (ActionReplacementEntity actionReplacement : actionReplacements) {
 				actionReplacement.setServer(entity);
+				List<ReplacementEntity> replacements = actionReplacement.getReplacements();
+				if (replacements != null) {
+					for (ReplacementEntity replacementEntity : replacements) {
+						replacementEntity.setActionReplacement(actionReplacement);
+					}
+				}
 			}
 		}
 	}

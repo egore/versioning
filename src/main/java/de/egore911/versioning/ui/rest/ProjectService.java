@@ -15,10 +15,13 @@ import org.apache.shiro.subject.Subject;
 import de.egore911.appframework.ui.exceptions.BadArgumentException;
 import de.egore911.appframework.ui.rest.AbstractResourceService;
 import de.egore911.versioning.persistence.dao.ProjectDao;
+import de.egore911.versioning.persistence.model.ActionCheckoutEntity;
 import de.egore911.versioning.persistence.model.ActionCopyEntity;
 import de.egore911.versioning.persistence.model.ActionExtractionEntity;
+import de.egore911.versioning.persistence.model.ActionReplacementEntity;
 import de.egore911.versioning.persistence.model.ExtractionEntity;
 import de.egore911.versioning.persistence.model.ProjectEntity;
+import de.egore911.versioning.persistence.model.ReplacementEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.VariableEntity;
 import de.egore911.versioning.persistence.selector.ProjectSelector;
@@ -57,12 +60,45 @@ public class ProjectService
 		for (ActionCopyEntity actionCopy : entity.getActionCopies()) {
 			checkVariableExists(entity, actionCopy.getTargetPath());
 		}
-		for (ActionExtractionEntity actionExtraction : entity
-				.getActionExtractions()) {
-			for (ExtractionEntity extraction : actionExtraction
-					.getExtractions()) {
-				checkVariableExists(entity, extraction.getSource());
-				checkVariableExists(entity, extraction.getDestination());
+		List<ActionExtractionEntity> actionExtractions = entity
+				.getActionExtractions();
+		if (actionExtractions != null) {
+			for (ActionExtractionEntity actionExtraction : actionExtractions) {
+				actionExtraction.setProject(entity);
+				List<ExtractionEntity> extractions = actionExtraction
+						.getExtractions();
+				if (extractions != null) {
+					for (ExtractionEntity extraction : extractions) {
+						extraction.setActionExtraction(actionExtraction);
+						checkVariableExists(entity, extraction.getSource());
+						checkVariableExists(entity,
+								extraction.getDestination());
+					}
+				}
+			}
+		}
+		List<ActionCopyEntity> actionCopies = entity.getActionCopies();
+		if (actionCopies != null) {
+			for (ActionCopyEntity actionCopy : actionCopies) {
+				actionCopy.setProject(entity);
+			}
+		}
+		List<ActionCheckoutEntity> actionCheckouts = entity.getActionCheckouts();
+		if (actionCheckouts != null) {
+			for (ActionCheckoutEntity actionCheckout : actionCheckouts) {
+				actionCheckout.setProject(entity);
+			}
+		}
+		List<ActionReplacementEntity> actionReplacements = entity.getActionReplacements();
+		if (actionReplacements != null) {
+			for (ActionReplacementEntity actionReplacement : actionReplacements) {
+				actionReplacement.setProject(entity);
+				List<ReplacementEntity> replacements = actionReplacement.getReplacements();
+				if (replacements != null) {
+					for (ReplacementEntity replacementEntity : replacements) {
+						replacementEntity.setActionReplacement(actionReplacement);
+					}
+				}
 			}
 		}
 	}

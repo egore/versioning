@@ -84,7 +84,7 @@ public class ActionReplacementEntity extends IntegerDbObject {
 		this.wildcards = wildcards;
 	}
 
-	@OneToMany(mappedBy = "actionReplacement", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "actionReplacement", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("variable,value")
 	public List<ReplacementEntity> getReplacements() {
 		return replacements;

@@ -114,7 +114,7 @@ public class ProjectEntity extends IntegerDbObject implements Comparable<Project
 		this.vcsPath = vcsPath;
 	}
 
-	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<ActionCopyEntity> getActionCopies() {
 		return actionCopies;
 	}
@@ -123,7 +123,7 @@ public class ProjectEntity extends IntegerDbObject implements Comparable<Project
 		this.actionCopies = actionCopies;
 	}
 
-	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<ActionExtractionEntity> getActionExtractions() {
 		return actionExtractions;
 	}
@@ -132,7 +132,7 @@ public class ProjectEntity extends IntegerDbObject implements Comparable<Project
 		this.actionExtractions = actionExtractions;
 	}
 
-	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<ActionReplacementEntity> getActionReplacements() {
 		return actionReplacements;
 	}
@@ -141,7 +141,7 @@ public class ProjectEntity extends IntegerDbObject implements Comparable<Project
 		this.actionReplacements = actionReplacements;
 	}
 
-	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<ActionCheckoutEntity> getActionCheckouts() {
 		return actionCheckouts;
 	}

@@ -42,7 +42,7 @@ public class ActionExtractionEntity extends AbstractRemoteActionEntity {
 
 	private List<ExtractionEntity> extractions = new ArrayList<>(0);
 
-	@OneToMany(mappedBy = "actionExtraction", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "actionExtraction", cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy("source,destination")
 	public List<ExtractionEntity> getExtractions() {
 		return extractions;
