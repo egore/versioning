@@ -71,7 +71,7 @@
 		}
 
 		function isSelectedServer(serverId) {
-			return vm.project && vm.project.configuredServerIds.indexOf(serverId) !== -1;
+			return vm.project && vm.project.configuredServerIds && vm.project.configuredServerIds.indexOf(serverId) !== -1;
 		}
 
 		function toggleSelectionServer(serverId) {
