@@ -42,7 +42,7 @@
 
 					if ($route.current.params.id == 'new') {
 						vm.project = new Project();
-						vm.project.vcsHostId = vcs_hosts[0].id;
+						vm.project.vcsHostId = vcs_hosts.length > 0 ? vcs_hosts[0].id : undefined;
 						vm.save = function() {
 							vm.project.$save(function() {
 								$location.path('/projects');
