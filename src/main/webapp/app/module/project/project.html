@@ -26,7 +26,7 @@
 	</div>
 	<label-group label="{{'vcsPath' | translate}}" ng-class="{'has-error': form.vcsPath.$touched && form.vcsPath.$error.required}">
 		<p>
-			<input type="text" class="form-control" ng-model="vm.project.vcsPath" name="vcsPath" />
+			<input type="text" class="form-control" ng-model="vm.project.vcsPath" name="vcsPath" ng-required="true" />
 		</p>
 	</label-group>
 	<div class="form-group">
