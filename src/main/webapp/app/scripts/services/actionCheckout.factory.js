@@ -13,9 +13,7 @@
 
 		function addActionCheckout(entity) {
 			var newVariable = {
-				extractions: [{
-					targetPath: ''
-				}]
+				targetPath: ''
 			};
 			if (!entity.actionCheckouts) {
 				entity.actionCheckouts = [newVariable];
