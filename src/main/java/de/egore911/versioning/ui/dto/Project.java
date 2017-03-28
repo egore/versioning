@@ -10,6 +10,10 @@ public class Project extends AbstractDto {
 	private String description;
 	private Integer vcsHostId;
 	private String vcsPath;
+	private List<ActionCopy> actionCopies;
+	private List<ActionExtraction> actionExtractions;
+	private List<ActionReplacement> actionReplacements;
+	private List<ActionCheckout> actionCheckouts;
 	private Integer tagTransformerId;
 	private List<Integer> configuredServerIds;
 	private boolean deleted;
@@ -44,6 +48,38 @@ public class Project extends AbstractDto {
 
 	public void setVcsPath(String vcsPath) {
 		this.vcsPath = vcsPath;
+	}
+
+	public List<ActionCopy> getActionCopies() {
+		return actionCopies;
+	}
+
+	public void setActionCopies(List<ActionCopy> actionCopies) {
+		this.actionCopies = actionCopies;
+	}
+
+	public List<ActionExtraction> getActionExtractions() {
+		return actionExtractions;
+	}
+
+	public void setActionExtractions(List<ActionExtraction> actionExtractions) {
+		this.actionExtractions = actionExtractions;
+	}
+
+	public List<ActionReplacement> getActionReplacements() {
+		return actionReplacements;
+	}
+
+	public void setActionReplacements(List<ActionReplacement> actionReplacements) {
+		this.actionReplacements = actionReplacements;
+	}
+
+	public List<ActionCheckout> getActionCheckouts() {
+		return actionCheckouts;
+	}
+
+	public void setActionCheckouts(List<ActionCheckout> actionCheckouts) {
+		this.actionCheckouts = actionCheckouts;
 	}
 
 	public Integer getTagTransformerId() {
