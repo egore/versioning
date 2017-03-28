@@ -152,4 +152,14 @@
 
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.webjars.bower</groupId>
+				<artifactId>jquery</artifactId>
+				<version>3.2.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 </project>
