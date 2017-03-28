@@ -1,6 +1,5 @@
 package de.egore911.versioning.ui.rest;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -26,7 +25,6 @@ import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.VariableEntity;
 import de.egore911.versioning.persistence.selector.ProjectSelector;
 import de.egore911.versioning.ui.dto.Project;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.vcs.Provider.Tag;
 
 @Path("project")
@@ -116,10 +114,8 @@ public class ProjectService
 					}
 				}
 				if (!found) {
-					throw new BadArgumentException(MessageFormat.format(
-							SessionUtil.getBundle().getString(
-									"missing_variable_X_for_server_Y"),
-							variableName, server.getName()));
+					throw new BadArgumentException("Missing variable "
+							+ variableName + " for server " + server.getName());
 				}
 			}
 		}

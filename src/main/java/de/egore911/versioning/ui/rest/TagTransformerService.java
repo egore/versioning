@@ -1,7 +1,5 @@
 package de.egore911.versioning.ui.rest;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -20,7 +18,6 @@ import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.model.TagTransformerEntity;
 import de.egore911.versioning.persistence.selector.TagTransformerSelector;
 import de.egore911.versioning.ui.dto.TagTransformer;
-import de.egore911.versioning.util.SessionUtil;
 
 @Path("tag_transformer")
 public class TagTransformerService
@@ -53,10 +50,7 @@ public class TagTransformerService
 		try {
 			Pattern.compile(entity.getSearchPattern());
 		} catch (PatternSyntaxException e) {
-			ResourceBundle bundle = SessionUtil.getBundle();
-			throw new BadArgumentException(MessageFormat.format(
-					bundle.getString("invalid_search_pattern_detail"),
-					e.getMessage()));
+			throw new BadArgumentException("Invalid search pattern: " + e.getMessage());
 		}
 	}
 

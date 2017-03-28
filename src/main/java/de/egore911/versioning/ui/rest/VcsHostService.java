@@ -1,7 +1,5 @@
 package de.egore911.versioning.ui.rest;
 
-import java.util.ResourceBundle;
-
 import javax.annotation.Nonnull;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
@@ -18,7 +16,6 @@ import de.egore911.versioning.persistence.model.VcsHostEntity;
 import de.egore911.versioning.persistence.selector.VcsHostSelector;
 import de.egore911.versioning.ui.dto.VcsHost;
 import de.egore911.versioning.ui.logic.VcshostUtil;
-import de.egore911.versioning.util.SessionUtil;
 
 @Path("vcs_host")
 public class VcsHostService
@@ -60,9 +57,7 @@ public class VcsHostService
 				|| StringUtils.isNotEmpty(dto.getPasswordVerify())) {
 			if (entity.getPassword() != null
 					&& !entity.getPassword().equals(dto.getPasswordVerify())) {
-				ResourceBundle bundle = SessionUtil.getBundle();
-				throw new BadArgumentException(
-						bundle.getString("passwords_dont_match"));
+				throw new BadArgumentException("Passwords don't match");
 			}
 		}
 	}

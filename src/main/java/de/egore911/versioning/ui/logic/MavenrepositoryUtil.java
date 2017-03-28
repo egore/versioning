@@ -21,12 +21,9 @@
  */
 package de.egore911.versioning.ui.logic;
 
-import java.util.ResourceBundle;
-
 import de.egore911.appframework.ui.exceptions.BadArgumentException;
 import de.egore911.versioning.persistence.model.MavenArtifactEntity;
 import de.egore911.versioning.persistence.model.MavenRepositoryEntity;
-import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -38,7 +35,6 @@ public final class MavenrepositoryUtil {
 
 	public static void checkDeletable(MavenRepositoryEntity mavenRepository) {
 		if (!mavenRepository.getMavenArtifacts().isEmpty()) {
-			ResourceBundle bundle = SessionUtil.getBundle();
 			StringBuilder projectNames = new StringBuilder();
 			for (MavenArtifactEntity mavenArtifact : mavenRepository.getMavenArtifacts()) {
 				if (projectNames.length() > 0) {
@@ -48,7 +44,7 @@ public final class MavenrepositoryUtil {
 				projectNames.append(':');
 				projectNames.append(mavenArtifact.getArtifactId());
 			}
-			throw new BadArgumentException(bundle.getString("mavenrepository_delete_not_possible_used_by_artifacts") + ": (" + projectNames.toString() + ")");
+			throw new BadArgumentException("Deletion not possible, used by: (" + projectNames.toString() + ")");
 		}
 	}
 

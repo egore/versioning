@@ -1,7 +1,5 @@
 package de.egore911.versioning.ui.rest;
 
-import java.util.ResourceBundle;
-
 import javax.ws.rs.Path;
 
 import org.apache.shiro.subject.Subject;
@@ -12,7 +10,6 @@ import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.persistence.selector.VersionSelector;
 import de.egore911.versioning.ui.dto.Version;
-import de.egore911.versioning.util.SessionUtil;
 import de.egore911.versioning.util.vcs.Provider;
 
 @Path("version")
@@ -45,8 +42,7 @@ public class VersionService
 
 		Provider provider = entity.getProject().getProvider();
 		if (!provider.tagExists(entity.getVcsTag())) {
-			ResourceBundle bundle = SessionUtil.getBundle();
-			throw new BadArgumentException(bundle.getString("tag_not_found"));
+			throw new BadArgumentException("Tag not found");
 		}
 
 	}

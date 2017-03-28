@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -41,7 +40,6 @@ import de.egore911.versioning.ui.dto.Version;
 import de.egore911.versioning.ui.logic.DeploymentCalculator;
 import de.egore911.versioning.ui.servlets.JsonRenderer;
 import de.egore911.versioning.ui.servlets.XmlRenderer;
-import de.egore911.versioning.util.SessionUtil;
 
 @Path("server")
 public class ServerService
@@ -139,9 +137,7 @@ public class ServerService
 	protected void validate(Server dto, ServerEntity entity) {
 		super.validate(dto, entity);
 		if (entity.getName().contains("/")) {
-			ResourceBundle bundle = SessionUtil.getBundle();
-			throw new BadArgumentException(
-					bundle.getString("invalid_chars_in_name"));
+			throw new BadArgumentException("Invalid characters in name");
 		}
 	}
 

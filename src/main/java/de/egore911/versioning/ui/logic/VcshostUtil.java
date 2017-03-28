@@ -21,14 +21,11 @@
  */
 package de.egore911.versioning.ui.logic;
 
-import java.util.ResourceBundle;
-
 import javax.annotation.Nullable;
 
 import de.egore911.appframework.ui.exceptions.BadArgumentException;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.VcsHostEntity;
-import de.egore911.versioning.util.SessionUtil;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -40,7 +37,6 @@ public final class VcshostUtil {
 
 	public static void checkDeletable(@Nullable VcsHostEntity vcshost) {
 		if (vcshost != null && !vcshost.getProjects().isEmpty()) {
-			ResourceBundle bundle = SessionUtil.getBundle();
 			StringBuilder projectNames = new StringBuilder();
 			for (ProjectEntity project : vcshost.getProjects()) {
 				if (projectNames.length() > 0) {
@@ -48,7 +44,7 @@ public final class VcshostUtil {
 				}
 				projectNames.append(project.getName());
 			}
-			throw new BadArgumentException(bundle.getString("vcshost_delete_not_possible_used_by_projects") + ": (" + projectNames.toString() + ")");
+			throw new BadArgumentException("Deletion not possible, used by: (" + projectNames.toString() + ")");
 		}
 	}
 
