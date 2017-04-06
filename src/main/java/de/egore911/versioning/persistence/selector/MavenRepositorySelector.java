@@ -47,6 +47,8 @@ public class MavenRepositorySelector
 
 	private String name;
 
+	private String search;
+
 	@Override
 	protected Class<MavenRepositoryEntity> getEntityClass() {
 		return MavenRepositoryEntity.class;
@@ -63,6 +65,16 @@ public class MavenRepositorySelector
 					.add(builder.equal(from.get(MavenRepositoryEntity_.name), name));
 		}
 
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(
+					builder.or(
+							builder.like(from.get(MavenRepositoryEntity_.name), likePattern),
+							builder.like(from.get(MavenRepositoryEntity_.baseUrl), likePattern)
+					)
+			);
+		}
+
 		return predicates;
 	}
 
@@ -75,6 +87,12 @@ public class MavenRepositorySelector
 
 	public MavenRepositorySelector withName(String name) {
 		this.name = name;
+		return this;
+	}
+
+	@Override
+	public MavenRepositorySelector withSearch(String search) {
+		this.search = search;
 		return this;
 	}
 

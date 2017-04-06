@@ -45,6 +45,7 @@ public class TagTransformerSelector extends AbstractResourceSelector<TagTransfor
 	private static final long serialVersionUID = -8032360585214192038L;
 
 	private String name;
+	private String search;
 
 	@Override
 	protected Class<TagTransformerEntity> getEntityClass() {
@@ -61,6 +62,17 @@ public class TagTransformerSelector extends AbstractResourceSelector<TagTransfor
 			predicates.add(builder.equal(from.get(TagTransformerEntity_.name), name));
 		}
 
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(
+					builder.or(
+							builder.like(from.get(TagTransformerEntity_.name), likePattern),
+							builder.like(from.get(TagTransformerEntity_.searchPattern), likePattern),
+							builder.like(from.get(TagTransformerEntity_.replacementPattern), likePattern)
+					)
+			);
+		}
+
 		return predicates;
 	}
 
@@ -73,6 +85,12 @@ public class TagTransformerSelector extends AbstractResourceSelector<TagTransfor
 
 	public TagTransformerSelector withName(String name) {
 		this.name = name;
+		return this;
+	}
+
+	@Override
+	public TagTransformerSelector withSearch(String search) {
+		this.search = search;
 		return this;
 	}
 

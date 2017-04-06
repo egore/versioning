@@ -96,12 +96,12 @@
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework</artifactId>
-			<version>1.0.7</version>
+			<version>1.0.8</version>
 		</dependency>
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework-angular</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.3</version>
 		</dependency>
 
 		<!-- Intentional copy from appframework, otherwise build failes -->
@@ -146,7 +146,7 @@
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework-testing</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3</version>
 			<scope>test</scope>
 		</dependency>
 

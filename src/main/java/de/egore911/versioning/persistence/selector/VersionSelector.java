@@ -51,6 +51,7 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 	private String vcsTag;
 	private String projectNameLike;
 	private String vcsTagLike;
+	private String search;
 	
 	public VersionSelector() {
 		withSortColumn("created");
@@ -86,6 +87,17 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 			predicates.add(builder.like(from.get(VersionEntity_.vcsTag), "%"
 					+ vcsTagLike + "%"));
 		}
+
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(
+					builder.or(
+							builder.like(from.get(VersionEntity_.vcsTag), likePattern),
+							builder.like(from.get(VersionEntity_.project).get(ProjectEntity_.name), likePattern)
+					)
+			);
+		}
+
 
 		return predicates;
 	}
@@ -123,36 +135,30 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 				builder.asc(from.get(VersionEntity_.vcsTag)));
 	}
 
-	public ProjectEntity getProject() {
-		return project;
-	}
-
-	public void setProject(ProjectEntity project) {
+	public VersionSelector withProject(ProjectEntity project) {
 		this.project = project;
+		return this;
 	}
 
-	public String getVcsTag() {
-		return vcsTag;
-	}
-
-	public void setVcsTag(String vcsTag) {
+	public VersionSelector withVcsTag(String vcsTag) {
 		this.vcsTag = vcsTag;
+		return this;
 	}
 
-	public String getProjectNameLike() {
-		return projectNameLike;
-	}
-
-	public void setProjectNameLike(String projectNameLike) {
+	public VersionSelector withProjectNameLike(String projectNameLike) {
 		this.projectNameLike = projectNameLike;
+		return this;
 	}
 
-	public String getVcsTagLike() {
-		return vcsTagLike;
-	}
-
-	public void setVcsTagLike(String vcsTagLike) {
+	public VersionSelector withVcsTagLike(String vcsTagLike) {
 		this.vcsTagLike = vcsTagLike;
+		return this;
+	}
+
+	@Override
+	public VersionSelector withSearch(String search) {
+		this.search = search;
+		return this;
 	}
 
 }

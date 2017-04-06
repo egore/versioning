@@ -48,6 +48,7 @@ public class ServerSelector extends AbstractResourceSelector<ServerEntity> {
 	private String nameLike;
 	private String descriptionLike;
 	private Integer iconId;
+	private String search;
 
 	@Override
 	protected Class<ServerEntity> getEntityClass() {
@@ -76,6 +77,16 @@ public class ServerSelector extends AbstractResourceSelector<ServerEntity> {
 		
 		if (iconId != null) {
 			predicates.add(builder.equal(from.get(ServerEntity_.iconId), iconId));
+		}
+
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(
+					builder.or(
+							builder.like(from.get(ServerEntity_.name), likePattern),
+							builder.like(from.get(ServerEntity_.vcsPath), likePattern)
+					)
+			);
 		}
 
 		return predicates;
@@ -109,4 +120,9 @@ public class ServerSelector extends AbstractResourceSelector<ServerEntity> {
 		return this;
 	}
 
+	@Override
+	public ServerSelector withSearch(String search) {
+		this.search = search;
+		return this;
+	}
 }

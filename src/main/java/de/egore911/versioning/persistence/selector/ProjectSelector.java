@@ -32,6 +32,8 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.ProjectEntity_;
@@ -45,8 +47,8 @@ public class ProjectSelector extends AbstractResourceSelector<ProjectEntity> {
 	private static final long serialVersionUID = 6585242967556404330L;
 
 	private ServerEntity configuredForServer;
-
 	private Boolean excludeDeleted;
+	private String search;
 
 	@Override
 	protected Class<ProjectEntity> getEntityClass() {
@@ -69,6 +71,16 @@ public class ProjectSelector extends AbstractResourceSelector<ProjectEntity> {
 			predicates.add(builder.notEqual(from.get(ProjectEntity_.deleted), Boolean.TRUE));
 		}
 
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(
+					builder.or(
+							builder.like(from.get(ProjectEntity_.name), likePattern),
+							builder.like(from.get(ProjectEntity_.vcsPath), likePattern)
+					)
+			);
+		}
+
 		return predicates;
 	}
 
@@ -88,4 +100,9 @@ public class ProjectSelector extends AbstractResourceSelector<ProjectEntity> {
 		return this;
 	}
 
+	@Override
+	public ProjectSelector withSearch(String search) {
+		this.search = search;
+		return this;
+	}
 }

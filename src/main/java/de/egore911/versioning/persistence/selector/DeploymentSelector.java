@@ -31,12 +31,15 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
 import de.egore911.versioning.persistence.model.DeploymentEntity;
 import de.egore911.versioning.persistence.model.DeploymentEntity_;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.ProjectEntity_;
 import de.egore911.versioning.persistence.model.ServerEntity;
+import de.egore911.versioning.persistence.model.ServerEntity_;
 import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.persistence.model.VersionEntity_;
 
@@ -53,6 +56,7 @@ public class DeploymentSelector extends AbstractResourceSelector<DeploymentEntit
 	private Boolean isUneployed;
 	private ProjectEntity project;
 	private Boolean excludeDeleted;
+	private String search;
 
 	@Override
 	protected Class<DeploymentEntity> getEntityClass() {
@@ -109,6 +113,17 @@ public class DeploymentSelector extends AbstractResourceSelector<DeploymentEntit
 			predicates.add(builder.equal(fromVersion.get(VersionEntity_.project),
 					project));
 		}
+		
+		if (StringUtils.isNotEmpty(search)) {
+			String likePattern = '%' + search + '%';
+			predicates.add(
+					builder.or(
+							builder.like(from.get(DeploymentEntity_.version).get(VersionEntity_.vcsTag), likePattern),
+							builder.like(from.get(DeploymentEntity_.version).get(VersionEntity_.project).get(ProjectEntity_.name), likePattern),
+							builder.like(from.get(DeploymentEntity_.server).get(ServerEntity_.name), likePattern)
+					)
+			);
+		}
 
 		return predicates;
 	}
@@ -154,4 +169,11 @@ public class DeploymentSelector extends AbstractResourceSelector<DeploymentEntit
 		this.deployedAfter = deployedAfter;
 		return this;
 	}
+
+	@Override
+	public DeploymentSelector withSearch(String search) {
+		this.search = search;
+		return this;
+	}
+
 }

@@ -42,10 +42,10 @@ public class VersionDao extends AbstractDao<VersionEntity> {
 	}
 
 	public boolean tagExists(ProjectEntity project, String vcsTag) {
-		VersionSelector versionSelector = new VersionSelector();
-		versionSelector.setProject(project);
-		versionSelector.setVcsTag(vcsTag);
-		return versionSelector.count() > 0;
+		return new VersionSelector()
+				.withProject(project)
+				.withVcsTag(vcsTag)
+				.count() > 0;
 	}
 
 }

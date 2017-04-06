@@ -82,7 +82,7 @@
 
 		function loadData() {
 			vm.is_loading = true;
-			Version.query({'limit': vm.pagesize, 'offset': ((vm.currentPage - 1) * vm.pagesize), 'sortColumn': vm.predicate, 'ascending': !vm.reverse}, function(versions) {
+			Version.query({'limit': vm.pagesize, 'offset': ((vm.currentPage - 1) * vm.pagesize), 'sortColumn': vm.predicate, 'ascending': !vm.reverse, 'search': $rootScope.search}, function(versions) {
 				var total = (arguments[1]('Result-Count'));
 				if (!total) {
 					total = versions.length;
