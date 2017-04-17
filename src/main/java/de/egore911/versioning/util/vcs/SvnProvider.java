@@ -113,8 +113,8 @@ public class SvnProvider extends Provider {
 
 		// If the VCS host has credentials available use them
 		if (vcsHost.isCredentialsAvailable()) {
-			ISVNAuthenticationManager authManager = new BasicAuthenticationManager(
-					vcsHost.getUsername(), vcsHost.getPassword());
+			ISVNAuthenticationManager authManager = BasicAuthenticationManager.newInstance(
+					vcsHost.getUsername(), vcsHost.getPassword().toCharArray());
 			repo.setAuthenticationManager(authManager);
 		}
 		return repo;
