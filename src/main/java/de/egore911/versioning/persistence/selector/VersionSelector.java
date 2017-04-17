@@ -98,7 +98,6 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 			);
 		}
 
-
 		return predicates;
 	}
 

@@ -46,5 +46,15 @@
 			return $.inArray(permission, vm.permissions) >= 0;
 		}
 
+		function getVersion() {
+			if (vm.version) {
+				var version = vm.version.maven;
+				if (version.indexOf('-SNAPSHOT', version.length - '-SNAPSHOT'.length) !== -1) {
+					version += ' (' + vm.version.git + ')';
+				}
+				return version;
+			}
+		}
+
 	}
 })();
