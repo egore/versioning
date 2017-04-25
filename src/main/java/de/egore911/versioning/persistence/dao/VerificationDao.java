@@ -1,5 +1,5 @@
 /*
- * Copyright 2013  Christoph Brill <egore911@gmail.com>
+ * Copyright 2013-2017 Christoph Brill <egore911@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,25 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.egore911.versioning.persistence.model;
+package de.egore911.versioning.persistence.dao;
+
+import de.egore911.persistence.dao.AbstractDao;
+import de.egore911.versioning.persistence.model.VerificationEntity;
+import de.egore911.versioning.persistence.selector.VerificationSelector;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public enum Permission {
-	/** Users, Roles */
-	SHOW_USERS,
-	ADMIN_USERS,
-	SHOW_ROLES,
-	ADMIN_ROLES,
-	/** VCS Hosts, Projects, and Servers */
-	ADMIN_SETTINGS,
-	/** Create versions */
-	CREATE_VERSIONS,
-	/** Create versions */
-	DEPLOY,
-	/** Verifications */
-	SHOW_VERIFICATIONS,
-	ADMIN_VERIFICATIONS
+public class VerificationDao extends AbstractDao<VerificationEntity> {
+
+	@Override
+	protected Class<VerificationEntity> getEntityClass() {
+		return VerificationEntity.class;
+	}
+
+	@Override
+	protected VerificationSelector createSelector() {
+		return new VerificationSelector();
+	}
 
 }

@@ -1,0 +1,44 @@
+<h1 class="page-header"><i class="fa fa-code-fork"></i>{{'verifications' | translate}}</h1>
+
+<button ng-show="main.hasPermission('ADMIN_VERIFICATIONS')" ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>
+            <span ng-click="vm.order(vm.orderGroupId)" class="sortable" translate="groupId"></span>
+            <span class="sortorder" ng-show="vm.predicate === vm.orderGroupId" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('artifactId')" class="sortable" translate="artifactId"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'artifactId'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('version')" class="sortable" translate="version"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'version'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('packaging')" class="sortable" translate="packaging"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'packaging'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('createdBy')" class="sortable" translate="createdBy"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'createdBy'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+        <th>
+            <span ng-click="vm.order('created')" class="sortable" translate="created"></span>
+            <span class="sortorder" ng-show="vm.predicate === 'created'" ng-class="{reverse: vm.reverse}"></span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="verification in vm.verifications | filter: search | orderBy:vm.predicate:vm.reverse">
+        <td ng-bind="verification.groupId"></td>
+        <td><a href="#verifications/{{verification.id}}" ng-bind="verification.artifactId"></a></td>
+        <td ng-bind="verification.version"></td>
+        <td ng-bind="verification.packaging"></td>
+        <td ng-bind="verification.createdBy"></td>
+        <td ng-bind="verification.created | amDateFormat:'LLL'"></td>
+    </tr>
+    </tbody>
+</table>
+<button ng-show="main.hasPermission('ADMIN_VERIFICATIONS')" ng-click="vm.add()" class="btn btn-default"><i class="fa fa-plus-circle"></i> {{'add' | translate}}</button>

@@ -1,0 +1,31 @@
+<h1 class="page-header"><i class="fa fa-code-fork"></i>{{!vm.verification.artifactId ? '&nbsp;' : vm.verification.groupId + ':' + vm.verification.artifactId + ':' + vm.verification.version}}</h1>
+
+<form class="form-horizontal" name="form">
+	<label-group label="{{'groupId' | translate}}" ng-class="{'has-error': form.groupId.$touched && form.groupId.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.verification.groupId" name="groupId" required ng-disabled="vm.verification.id !== undefined"
+				uib-typeahead="groupId for groupId in vm.suggest('groupId', $viewValue)" typeahead-loading="loadGroupId" autocomplete="off" ng-paste="vm.splitIfNecessary($event)" />
+			<i ng-show="loadGroupId" class="fa fa-refresh input-loading"></i>
+		</p>
+	</label-group>
+	<label-group label="{{'artifactId' | translate}}" ng-class="{'has-error': form.artifactId.$touched && form.artifactId.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.verification.artifactId" name="artifactId" required ng-disabled="vm.verification.id !== undefined"
+				uib-typeahead="artifactId for artifactId in vm.suggest('artifactId', $viewValue)" typeahead-loading="loadArtifactId" autocomplete="off" />
+			<i ng-show="loadArtifactId" class="fa fa-refresh input-loading"></i>
+		</p>
+	</label-group>
+	<label-group label="{{'version' | translate}}" ng-class="{'has-error': form.version.$touched && form.version.$error.required}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.verification.version" name="version" required ng-disabled="vm.verification.id !== undefined"
+				uib-typeahead="version for version in vm.suggest('version', $viewValue)" typeahead-loading="loadVersion" autocomplete="off" />
+			<i ng-show="loadVersion" class="fa fa-refresh input-loading"></i>
+		</p>
+	</label-group>
+	<label-group label="{{'packaging' | translate}}">
+		<p>
+			<input type="text" class="form-control" ng-model="vm.verification.packaging" name="packaging" ng-disabled="vm.verification.id !== undefined" />
+		</p>
+	</label-group>
+	<button type="submit" ng-click="vm.save()" class="btn btn-default" ng-disabled="form.$invalid" ng-show="vm.verification.id === undefined"><i class="fa fa-floppy-o"></i> {{'save' | translate}}</button>
+</form>

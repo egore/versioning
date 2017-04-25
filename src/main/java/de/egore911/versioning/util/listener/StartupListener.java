@@ -39,10 +39,12 @@ import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.VcsHostEntity;
+import de.egore911.versioning.persistence.model.VerificationEntity;
 import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.ui.dto.Project;
 import de.egore911.versioning.ui.dto.Server;
 import de.egore911.versioning.ui.dto.VcsHost;
+import de.egore911.versioning.ui.dto.Verification;
 import de.egore911.versioning.ui.dto.Version;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
@@ -206,6 +208,16 @@ public class StartupListener extends AbstractStartupListener {
 								a.getDeployments().clear();
 							}
 						}
+					}
+				}).register();
+		
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(VerificationEntity.class, Verification.class)
+				.byDefault()
+				.customize(new CustomMapper<VerificationEntity, Verification>() {
+					@Override
+					public void mapAtoB(VerificationEntity a, Verification b, MappingContext context) {
+						b.setCreatedBy(a.getCreatedBy().getName());
 					}
 				}).register();
 		}

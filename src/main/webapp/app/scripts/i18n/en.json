@@ -58,6 +58,7 @@
 	"uri": "URI",
 	"value": "Value",
 	"variables": "Variables",
+	"verifications": "Verifed Artifacts",
 	"version": "Version",
 	"versions": "Versions",
 	"vcsConfiguration": "VCS stored configuration",
@@ -70,5 +71,7 @@
 	"wildcards": "Files to match for replacement",
 	"PERMISSION_CREATE_VERSIONS": "Create versions",
 	"PERMISSION_DEPLOY": "Deploy artifacts",
-	"PERMISSION_ADMIN_SETTINGS": "Administrate settings"
+	"PERMISSION_ADMIN_SETTINGS": "Administrate settings",
+	"PERMISSION_ADMIN_VERIFICATIONS": "Create verified artifacts",
+	"PERMISSION_SHOW_VERIFICATIONS": "Show verified artifacts"
 }

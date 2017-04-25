@@ -58,6 +58,7 @@
 	"uri": "URI",
 	"value": "Wert",
 	"variables": "Variablen",
+	"verifications": "Verifizierte Artefakte",
 	"version": "Version",
 	"versions": "Versionen",
 	"vcsConfiguration": "In VCS gespeicherte Konfiguration",
@@ -70,5 +71,7 @@
 	"wildcards": "Ersetzungen in Dateien",
 	"PERMISSION_CREATE_VERSIONS": "Versionen anlegen",
 	"PERMISSION_DEPLOY": "Artefakte deployen",
-	"PERMISSION_ADMIN_SETTINGS": "Einstellungen ändern"
+	"PERMISSION_ADMIN_SETTINGS": "Einstellungen ändern",
+	"PERMISSION_ADMIN_VERIFICATIONS": "Verifizierte Artefakte anlegen",
+	"PERMISSION_SHOW_VERIFICATIONS": "Verifizierte Artefakte anzeigen"
 }

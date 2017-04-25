@@ -9,3 +9,10 @@
     text-shadow: 0 0 4px #ffffff;
 }
 
+.input-loading {
+    float: right;
+    margin-right: 12px;
+    margin-top: -23px;
+    position: relative;
+    z-index: 2;
+}

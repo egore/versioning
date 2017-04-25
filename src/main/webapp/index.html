@@ -84,6 +84,10 @@
   <script type="text/javascript" src="app/module/maven_repository/maven_repository.controller.js"></script>
   <script type="text/javascript" src="app/module/maven_repository/maven_repositories.controller.js"></script>
 
+  <script type="text/javascript" src="app/module/verification/verification.factory.js"></script>
+  <script type="text/javascript" src="app/module/verification/verification.controller.js"></script>
+  <script type="text/javascript" src="app/module/verification/verifications.controller.js"></script>
+
   <script type="text/javascript" src="appframework/module/role/role.factory.js"></script>
   <script type="text/javascript" src="appframework/module/role/role.controller.js"></script>
   <script type="text/javascript" src="appframework/module/role/roles.controller.js"></script>
@@ -134,6 +138,9 @@
             <li ng-class="{active : main.currentModule() == 'servers'}"><a href="#/servers" id="menu_servers"><i class="fa fa-server"></i> {{'servers' | translate}} <span ng-show="main.currentModule() == 'servers'" class="sr-only">(current)</span></a></li>
             <li ng-class="{active : main.currentModule() == 'maven_repositories'}"><a href="#/maven_repositories" id="menu_maven_repositories"><i class="fa fa-database"></i> {{'maven_repositories' | translate}} <span ng-show="main.currentModule() == 'maven_repositories'" class="sr-only">(current)</span></a></li>
             <li ng-class="{active : main.currentModule() == 'tag_transformers'}"><a href="#/tag_transformers" id="menu_tag_transformers"><i class="fa fa-exchange"></i> {{'tag_transformers' | translate}} <span ng-show="main.currentModule() == 'tag_transformers'" class="sr-only">(current)</span></a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li ng-show="main.hasPermission('SHOW_VERIFICATIONS')" ng-class="{active : main.currentModule() == 'verifications'}"><a href="#/verifications" id="menu_vcshosts"><i class="fa fa-lock"></i> {{'verifications' | translate}} <span ng-show="main.currentModule() == 'verifications'" class="sr-only">(current)</span></a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li ng-show="main.hasPermission('ADMIN_ROLES')" ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-cogs"></i> {{'roles' | translate}} <span ng-show="main.currentModule() == 'roles'" class="sr-only">(current)</span></a></li>
