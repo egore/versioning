@@ -1,36 +1,36 @@
 <h1 class="page-header"><i class="fa fa-puzzle-piece"></i> {{'versions' | translate}}</h1>
 
-<div style="text-align: center;" ng-show="vm.is_loading">
+<div style="text-align: center;" ng-show="vm.paging.is_loading">
 	<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
 	<span class="sr-only" translate="loading"></span>
 </div>
 
-<div ng-hide="vm.is_loading">
+<div ng-hide="vm.paging.is_loading">
 <table class="table table-striped">
     <thead>
     <tr>
         <th class="col-sm-2 sortable">
-            <span ng-click="vm.order('project.name')" class="sortable" id="sort_project" translate="project"></span>
-            <span class="sortorder" ng-show="vm.predicate === 'project.name'" ng-class="{reverse: vm.reverse}"></span>
+            <span ng-click="vm.paging.order('project.name')" class="sortable" id="sort_project" translate="project"></span>
+            <span class="sortorder" ng-show="vm.paging.predicate === 'project.name'" ng-class="{reverse: vm.paging.reverse}"></span>
         </th>
         <th class="col-sm-1 sortable">
-            <span ng-click="vm.order('vcsTag')" class="sortable" id="sort_vcsTag" translate="vcsTag"></span>
-            <span class="sortorder" ng-show="vm.predicate === 'vcsTag'" ng-class="{reverse: vm.reverse}"></span>
+            <span ng-click="vm.paging.order('vcsTag')" class="sortable" id="sort_vcsTag" translate="vcsTag"></span>
+            <span class="sortorder" ng-show="vm.paging.predicate === 'vcsTag'" ng-class="{reverse: vm.paging.reverse}"></span>
         </th>
         <th class="col-sm-2 sortable">
-            <span ng-click="vm.order('createdBy')" class="sortable" id="sort_createdBy" translate="createdBy"></span>
-            <span class="sortorder" ng-show="vm.predicate === 'createdBy'" ng-class="{reverse: vm.reverse}"></span>
+            <span ng-click="vm.paging.order('createdBy')" class="sortable" id="sort_createdBy" translate="createdBy"></span>
+            <span class="sortorder" ng-show="vm.paging.predicate === 'createdBy'" ng-class="{reverse: vm.paging.reverse}"></span>
         </th>
         <th class="col-sm-2 sortable">
-            <span ng-click="vm.order('created')" class="sortable" id="sort_created" translate="created"></span>
-            <span class="sortorder" ng-show="vm.predicate === 'created'" ng-class="{reverse: vm.reverse}"></span>
+            <span ng-click="vm.paging.order('created')" class="sortable" id="sort_created" translate="created"></span>
+            <span class="sortorder" ng-show="vm.paging.predicate === 'created'" ng-class="{reverse: vm.paging.reverse}"></span>
         </th>
         <th translate="deployed_on"></th>
         <th class="col-sm-1" translate="action"></th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="version in vm.versions | filter: search">
+    <tr ng-repeat="version in vm.paging.data | filter: search">
         <td><project-name project="version.project"/></td>
         <td><a href="#versions/{{version.id}}" ng-bind="version.vcsTag"></a></td>
         <td ng-bind="version.createdBy"></td>
@@ -42,9 +42,9 @@
     <tfoot>
     <tr>
         <td colspan="5" style="text-align: center;">
-            <ul uib-pagination total-items="vm.total" items-per-page="vm.pagesize" max-size="vm.maxPages" force-ellipses="true"
+            <ul uib-pagination total-items="vm.paging.total" items-per-page="vm.paging.pagesize" max-size="vm.paging.maxPages" force-ellipses="true"
                 previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                ng-model="vm.currentPage" ng-change="vm.loadData()" ng-show="vm.total > 0 && vm.total > vm.pagesize"></ul>
+                ng-model="vm.paging.currentPage" ng-change="vm.paging.loadData()" ng-show="vm.paging.total > 0 && vm.paging.total > vm.paging.pagesize"></ul>
         </td>
     </tr>
     </tfoot>

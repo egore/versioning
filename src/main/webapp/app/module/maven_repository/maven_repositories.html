@@ -1,27 +1,27 @@
 <h1 class="page-header"><i class="fa fa-database"></i>{{'maven_repositories' | translate}}</h1>
 
-<div style="text-align: center;" ng-show="vm.is_loading">
+<div style="text-align: center;" ng-show="vm.paging.is_loading">
 	<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
 	<span class="sr-only" translate="loading"></span>
 </div>
 
-<div ng-hide="vm.is_loading">
+<div ng-hide="vm.paging.is_loading">
 <table class="table table-striped">
     <thead>
     <tr>
         <th>
-            <span ng-click="vm.order('name')" class="sortable" translate="name"></span>
-            <span class="sortorder" ng-show="vm.predicate === 'name'" ng-class="{reverse: vm.reverse}"></span>
+            <span ng-click="vm.paging.order('name')" class="sortable" translate="name"></span>
+            <span class="sortorder" ng-show="vm.paging.predicate === 'name'" ng-class="{reverse: vm.paging.reverse}"></span>
         </th>
         <th>
-            <span ng-click="vm.order('uri')" class="sortable" translate="vcs_type"></span>
-            <span class="sortorder" ng-show="vm.predicate === 'baseUrl'" ng-class="{reverse: vm.reverse}"></span>
+            <span ng-click="vm.paging.order('baseUrl')" class="sortable" translate="vcs_type"></span>
+            <span class="sortorder" ng-show="vm.paging.predicate === 'baseUrl'" ng-class="{reverse: vm.paging.reverse}"></span>
         </th>
         <th class="col-sm-1" translate="action"></th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="maven_repository in vm.maven_repositories | filter: search | orderBy:vm.predicate:vm.reverse">
+    <tr ng-repeat="maven_repository in vm.paging.data | filter: search">
         <td><a href="#maven_repositories/{{maven_repository.id}}" ng-bind="maven_repository.name"></a></td>
         <td ng-bind="maven_repository.baseUrl"></td>
         <td><button ng-click="vm.remove(maven_repository)" class="btn btn-danger" ng-disabled="maven_repository.projectIds.length > 0"><i class="fa fa-minus-circle"></i> {{'remove' | translate}}</button></td>
@@ -30,9 +30,9 @@
     <tfoot>
     <tr>
         <td colspan="3" style="text-align: center;">
-            <ul uib-pagination total-items="vm.total" items-per-page="vm.pagesize" max-size="vm.maxPages" force-ellipses="true"
+            <ul uib-pagination total-items="vm.paging.total" items-per-page="vm.paging.pagesize" max-size="vm.paging.maxPages" force-ellipses="true"
                 previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                ng-model="vm.currentPage" ng-change="vm.loadData()" ng-show="vm.total > 0 && vm.total > vm.pagesize"></ul>
+                ng-model="vm.paging.currentPage" ng-change="vm.paging.loadData()" ng-show="vm.paging.total > 0 && vm.paging.total > vm.paging.pagesize"></ul>
         </td>
     </tr>
     </tfoot>

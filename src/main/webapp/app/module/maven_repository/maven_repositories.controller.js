@@ -5,34 +5,29 @@
 	angular.module('versioningApp')
 		.controller('MavenRepositoryListController', MavenRepositoryListController);
 
-	MavenRepositoryListController.$inject = ['$location', '$rootScope', 'MavenRepository', '$uibModal', '$route'];
+	MavenRepositoryListController.$inject = ['$location', '$rootScope', 'MavenRepository', '$uibModal', '$route', '$scope', 'Paging'];
 
-	function MavenRepositoryListController($location, $rootScope, MavenRepository, $uibModal, $route) {
+	function MavenRepositoryListController($location, $rootScope, MavenRepository, $uibModal, $route, $scope, Paging) {
 		/* jshint validthis: true */
 		var vm = this;
 
-		vm.predicate = 'name';
-		vm.reverse = false;
-		vm.total = 0;
-		vm.pagesize = 10;
-		vm.currentPage = 1;
-		vm.maxPages = 20;
+		vm.paging = Paging;
 
-		vm.order = order;
 		vm.add = add;
 		vm.searchFilter = searchFilter;
 		vm.remove = remove;
-		vm.loadData = loadData;
 
 		activate();
 
 		function activate() {
-			loadData();
-		}
+			vm.paging.predicate = 'name';
+			vm.paging.factory = MavenRepository;
+			vm.paging.loadData();
 
-		function order(predicate) {
-			vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
-			vm.predicate = predicate;
+			$scope.$watch('search', function() {
+				vm.paging.currentPage = 1;
+				vm.paging.loadData();
+			});
 		}
 
 		function add() {
@@ -58,19 +53,6 @@
 						};
 					}
 				}
-			});
-		}
-
-		function loadData() {
-			vm.is_loading = true;
-			MavenRepository.query({'limit': vm.pagesize, 'offset': ((vm.currentPage - 1) * vm.pagesize)}, function(maven_repositories) {
-				var total = (arguments[1]('Result-Count'));
-				if (!total) {
-					total = maven_repositories.length;
-				}
-				vm.total = total;
-				vm.maven_repositories = maven_repositories;
-				vm.is_loading = false;
 			});
 		}
 
