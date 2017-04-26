@@ -105,15 +105,14 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 	protected List<Order> generateOrderList(CriteriaBuilder builder,
 			Root<VersionEntity> from) {
 		if (StringUtils.isNotEmpty(sortColumn)) {
-			if ("projectname".equals(sortColumn)) {
+			if ("project.name".equals(sortColumn)) {
 				if (!Boolean.FALSE.equals(ascending)) {
 					return Arrays
-							.asList(builder.asc(from.get(VersionEntity_.project).get(
-									"name")),
+							.asList(builder.asc(from.get(VersionEntity_.project).get(ProjectEntity_.name)),
 									builder.asc(from.get(VersionEntity_.created)));
 				}
 				return Arrays.asList(
-						builder.desc(from.get(VersionEntity_.project).get("name")),
+						builder.desc(from.get(VersionEntity_.project).get(ProjectEntity_.name)),
 						builder.asc(from.get(VersionEntity_.created)));
 			} else {
 				if (!Boolean.FALSE.equals(ascending)) {
