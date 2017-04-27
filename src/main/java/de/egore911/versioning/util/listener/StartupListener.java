@@ -43,6 +43,7 @@ import de.egore911.versioning.persistence.model.VerificationEntity;
 import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.ui.dto.Project;
 import de.egore911.versioning.ui.dto.Server;
+import de.egore911.versioning.ui.dto.UsedArtifact;
 import de.egore911.versioning.ui.dto.VcsHost;
 import de.egore911.versioning.ui.dto.Verification;
 import de.egore911.versioning.ui.dto.Version;
@@ -213,11 +214,16 @@ public class StartupListener extends AbstractStartupListener {
 		
 		FactoryHolder.MAPPER_FACTORY
 				.classMap(VerificationEntity.class, Verification.class)
+				.exclude("usedBy")
 				.byDefault()
 				.customize(new CustomMapper<VerificationEntity, Verification>() {
 					@Override
 					public void mapAtoB(VerificationEntity a, Verification b, MappingContext context) {
 						b.setCreatedBy(a.getCreatedBy().getName());
+						Boolean includeUsedBy = (Boolean) context.getProperty("includeUsedBy");
+						if (!Boolean.FALSE.equals(includeUsedBy)) {
+							b.setUsedBy(mapperFacade.mapAsList(a.getUsedBy(), UsedArtifact.class));
+						}
 					}
 				}).register();
 		}

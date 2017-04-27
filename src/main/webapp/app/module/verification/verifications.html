@@ -17,10 +17,6 @@
             <span class="sortorder" ng-show="vm.predicate === 'version'" ng-class="{reverse: vm.reverse}"></span>
         </th>
         <th>
-            <span ng-click="vm.order('packaging')" class="sortable" translate="packaging"></span>
-            <span class="sortorder" ng-show="vm.predicate === 'packaging'" ng-class="{reverse: vm.reverse}"></span>
-        </th>
-        <th>
             <span ng-click="vm.order('createdBy')" class="sortable" translate="createdBy"></span>
             <span class="sortorder" ng-show="vm.predicate === 'createdBy'" ng-class="{reverse: vm.reverse}"></span>
         </th>
@@ -35,7 +31,6 @@
         <td ng-bind="verification.groupId"></td>
         <td><a href="#verifications/{{verification.id}}" ng-bind="verification.artifactId"></a></td>
         <td ng-bind="verification.version"></td>
-        <td ng-bind="verification.packaging"></td>
         <td ng-bind="verification.createdBy"></td>
         <td ng-bind="verification.created | amDateFormat:'LLL'"></td>
     </tr>

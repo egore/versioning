@@ -22,114 +22,37 @@
 
 package de.egore911.versioning.persistence.selector;
 
-import java.util.List;
+import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
+import de.egore911.versioning.persistence.model.VerificationEntity;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import org.apache.commons.lang3.StringUtils;
-
-import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
-import de.egore911.versioning.persistence.model.VerificationEntity;
-import de.egore911.versioning.persistence.model.VerificationEntity_;
+import java.util.List;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class VerificationSelector
-		extends AbstractResourceSelector<VerificationEntity> {
+		extends AbstractArtifactSelector<VerificationEntity> {
 
 	private static final long serialVersionUID = -2360869703523135671L;
 
-	private String search;
-	private String groupId;
-
-	private String artifactId;
-
-	private String version;
-
-	private String packaging;
-
+	@Nonnull
 	@Override
 	protected Class<VerificationEntity> getEntityClass() {
 		return VerificationEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<VerificationEntity> from, CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = super.generatePredicateList(builder, from,
-				criteriaQuery);
-
-		if (StringUtils.isNotEmpty(search)) {
-			String likePattern = '%' + search + '%';
-			predicates.add(
-					builder.or(
-							builder.like(from.get(VerificationEntity_.groupId), likePattern),
-							builder.like(from.get(VerificationEntity_.artifactId), likePattern),
-							builder.like(from.get(VerificationEntity_.version), likePattern)
-					)
-			);
-		}
-
-		if (StringUtils.isNotEmpty(groupId)) {
-			predicates.add(builder.or(
-					builder.equal(from.get(VerificationEntity_.groupId), groupId),
-					builder.equal(from.get(VerificationEntity_.groupId), "*")
-			));
-		}
-
-		if (StringUtils.isNotEmpty(artifactId)) {
-			predicates.add(builder.or(
-					builder.equal(from.get(VerificationEntity_.artifactId), artifactId),
-					builder.equal(from.get(VerificationEntity_.artifactId), "*")
-			));
-		}
-
-		if (StringUtils.isNotEmpty(version)) {
-			predicates.add(builder.or(
-					builder.equal(from.get(VerificationEntity_.version), version),
-					builder.equal(from.get(VerificationEntity_.version), "*")
-			));
-		}
-
-		if (StringUtils.isNotEmpty(packaging)) {
-			predicates.add(builder.or(
-					builder.equal(from.get(VerificationEntity_.packaging), packaging),
-					builder.equal(from.get(VerificationEntity_.packaging), "*")
-			));
-		}
-
-		return predicates;
-	}
-
-	@Override
-	public AbstractResourceSelector<VerificationEntity> withSearch(
-			String search) {
-		this.search = search;
-		return this;
-	}
-
-	public VerificationSelector withGroupId(String groupId) {
-		this.groupId = groupId;
-		return this;
-	}
-
-	public VerificationSelector withArtifactId(String artifactId) {
-		this.artifactId = artifactId;
-		return this;
-	}
-
-	public VerificationSelector withVersion(String version) {
-		this.version = version;
-		return this;
-	}
-
-	public VerificationSelector withPackaging(String packaging) {
-		this.packaging = packaging;
-		return this;
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder,
+													@Nonnull Root<VerificationEntity> from,
+													@Nonnull CriteriaQuery<?> criteriaQuery) {
+		return super.generatePredicateList(builder, from, criteriaQuery);
 	}
 
 }

@@ -19,39 +19,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.egore911.versioning.persistence.model;
+package de.egore911.versioning.ui.dto;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import de.egore911.appframework.ui.dto.AbstractDto;
 
-import de.egore911.appframework.persistence.model.IntegerDbObject;
-
-import java.util.Set;
+import java.time.LocalDateTime;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Entity(name = "Verification")
-@Table(name = "verification")
-public class VerificationEntity extends AbstractArtifactEntity {
+public class AbstractArtifact extends AbstractDto {
 
-	private static final long serialVersionUID = -6595598218858725284L;
+	private String groupId;
+	private String artifactId;
+	private String version;
 
-	private Set<UsedArtifactEntity> usedBy;
-
-	@OneToMany(mappedBy = "verification", cascade = CascadeType.ALL)
-	@OrderBy("group_id, artifact_id")
-	public Set<UsedArtifactEntity> getUsedBy() {
-		return usedBy;
+	public String getGroupId() {
+		return groupId;
 	}
 
-	public void setUsedBy(Set<UsedArtifactEntity> usedBy) {
-		this.usedBy = usedBy;
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
+
+	public String getArtifactId() {
+		return artifactId;
+	}
+
+	public void setArtifactId(String artifactId) {
+		this.artifactId = artifactId;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 }

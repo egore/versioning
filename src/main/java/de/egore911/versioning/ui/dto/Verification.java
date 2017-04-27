@@ -22,53 +22,27 @@
 package de.egore911.versioning.ui.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import de.egore911.appframework.ui.dto.AbstractDto;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class Verification extends AbstractDto {
+public class Verification extends AbstractArtifact {
 
-	private String groupId;
-	private String artifactId;
-	private String version;
-	private String packaging;
+	List<UsedArtifact> usedBy;
 	private String createdBy;
 	private LocalDateTime created;
 
-	public String getGroupId() {
-		return groupId;
+	public List<UsedArtifact> getUsedBy() {
+		return usedBy;
 	}
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+	public void setUsedBy(List<UsedArtifact> usedBy) {
+		this.usedBy = usedBy;
 	}
 
-	public String getArtifactId() {
-		return artifactId;
-	}
-
-	public void setArtifactId(String artifactId) {
-		this.artifactId = artifactId;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getPackaging() {
-		return packaging;
-	}
-
-	public void setPackaging(String packaging) {
-		this.packaging = packaging;
-	}
-	
 	public String getCreatedBy() {
 		return createdBy;
 	}

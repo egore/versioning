@@ -19,39 +19,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.egore911.versioning.persistence.model;
+package de.egore911.versioning.ui.dto;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import de.egore911.appframework.persistence.model.IntegerDbObject;
-
-import java.util.Set;
+import java.time.LocalDateTime;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-@Entity(name = "Verification")
-@Table(name = "verification")
-public class VerificationEntity extends AbstractArtifactEntity {
+public class UsedArtifact extends AbstractArtifact {
 
-	private static final long serialVersionUID = -6595598218858725284L;
+    private LocalDateTime lastSeen;
 
-	private Set<UsedArtifactEntity> usedBy;
+    public LocalDateTime getLastSeen() {
+        return lastSeen;
+    }
 
-	@OneToMany(mappedBy = "verification", cascade = CascadeType.ALL)
-	@OrderBy("group_id, artifact_id")
-	public Set<UsedArtifactEntity> getUsedBy() {
-		return usedBy;
-	}
+    public void setLastSeen(LocalDateTime lastSeen) {
+        this.lastSeen = lastSeen;
+    }
 
-	public void setUsedBy(Set<UsedArtifactEntity> usedBy) {
-		this.usedBy = usedBy;
-	}
 }

@@ -1,5 +1,6 @@
 package de.egore911.versioning.ui.rest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -13,17 +14,23 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.secnod.shiro.jaxrs.Auth;
 
 import de.egore911.appframework.ui.exceptions.BadStateException;
 import de.egore911.appframework.ui.rest.AbstractResourceService;
+import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.dao.VerificationDao;
+import de.egore911.versioning.persistence.model.UsedArtifactEntity;
 import de.egore911.versioning.persistence.model.VerificationEntity;
 import de.egore911.versioning.persistence.selector.VerificationSelector;
 import de.egore911.versioning.ui.dto.Verification;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.MappingContextFactory;
+import ma.glasnost.orika.impl.UtilityResolver;
 
 @Path("verification")
 public class VerificationService
@@ -61,11 +68,30 @@ public class VerificationService
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<Verification> getByIds(@QueryParam("ids") List<Integer> ids,
-			@QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit,
-			@QueryParam("sortColumn") String sortColumn, @QueryParam("ascending") Boolean ascending,
-			@QueryParam("search") String search,
-			@Auth Subject subject, @Context HttpServletResponse response) {
-		return super.getByIds(ids, offset, limit, sortColumn, ascending, search, subject, response);
+			@QueryParam("offset") Integer offset,
+			@QueryParam("limit") Integer limit,
+			@QueryParam("sortColumn") String sortColumn,
+			@QueryParam("ascending") Boolean ascending,
+			@QueryParam("search") String search, @Auth Subject subject,
+			@Context HttpServletResponse response) {
+		MappingContextFactory contextFactory = UtilityResolver
+				.getDefaultMappingContextFactory();
+		MappingContext context = contextFactory.getContext();
+		context.setProperty("includeUsedBy", Boolean.FALSE);
+		try {
+			AbstractSelector<VerificationEntity> selector = getSelector(subject)
+					.withIds(ids).withSearch(search).withSortColumn(sortColumn)
+					.withAscending(ascending);
+			List<VerificationEntity> entities = selector.withOffset(offset)
+					.withLimit(limit).findAll();
+			if (offset != null || limit != null) {
+				response.setHeader("Result-Count",
+						Long.toString(selector.count()));
+			}
+			return getMapper().mapAsList(entities, getDtoClass(), context);
+		} finally {
+			contextFactory.release(context);
+		}
 	}
 
 	@Override
@@ -132,23 +158,58 @@ public class VerificationService
 	}
 
 	@GET
-	@Path("available/{groupId}/{artifactId}/{version}/{packaging}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Verification> getAvailable(@PathParam("groupId") String groupId, @PathParam("artifactId") String artifactId, @PathParam("version") String version, @PathParam("packaging") String packaging) {
-		List<VerificationEntity> entities = new VerificationSelector()
-			.withGroupId(groupId)
-			.withArtifactId(artifactId)
-			.withVersion(version)
-			.withPackaging(packaging)
-			.findAll();
-		return getMapper().mapAsList(entities, Verification.class);
-	}
-
-	@GET
 	@Path("available/{groupId}/{artifactId}/{version}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Verification> getAvailable(@PathParam("groupId") String groupId, @PathParam("artifactId") String artifactId, @PathParam("version") String version) {
-		return getAvailable(groupId, artifactId, version, null);
+	public List<Verification> getAvailable(@PathParam("groupId") String groupId, @PathParam("artifactId") String artifactId,
+										   @PathParam("version") String version, @QueryParam("usedByGroupId") String usedByGroupId,
+										   @QueryParam("usedByArtifactId") String usedByArtifactId, @QueryParam("usedByVersion") String usedByVersion) {
+		try {
+			EntityManagerUtil.getEntityManager().getTransaction().begin();
+			List<VerificationEntity> entities = new VerificationSelector()
+					.withGroupId(groupId)
+					.withArtifactId(artifactId)
+					.withVersion(version)
+					.findAll();
+			if (StringUtils.isNotEmpty(usedByGroupId) && StringUtils.isNotEmpty(usedByArtifactId) && StringUtils.isNotEmpty(usedByVersion)) {
+				for (VerificationEntity entity : entities) {
+					UsedArtifactEntity existing = null;
+					for (UsedArtifactEntity usedArtifact : entity.getUsedBy()) {
+						if (usedArtifact.getGroupId().equals(usedByGroupId) &&
+								usedArtifact.getArtifactId().equals(usedByArtifactId)) {
+							existing = usedArtifact;
+							break;
+						}
+					}
+					if (existing == null) {
+						existing = new UsedArtifactEntity();
+						existing.setVerification(entity);
+						existing.setGroupId(usedByGroupId);
+						existing.setArtifactId(usedByArtifactId);
+						existing.setLastSeen(LocalDateTime.now());
+						existing.setVersion(usedByVersion);
+						EntityManagerUtil.getEntityManager().persist(existing);
+					} else {
+						existing.setLastSeen(LocalDateTime.now());
+						existing.setVersion(usedByVersion);
+					}
+				}
+			}
+			EntityManagerUtil.getEntityManager().getTransaction().commit();
+			MappingContextFactory contextFactory = UtilityResolver
+					.getDefaultMappingContextFactory();
+			MappingContext context = contextFactory.getContext();
+			context.setProperty("includeUsedBy", Boolean.FALSE);
+			try {
+				return getMapper().mapAsList(entities, Verification.class,
+						context);
+			} finally {
+				contextFactory.release(context);
+			}
+		} finally {
+			if (EntityManagerUtil.getEntityManager().getTransaction().isActive()) {
+				EntityManagerUtil.getEntityManager().getTransaction().rollback();
+			}
+		}
 	}
 
 }

@@ -75,7 +75,7 @@ public class ActionReplacementEntity extends IntegerDbObject {
 	@OrderBy("value")
 	@ElementCollection
 	@CollectionTable(name = "wildcard", joinColumns = @JoinColumn(name = "id_action_replace", nullable = false))
-    @Column(name = "value")
+	@Column(name = "value")
 	public List<String> getWildcards() {
 		return wildcards;
 	}
@@ -97,7 +97,7 @@ public class ActionReplacementEntity extends IntegerDbObject {
 	@OrderBy("value")
 	@ElementCollection
 	@CollectionTable(name = "replacementfile", joinColumns = @JoinColumn(name = "id_action_replace", nullable = false))
-    @Column(name = "value")
+	@Column(name = "value")
 	public List<String> getReplacementfiles() {
 		return replacementfiles;
 	}
