@@ -21,18 +21,13 @@
  */
 package de.egore911.versioning.persistence.model;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import de.egore911.appframework.persistence.model.IntegerDbObject;
-
-import java.util.Set;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
