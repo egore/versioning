@@ -22,9 +22,7 @@
 
 package de.egore911.versioning.persistence.selector;
 
-import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
 import de.egore911.versioning.persistence.model.VerificationEntity;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;

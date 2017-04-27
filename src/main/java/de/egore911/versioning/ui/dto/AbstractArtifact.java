@@ -23,8 +23,6 @@ package de.egore911.versioning.ui.dto;
 
 import de.egore911.appframework.ui.dto.AbstractDto;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
