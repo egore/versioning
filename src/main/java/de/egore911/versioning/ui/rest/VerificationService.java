@@ -102,14 +102,14 @@ public class VerificationService
 
 	@Override
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void update(@PathParam("id") @Nonnull Integer id, Verification t,
+	public void update(@Nonnull Integer id, Verification t,
 			@Auth Subject subject) {
 		throw new BadStateException("Verifications cannot be modified");
 	}
 
 	@Override
 	@RequiresPermissions("ADMIN_VERIFICATIONS")
-	public void delete(Integer id, Subject subject) {
+	public void delete(@Nonnull Integer id, Subject subject) {
 		super.delete(id, subject);
 	}
 
