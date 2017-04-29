@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular
-		.module('versioningApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngSanitize', 'pascalprecht.translate', 'angularMoment', 'ngFileUpload', 'appframework'])
+		.module('versioningApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngSanitize', 'angularMoment', 'ngFileUpload', 'appframework'])
 		.config(['$locationProvider', config]);
 
 	function config($locationProvider) {

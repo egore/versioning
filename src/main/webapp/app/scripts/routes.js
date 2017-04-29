@@ -45,10 +45,6 @@
 		addRoute('/verifications', 'app/module/verification/verifications.html', 'VerificationListController');
 		addRoute('/verifications/:id', 'app/module/verification/verification.html', 'VerificationDetailController');
 
-		addRoute('/roles', 'appframework/module/role/roles.html', 'RoleListController');
-		addRoute('/roles/:id', 'appframework/module/role/role.html', 'RoleDetailController');
-		addRoute('/users', 'appframework/module/user/users.html', 'UserListController');
-		addRoute('/users/:id', 'appframework/module/user/user.html', 'UserDetailController');
 	}
 
 })();
