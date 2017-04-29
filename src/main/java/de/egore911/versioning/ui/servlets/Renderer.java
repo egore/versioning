@@ -27,7 +27,7 @@ import de.egore911.versioning.util.UrlUtil;
 public abstract class Renderer {
 
 	private static final Logger log = LoggerFactory
-			.getLogger(XmlRenderer.class);
+			.getLogger(Renderer.class);
 
 	private final DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 
