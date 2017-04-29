@@ -36,7 +36,7 @@ public class BinaryDataService extends AbstractService {
 			em.getTransaction().begin();
 			List<ServerEntity> servers = new ServerSelector().withIconId(id)
 					.findAll();
-			servers.stream().forEach(server -> {
+			servers.forEach(server -> {
 				server.setIcon(null);
 				em.persist(server);
 			});
