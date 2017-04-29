@@ -36,8 +36,8 @@ import de.egore911.appframework.persistence.model.IntegerDbObject;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
-@Table(name = "deployment", uniqueConstraints = { @UniqueConstraint(name = "deployment__version_server", columnNames = {
-		"id_version", "id_server" }) })
+@Table(name = "deployment", uniqueConstraints = @UniqueConstraint(name = "deployment__version_server", columnNames = {
+		"id_version", "id_server"}))
 public class DeploymentEntity extends IntegerDbObject {
 
 	private static final long serialVersionUID = 1049276965538023559L;

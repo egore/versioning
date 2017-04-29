@@ -38,7 +38,7 @@ import de.egore911.appframework.persistence.model.IntegerDbObject;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
-@Table(name = "maven_repository", uniqueConstraints = { @UniqueConstraint(name = "mavenrepository__name", columnNames = { "name" }) })
+@Table(name = "maven_repository", uniqueConstraints = @UniqueConstraint(name = "mavenrepository__name", columnNames = "name"))
 public class MavenRepositoryEntity extends IntegerDbObject {
 
 	private static final long serialVersionUID = 293924997823969971L;

@@ -52,7 +52,7 @@ import de.egore911.versioning.util.vcs.SvnProvider;
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
-@Table(name = "project", uniqueConstraints = { @UniqueConstraint(name = "project__name", columnNames = { "name" }) })
+@Table(name = "project", uniqueConstraints = @UniqueConstraint(name = "project__name", columnNames = "name"))
 public class ProjectEntity extends IntegerDbObject implements Comparable<ProjectEntity> {
 
 	private static final long serialVersionUID = 526215336577704306L;

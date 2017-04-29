@@ -21,7 +21,7 @@ public abstract class AbstractArtifactEntity extends IntegerDbObject {
 	private String version;
 
 
-	@Column(nullable = false, length = 255, name = "group_id")
+	@Column(nullable = false, name = "group_id")
 	@NotNull
 	@Size(max = 255)
 	public String getGroupId() {
@@ -32,7 +32,7 @@ public abstract class AbstractArtifactEntity extends IntegerDbObject {
 		this.groupId = groupId;
 	}
 
-	@Column(nullable = false, length = 255, name = "artifact_id")
+	@Column(nullable = false, name = "artifact_id")
 	@NotNull
 	@Size(max = 255)
 	public String getArtifactId() {
@@ -43,7 +43,7 @@ public abstract class AbstractArtifactEntity extends IntegerDbObject {
 		this.artifactId = artifactId;
 	}
 
-	@Column(nullable = false, length = 255, name = "version")
+	@Column(nullable = false, name = "version")
 	@NotNull
 	@Size(max = 255)
 	public String getVersion() {

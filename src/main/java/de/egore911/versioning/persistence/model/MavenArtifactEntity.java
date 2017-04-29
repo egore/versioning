@@ -69,7 +69,7 @@ public class MavenArtifactEntity extends IntegerDbObject {
 		this.actionExtraction = actionExtraction;
 	}
 
-	@Column(nullable = false, length = 255, name = "group_id")
+	@Column(nullable = false, name = "group_id")
 	@NotNull
 	@Size(max = 255)
 	public String getGroupId() {
@@ -80,7 +80,7 @@ public class MavenArtifactEntity extends IntegerDbObject {
 		this.groupId = groupId;
 	}
 
-	@Column(nullable = false, length = 255, name = "artifact_id")
+	@Column(nullable = false, name = "artifact_id")
 	@NotNull
 	@Size(max = 255)
 	public String getArtifactId() {
