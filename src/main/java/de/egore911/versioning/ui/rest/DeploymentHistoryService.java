@@ -29,7 +29,7 @@ import de.egore911.versioning.ui.dto.Project;
 //@RequiresPermission(Permission.ADMIN_SETTINGS)
 public class DeploymentHistoryService extends AbstractService {
 
-	private Map<ServerEntity, DeploymentHistory> historyCache = new HashMap<>(1);
+	private final Map<ServerEntity, DeploymentHistory> historyCache = new HashMap<>(1);
 
 	@Path("server/{id}")
 	@GET
