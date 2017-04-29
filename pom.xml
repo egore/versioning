@@ -134,11 +134,6 @@
 		<!-- Javascript using Bower -->
 		<dependency>
 			<groupId>org.webjars.bower</groupId>
-			<artifactId>angular-moment</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
 			<artifactId>moment</artifactId>
 		</dependency>
 
