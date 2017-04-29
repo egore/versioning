@@ -49,7 +49,7 @@
 				vm.tags = response.data;
 			});
 		}
-	
+
 		function selectProject(project) {
 			vm.version.project = project;
 			loadTags();

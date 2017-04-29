@@ -33,11 +33,11 @@ public class DeploymentDuration {
 	public void setLength(int length) {
 		this.length = length;
 	}
-	
+
 	public String getColor() {
 		return color;
 	}
-	
+
 	public void setColor(String color) {
 		this.color = color;
 	}

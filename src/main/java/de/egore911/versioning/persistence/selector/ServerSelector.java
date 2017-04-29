@@ -74,7 +74,7 @@ public class ServerSelector extends AbstractResourceSelector<ServerEntity> {
 			predicates.add(builder.like(from.get(ServerEntity_.description), "%"
 					+ descriptionLike + "%"));
 		}
-		
+
 		if (iconId != null) {
 			predicates.add(builder.equal(from.get(ServerEntity_.iconId), iconId));
 		}

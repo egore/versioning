@@ -39,7 +39,7 @@ public class XmlRenderer extends Renderer {
 		builder.append(req.getServletContext().getContextPath());
 		builder.append("/xsd/server-1.0.xsd\">\n");
 	}
-	
+
 	@Override
 	protected void renderFooter(StringBuilder builder) {
 		builder.append("</server>\n");
@@ -66,7 +66,7 @@ public class XmlRenderer extends Renderer {
 			builder.append("-->\n");
 		}
 	}
-	
+
 	@Override
 	protected void renderArrayStart(StringBuilder builder, int indent,
 			String name) {
@@ -75,7 +75,7 @@ public class XmlRenderer extends Renderer {
 		}
 		builder.append("<").append(name).append(">\n");
 	}
-	
+
 	@Override
 	protected void renderArrayEnd(StringBuilder builder, int indent, String name) {
 		for (int i = 0; i < indent; i++) {
@@ -83,7 +83,7 @@ public class XmlRenderer extends Renderer {
 		}
 		builder.append("</").append(name).append(">\n");
 	}
-	
+
 	@Override
 	protected void renderArrayElementStart(StringBuilder builder, int indent,
 			String name) {
@@ -95,23 +95,23 @@ public class XmlRenderer extends Renderer {
 			String name) {
 		renderArrayEnd(builder, indent, name);
 	}
-	
+
 	@Override
 	protected void renderArrayElement(StringBuilder builder, int indent,
 			String name, String value) {
 		renderField(builder, indent, name, value);
 	}
-	
+
 	@Override
 	protected void renderObjectStart(StringBuilder builder, int indent,
 			String name) {
 		renderArrayStart(builder, indent, name);
 	}
-	
+
 	@Override
 	protected void renderObjectEnd(StringBuilder builder, int indent,
 			String name) {
 		renderArrayEnd(builder, indent, name);
 	}
-	
+
 }

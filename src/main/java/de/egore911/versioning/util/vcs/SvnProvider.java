@@ -43,7 +43,7 @@ import de.egore911.versioning.persistence.model.VcsHostEntity;
 
 /**
  * Subversion based information provider, based on SVNKit.
- * 
+ *
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class SvnProvider extends Provider {

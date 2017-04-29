@@ -40,7 +40,7 @@ public class DeploymentHistoryService extends AbstractService {
 		if (result != null) {
 			return result;
 		}
-		
+
 		DeploymentDao deploymentDao = new DeploymentDao();
 		List<DeploymentEntity> allDeployments = deploymentDao
 				.getAllDeployments(server, LocalDateTime.now().minusYears(2));
@@ -74,7 +74,7 @@ public class DeploymentHistoryService extends AbstractService {
 			}
 			entry.getDeploymentDurations().add(new DeploymentDuration(getMapper().map(d, Deployment.class)));
 		}
-		
+
 		for (DeploymentHistoryEntry entry : result.getEntries()) {
 			Collections.sort(entry.getDeploymentDurations(),
 					(o1, o2) -> o1.getDeployment().getDeployment().compareTo(o2.getDeployment().getDeployment()));
@@ -95,12 +95,12 @@ public class DeploymentHistoryService extends AbstractService {
 		}
 		Collections.sort(result.getEntries(),
 				(o1, o2) -> o1.getProject().getName().compareTo(o2.getProject().getName()));
-		
+
 		historyCache.put(server, result);
-		
+
 		return result;
 	}
-	
+
 	private String randomColor(Deployment d) {
 		Random random = new Random(d.getVersion().getId().hashCode() | d.getVersion().getProject().getId());
 		StringBuilder builder = new StringBuilder();

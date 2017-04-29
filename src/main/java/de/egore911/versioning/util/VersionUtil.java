@@ -30,7 +30,7 @@ import de.egore911.versioning.persistence.model.VersionEntity;
 
 /**
  * Utility containing helper methods regarding versions.
- * 
+ *
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class VersionUtil {
@@ -40,7 +40,7 @@ public class VersionUtil {
 
 	/**
 	 * Return the latest version from the given list of versions.
-	 * 
+	 *
 	 * @param versions
 	 *            the list of versions
 	 * @return the latest version in the given list

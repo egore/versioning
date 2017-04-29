@@ -29,7 +29,7 @@ public class ActionReplacement extends AbstractDto {
 	public List<String> getReplacementfiles() {
 		return replacementfiles;
 	}
-	
+
 	public void setReplacementfiles(List<String> replacementfiles) {
 		this.replacementfiles = replacementfiles;
 	}

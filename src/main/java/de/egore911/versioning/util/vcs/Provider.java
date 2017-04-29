@@ -41,23 +41,23 @@ import de.egore911.versioning.util.VersionUtil;
 
 /**
  * Core infrastructure for VCS information providers.
- * 
+ *
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public abstract class Provider {
 
 	private static final Logger log = LoggerFactory.getLogger(Provider.class);
-	
+
 	protected final ProjectEntity project;
 
 	protected Provider(ProjectEntity project) {
 		this.project = project;
 	}
-	
+
 	/**
 	 * Checks if a given tag exists. If this will take more than 10 seconds, it
 	 * will be aborted and the tag is reported not to exist.
-	 * 
+	 *
 	 * @param project
 	 *            the project that has to have the tag
 	 * @param tagName
@@ -79,7 +79,7 @@ public abstract class Provider {
 
 	/**
 	 * Checks if a given tag exists.
-	 * 
+	 *
 	 * @param project
 	 *            the project that has to have the tag
 	 * @param tagName

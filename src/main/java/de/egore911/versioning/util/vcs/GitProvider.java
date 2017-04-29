@@ -43,7 +43,7 @@ import de.egore911.versioning.persistence.model.ProjectEntity;
 
 /**
  * Git based information provider, based on jgit.
- * 
+ *
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 public class GitProvider extends Provider {

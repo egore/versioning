@@ -27,7 +27,7 @@ public class MessagesTest {
 			Assert.assertNotNull(messageFile);
 			messagesEn = mapper.readValue(messageFile, new TypeReference<Map<String, String>>() {});
 		}
-		
+
 		Map<String, String> messagesDe;
 		try (InputStream messageFile = new FileInputStream("src/main/webapp/app/scripts/i18n/de.json")) {
 			Assert.assertNotNull(messageFile);

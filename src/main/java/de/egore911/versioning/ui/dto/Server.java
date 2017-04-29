@@ -93,7 +93,7 @@ public class Server extends AbstractDto {
 	public Integer getIconId() {
 		return iconId;
 	}
-	
+
 	public void setIconId(Integer iconId) {
 		this.iconId = iconId;
 	}

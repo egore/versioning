@@ -48,7 +48,7 @@ public class Verification extends AbstractArtifact {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-	
+
 	public LocalDateTime getCreated() {
 		return created;
 	}

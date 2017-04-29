@@ -98,7 +98,7 @@ public class JsonRenderer extends Renderer {
 		nextRequiresComma = true;
 		nextRequiresNewline = true;
 	}
-	
+
 	@Override
 	protected void renderArrayElement(StringBuilder builder, int indent,
 			String name, String value) {

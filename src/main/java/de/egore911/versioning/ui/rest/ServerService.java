@@ -109,14 +109,14 @@ public class ServerService
 			}
 		}
 	}
-	
+
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Path("upload/{id}")
 	public Integer uploadFile(@PathParam("id") final Integer serverId, @FormDataParam("file") InputStream stream,
 			@FormDataParam("file") FormDataContentDisposition contentDisposition, @Auth Subject subject) {
 		ServerEntity server = getSelector(subject).withId(serverId).find();
-		
+
 		BinaryDataEntity binaryData = new BinaryDataEntity();
 		try {
 			binaryData.setFilename(contentDisposition.getFileName());
@@ -129,7 +129,7 @@ public class ServerService
 		} catch (IOException e) {
 			throw new BadArgumentException("Could not read image: " + e.getMessage());
 		}
-		
+
 		return binaryData.getId();
 	}
 

@@ -22,7 +22,7 @@
 			</span>
 		</p>
 	</label-group>
-	
+
 	<label-group label="{{'vcsTag' | translate}}" ng-class="{'has-error': form.vcsTag.$touched && (form.vcsTag.$error.pattern || form.vcsTag.$error.required)}">
 		<p>
 			<input type="text" class="form-control" ng-model="vm.version.vcsTag" name="vcsTag" required ng-disabled="!!vm.version.id" />

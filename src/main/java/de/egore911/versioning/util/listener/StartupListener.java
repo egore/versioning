@@ -122,7 +122,7 @@ public class StartupListener extends AbstractStartupListener {
 							b.setProjectIds(Collections.emptyList());
 						}
 					}
-		
+
 					@Override
 					public void mapBtoA(VcsHost b, VcsHostEntity a, MappingContext context) {
 						if (CollectionUtils.isNotEmpty(b.getProjectIds())) {
@@ -156,7 +156,7 @@ public class StartupListener extends AbstractStartupListener {
 							b.setConfiguredProjectIds(Collections.emptyList());
 						}
 					}
-		
+
 					@Override
 					public void mapBtoA(Server b, ServerEntity a, MappingContext context) {
 						if (b.getVcsHostId() != null) {
@@ -211,7 +211,7 @@ public class StartupListener extends AbstractStartupListener {
 						}
 					}
 				}).register();
-		
+
 		FactoryHolder.MAPPER_FACTORY
 				.classMap(VerificationEntity.class, Verification.class)
 				.exclude("usedBy")

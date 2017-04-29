@@ -28,5 +28,5 @@ public class DeploymentHistoryEntry {
 			List<DeploymentDuration> deploymentDurations) {
 		this.deploymentDurations = deploymentDurations;
 	}
-	
+
 }

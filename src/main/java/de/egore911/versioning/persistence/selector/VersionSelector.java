@@ -52,7 +52,7 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 	private String projectNameLike;
 	private String vcsTagLike;
 	private String search;
-	
+
 	public VersionSelector() {
 		withSortColumn("created");
 		withAscending(false);

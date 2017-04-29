@@ -30,7 +30,7 @@
 				});
 			}
 		}
-		
+
 		function suggest(type, input) {
 			if (!type || !input) {
 				return;
@@ -49,7 +49,7 @@
 					vm.verification.version = match[3];
 				}
 			});
-			
+
 		}
 	}
 })();
