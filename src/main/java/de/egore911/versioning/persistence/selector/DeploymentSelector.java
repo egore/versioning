@@ -21,18 +21,6 @@
  */
 package de.egore911.versioning.persistence.selector;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import org.apache.commons.lang3.StringUtils;
-
 import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
 import de.egore911.versioning.persistence.model.DeploymentEntity;
 import de.egore911.versioning.persistence.model.DeploymentEntity_;
@@ -42,11 +30,22 @@ import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.ServerEntity_;
 import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.persistence.model.VersionEntity_;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.annotation.Nonnull;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public class DeploymentSelector extends AbstractResourceSelector<DeploymentEntity> {
+public class DeploymentSelector
+		extends AbstractResourceSelector<DeploymentEntity> {
 
 	private static final long serialVersionUID = 84030583640758463L;
 
@@ -58,16 +57,20 @@ public class DeploymentSelector extends AbstractResourceSelector<DeploymentEntit
 	private Boolean excludeDeleted;
 	private String search;
 
+	@Nonnull
 	@Override
 	protected Class<DeploymentEntity> getEntityClass() {
 		return DeploymentEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<DeploymentEntity> from,
+	protected List<Predicate> generatePredicateList(
+			@Nonnull CriteriaBuilder builder,
+			@Nonnull Root<DeploymentEntity> from,
 			@Nonnull CriteriaQuery<?> criteriaQuery) {
-		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
+		List<Predicate> predicates = super.generatePredicateList(builder, from,
+				criteriaQuery);
 
 		if (deployedOn != null) {
 			predicates.add(builder.equal(from.get(DeploymentEntity_.server),
@@ -78,89 +81,85 @@ public class DeploymentSelector extends AbstractResourceSelector<DeploymentEntit
 			predicates.add(builder.or(
 					builder.isNull(from.get(DeploymentEntity_.deployment)),
 					builder.greaterThanOrEqualTo(
-							from.get(DeploymentEntity_.deployment), deployedAfter)));
+							from.get(DeploymentEntity_.deployment),
+							deployedAfter)));
 		}
 
 		if (undeployedAfter != null) {
-			predicates.add(builder.or(builder.isNull(from
-					.get(DeploymentEntity_.undeployment)), builder
-					.greaterThanOrEqualTo(from.get(DeploymentEntity_.undeployment),
+			predicates.add(builder.or(
+					builder.isNull(from.get(DeploymentEntity_.undeployment)),
+					builder.greaterThanOrEqualTo(
+							from.get(DeploymentEntity_.undeployment),
 							undeployedAfter)));
 		}
 
 		if (isUneployed != null) {
 			if (isUneployed) {
-				predicates.add(builder.isNotNull(from
-						.get(DeploymentEntity_.undeployment)));
+				predicates.add(builder
+						.isNotNull(from.get(DeploymentEntity_.undeployment)));
 			} else {
-				predicates.add(builder.isNull(from
-						.get(DeploymentEntity_.undeployment)));
+				predicates.add(builder
+						.isNull(from.get(DeploymentEntity_.undeployment)));
 			}
 		}
 
 		if (Boolean.TRUE.equals(excludeDeleted)) {
 			Join<DeploymentEntity, VersionEntity> fromVersion = from
 					.join(DeploymentEntity_.version);
-			Join<VersionEntity,ProjectEntity> fromProject = fromVersion
+			Join<VersionEntity, ProjectEntity> fromProject = fromVersion
 					.join(VersionEntity_.project);
-			predicates.add(builder.equal(fromProject.get(ProjectEntity_.deleted),
-					Boolean.FALSE));
+			predicates.add(builder.equal(
+					fromProject.get(ProjectEntity_.deleted), Boolean.FALSE));
 		}
 
 		if (project != null) {
 			Join<DeploymentEntity, VersionEntity> fromVersion = from
 					.join(DeploymentEntity_.version);
-			predicates.add(builder.equal(fromVersion.get(VersionEntity_.project),
-					project));
+			predicates.add(builder
+					.equal(fromVersion.get(VersionEntity_.project), project));
 		}
-		
+
 		if (StringUtils.isNotEmpty(search)) {
 			String likePattern = '%' + search + '%';
-			predicates.add(
-					builder.or(
-							builder.like(from.get(DeploymentEntity_.version).get(VersionEntity_.vcsTag), likePattern),
-							builder.like(from.get(DeploymentEntity_.version).get(VersionEntity_.project).get(ProjectEntity_.name), likePattern),
-							builder.like(from.get(DeploymentEntity_.server).get(ServerEntity_.name), likePattern)
-					)
-			);
+			predicates
+					.add(builder.or(
+							builder.like(
+									from.get(DeploymentEntity_.version).get(
+											VersionEntity_.vcsTag),
+									likePattern),
+							builder.like(from.get(DeploymentEntity_.version)
+									.get(VersionEntity_.project).get(
+											ProjectEntity_.name),
+									likePattern),
+							builder.like(from.get(DeploymentEntity_.server)
+									.get(ServerEntity_.name), likePattern)));
 		}
 
 		return predicates;
 	}
 
-	public ServerEntity getDeployedOn() {
-		return deployedOn;
-	}
-
-	public void setDeployedOn(ServerEntity deployedOn) {
+	public DeploymentSelector withDeployedOn(ServerEntity deployedOn) {
 		this.deployedOn = deployedOn;
+		return this;
 	}
 
-	public Boolean getUneployed() {
-		return isUneployed;
-	}
-
-	public void setUneployed(Boolean uneployed) {
+	public DeploymentSelector withUneployed(Boolean uneployed) {
 		isUneployed = uneployed;
+		return this;
 	}
 
-	public ProjectEntity getProject() {
-		return project;
-	}
-
-	public void setProject(ProjectEntity project) {
+	public DeploymentSelector withProject(ProjectEntity project) {
 		this.project = project;
+		return this;
 	}
 
-	public Boolean getExcludeDeleted() {
-		return excludeDeleted;
-	}
-
-	public void setExcludeDeleted(Boolean excludeDeleted) {
+	public DeploymentSelector withExcludeDeleted(Boolean excludeDeleted) {
 		this.excludeDeleted = excludeDeleted;
+		return this;
 	}
 
-	public DeploymentSelector withUndeployedAfter(LocalDateTime undeployedAfter) {
+	public DeploymentSelector withUndeployedAfter(
+			LocalDateTime undeployedAfter) {
 		this.undeployedAfter = undeployedAfter;
 		return this;
 	}

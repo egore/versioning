@@ -49,27 +49,27 @@ public class DeploymentDao extends AbstractDao<DeploymentEntity> {
 	}
 
 	public List<DeploymentEntity> getCurrentDeployments(ServerEntity server) {
-		DeploymentSelector deploymentSelector = createSelector();
-		deploymentSelector.setDeployedOn(server);
-		deploymentSelector.setUneployed(Boolean.FALSE);
-		deploymentSelector.setExcludeDeleted(Boolean.TRUE);
-		return deploymentSelector.findAll();
+		return createSelector()
+				.withDeployedOn(server)
+				.withUneployed(Boolean.FALSE)
+				.withExcludeDeleted(Boolean.TRUE)
+				.findAll();
 	}
 
 	public List<DeploymentEntity> getAllDeployments(ServerEntity server, LocalDateTime maxAge) {
-		DeploymentSelector deploymentSelector = createSelector();
-		deploymentSelector.setDeployedOn(server);
-		deploymentSelector.withDeployedAfter(maxAge);
-		deploymentSelector.withUndeployedAfter(maxAge);
-		return deploymentSelector.findAll();
+		return createSelector()
+				.withDeployedOn(server)
+				.withDeployedAfter(maxAge)
+				.withUndeployedAfter(maxAge)
+				.findAll();
 	}
 
 	public DeploymentEntity getCurrentDeployment(ServerEntity server, ProjectEntity project) {
-		DeploymentSelector deploymentSelector = createSelector();
-		deploymentSelector.setDeployedOn(server);
-		deploymentSelector.setProject(project);
-		deploymentSelector.setUneployed(Boolean.FALSE);
-		return deploymentSelector.find();
+		return createSelector()
+				.withDeployedOn(server)
+				.withProject(project)
+				.withUneployed(Boolean.FALSE)
+				.find();
 	}
 
 	public void replace(DeploymentEntity currentDeployment, DeploymentEntity newDeployment) {
