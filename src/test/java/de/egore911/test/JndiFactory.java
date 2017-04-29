@@ -21,7 +21,6 @@
  */
 package de.egore911.test;
 
-import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -79,8 +78,6 @@ public class JndiFactory implements InitialContextFactory {
 					if (invocation.getArguments()[0] == name) {
 						return jdbcDataSource;
 					}
-					System.err.println(Arrays.toString(invocation
-							.getArguments()));
 					return null;
 				});
 		Mockito.when(context.lookup(Mockito.anyString())).then(
@@ -88,8 +85,6 @@ public class JndiFactory implements InitialContextFactory {
 					if (DATASOURCE_NAME.equals(invocation.getArguments()[0])) {
 						return jdbcDataSource;
 					}
-					System.err.println(Arrays.toString(invocation
-							.getArguments()));
 					return null;
 				});
 
