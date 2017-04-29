@@ -8,7 +8,7 @@ BEGIN
     FROM sys.default_constraints dc
     JOIN sys.columns c
         ON c.default_object_id = dc.object_id
-    WHERE 
+    WHERE
         dc.parent_object_id = OBJECT_ID('project')
     AND c.name = N'id_mavenrepository'
     IF @@ROWCOUNT = 0 BREAK
