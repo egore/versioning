@@ -35,8 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
-import de.egore911.versioning.persistence.dao.BinaryDataDao;
-import de.egore911.versioning.persistence.model.BinaryDataEntity;
+import de.egore911.appframework.persistence.dao.BinaryDataDao;
+import de.egore911.appframework.persistence.model.BinaryDataEntity;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;

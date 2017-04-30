@@ -23,12 +23,12 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.secnod.shiro.jaxrs.Auth;
 
+import de.egore911.appframework.persistence.dao.BinaryDataDao;
+import de.egore911.appframework.persistence.model.BinaryDataEntity;
 import de.egore911.appframework.ui.exceptions.BadArgumentException;
 import de.egore911.appframework.ui.rest.AbstractResourceService;
-import de.egore911.versioning.persistence.dao.BinaryDataDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.ActionReplacementEntity;
-import de.egore911.versioning.persistence.model.BinaryDataEntity;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.ReplacementEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;

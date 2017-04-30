@@ -5,6 +5,8 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
+import de.egore911.appframework.persistence.model.BinaryDataEntity;
+
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(ServerEntity.class)
 public abstract class ServerEntity_ extends de.egore911.appframework.persistence.model.IntegerDbObject_ {
