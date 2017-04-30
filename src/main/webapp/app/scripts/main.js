@@ -40,7 +40,7 @@
 				currentPath = currentPath.substring(0, firstSlash);
 			}
 			return currentPath;
-		};
+		}
 
 		function hasPermission(permission) {
 			return $.inArray(permission, vm.permissions) >= 0;
