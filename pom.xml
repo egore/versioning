@@ -156,7 +156,7 @@
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework-testing</artifactId>
-			<version>1.0.5</version>
+			<version>1.0.6</version>
 			<scope>test</scope>
 		</dependency>
 
