@@ -10,3 +10,4 @@
 		$locationProvider.hashPrefix('');
 	}
 })();
+

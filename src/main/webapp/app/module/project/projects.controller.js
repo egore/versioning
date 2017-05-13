@@ -11,7 +11,8 @@
 		/* jshint validthis: true */
 		var vm = this;
 
-		vm.paging = Paging;
+		vm.paging = Paging.pager();
+
 		vm.projects = [];
 		vm.servers = {};
 		vm.vcs_hosts = {};

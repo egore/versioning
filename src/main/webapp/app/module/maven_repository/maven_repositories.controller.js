@@ -11,7 +11,7 @@
 		/* jshint validthis: true */
 		var vm = this;
 
-		vm.paging = Paging;
+		vm.paging = Paging.pager();
 
 		vm.add = add;
 		vm.searchFilter = searchFilter;

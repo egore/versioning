@@ -17,6 +17,7 @@
 	<logger name="com.jcraft.jsch" level="WARN" />
 	<logger name="org.jboss.weld" level="INFO" />
 	<logger name="org.flywaydb.core.internal.dbsupport.SqlScript" level="OFF" />
+	<logger name="org.apache.shiro" level="INFO" />
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />

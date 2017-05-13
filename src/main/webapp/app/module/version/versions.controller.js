@@ -11,7 +11,8 @@
 		/* jshint validthis: true */
 		var vm = this;
 
-		vm.paging = Paging;
+		vm.paging = Paging.pager();
+
 		vm.deployments = [];
 		vm.deployments_lookup = {};
 
@@ -27,10 +28,6 @@
 			vm.paging.reverse = true;
 			vm.paging.factory = Version;
 			vm.paging.loadData();
-
-			$http.get('rest/permissions').then(function(response) {
-				vm.permissions = response.data;
-			});
 
 			Deployment.query(function(deployments) {
 				vm.deployments = deployments;

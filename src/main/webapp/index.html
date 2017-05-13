@@ -17,21 +17,23 @@
   <script type="text/javascript" src="webjars/angular-resource/1.6.4/angular-resource.js"></script>
   <script type="text/javascript" src="webjars/angular-route/1.6.4/angular-route.js"></script>
   <script type="text/javascript" src="webjars/angular-sanitize/1.6.4/angular-sanitize.js"></script>
+  <script type="text/javascript" src="webjars/angular-cookies/1.6.4/angular-cookies.js"></script>
   <!-- angular-translate -->
   <script type="text/javascript" src="webjars/angular-translate/2.15.1/angular-translate.js"></script>
   <script type="text/javascript" src="webjars/angular-translate-loader-static-files/2.15.1/angular-translate-loader-static-files.js"></script>
   <!-- file upload -->
   <script type="text/javascript" src="webjars/ng-file-upload/12.2.13/ng-file-upload-all.js"></script>
+  <!-- moment -->
+  <script type="text/javascript" src="webjars/moment/2.17.1/min/moment.min.js"></script>
+  <script type="text/javascript" src="webjars/moment/2.17.1/locale/de.js"></script>
   <!-- Bootstrap UI -->
   <script type="text/javascript" src="webjars/angular-ui-bootstrap-bower/2.5.0/ui-bootstrap-tpls.min.js"></script>
   <!-- awesome-bootstrap-checkbox -->
   <link rel="stylesheet" href="webjars/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.css"/>
-  <!-- moment -->
-  <script type="text/javascript" src="webjars/moment/2.17.1/min/moment.min.js"></script>
-  <script type="text/javascript" src="webjars/moment/2.17.1/locale/de.js"></script>
   <!-- toastr -->
   <script type="text/javascript" src="webjars/toastr/2.1.3/toastr.min.js"></script>
   <link rel="stylesheet" type="text/css" href="webjars/toastr/2.1.3/toastr.min.css">
+
   <!-- App basics -->
   <script type="text/javascript" src="appframework/appframework.js"></script>
   <script type="text/javascript" src="app/scripts/app.js"></script>
@@ -93,6 +95,8 @@
   <script type="text/javascript" src="appframework/controller/paging.factory.js"></script>
 
   <script type="text/javascript" src="appframework/module/profile/profile.controller.js"></script>
+  <script type="text/javascript" src="appframework/module/login/authentication.factory.js"></script>
+  <script type="text/javascript" src="appframework/module/login/login.controller.js"></script>
 
   <script type="text/javascript" src="appframework/module/role/role.factory.js"></script>
   <script type="text/javascript" src="appframework/module/role/role.controller.js"></script>
@@ -113,12 +117,12 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Versioning {{vm.getVersion()}}</span>
+            <span class="sr-only">Versioning {{main.getVersion()}}</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#/" id="menu_home">Versioning {{vm.getVersion()}}</a>
+          <a class="navbar-brand" href="#/" id="menu_home">Versioning {{main.getVersion()}}</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -150,7 +154,7 @@
             <li ng-show="main.hasPermission('SHOW_VERIFICATIONS')" ng-class="{active : main.currentModule() == 'verifications'}"><a href="#/verifications" id="menu_vcshosts"><i class="fa fa-lock"></i> {{'verifications' | translate}} <span ng-show="main.currentModule() == 'verifications'" class="sr-only">(current)</span></a></li>
           </ul>
           <ul class="nav nav-sidebar">
-            <li ng-show="main.hasPermission('ADMIN_ROLES')" ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-cogs"></i> {{'roles' | translate}} <span ng-show="main.currentModule() == 'roles'" class="sr-only">(current)</span></a></li>
+            <li ng-show="main.hasPermission('ADMIN_ROLES')" ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-puzzle-piece"></i> {{'roles' | translate}} <span ng-show="main.currentModule() == 'roles'" class="sr-only">(current)</span></a></li>
             <li ng-show="main.hasPermission('ADMIN_USERS')" ng-class="{active : main.currentModule() == 'users'}"><a href="#/users" id="menu_users"><i class="fa fa-user"></i> {{'users' | translate}} <span ng-show="main.currentModule() == 'users'" class="sr-only">(current)</span></a></li>
           </ul>
         </div>

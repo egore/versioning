@@ -4,13 +4,13 @@
 		.module('versioningApp')
 		.controller('MainCtrl', MainCtrl);
 
-	MainCtrl.$inject = ['$location', '$http'];
+	MainCtrl.$inject = ['$location', '$http', '$scope', '$rootScope'];
 
 	/**
 	 * @param {ng.ILocationService} $location
 	 * @param {ng.IHttpService} $http
 	 */
-	function MainCtrl($location, $http) {
+	function MainCtrl($location, $http, $scope, $rootScope) {
 		/* jshint validthis: true */
 		var vm = this;
 
@@ -18,15 +18,20 @@
 
 		vm.currentModule = currentModule;
 		vm.hasPermission = hasPermission;
+		vm.getVersion = getVersion;
 
 		activate();
 
 		function activate() {
-			$http.get('rest/version_info').then(function(response) {
-				vm.version = response.data;
-				$http.get('rest/permissions/my').then(function(response) {
-					vm.permissions = response.data;
-				});
+			$scope.$watch('state.user', function(newValue, oldValue) {
+				if (newValue !== undefined && newValue.username != undefined) {
+					vm.permissions = $rootScope.state.permissions;
+					$http.get('rest/version_info').then(function(response) {
+						vm.version = response.data;
+					});
+				} else {
+					vm.permissions = [];
+				}
 			});
 		}
 

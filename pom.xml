@@ -30,6 +30,12 @@
 			<url>http://repo.christophbrill.de/</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repo.christophbrill.de</id>
+			<url>http://repo.christophbrill.de/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<scm>
 		<connection>scm:git:https://github.com/egore/versioning-web.git</connection>
@@ -49,6 +55,26 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>de.egore911.maven</groupId>
+				<artifactId>sqlchecker-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<directories>
+						<directory>${project.build.resources[0].directory}/db/migration/hsqldb</directory>
+						<directory>${project.build.resources[0].directory}/db/migration/mssql</directory>
+						<directory>${project.build.resources[0].directory}/db/migration/mysql</directory>
+					</directories>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -96,7 +122,7 @@
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework-angular</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.6</version>
 		</dependency>
 
 		<!-- Intentional copy from appframework, otherwise build failes -->
@@ -126,17 +152,11 @@
 			<version>1.8.13</version>
 		</dependency>
 
-		<!-- Javascript using Bower -->
-		<dependency>
-			<groupId>org.webjars.bower</groupId>
-			<artifactId>moment</artifactId>
-		</dependency>
-
 		<!-- Unit testing -->
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework-testing</artifactId>
-			<version>1.0.3</version>
+			<version>1.0.4</version>
 			<scope>test</scope>
 		</dependency>
 
