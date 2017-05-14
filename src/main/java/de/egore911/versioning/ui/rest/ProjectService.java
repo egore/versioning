@@ -55,8 +55,11 @@ public class ProjectService
 	protected void validate(Project dto, ProjectEntity entity) {
 		super.validate(dto, entity);
 
-		for (ActionCopyEntity actionCopy : entity.getActionCopies()) {
-			checkVariableExists(entity, actionCopy.getTargetPath());
+		List<ActionCopyEntity> actionCopies = entity.getActionCopies();
+		if (actionCopies != null) {
+			for (ActionCopyEntity actionCopy : actionCopies) {
+				checkVariableExists(entity, actionCopy.getTargetPath());
+			}
 		}
 		List<ActionExtractionEntity> actionExtractions = entity
 				.getActionExtractions();
@@ -75,26 +78,29 @@ public class ProjectService
 				}
 			}
 		}
-		List<ActionCopyEntity> actionCopies = entity.getActionCopies();
 		if (actionCopies != null) {
 			for (ActionCopyEntity actionCopy : actionCopies) {
 				actionCopy.setProject(entity);
 			}
 		}
-		List<ActionCheckoutEntity> actionCheckouts = entity.getActionCheckouts();
+		List<ActionCheckoutEntity> actionCheckouts = entity
+				.getActionCheckouts();
 		if (actionCheckouts != null) {
 			for (ActionCheckoutEntity actionCheckout : actionCheckouts) {
 				actionCheckout.setProject(entity);
 			}
 		}
-		List<ActionReplacementEntity> actionReplacements = entity.getActionReplacements();
+		List<ActionReplacementEntity> actionReplacements = entity
+				.getActionReplacements();
 		if (actionReplacements != null) {
 			for (ActionReplacementEntity actionReplacement : actionReplacements) {
 				actionReplacement.setProject(entity);
-				List<ReplacementEntity> replacements = actionReplacement.getReplacements();
+				List<ReplacementEntity> replacements = actionReplacement
+						.getReplacements();
 				if (replacements != null) {
 					for (ReplacementEntity replacementEntity : replacements) {
-						replacementEntity.setActionReplacement(actionReplacement);
+						replacementEntity
+								.setActionReplacement(actionReplacement);
 					}
 				}
 			}

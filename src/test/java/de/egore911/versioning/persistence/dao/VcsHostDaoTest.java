@@ -2,7 +2,7 @@ package de.egore911.versioning.persistence.dao;
 
 import java.util.UUID;
 
-import de.egore911.appframework.testing.AbstractDaoCRUDTest;
+import de.egore911.appframework.testing.persistence.dao.AbstractDaoCRUDTest;
 import de.egore911.versioning.persistence.model.Vcs;
 import de.egore911.versioning.persistence.model.VcsHostEntity;
 
