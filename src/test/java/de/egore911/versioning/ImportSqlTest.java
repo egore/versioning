@@ -21,9 +21,14 @@
  */
 package de.egore911.versioning;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import de.egore911.appframework.testing.AbstractDatabaseTest;
@@ -48,39 +53,36 @@ public class ImportSqlTest extends AbstractDatabaseTest {
 		// We have 2 VCS hosts in our import.sql
 		VcsHostDao vcshostDao = new VcsHostDao();
 		List<VcsHostEntity> vcshosts = vcshostDao.findAll();
-		Assert.assertNotNull(vcshosts);
-		Assert.assertEquals(2, vcshosts.size());
+		assertThat(vcshosts, notNullValue());
+		assertThat(vcshosts, hasSize(greaterThanOrEqualTo(2)));
 
 		// We have 3 projects in our import.sql
 		ProjectDao projectDao = new ProjectDao();
 		List<ProjectEntity> projects = projectDao.findAll();
-		Assert.assertNotNull(projects);
-		Assert.assertEquals(3, projects.size());
+		assertThat(projects, notNullValue());
+		assertThat(projects, hasSize(greaterThanOrEqualTo(3)));
 
 		// We have 5 versions in our import.sql
 		VersionDao versionDao = new VersionDao();
 		List<VersionEntity> versions = versionDao.findAll();
-		Assert.assertNotNull(versions);
-		Assert.assertEquals(5, versions.size());
+		assertThat(versions, notNullValue());
+		assertThat(versions, hasSize(greaterThanOrEqualTo(5)));
 
 		// We have 5 versions in our import.sql
 		ServerDao serverDao = new ServerDao();
 		List<ServerEntity> servers = serverDao.findAll();
-		Assert.assertNotNull(servers);
-		Assert.assertEquals(2, servers.size());
+		assertThat(servers, notNullValue());
+		assertThat(servers, hasSize(greaterThanOrEqualTo(2)));
 
 		// Load the first server
 		ServerEntity server = serverDao.findById(1);
-		Assert.assertEquals("production_server", server.getName());
+		assertThat(server.getName(), equalTo("production_server"));
 
 		DeploymentCalculator deploymentCalculator = new DeploymentCalculator();
 		List<VersionEntity> deployableVersions = deploymentCalculator
 				.getDeployableVersions(server);
-		Assert.assertEquals(1, deployableVersions.size());
-		Assert.assertEquals("1.0.1",
-				deployableVersions.iterator().next().getVcsTag());
-		Assert.assertEquals("some_svn_project",
-				deployableVersions.iterator().next().getProject().getName());
-
+		assertThat(deployableVersions, hasSize(greaterThanOrEqualTo(1)));
+		assertThat(deployableVersions.iterator().next().getVcsTag(), equalTo("1.0.1"));
+		assertThat(deployableVersions.iterator().next().getProject().getName(), equalTo("some_svn_project"));
 	}
 }

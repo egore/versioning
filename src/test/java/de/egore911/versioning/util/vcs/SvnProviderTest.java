@@ -21,7 +21,9 @@
  */
 package de.egore911.versioning.util.vcs;
 
-import org.junit.Assert;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+
 import org.junit.Test;
 
 import de.egore911.versioning.persistence.model.ProjectEntity;
@@ -42,8 +44,8 @@ public class SvnProviderTest {
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("maven/maven-3/");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists("maven-3.0.4"));
-		Assert.assertFalse(provider.tagExists("maven-1234"));
+		assertThat(provider.tagExists("maven-3.0.4"), equalTo(true));
+		assertThat(provider.tagExists("maven-1234"), equalTo(false));
 	}
 
 	@Test
@@ -55,8 +57,8 @@ public class SvnProviderTest {
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("maven/maven-3/trunk");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists("maven-3.0.4"));
-		Assert.assertFalse(provider.tagExists("maven-1234"));
+		assertThat(provider.tagExists("maven-3.0.4"), equalTo(true));
+		assertThat(provider.tagExists("maven-1234"), equalTo(false));
 	}
 
 	@Test
@@ -68,8 +70,8 @@ public class SvnProviderTest {
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("maven/maven-3/trunk/");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists("maven-3.0.4"));
-		Assert.assertFalse(provider.tagExists("maven-1234"));
+		assertThat(provider.tagExists("maven-3.0.4"), equalTo(true));
+		assertThat(provider.tagExists("maven-1234"), equalTo(false));
 	}
 
 }

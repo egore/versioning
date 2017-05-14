@@ -21,8 +21,9 @@
  */
 package de.egore911.versioning.persistence.model;
 
-import org.junit.Assert;
 import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -41,24 +42,24 @@ public class VersionTest {
 
 		// 1.0.0 is newer than 0.9.9
 		other.setVcsTag("0.9.9");
-		Assert.assertTrue(version.isNewerThan(other));
+		assertThat(version.isNewerThan(other), equalTo(true));
 
 		// 1.0.0 is older than 1.0.1
 		other.setVcsTag("1.0.1");
-		Assert.assertFalse(version.isNewerThan(other));
+		assertThat(version.isNewerThan(other), equalTo(false));
 
 		// 1.0.0 is the same as 1.0.0
 		other.setVcsTag("1.0.0");
-		Assert.assertFalse(version.isNewerThan(other));
-		Assert.assertFalse(other.isNewerThan(version));
+		assertThat(version.isNewerThan(other), equalTo(false));
+		assertThat(other.isNewerThan(version), equalTo(false));
 
 		// 1.0.0 is older than 1.0.10
 		other.setVcsTag("1.0.10");
-		Assert.assertFalse(version.isNewerThan(other));
+		assertThat(version.isNewerThan(other), equalTo(false));
 
 		// 1.0.9 is older than 1.0.10
 		version.setVcsTag("1.0.9");
-		Assert.assertFalse(version.isNewerThan(other));
+		assertThat(version.isNewerThan(other), equalTo(false));
 	}
 
 	@Test
@@ -73,15 +74,15 @@ public class VersionTest {
 
 		// 1.0 is newer than 0.9.9
 		other.setVcsTag("0.9.9");
-		Assert.assertTrue(version.isNewerThan(other));
+		assertThat(version.isNewerThan(other), equalTo(true));
 
 		// 1.0 is older than 1.0.1
 		other.setVcsTag("1.0.1");
-		Assert.assertFalse(version.isNewerThan(other));
+		assertThat(version.isNewerThan(other), equalTo(false));
 
 		// 1.0 is the same as 1.0.0
 		other.setVcsTag("1.0.0");
-		Assert.assertFalse(version.isNewerThan(other));
-		Assert.assertFalse(other.isNewerThan(version));
+		assertThat(version.isNewerThan(other), equalTo(false));
+		assertThat(other.isNewerThan(version), equalTo(false));
 	}
 }

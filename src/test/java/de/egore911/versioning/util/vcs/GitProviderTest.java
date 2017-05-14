@@ -21,7 +21,9 @@
  */
 package de.egore911.versioning.util.vcs;
 
-import org.junit.Assert;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -44,8 +46,8 @@ public class GitProviderTest {
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("egore/dri-log-client.git");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists("dri-log-0.5.0"));
-		Assert.assertFalse(provider.tagExists("dri-log-1234"));
+		assertThat(provider.tagExists("dri-log-0.5.0"), equalTo(true));
+		assertThat(provider.tagExists("dri-log-1234"), equalTo(false));
 	}
 
 	@Test
@@ -57,8 +59,8 @@ public class GitProviderTest {
 		project.setVcsHost(vcsHost);
 		project.setVcsPath("egore/dri-log-client.git");
 		Provider provider = project.getProvider();
-		Assert.assertTrue(provider.tagExists("dri-log-0.5.0"));
-		Assert.assertFalse(provider.tagExists("dri-log-1234"));
+		assertThat(provider.tagExists("dri-log-0.5.0"), equalTo(true));
+		assertThat(provider.tagExists("dri-log-1234"), equalTo(false));
 	}
 
 }
