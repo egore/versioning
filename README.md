@@ -173,4 +173,6 @@ The following components were used to develop *versioning*:
 
 Build status
 ------------
-[![alt text](https://travis-ci.org/egore/versioning.svg "Build status")](https://travis-ci.org/egore/versioning)
+[![travis-ci.org](https://travis-ci.org/egore/versioning-web.svg "Build status")](https://travis-ci.org/egore/versioning-web)
+[![codecov](https://codecov.io/gh/egore/versioning-web/branch/master/graph/badge.svg)](https://codecov.io/gh/egore/versioning
+-web)
