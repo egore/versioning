@@ -24,6 +24,7 @@ package de.egore911.versioning.persistence.dao;
 import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.TagTransformerEntity;
 import de.egore911.versioning.persistence.selector.TagTransformerSelector;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -41,6 +42,9 @@ public class TagTransformerDao extends AbstractDao<TagTransformerEntity> {
 	}
 
 	public TagTransformerEntity findByName(String name) {
+		if (StringUtils.isEmpty(name)) {
+			return null;
+		}
 		return createSelector()
 				.withName(name)
 				.find();

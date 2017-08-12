@@ -26,6 +26,7 @@ import java.util.List;
 import de.egore911.persistence.dao.AbstractDao;
 import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.selector.ServerSelector;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
@@ -43,6 +44,9 @@ public class ServerDao extends AbstractDao<ServerEntity> {
 	}
 
 	public ServerEntity findByName(String name) {
+		if (StringUtils.isEmpty(name)) {
+			return null;
+		}
 		return createSelector()
 				.withName(name)
 				.find();
