@@ -1,4 +1,6 @@
-/// <reference path="../../../../../../typings/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular/index.d.ts" />
+//@ts-check
+
 (function() {
 	'use strict';
 
@@ -7,6 +9,10 @@
 
 	DeploymentsController.$inject = ['$http', '$location'];
 
+	/**
+	 * @param {ng.IHttpService} $http
+	 * @param {ng.ILocationService} $location
+	 */
 	function DeploymentsController($http, $location) {
 		/* jshint validthis: true */
 		var vm = this;

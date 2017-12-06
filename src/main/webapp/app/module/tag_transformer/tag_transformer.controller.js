@@ -1,4 +1,6 @@
-/// <reference path="../../../../../../typings/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular/index.d.ts" />
+//@ts-check
+
 (function() {
 	'use strict';
 
@@ -7,6 +9,11 @@
 
 	TagTransformerDetailController.$inject = ['$route', '$location', '$http', 'TagTransformer', 'VcsHost'];
 
+	/**
+	 * @param {ng.route.IRouteService} $route
+	 * @param {ng.ILocationService} $location
+	 * @param {ng.IHttpService} $http
+	 */
 	function TagTransformerDetailController($route, $location, $http, TagTransformer, VcsHost) {
 		/* jshint validthis: true */
 		var vm = this;

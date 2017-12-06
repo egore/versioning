@@ -1,4 +1,7 @@
-/// <reference path="../../../../../../typings/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular-ui-bootstrap/index.d.ts" />
+//@ts-check
+
 (function() {
 	'use strict';
 
@@ -7,6 +10,11 @@
 
 	ProjectListController.$inject = ['$location', '$rootScope', '$uibModal', '$route', 'Project', 'Server', 'VcsHost', 'Paging'];
 
+	/**
+	 * @param {ng.ILocationService} $location
+	 * @param {ng.IRootScopeService} $rootScope
+	 * @param {ng.ui.bootstrap.IModalService} $uibModal
+	 */
 	function ProjectListController($location, $rootScope, $uibModal, $route, Project, Server, VcsHost, Paging) {
 		/* jshint validthis: true */
 		var vm = this;
@@ -38,7 +46,7 @@
 				angular.forEach(vcs_hosts, function(vcs_host) {
 					vm.vcs_hosts[vcs_host.id] = vcs_host;
 				});
-			})
+			});
 		}
 
 		function add() {

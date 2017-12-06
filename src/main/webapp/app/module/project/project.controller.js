@@ -1,4 +1,7 @@
-/// <reference path="../../../../../../typings/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular-route/index.d.ts" />
+//@ts-check
+
 (function() {
 	'use strict';
 
@@ -7,6 +10,10 @@
 
 	ProjectDetailController.$inject = ['$route', '$location', 'Project', 'VcsHost', 'TagTransformer', 'Server', 'MavenRepository'];
 
+	/**
+	 * @param {ng.route.IRouteService} $route
+	 * @param {ng.ILocationService} $location
+	 */
 	function ProjectDetailController($route, $location, Project, VcsHost, TagTransformer, Server, MavenRepository) {
 		/* jshint validthis: true */
 		var vm = this;

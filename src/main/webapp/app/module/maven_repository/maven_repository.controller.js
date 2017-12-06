@@ -1,4 +1,6 @@
-/// <reference path="../../../../../../typings/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular/index.d.ts" />
+//@ts-check
+
 (function() {
 	'use strict';
 
@@ -7,6 +9,10 @@
 
 	MavenRepositoryDetailController.$inject = ['$route', '$location', 'MavenRepository', 'Project'];
 
+	/**
+	 * @param {ng.route.IRouteService} $route
+	 * @param {ng.ILocationService} $location
+	 */
 	function MavenRepositoryDetailController($route, $location, MavenRepository, Project) {
 		/* jshint validthis: true */
 		var vm = this;
