@@ -22,4 +22,5 @@ context.xml
 git.properties
 
 # Typings
-/typings
+/node_modules
+/package-lock.json
