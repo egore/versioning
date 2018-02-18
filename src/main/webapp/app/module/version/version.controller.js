@@ -1,4 +1,7 @@
-/// <reference path="../../../../../../typings/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular-route/index.d.ts" />
+//@ts-check
+
 (function() {
 	'use strict';
 
@@ -7,6 +10,11 @@
 
 	VersionDetailController.$inject = ['$route', '$location', 'Version', 'Project', '$http'];
 
+	/**
+	 * @param {ng.route.IRouteService} $route
+	 * @param {ng.ILocationService} $location
+	 * @param {ng.IHttpService} $http
+	 */
 	function VersionDetailController($route, $location, Version, Project, $http) {
 		/* jshint validthis: true */
 		var vm = this;

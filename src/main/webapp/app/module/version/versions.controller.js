@@ -1,4 +1,8 @@
-/// <reference path="../../../../../../typings/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular-route/index.d.ts" />
+/// <reference path="../../../../../../node_modules/@types/angular-ui-bootstrap/index.d.ts" />
+//@ts-check
+
 (function() {
 	'use strict';
 
@@ -7,6 +11,13 @@
 
 	VersionListController.$inject = ['$location', '$rootScope', '$http', 'Version', '$uibModal', '$route', 'Deployment', 'Paging'];
 
+	/**
+	 * @param {ng.ILocationService} $location
+	 * @param {ng.IRootScopeService} $rootScope
+	 * @param {ng.IHttpService} $http
+	 * @param {ng.ui.bootstrap.IModalService} $uibModal
+	 * @param {ng.route.IRouteService} $route
+	 */
 	function VersionListController($location, $rootScope, $http, Version, $uibModal, $route, Deployment, Paging) {
 		/* jshint validthis: true */
 		var vm = this;
