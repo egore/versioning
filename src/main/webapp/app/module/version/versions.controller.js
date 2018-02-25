@@ -29,7 +29,6 @@
 
 		vm.add = add;
 		vm.searchFilter = searchFilter;
-		vm.isSelected = isSelected;
 		vm.remove = remove;
 
 		activate();
@@ -54,10 +53,6 @@
 
 		function searchFilter(string) {
 			$rootScope.search = string;
-		}
-
-		function isSelected(permission, version) {
-			return version.permissions.indexOf(permission) !== -1;
 		}
 
 		function remove(version) {
