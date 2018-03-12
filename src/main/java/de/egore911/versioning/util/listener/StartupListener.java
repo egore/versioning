@@ -29,18 +29,32 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import de.egore911.appframework.util.FactoryHolder;
 import de.egore911.appframework.util.listener.AbstractStartupListener;
+import de.egore911.versioning.persistence.dao.ActionExtractionDao;
 import de.egore911.versioning.persistence.dao.DeploymentDao;
+import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.dao.ProjectDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
 import de.egore911.versioning.persistence.dao.VcsHostDao;
+import de.egore911.versioning.persistence.model.AbstractActionEntity;
+import de.egore911.versioning.persistence.model.AbstractRemoteActionEntity;
+import de.egore911.versioning.persistence.model.ActionCopyEntity;
+import de.egore911.versioning.persistence.model.ActionExtractionEntity;
 import de.egore911.versioning.persistence.model.DeploymentEntity;
+import de.egore911.versioning.persistence.model.ExtractionEntity;
+import de.egore911.versioning.persistence.model.MavenArtifactEntity;
 import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.VcsHostEntity;
 import de.egore911.versioning.persistence.model.VerificationEntity;
 import de.egore911.versioning.persistence.model.VersionEntity;
+import de.egore911.versioning.ui.dto.AbstractAction;
+import de.egore911.versioning.ui.dto.AbstractRemoteAction;
+import de.egore911.versioning.ui.dto.ActionCopy;
+import de.egore911.versioning.ui.dto.ActionExtraction;
+import de.egore911.versioning.ui.dto.Extraction;
+import de.egore911.versioning.ui.dto.MavenArtifact;
 import de.egore911.versioning.ui.dto.Project;
 import de.egore911.versioning.ui.dto.Server;
 import de.egore911.versioning.ui.dto.UsedArtifact;
@@ -208,6 +222,108 @@ public class StartupListener extends AbstractStartupListener {
 							if (a.getDeployments() != null) {
 								a.getDeployments().clear();
 							}
+						}
+					}
+				}).register();
+
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(AbstractActionEntity.class, AbstractAction.class)
+				.byDefault()
+				.customize(new CustomMapper<AbstractActionEntity, AbstractAction>() {
+					@Override
+					public void mapAtoB(AbstractActionEntity actionEntity, AbstractAction action, MappingContext context) {
+						if (actionEntity.getProject() != null) {
+							action.setProjectId(actionEntity.getProject().getId());
+						}
+						else {
+							action.setProjectId(null);
+						}
+					}
+
+					@Override
+					public void mapBtoA(AbstractAction action, AbstractActionEntity actionEntity, MappingContext context) {
+						if (action.getProjectId() != null) {
+							actionEntity.setProject(new ProjectDao().findById(action.getProjectId()));
+						} else {
+							actionEntity.setProject(null);
+						}
+					}
+				}).register();
+
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(AbstractRemoteActionEntity.class, AbstractRemoteAction.class)
+				.use(AbstractActionEntity.class, AbstractAction.class)
+				.byDefault()
+				.register();
+
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(ActionCopyEntity.class, ActionCopy.class)
+				.use(AbstractRemoteActionEntity.class, AbstractRemoteAction.class)
+				.byDefault()
+				.customize(new CustomMapper<ActionCopyEntity, ActionCopy>() {
+					@Override
+					public void mapBtoA(ActionCopy actionCopy, ActionCopyEntity actionCopyEntity, MappingContext context) {
+						if (actionCopyEntity.getMavenArtifact() != null) {
+							actionCopyEntity.getMavenArtifact().setActionCopy(actionCopyEntity);
+						}
+					}
+				}).register();
+
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(ActionExtractionEntity.class, ActionExtraction.class)
+				.use(AbstractRemoteActionEntity.class, AbstractRemoteAction.class)
+				.byDefault()
+				.customize(new CustomMapper<ActionExtractionEntity, ActionExtraction>() {
+					@Override
+					public void mapBtoA(ActionExtraction actionExtraction, ActionExtractionEntity actionExtractionEntity, MappingContext context) {
+						if (actionExtractionEntity.getMavenArtifact() != null) {
+							actionExtractionEntity.getMavenArtifact().setActionExtraction(actionExtractionEntity);
+						}
+					}
+				}).register();
+
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(MavenArtifactEntity.class, MavenArtifact.class)
+				.byDefault()
+				.customize(new CustomMapper<MavenArtifactEntity, MavenArtifact>() {
+					@Override
+					public void mapAtoB(MavenArtifactEntity mavenArtifactEntity, MavenArtifact mavenArtifact, MappingContext context) {
+						if (mavenArtifactEntity.getMavenRepository() != null) {
+							mavenArtifact.setMavenRepositoryId(mavenArtifactEntity.getMavenRepository().getId());
+						} else {
+							mavenArtifact.setMavenRepositoryId(null);
+						}
+					}
+
+					@Override
+					public void mapBtoA(MavenArtifact mavenArtifact, MavenArtifactEntity mavenArtifactEntity, MappingContext context) {
+						if (mavenArtifact.getMavenRepositoryId() != null) {
+							mavenArtifactEntity.setMavenRepository(new MavenRepositoryDao().findById(mavenArtifact.getMavenRepositoryId()));
+						} else {
+							mavenArtifactEntity.setMavenRepository(null);
+						}
+					}
+				}).register();
+
+		FactoryHolder.MAPPER_FACTORY
+				.classMap(ExtractionEntity.class, Extraction.class)
+				.byDefault()
+				.customize(new CustomMapper<ExtractionEntity, Extraction>() {
+					@Override
+					public void mapAtoB(ExtractionEntity extractionEntity, Extraction extraction, MappingContext context) {
+						if (extractionEntity.getActionExtraction() != null) {
+							extraction.setActionExtractionId(extractionEntity.getActionExtraction().getId());
+						} else {
+							extraction.setActionExtractionId(null);
+						}
+					}
+
+					@Override
+					public void mapBtoA(Extraction extraction, ExtractionEntity extractionEntity, MappingContext context) {
+						if (extraction.getActionExtractionId() != null) {
+							extractionEntity.setActionExtraction(new ActionExtractionDao().findById(extraction.getActionExtractionId()));
+						} else {
+							extractionEntity.setActionExtraction(null);
 						}
 					}
 				}).register();

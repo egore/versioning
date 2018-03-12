@@ -7,6 +7,7 @@ public class MavenArtifact extends AbstractDto {
 	private String groupId;
 	private String artifactId;
 	private String packaging;
+	private Integer mavenRepositoryId;
 
 	public String getGroupId() {
 		return groupId;
@@ -32,4 +33,11 @@ public class MavenArtifact extends AbstractDto {
 		this.packaging = packaging;
 	}
 
+	public Integer getMavenRepositoryId() {
+		return mavenRepositoryId;
+	}
+
+	public void setMavenRepositoryId(Integer mavenRepositoryId) {
+		this.mavenRepositoryId = mavenRepositoryId;
+	}
 }

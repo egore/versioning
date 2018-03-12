@@ -1,11 +1,10 @@
 package de.egore911.versioning.persistence.model;
 
+import de.egore911.appframework.persistence.model.BinaryDataEntity;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-
-import de.egore911.appframework.persistence.model.BinaryDataEntity;
 
 @Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
 @StaticMetamodel(ServerEntity.class)

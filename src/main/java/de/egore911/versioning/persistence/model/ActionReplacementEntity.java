@@ -35,18 +35,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import de.egore911.appframework.persistence.model.IntegerDbObject;
-
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
 @Entity
 @Table(name = "action_replacement")
-public class ActionReplacementEntity extends IntegerDbObject {
+public class ActionReplacementEntity extends AbstractActionEntity {
 
 	private static final long serialVersionUID = 3366431865064864620L;
 
-	private ProjectEntity project;
 	private ServerEntity server;
 	private List<String> wildcards = new ArrayList<>(0);
 	private List<ReplacementEntity> replacements = new ArrayList<>(0);
@@ -55,11 +52,7 @@ public class ActionReplacementEntity extends IntegerDbObject {
 	@ManyToOne
 	@JoinColumn(name = "id_project")
 	public ProjectEntity getProject() {
-		return project;
-	}
-
-	public void setProject(ProjectEntity project) {
-		this.project = project;
+		return super.getProject();
 	}
 
 	@ManyToOne

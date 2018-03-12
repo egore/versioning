@@ -21,12 +21,10 @@
  */
 package de.egore911.versioning.ui.dto;
 
-import de.egore911.appframework.ui.dto.AbstractDto;
-
 /**
  * @author Christoph Brill &lt;egore911@gmail.com&gt;
  */
-public abstract class AbstractRemoteAction extends AbstractDto {
+public abstract class AbstractRemoteAction extends AbstractAction {
 
 	private MavenArtifact mavenArtifact;
 	private SpacerUrl spacerUrl;

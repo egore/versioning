@@ -28,8 +28,18 @@ import de.egore911.appframework.ui.dto.AbstractDto;
  */
 public class Extraction extends AbstractDto {
 
+	private Integer actionExtractionId;
+
 	private String source;
 	private String destination;
+
+	public Integer getActionExtractionId() {
+		return actionExtractionId;
+	}
+
+	public void setActionExtractionId(Integer actionExtractionId) {
+		this.actionExtractionId = actionExtractionId;
+	}
 
 	public String getSource() {
 		return source;

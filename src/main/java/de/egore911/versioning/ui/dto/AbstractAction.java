@@ -21,19 +21,17 @@
  */
 package de.egore911.versioning.ui.dto;
 
-/**
- * @author Christoph Brill &lt;egore911@gmail.com&gt;
- */
-public class ActionCheckout extends AbstractAction {
+import de.egore911.appframework.ui.dto.AbstractDto;
 
-	private String targetPath;
+public class AbstractAction extends AbstractDto {
 
-	public String getTargetPath() {
-		return targetPath;
+	private Integer projectId;
+
+	public Integer getProjectId() {
+		return projectId;
 	}
 
-	public void setTargetPath(String targetPath) {
-		this.targetPath = targetPath;
+	public void setProjectId(Integer projectId) {
+		this.projectId = projectId;
 	}
-
 }

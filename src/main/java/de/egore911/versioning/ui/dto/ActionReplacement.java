@@ -23,9 +23,7 @@ package de.egore911.versioning.ui.dto;
 
 import java.util.List;
 
-import de.egore911.appframework.ui.dto.AbstractDto;
-
-public class ActionReplacement extends AbstractDto {
+public class ActionReplacement extends AbstractAction {
 
 	private List<String> wildcards;
 	private List<Replacement> replacements;
