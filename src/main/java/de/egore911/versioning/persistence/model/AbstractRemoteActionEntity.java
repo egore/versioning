@@ -33,6 +33,9 @@ public abstract class AbstractRemoteActionEntity extends AbstractActionEntity {
 	private MavenArtifactEntity mavenArtifact;
 	private SpacerUrlEntity spacerUrl;
 
+	/**
+	 * Not actually transient, the configuration is performed in the child classes
+	 */
 	@Transient
 	public MavenArtifactEntity getMavenArtifact() {
 		return mavenArtifact;
@@ -42,6 +45,9 @@ public abstract class AbstractRemoteActionEntity extends AbstractActionEntity {
 		this.mavenArtifact = mavenArtifact;
 	}
 
+	/**
+	 * Not actually transient, the configuration is performed in the child classes
+	 */
 	@Transient
 	public SpacerUrlEntity getSpacerUrl() {
 		return spacerUrl;
