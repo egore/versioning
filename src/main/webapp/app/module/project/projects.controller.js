@@ -59,7 +59,7 @@
 
 		function remove(project) {
 			$uibModal.open({
-				templateUrl: 'appframework/confirm.html',
+				templateUrl: 'appframework/controller/confirm.html',
 				controller: 'ConfirmController',
 				controllerAs: 'vm',
 				resolve: {
