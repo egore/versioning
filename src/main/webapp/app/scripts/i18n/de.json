@@ -69,9 +69,21 @@
 	"vcs_hosts": "VCS Server",
 	"vcs_type": "Versionierungssystem",
 	"wildcards": "Ersetzungen in Dateien",
+	"PERMISSION_ADMIN_VERSIONS": "Versionen ändern",
 	"PERMISSION_CREATE_VERSIONS": "Versionen anlegen",
+	"PERMISSION_SHOW_VERSIONS": "Versionen anzeigen",
 	"PERMISSION_DEPLOY": "Artefakte deployen",
 	"PERMISSION_ADMIN_SETTINGS": "Einstellungen ändern",
 	"PERMISSION_ADMIN_VERIFICATIONS": "Verifizierte Artefakte anlegen",
-	"PERMISSION_SHOW_VERIFICATIONS": "Verifizierte Artefakte anzeigen"
+	"PERMISSION_SHOW_VERIFICATIONS": "Verifizierte Artefakte anzeigen",
+	"PERMISSION_ADMIN_VCSHOSTS": "VCS Server bearbeiten",
+	"PERMISSION_SHOW_VCSHOSTS": "VCS Server anzeigen",
+	"PERMISSION_ADMIN_TAGTRANSFORMERS": "Tag-Transformationen ändern",
+	"PERMISSION_SHOW_TAGTRANSFORMERS": "Tag-Transformationen anzeigen",
+	"ADMIN_SERVERS": "Server ändern",
+	"SHOW_SERVERS": "Server anzeigen",
+	"ADMIN_PROJECTS": "Projekte ändern",
+	"SHOW_PROJECTS": "Projekte anzeigen",
+    "ADMIN_MAVENREPOSITORIES": "Maven Repositories ändern",
+    "SHOW_MAVENREPOSITORIES": "Maven Repositories anzeigen"
 }

@@ -4,35 +4,37 @@
 <head>
   <meta charset="utf8" />
   <title>Versioning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- jQuery -->
-  <script type="text/javascript" src="webjars/jquery/3.2.0/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="webjars/jquery/3.3.1/dist/jquery.min.js"></script>
   <!-- bootstrap -->
-  <script type="text/javascript" src="webjars/bootstrap/3.3.7/dist/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/dist/css/bootstrap.min.css">
+  <script type="text/javascript" src="webjars/bootstrap/4.1.1/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css">
   <!-- font-awesome -->
   <link rel="stylesheet" type="text/css" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Angular -->
-  <script type="text/javascript" src="webjars/angular/1.6.4/angular.js"></script>
-  <script type="text/javascript" src="webjars/angular-resource/1.6.4/angular-resource.js"></script>
-  <script type="text/javascript" src="webjars/angular-route/1.6.4/angular-route.js"></script>
-  <script type="text/javascript" src="webjars/angular-sanitize/1.6.4/angular-sanitize.js"></script>
-  <script type="text/javascript" src="webjars/angular-cookies/1.6.4/angular-cookies.js"></script>
+  <script type="text/javascript" src="webjars/angular/1.7.0/angular.min.js"></script>
+  <script type="text/javascript" src="webjars/angular-resource/1.7.0/angular-resource.min.js"></script>
+  <script type="text/javascript" src="webjars/angular-route/1.7.0/angular-route.min.js"></script>
+  <script type="text/javascript" src="webjars/angular-sanitize/1.7.0/angular-sanitize.min.js"></script>
+  <script type="text/javascript" src="webjars/angular-cookies/1.7.0/angular-cookies.min.js"></script>
   <!-- angular-translate -->
-  <script type="text/javascript" src="webjars/angular-translate/2.15.1/angular-translate.js"></script>
-  <script type="text/javascript" src="webjars/angular-translate-loader-static-files/2.15.1/angular-translate-loader-static-files.js"></script>
+  <script type="text/javascript" src="webjars/angular-i18n/1.7.0/angular-locale_de-de.js"></script>
+  <script type="text/javascript" src="webjars/angular-translate/2.18.1/dist/angular-translate.min.js"></script>
+  <script type="text/javascript" src="webjars/angular-translate-loader-static-files/2.18.1/angular-translate-loader-static-files.min.js"></script>
   <!-- file upload -->
-  <script type="text/javascript" src="webjars/ng-file-upload/12.2.13/ng-file-upload-all.js"></script>
+  <script type="text/javascript" src="webjars/ng-file-upload/12.2.13/dist/ng-file-upload-all.min.js"></script>
   <!-- moment -->
-  <script type="text/javascript" src="webjars/moment/2.17.1/min/moment.min.js"></script>
-  <script type="text/javascript" src="webjars/moment/2.17.1/locale/de.js"></script>
+  <script type="text/javascript" src="webjars/moment/2.22.2/min/moment.min.js"></script>
+  <script type="text/javascript" src="webjars/moment/2.22.2/locale/de.js"></script>
   <!-- Bootstrap UI -->
-  <script type="text/javascript" src="webjars/angular-ui-bootstrap-bower/2.5.0/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="webjars/ui-bootstrap4/3.0.3/dist/ui-bootstrap-tpls.js"></script>
   <!-- awesome-bootstrap-checkbox -->
-  <link rel="stylesheet" href="webjars/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.css"/>
+  <link rel="stylesheet" href="webjars/awesome-bootstrap-checkbox/1.0.1/awesome-bootstrap-checkbox.css"/>
   <!-- toastr -->
-  <script type="text/javascript" src="webjars/toastr/2.1.3/toastr.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="webjars/toastr/2.1.3/toastr.min.css">
+  <script type="text/javascript" src="webjars/toastr/2.1.4/build/toastr.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="webjars/toastr/2.1.4/build/toastr.min.css">
 
   <!-- App basics -->
   <script type="text/javascript" src="appframework/appframework.js"></script>
@@ -97,6 +99,7 @@
   <script type="text/javascript" src="appframework/module/profile/profile.controller.js"></script>
   <script type="text/javascript" src="appframework/module/login/authentication.factory.js"></script>
   <script type="text/javascript" src="appframework/module/login/login.controller.js"></script>
+  <script type="text/javascript" src="appframework/module/login/logout.controller.js"></script>
 
   <script type="text/javascript" src="appframework/module/role/role.factory.js"></script>
   <script type="text/javascript" src="appframework/module/role/role.controller.js"></script>
@@ -110,58 +113,50 @@
 
 </head>
 <body ng-controller="MainCtrl as main">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-<div id="wrapper">
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Versioning {{main.getVersion()}}</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#/" id="menu_home">Versioning {{main.getVersion()}}</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#/">Home</a></li>
-            <li><a href="#/profile">Profile</a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search..." ng-model="$root.search" id="site_search"/>
-          </form>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li ng-class="{active : main.currentModule() == 'version'}"><a href="#/versions" id="menu_versions"><i class="fa fa-puzzle-piece"></i> {{'versions' | translate}} <span ng-show="main.currentModule() == 'version'" class="sr-only">(current)</span></a></li>
-            <li ng-class="{active : main.currentModule() == 'deployments'}"><a href="#/deployments" id="menu_deployments"><i class="fa fa-download"></i> {{'deployments' | translate}} <span ng-show="main.currentModule() == 'deployments'" class="sr-only">(current)</span></a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li ng-class="{active : main.currentModule() == 'vcs_hosts'}"><a href="#/vcs_hosts" id="menu_vcshosts"><i class="fa fa-code-fork"></i> {{'vcs_hosts' | translate}} <span ng-show="main.currentModule() == 'vcs_hosts'" class="sr-only">(current)</span></a></li>
-            <li ng-class="{active : main.currentModule() == 'projects'}"><a href="#/projects" id="menu_projects"><i class="fa fa-barcode"></i> {{'projects' | translate}} <span ng-show="main.currentModule() == 'projects'" class="sr-only">(current)</span></a></li>
-            <li ng-class="{active : main.currentModule() == 'servers'}"><a href="#/servers" id="menu_servers"><i class="fa fa-server"></i> {{'servers' | translate}} <span ng-show="main.currentModule() == 'servers'" class="sr-only">(current)</span></a></li>
-            <li ng-class="{active : main.currentModule() == 'maven_repositories'}"><a href="#/maven_repositories" id="menu_maven_repositories"><i class="fa fa-database"></i> {{'maven_repositories' | translate}} <span ng-show="main.currentModule() == 'maven_repositories'" class="sr-only">(current)</span></a></li>
-            <li ng-class="{active : main.currentModule() == 'tag_transformers'}"><a href="#/tag_transformers" id="menu_tag_transformers"><i class="fa fa-exchange"></i> {{'tag_transformers' | translate}} <span ng-show="main.currentModule() == 'tag_transformers'" class="sr-only">(current)</span></a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li ng-show="main.hasPermission('SHOW_VERIFICATIONS')" ng-class="{active : main.currentModule() == 'verifications'}"><a href="#/verifications" id="menu_vcshosts"><i class="fa fa-lock"></i> {{'verifications' | translate}} <span ng-show="main.currentModule() == 'verifications'" class="sr-only">(current)</span></a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li ng-show="main.hasPermission('ADMIN_ROLES')" ng-class="{active : main.currentModule() == 'roles'}"><a href="#/roles" id="menu_roles"><i class="fa fa-puzzle-piece"></i> {{'roles' | translate}} <span ng-show="main.currentModule() == 'roles'" class="sr-only">(current)</span></a></li>
-            <li ng-show="main.hasPermission('ADMIN_USERS')" ng-class="{active : main.currentModule() == 'users'}"><a href="#/users" id="menu_users"><i class="fa fa-user"></i> {{'users' | translate}} <span ng-show="main.currentModule() == 'users'" class="sr-only">(current)</span></a></li>
-          </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="page-wrapper" ng-view>
-        </div>
-      </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#/versions" id="menu_versions"><i class="fa fa-puzzle-piece"></i> {{'versions' | translate}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#/deployments" id="menu_deployments"><i class="fa fa-download"></i> {{'deployments' | translate}}</a>
+        </li>
+        <li class="nav-item dropdown" ng-show="main.hasPermission('ADMIN_ROLES') || main.hasPermission('ADMIN_USERS') || main.hasPermission('ADMIN_DRINKS')">
+          <a class="nav-link dropdown-toggle" id="navbarAdministration" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" translate="administration"></a>
+          <div class="dropdown-menu" aria-labelledby="navbarAdministration">
+            <a ng-show="main.hasPermission('ADMIN_ROLES')" class="dropdown-item" href="#/roles" id="menu_roles"><i class="fa fa-puzzle-piece"></i> {{'roles' | translate}}</a>
+            <a ng-show="main.hasPermission('ADMIN_USERS')" class="dropdown-item" href="#/users" id="menu_users"><i class="fa fa-user"></i> {{'users' | translate}}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#/vcs_hosts" id="menu_vcshosts"><i class="fa fa-code-fork"></i> {{'vcs_hosts' | translate}}</a>
+            <a class="dropdown-item" href="#/projects" id="menu_projects"><i class="fa fa-barcode"></i> {{'projects' | translate}}</a>
+            <a class="dropdown-item" href="#/servers" id="menu_servers"><i class="fa fa-server"></i> {{'servers' | translate}}</a>
+            <a class="dropdown-item" href="#/maven_repositories" id="menu_maven_repositories"><i class="fa fa-database"></i> {{'maven_repositories' | translate}}</a>
+            <a class="dropdown-item" href="#/tag_transformers" id="menu_tag_transformers"><i class="fa fa-exchange"></i> {{'tag_transformers' | translate}}</a>
+          </div>
+        </li>
+        <li class="nav-item" ng-show="main.hasPermission('SHOW_VERIFICATIONS')">
+          <a class="nav-link" href="#/verifications" id="menu_verifications"><i class="fa fa-lock"></i> {{'verifications' | translate}}</a>
+        </li>
+        <li class="nav-item" ng-show="main.isLoggedIn()">
+          <a class="nav-link" href="#/profile" id="menu_profile"><i class="fa fa-address-card-o"></i> {{'profile' | translate}}</a>
+        </li>
+        <li class="nav-item" ng-show="main.isLoggedIn()">
+          <a class="nav-link" href="#/logout" id="menu_logout"><i class="fa fa-sign-out fa-lg"></i> {{'logout' | translate}}</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0" ng-show="main.isLoggedIn()" style="position: relative;">
+        <input class="form-control mr-sm-2" type="search" placeholder="{{'search' | translate}}" ng-model="$root.search" id="site_search" aria-label="Search">
+        <i class="fa fa-times searchclear" style="cursor: pointer" ng-class="{'grey': $root.search == '' || $root.search == undefined, 'black': $root.search != '' && $root.search != undefined}" ng-click="$root.search = ''"></i>
+      </form>
     </div>
+  </nav>
+
+  <div class="container-fluid" id="page-wrapper" ng-view>
   </div>
 </body>
 </html>

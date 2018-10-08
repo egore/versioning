@@ -19,6 +19,7 @@ import de.egore911.versioning.persistence.dao.DeploymentDao;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.dao.VersionDao;
 import de.egore911.versioning.persistence.model.DeploymentEntity;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.ServerEntity;
 import de.egore911.versioning.persistence.model.VersionEntity;
 import de.egore911.versioning.persistence.selector.DeploymentSelector;
@@ -52,6 +53,11 @@ public class DeploymentService extends AbstractResourceService<Deployment, Deplo
 	@Override
 	protected DeploymentDao getDao() {
 		return new DeploymentDao();
+	}
+
+	@Override
+	protected String getCreatePermission() {
+		return Permission.DEPLOY.name();
 	}
 
 	@GET
@@ -103,6 +109,21 @@ public class DeploymentService extends AbstractResourceService<Deployment, Deplo
 		newDeployment.setServer(server);
 		newDeployment.setDeployment(LocalDateTime.now());
 		deploymentDao.replace(currentDeployment, newDeployment);
+	}
+
+	@Override
+	protected String getReadPermission() {
+		return Permission.DEPLOY.name();
+	}
+
+	@Override
+	protected String getUpdatePermission() {
+		return Permission.DEPLOY.name();
+	}
+
+	@Override
+	protected String getDeletePermission() {
+		return Permission.DEPLOY.name();
 	}
 
 }

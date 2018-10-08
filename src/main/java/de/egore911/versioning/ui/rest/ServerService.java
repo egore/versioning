@@ -29,6 +29,7 @@ import de.egore911.appframework.ui.exceptions.BadArgumentException;
 import de.egore911.appframework.ui.rest.AbstractResourceService;
 import de.egore911.versioning.persistence.dao.ServerDao;
 import de.egore911.versioning.persistence.model.ActionReplacementEntity;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.ReplacementEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;
@@ -79,7 +80,8 @@ public class ServerService
 
 	@Override
 	protected void map(Server t, ServerEntity entity) {
-		List<ProjectEntity> previousConfiguredProjects = new ArrayList<>(entity.getConfiguredProjects());
+		List<ProjectEntity> previousConfiguredProjects = new ArrayList<>(
+				entity.getConfiguredProjects());
 		super.map(t, entity);
 		for (ProjectEntity project : previousConfiguredProjects) {
 			if (!entity.getConfiguredProjects().contains(project)) {
@@ -96,14 +98,17 @@ public class ServerService
 				variable.setServer(entity);
 			}
 		}
-		List<ActionReplacementEntity> actionReplacements = entity.getActionReplacements();
+		List<ActionReplacementEntity> actionReplacements = entity
+				.getActionReplacements();
 		if (actionReplacements != null) {
 			for (ActionReplacementEntity actionReplacement : actionReplacements) {
 				actionReplacement.setServer(entity);
-				List<ReplacementEntity> replacements = actionReplacement.getReplacements();
+				List<ReplacementEntity> replacements = actionReplacement
+						.getReplacements();
 				if (replacements != null) {
 					for (ReplacementEntity replacementEntity : replacements) {
-						replacementEntity.setActionReplacement(actionReplacement);
+						replacementEntity
+								.setActionReplacement(actionReplacement);
 					}
 				}
 			}
@@ -113,8 +118,10 @@ public class ServerService
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Path("upload/{id}")
-	public Integer uploadFile(@PathParam("id") final Integer serverId, @FormDataParam("file") InputStream stream,
-			@FormDataParam("file") FormDataContentDisposition contentDisposition, @Auth Subject subject) {
+	public Integer uploadFile(@PathParam("id") final Integer serverId,
+			@FormDataParam("file") InputStream stream,
+			@FormDataParam("file") FormDataContentDisposition contentDisposition,
+			@Auth Subject subject) {
 		ServerEntity server = getSelector(subject).withId(serverId).find();
 
 		BinaryDataEntity binaryData = new BinaryDataEntity();
@@ -123,11 +130,13 @@ public class ServerService
 			byte[] bytes = IOUtils.toByteArray(stream);
 			binaryData.setSize(bytes.length);
 			binaryData.setData(bytes);
-			binaryData.setContentType(URLConnection.guessContentTypeFromName(contentDisposition.getFileName()));
+			binaryData.setContentType(URLConnection.guessContentTypeFromName(
+					contentDisposition.getFileName()));
 			server.setIcon(binaryData);
 			binaryData = new BinaryDataDao().save(binaryData);
 		} catch (IOException e) {
-			throw new BadArgumentException("Could not read image: " + e.getMessage());
+			throw new BadArgumentException(
+					"Could not read image: " + e.getMessage());
 		}
 
 		return binaryData.getId();
@@ -177,6 +186,26 @@ public class ServerService
 		ServerEntity server = new ServerDao().findByName(serverName);
 		return Response.ok(new XmlRenderer(servletRequest).render(server),
 				MediaType.APPLICATION_XML_TYPE).build();
+	}
+
+	@Override
+	protected String getCreatePermission() {
+		return Permission.ADMIN_SERVERS.name();
+	}
+
+	@Override
+	protected String getReadPermission() {
+		return Permission.SHOW_SERVERS.name();
+	}
+
+	@Override
+	protected String getUpdatePermission() {
+		return Permission.ADMIN_SERVERS.name();
+	}
+
+	@Override
+	protected String getDeletePermission() {
+		return Permission.ADMIN_SERVERS.name();
 	}
 
 }

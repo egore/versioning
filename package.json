@@ -1,8 +1,8 @@
 {
   "devDependencies": {
-    "@types/angular": "^1.6.32",
+    "@types/angular": "^1.6.49",
     "@types/angular-resource": "^1.5.14",
-    "@types/angular-route": "^1.3.4",
-    "@types/angular-ui-bootstrap": "^0.13.45"
+    "@types/angular-route": "^1.3.5",
+    "@types/angular-ui-bootstrap": "^0.13.47"
   }
 }

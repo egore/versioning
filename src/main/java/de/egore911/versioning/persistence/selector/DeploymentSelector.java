@@ -47,8 +47,6 @@ import java.util.List;
 public class DeploymentSelector
 		extends AbstractResourceSelector<DeploymentEntity> {
 
-	private static final long serialVersionUID = 84030583640758463L;
-
 	private ServerEntity deployedOn;
 	private LocalDateTime deployedAfter;
 	private LocalDateTime undeployedAfter;

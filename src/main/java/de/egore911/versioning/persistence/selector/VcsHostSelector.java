@@ -41,7 +41,6 @@ import de.egore911.versioning.persistence.model.VcsHostEntity_;
  */
 public class VcsHostSelector extends AbstractResourceSelector<VcsHostEntity> {
 
-	private static final long serialVersionUID = -5472063742737871595L;
 	private String search;
 
 	@Override

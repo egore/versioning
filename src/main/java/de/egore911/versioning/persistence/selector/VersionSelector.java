@@ -21,8 +21,8 @@
  */
 package de.egore911.versioning.persistence.selector;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,7 +32,9 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import de.egore911.appframework.persistence.selector.AbstractResourceSelector;
 import de.egore911.versioning.persistence.model.ProjectEntity;
@@ -45,8 +47,6 @@ import de.egore911.versioning.persistence.model.VersionEntity_;
  */
 public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 
-	private static final long serialVersionUID = -2047907469123340003L;
-
 	private ProjectEntity project;
 	private String vcsTag;
 	private String projectNameLike;
@@ -54,8 +54,7 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 	private String search;
 
 	public VersionSelector() {
-		withSortColumn("created");
-		withAscending(false);
+		withSortColumn("created", false);
 	}
 
 	@Override
@@ -104,24 +103,27 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 	@Override
 	protected List<Order> generateOrderList(CriteriaBuilder builder,
 			Root<VersionEntity> from) {
-		if (StringUtils.isNotEmpty(sortColumn)) {
-			if ("project.name".equals(sortColumn)) {
-				if (!Boolean.FALSE.equals(ascending)) {
-					return Arrays
-							.asList(builder.asc(from.get(VersionEntity_.project).get(ProjectEntity_.name)),
-									builder.asc(from.get(VersionEntity_.created)));
+		if (CollectionUtils.isNotEmpty(sortColumns)) {
+			List<Order> result = new ArrayList<>(sortColumns.size());
+			for (Pair<String, Boolean> sortColumn : sortColumns) {
+				if ("project.name".equals(sortColumn.getKey())) {
+					if (!Boolean.FALSE.equals(sortColumn.getValue())) {
+						return Arrays
+								.asList(builder.asc(from.get(VersionEntity_.project).get(ProjectEntity_.name)),
+										builder.asc(from.get(VersionEntity_.created)));
+					}
+					return Arrays.asList(
+							builder.desc(from.get(VersionEntity_.project).get(ProjectEntity_.name)),
+							builder.asc(from.get(VersionEntity_.created)));
+				} else {
+					if (!Boolean.FALSE.equals(sortColumn.getValue())) {
+						result.add(builder.asc(from.get(sortColumn.getKey())));
+					} else {
+						result.add(builder.desc(from.get(sortColumn.getKey())));
+					}
 				}
-				return Arrays.asList(
-						builder.desc(from.get(VersionEntity_.project).get(ProjectEntity_.name)),
-						builder.asc(from.get(VersionEntity_.created)));
-			} else {
-				if (!Boolean.FALSE.equals(ascending)) {
-					return Collections.singletonList(builder.asc(from
-							.get(sortColumn)));
-				}
-				return Collections.singletonList(builder.desc(from
-						.get(sortColumn)));
 			}
+			return result;
 		}
 		return getDefaultOrderList(builder, from);
 	}

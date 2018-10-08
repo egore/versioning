@@ -34,10 +34,26 @@ public enum Permission {
 	ADMIN_SETTINGS,
 	/** Create versions */
 	CREATE_VERSIONS,
+	ADMIN_VERSIONS,
+	SHOW_VERSIONS,
 	/** Create versions */
 	DEPLOY,
 	/** Verifications */
 	SHOW_VERIFICATIONS,
-	ADMIN_VERIFICATIONS
-
+	ADMIN_VERIFICATIONS,
+	/** VCS hosts */
+	ADMIN_VCSHOSTS,
+	SHOW_VCSHOSTS,
+	/** Tag transformer */
+	ADMIN_TAGTRANSFORMERS,
+	SHOW_TAGTRANSFORMERS,
+	/** Servers */
+	ADMIN_SERVERS,
+	SHOW_SERVERS,
+	/** Projects */
+	ADMIN_PROJECTS,
+	SHOW_PROJECTS,
+	/** Maven repositories */
+	ADMIN_MAVENREPOSITORIES,
+	SHOW_MAVENREPOSITORIES
 }

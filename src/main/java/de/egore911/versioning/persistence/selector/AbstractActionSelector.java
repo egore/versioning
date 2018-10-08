@@ -16,8 +16,6 @@ import de.egore911.versioning.persistence.model.ProjectEntity;
 
 public abstract class AbstractActionSelector<T extends AbstractActionEntity> extends AbstractResourceSelector<T> {
 
-	private static final long serialVersionUID = -4914528357142675294L;
-
 	private ProjectEntity project;
 
 	@Override

@@ -16,8 +16,6 @@ import de.egore911.versioning.persistence.model.ServerEntity_;
 
 public class ActionReplacementSelector extends AbstractActionSelector<ActionReplacementEntity> {
 
-	private static final long serialVersionUID = -9167158811784544517L;
-
 	private String search;
 
 	@Override

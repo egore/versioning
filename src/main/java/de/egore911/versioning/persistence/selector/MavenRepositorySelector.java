@@ -43,8 +43,6 @@ import de.egore911.versioning.persistence.model.MavenRepositoryEntity_;
 public class MavenRepositorySelector
 		extends AbstractResourceSelector<MavenRepositoryEntity> {
 
-	private static final long serialVersionUID = 1467355656953767923L;
-
 	private String name;
 
 	private String search;

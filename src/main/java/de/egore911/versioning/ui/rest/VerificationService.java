@@ -24,6 +24,7 @@ import de.egore911.appframework.ui.rest.AbstractResourceService;
 import de.egore911.persistence.selector.AbstractSelector;
 import de.egore911.persistence.util.EntityManagerUtil;
 import de.egore911.versioning.persistence.dao.VerificationDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.UsedArtifactEntity;
 import de.egore911.versioning.persistence.model.VerificationEntity;
 import de.egore911.versioning.persistence.selector.VerificationSelector;
@@ -57,9 +58,23 @@ public class VerificationService
 	}
 
 	@Override
-	@RequiresPermissions("SHOW_VERIFICATIONS")
-	public Verification getById(Integer id, Subject subject) {
-		return super.getById(id, subject);
+	protected String getCreatePermission() {
+		return Permission.ADMIN_VERIFICATIONS.name();
+	}
+
+	@Override
+	protected String getDeletePermission() {
+		return Permission.ADMIN_VERIFICATIONS.name();
+	}
+
+	@Override
+	protected String getReadPermission() {
+		return Permission.SHOW_VERIFICATIONS.name();
+	}
+
+	@Override
+	protected String getUpdatePermission() {
+		return Permission.ADMIN_VERIFICATIONS.name();
 	}
 
 	@Override
@@ -74,16 +89,20 @@ public class VerificationService
 			@QueryParam("ascending") Boolean ascending,
 			@QueryParam("search") String search, @Auth Subject subject,
 			@Context HttpServletResponse response) {
+        subject.checkPermission(getReadPermission());
 		MappingContextFactory contextFactory = UtilityResolver
 				.getDefaultMappingContextFactory();
 		MappingContext context = contextFactory.getContext();
 		context.setProperty("includeUsedBy", Boolean.FALSE);
 		try {
 			AbstractSelector<VerificationEntity> selector = getSelector(subject)
-					.withIds(ids).withSearch(search).withSortColumn(sortColumn)
-					.withAscending(ascending);
-			List<VerificationEntity> entities = selector.withOffset(offset)
-					.withLimit(limit).findAll();
+					.withIds(ids)
+					.withSearch(search)
+					.withSortColumn(sortColumn, Boolean.TRUE.equals(ascending));
+			List<VerificationEntity> entities = selector
+					.withOffset(offset)
+					.withLimit(limit)
+					.findAll();
 			if (offset != null || limit != null) {
 				response.setHeader("Result-Count",
 						Long.toString(selector.count()));

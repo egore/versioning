@@ -19,6 +19,7 @@ import de.egore911.versioning.persistence.model.ActionCopyEntity;
 import de.egore911.versioning.persistence.model.ActionExtractionEntity;
 import de.egore911.versioning.persistence.model.ActionReplacementEntity;
 import de.egore911.versioning.persistence.model.ExtractionEntity;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.ProjectEntity;
 import de.egore911.versioning.persistence.model.ReplacementEntity;
 import de.egore911.versioning.persistence.model.ServerEntity;
@@ -133,5 +134,25 @@ public class ProjectService
 	public List<Tag> getTags(@PathParam("id") Integer id) {
 		ProjectEntity project = getDao().findById(id);
 		return project.getProvider().getTags();
+	}
+
+	@Override
+	protected String getCreatePermission() {
+		return Permission.ADMIN_PROJECTS.name();
+	}
+
+	@Override
+	protected String getReadPermission() {
+		return Permission.SHOW_PROJECTS.name();
+	}
+
+	@Override
+	protected String getUpdatePermission() {
+		return Permission.ADMIN_PROJECTS.name();
+	}
+
+	@Override
+	protected String getDeletePermission() {
+		return Permission.ADMIN_PROJECTS.name();
 	}
 }

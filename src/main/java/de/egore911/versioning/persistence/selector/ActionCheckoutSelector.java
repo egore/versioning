@@ -15,8 +15,6 @@ import de.egore911.versioning.persistence.model.ActionCheckoutEntity_;
 
 public class ActionCheckoutSelector extends AbstractActionSelector<ActionCheckoutEntity> {
 
-	private static final long serialVersionUID = -9167158811784544517L;
-
 	private String search;
 
 	@Override

@@ -11,6 +11,7 @@ import org.secnod.shiro.jaxrs.Auth;
 import de.egore911.appframework.ui.rest.AbstractResourceService;
 import de.egore911.versioning.persistence.dao.MavenRepositoryDao;
 import de.egore911.versioning.persistence.model.MavenRepositoryEntity;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.selector.MavenRepositorySelector;
 import de.egore911.versioning.ui.dto.MavenRepository;
 import de.egore911.versioning.ui.logic.MavenrepositoryUtil;
@@ -43,5 +44,25 @@ public class MavenRepositoryService extends AbstractResourceService<MavenReposit
 	public void delete(@PathParam("id") @Nonnull Integer id, @Auth Subject subject) {
 		MavenrepositoryUtil.checkDeletable(new MavenRepositoryDao().findById(id));
 		super.delete(id, subject);
+	}
+
+	@Override
+	protected String getCreatePermission() {
+		return Permission.ADMIN_MAVENREPOSITORIES.name();
+	}
+
+	@Override
+	protected String getReadPermission() {
+		return Permission.SHOW_MAVENREPOSITORIES.name();
+	}
+
+	@Override
+	protected String getUpdatePermission() {
+		return Permission.ADMIN_MAVENREPOSITORIES.name();
+	}
+
+	@Override
+	protected String getDeletePermission() {
+		return Permission.ADMIN_MAVENREPOSITORIES.name();
 	}
 }

@@ -42,8 +42,6 @@ import de.egore911.versioning.persistence.model.ServerEntity_;
  */
 public class ServerSelector extends AbstractResourceSelector<ServerEntity> {
 
-	private static final long serialVersionUID = 4957078336902492971L;
-
 	private String name;
 	private String nameLike;
 	private String descriptionLike;

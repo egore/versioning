@@ -37,8 +37,6 @@ import java.util.List;
 public class VerificationSelector
 		extends AbstractArtifactSelector<VerificationEntity> {
 
-	private static final long serialVersionUID = -2360869703523135671L;
-
 	@Nonnull
 	@Override
 	protected Class<VerificationEntity> getEntityClass() {

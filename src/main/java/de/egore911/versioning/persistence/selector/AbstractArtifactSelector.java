@@ -18,8 +18,6 @@ import java.util.List;
  */
 public abstract class AbstractArtifactSelector<T extends AbstractArtifactEntity> extends AbstractResourceSelector<T> {
 
-    private static final long serialVersionUID = -4687491428631207216L;
-
     private String search;
     private String groupId;
     private String artifactId;

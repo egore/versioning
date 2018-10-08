@@ -37,8 +37,6 @@ import java.util.List;
 public class UsedArtifactSelector
 		extends AbstractArtifactSelector<UsedArtifactEntity> {
 
-	private static final long serialVersionUID = -6625068169248562684L;
-
 	@Nonnull
 	@Override
 	protected Class<UsedArtifactEntity> getEntityClass() {

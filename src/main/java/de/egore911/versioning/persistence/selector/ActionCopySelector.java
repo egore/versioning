@@ -17,8 +17,6 @@ import de.egore911.versioning.persistence.model.SpacerUrlEntity_;
 
 public class ActionCopySelector extends AbstractActionSelector<ActionCopyEntity> {
 
-	private static final long serialVersionUID = 7369048491635670534L;
-
 	private String search;
 
 	@Override

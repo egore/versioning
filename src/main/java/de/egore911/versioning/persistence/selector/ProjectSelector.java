@@ -44,8 +44,6 @@ import de.egore911.versioning.persistence.model.ServerEntity;
  */
 public class ProjectSelector extends AbstractResourceSelector<ProjectEntity> {
 
-	private static final long serialVersionUID = 6585242967556404330L;
-
 	private ServerEntity configuredForServer;
 	private Boolean excludeDeleted;
 	private String search;

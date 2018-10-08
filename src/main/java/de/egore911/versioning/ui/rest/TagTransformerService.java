@@ -15,6 +15,7 @@ import org.apache.shiro.subject.Subject;
 import de.egore911.appframework.ui.exceptions.BadArgumentException;
 import de.egore911.appframework.ui.rest.AbstractResourceService;
 import de.egore911.versioning.persistence.dao.TagTransformerDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.TagTransformerEntity;
 import de.egore911.versioning.persistence.selector.TagTransformerSelector;
 import de.egore911.versioning.ui.dto.TagTransformer;
@@ -66,6 +67,26 @@ public class TagTransformerService
 		} catch (PatternSyntaxException e) {
 			return e.getMessage();
 		}
+	}
+
+	@Override
+	protected String getCreatePermission() {
+		return Permission.ADMIN_TAGTRANSFORMERS.name();
+	}
+
+	@Override
+	protected String getReadPermission() {
+		return Permission.SHOW_TAGTRANSFORMERS.name();
+	}
+
+	@Override
+	protected String getUpdatePermission() {
+		return Permission.ADMIN_TAGTRANSFORMERS.name();
+	}
+
+	@Override
+	protected String getDeletePermission() {
+		return Permission.ADMIN_TAGTRANSFORMERS.name();
 	}
 
 }

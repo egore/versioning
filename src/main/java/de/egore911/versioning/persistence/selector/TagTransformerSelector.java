@@ -42,8 +42,6 @@ import de.egore911.versioning.persistence.model.TagTransformerEntity_;
  */
 public class TagTransformerSelector extends AbstractResourceSelector<TagTransformerEntity> {
 
-	private static final long serialVersionUID = -8032360585214192038L;
-
 	private String name;
 	private String search;
 

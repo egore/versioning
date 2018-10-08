@@ -12,6 +12,7 @@ import org.secnod.shiro.jaxrs.Auth;
 import de.egore911.appframework.ui.exceptions.BadArgumentException;
 import de.egore911.appframework.ui.rest.AbstractResourceService;
 import de.egore911.versioning.persistence.dao.VcsHostDao;
+import de.egore911.versioning.persistence.model.Permission;
 import de.egore911.versioning.persistence.model.VcsHostEntity;
 import de.egore911.versioning.persistence.selector.VcsHostSelector;
 import de.egore911.versioning.ui.dto.VcsHost;
@@ -60,5 +61,25 @@ public class VcsHostService
 				throw new BadArgumentException("Passwords don't match");
 			}
 		}
+	}
+
+	@Override
+	protected String getCreatePermission() {
+		return Permission.ADMIN_VCSHOSTS.name();
+	}
+
+	@Override
+	protected String getReadPermission() {
+		return Permission.SHOW_VCSHOSTS.name();
+	}
+
+	@Override
+	protected String getUpdatePermission() {
+		return Permission.ADMIN_VCSHOSTS.name();
+	}
+
+	@Override
+	protected String getDeletePermission() {
+		return Permission.ADMIN_VCSHOSTS.name();
 	}
 }
