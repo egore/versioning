@@ -13,6 +13,7 @@ public class VcsHost extends AbstractDto {
 	private String username;
 	private String password;
 	private String passwordVerify;
+	private String sshkey;
 	private List<Integer> projectIds;
 
 	public String getName() {
@@ -61,6 +62,14 @@ public class VcsHost extends AbstractDto {
 
 	public void setPasswordVerify(String passwordVerify) {
 		this.passwordVerify = passwordVerify;
+	}
+
+	public String getSshkey() {
+		return sshkey;
+	}
+
+	public void setSshkey(String sshkey) {
+		this.sshkey = sshkey;
 	}
 
 	public List<Integer> getProjectIds() {

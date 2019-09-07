@@ -197,6 +197,9 @@ public class ProjectEntity extends IntegerDbObject implements Comparable<Project
 	@Transient
 	public String getCompleteVcsPath() {
 		StringBuilder builder = new StringBuilder();
+		if (StringUtils.isNotEmpty(getVcsHost().getUsername()) && !getVcsHost().getUri().contains("://")) {
+			builder.append(getVcsHost().getUsername()).append('@');
+		}
 		builder.append(getVcsHost().getUri());
 		if (StringUtils.isNotEmpty(getVcsPath())) {
 			builder.append(getVcsPath());

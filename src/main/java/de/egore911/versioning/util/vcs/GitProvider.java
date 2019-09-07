@@ -21,23 +21,38 @@
  */
 package de.egore911.versioning.util.vcs;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.LsRemoteCommand;
+import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.dfs.DfsRepositoryDescription;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.StoredConfig;
+import org.eclipse.jgit.transport.JschConfigSessionFactory;
+import org.eclipse.jgit.transport.SshTransport;
+import org.eclipse.jgit.transport.Transport;
+import org.eclipse.jgit.transport.TransportGitSsh;
+import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
 import de.egore911.versioning.persistence.model.ProjectEntity;
 
@@ -48,7 +63,7 @@ import de.egore911.versioning.persistence.model.ProjectEntity;
  */
 public class GitProvider extends Provider {
 
-	private static final Logger log = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(GitProvider.class);
 
 	static {
@@ -56,8 +71,31 @@ public class GitProvider extends Provider {
 		JSch.setLogger(new JschToSlf4j());
 	}
 
+	private JschConfigSessionFactory sshSessionFactory;
+
 	public GitProvider(ProjectEntity project) {
 		super(project);
+		if (StringUtils.isNotEmpty(project.getVcsHost().getSshkey())) {
+			sshSessionFactory = new JschConfigSessionFactory() {
+				@Override
+				protected void configure(Host hc, Session session) {
+				}
+				@Override
+				protected void configureJSch(JSch jsch) {
+					super.configureJSch(jsch);
+					try {
+						File sshkeyFile = File.createTempFile("sshkey", "id_rsa");
+						sshkeyFile.deleteOnExit();
+						try (FileOutputStream fos = new FileOutputStream(sshkeyFile)) {
+							IOUtils.write(project.getVcsHost().getSshkey(), fos, StandardCharsets.US_ASCII);
+						}
+						jsch.addIdentity(sshkeyFile.getAbsolutePath());
+					} catch (JSchException | IOException e) {
+						LOG.error(e.getMessage(), e);
+					}
+				}
+			};
+		}
 	}
 
 	@Override
@@ -66,6 +104,7 @@ public class GitProvider extends Provider {
 
 		// Ask for the remote tags
 		LsRemoteCommand command = new LsRemoteCommand(repo);
+		initCredentials(command);
 		command.setTags(true);
 		try {
 			Collection<Ref> tags = command.call();
@@ -78,9 +117,21 @@ public class GitProvider extends Provider {
 			// Tag not found
 			return false;
 		} catch (GitAPIException e) {
-			log.error(e.getMessage(), e);
+			LOG.error(e.getMessage(), e);
 			return false;
 		}
+	}
+
+	private void initCredentials(LsRemoteCommand command) {
+		command.setTransportConfigCallback(new TransportConfigCallback() {
+			@Override
+			public void configure(Transport transport) {
+				if (transport instanceof TransportGitSsh && sshSessionFactory != null) {
+					SshTransport sshTransport = (TransportGitSsh) transport;
+					sshTransport.setSshSessionFactory(sshSessionFactory);
+				}
+			}
+		});
 	}
 
 	private InMemoryRepository initRepository() {
@@ -116,6 +167,7 @@ public class GitProvider extends Provider {
 
 		// Ask for the remote tags
 		LsRemoteCommand command = new LsRemoteCommand(repo);
+		initCredentials(command);
 		command.setTags(true);
 		try {
 			Collection<Ref> tags = command.call();
@@ -124,7 +176,7 @@ public class GitProvider extends Provider {
 					.collect(Collectors.toList()));
 			return result;
 		} catch (GitAPIException e) {
-			log.error(e.getMessage(), e);
+			LOG.error(e.getMessage(), e);
 			return Collections.emptyList();
 		}
 	}

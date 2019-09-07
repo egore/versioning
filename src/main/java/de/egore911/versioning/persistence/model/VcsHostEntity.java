@@ -54,6 +54,7 @@ public class VcsHostEntity extends IntegerDbObject {
 	private String uri;
 	private String username;
 	private String password;
+	private String sshkey;
 	private List<ProjectEntity> projects = new ArrayList<>();
 
 	@Column(nullable = false, length = 255)
@@ -106,6 +107,16 @@ public class VcsHostEntity extends IntegerDbObject {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Column(length = 65535)
+	@Size(max = 65535)
+	public String getSshkey() {
+		return sshkey;
+	}
+
+	public void setSshkey(String sshkey) {
+		this.sshkey = sshkey;
 	}
 
 	@OneToMany(mappedBy = "vcsHost")

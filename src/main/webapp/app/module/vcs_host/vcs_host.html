@@ -30,6 +30,9 @@
 	<label-group label="{{'password_repeated' | translate}}" ng-class="{'has-error': form.passwordVerify.$touched && (form.passwordVerify.$error.equal || form.passwordVerify.$error.required)}">
 		<input type="password" class="form-control" ng-model="vm.vcs_host.passwordVerify" name="passwordVerify" equal="{{vm.vcs_host.password}}"/>
 	</label-group>
+	<label-group label="{{'sshkey' | translate}}">
+		<textarea class="form-control" ng-model="vm.vcs_host.sshkey" name="sshkey"></textarea>
+	</label-group>
 	<button type="submit" ng-click="vm.save()" class="btn btn-light" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
 </form>
 

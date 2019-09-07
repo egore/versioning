@@ -1,0 +1,2 @@
+ALTER TABLE vcshost
+  ADD sshkey VARCHAR(4000);
