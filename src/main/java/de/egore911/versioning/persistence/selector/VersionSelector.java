@@ -23,6 +23,7 @@ package de.egore911.versioning.persistence.selector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -53,19 +54,17 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 	private String vcsTagLike;
 	private String search;
 
-	public VersionSelector() {
-		withSortColumn("created", false);
-	}
-
+	@Nonnull
 	@Override
 	protected Class<VersionEntity> getEntityClass() {
 		return VersionEntity.class;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Predicate> generatePredicateList(CriteriaBuilder builder,
-			Root<VersionEntity> from,
-			@Nonnull CriteriaQuery<?> criteriaQuery) {
+	protected List<Predicate> generatePredicateList(@Nonnull CriteriaBuilder builder,
+													@Nonnull Root<VersionEntity> from,
+													@Nonnull CriteriaQuery<?> criteriaQuery) {
 		List<Predicate> predicates = super.generatePredicateList(builder, from, criteriaQuery);
 
 		if (project != null) {
@@ -78,13 +77,11 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 
 		if (StringUtils.isNotEmpty(projectNameLike)) {
 			predicates.add(builder.like(
-					from.get(VersionEntity_.project).get(ProjectEntity_.name), "%"
-							+ projectNameLike + "%"));
+					from.get(VersionEntity_.project).get(ProjectEntity_.name), '%' + projectNameLike + '%'));
 		}
 
 		if (StringUtils.isNotEmpty(vcsTagLike)) {
-			predicates.add(builder.like(from.get(VersionEntity_.vcsTag), "%"
-					+ vcsTagLike + "%"));
+			predicates.add(builder.like(from.get(VersionEntity_.vcsTag), '%' + vcsTagLike + '%'));
 		}
 
 		if (StringUtils.isNotEmpty(search)) {
@@ -100,9 +97,10 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 		return predicates;
 	}
 
+	@Nonnull
 	@Override
-	protected List<Order> generateOrderList(CriteriaBuilder builder,
-			Root<VersionEntity> from) {
+	protected List<Order> generateOrderList(@Nonnull CriteriaBuilder builder,
+											@Nonnull Root<VersionEntity> from) {
 		if (CollectionUtils.isNotEmpty(sortColumns)) {
 			List<Order> result = new ArrayList<>(sortColumns.size());
 			for (Pair<String, Boolean> sortColumn : sortColumns) {
@@ -124,13 +122,14 @@ public class VersionSelector extends AbstractResourceSelector<VersionEntity> {
 				}
 			}
 			return result;
+		} else {
+			return Collections.singletonList(builder.desc(from.get(VersionEntity_.created)));
 		}
-		return getDefaultOrderList(builder, from);
 	}
 
 	@Override
-	protected List<Order> getDefaultOrderList(CriteriaBuilder builder,
-			Root<VersionEntity> from) {
+	protected List<Order> getDefaultOrderList(@Nonnull CriteriaBuilder builder,
+											  @Nonnull Root<VersionEntity> from) {
 		return Arrays.asList(builder.asc(from.get(VersionEntity_.project)),
 				builder.asc(from.get(VersionEntity_.vcsTag)));
 	}

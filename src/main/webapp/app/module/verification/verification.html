@@ -25,5 +25,5 @@
 	<ul>
 		<li ng-repeat="used in vm.verification.usedBy">{{used.groupId}}:{{used.artifactId}}:{{used.version}} -&gt; {{used.lastSeen}}</li>
 	</ul>
-	<button type="submit" ng-click="vm.save()" class="btn btn-default" ng-disabled="form.$invalid" ng-show="vm.verification.id === undefined"><i class="fa fa-floppy-o"></i> {{'save' | translate}}</button>
+	<button type="submit" ng-click="vm.save()" class="btn btn-light" ng-disabled="form.$invalid" ng-show="vm.verification.id === undefined"><i class="fa fa-floppy-o"></i> {{'save' | translate}}</button>
 </form>

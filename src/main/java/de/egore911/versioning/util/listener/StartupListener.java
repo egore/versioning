@@ -349,4 +349,8 @@ public class StartupListener extends AbstractStartupListener {
 		return Permission.values();
 	}
 
+	@Override
+	protected void initCascadeDeletions() {
+	}
+
 }

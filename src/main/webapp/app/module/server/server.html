@@ -36,7 +36,7 @@
 		<label class="col-sm-2 control-label" for="control_id_vcs_host" translate="vcs_host"></label>
 		<div class="col-sm-10 label-group-content">
 			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					{{vm.server.vcsHostId != undefined ? vm.vcs_hosts[vm.server.vcsHostId].name : 'None'}} <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
@@ -78,7 +78,7 @@
 		<div class="form-group">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-10">
-				<button type="button" ng-click="vm.addVariable()" class="btn btn-default"><i class="fa fa-plus"></i> {{'add' | translate}}</button>
+				<button type="button" ng-click="vm.addVariable()" class="btn btn-light"><i class="fa fa-plus"></i> {{'add' | translate}}</button>
 			</div>
 		</div>
 	</div>

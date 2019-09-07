@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>de.egore911.appframework</groupId>
 		<artifactId>appframework-bom</artifactId>
-		<version>1.2.1</version>
+		<version>1.2.7</version>
 	</parent>
 
 	<groupId>de.egore911.versioning</groupId>
@@ -133,22 +133,7 @@
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework-angular</artifactId>
-			<version>1.3.6</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-core</artifactId>
-			<version>2.3.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>2.3.0.1</version>
+			<version>1.3.13</version>
 		</dependency>
 
 		<!-- Intentional copy from appframework, otherwise build failes -->
@@ -164,6 +149,12 @@
 			<groupId>org.eclipse.jgit</groupId>
 			<artifactId>org.eclipse.jgit</artifactId>
 			<version>5.0.3.201809091024-r</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.tmatesoft.svnkit</groupId>
@@ -171,21 +162,45 @@
 			<version>1.9.3</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>angular-moment</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+
 		<!-- Unit testing -->
 		<dependency>
 			<groupId>de.egore911.appframework</groupId>
 			<artifactId>appframework-testing</artifactId>
-			<version>1.0.11</version>
+			<version>1.0.12</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Fix to 3.3.1 as 3.3.0 is broken and carries in whole NPM -->
 			<dependency>
 				<groupId>org.webjars.npm</groupId>
 				<artifactId>jquery</artifactId>
-				<version>3.3.1</version>
+				<version>3.4.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.jaxrs</groupId>
+				<artifactId>jackson-jaxrs-base</artifactId>
+				<version>${version.jackson}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${version.jackson}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

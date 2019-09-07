@@ -15,9 +15,9 @@
 			<tr ng-repeat="version in serverVersions.versions">
 				<td ng-bind="version.project.name"></td>
 				<td ng-bind="version.transformedVcsTag"></td>
-				<td><button type="button" class="btn btn-default" ng-click="vm.deploy(serverVersions.server, version)" translate="deploy" /></td>
+				<td><button type="button" class="btn btn-light" ng-click="vm.deploy(serverVersions.server, version)" translate="deploy" /></td>
 			</tr>
 		</table>
-		<button type="button" class="btn btn-default" ng-click="vm.deployAll(serverVersions.server)" translate="deploy_all" />
+		<button type="button" class="btn btn-light" ng-click="vm.deployAll(serverVersions.server)" translate="deploy_all" />
 	</div>
 </div>

@@ -19,8 +19,8 @@
 
 				</div>
 			</div>
-			<button type="button" ng-click="service.addMavenArtifact(actionExtraction)" ng-if="!actionExtraction.mavenArtifact && actionExtraction.spacerUrl === undefined" class="btn btn-default"><i class="fa fa-plus"></i> {{'addMavenArtifact' | translate}}</button>
-			<button type="button" ng-click="service.addSpacerUrl(actionExtraction)" ng-if="!actionExtraction.mavenArtifact && actionExtraction.spacerUrl === undefined" class="btn btn-default"><i class="fa fa-plus"></i> {{'addSpacerUrl' | translate}}</button>
+			<button type="button" ng-click="service.addMavenArtifact(actionExtraction)" ng-if="!actionExtraction.mavenArtifact && actionExtraction.spacerUrl === undefined" class="btn btn-light"><i class="fa fa-plus"></i> {{'addMavenArtifact' | translate}}</button>
+			<button type="button" ng-click="service.addSpacerUrl(actionExtraction)" ng-if="!actionExtraction.mavenArtifact && actionExtraction.spacerUrl === undefined" class="btn btn-light"><i class="fa fa-plus"></i> {{'addSpacerUrl' | translate}}</button>
 
 			<div ng-if="actionExtraction.mavenArtifact">
 			<button type="button" ng-click="service.removeMavenArtifact(actionExtraction)" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{'removeMavenArtifact' | translate}}</button>
@@ -43,7 +43,7 @@
 				<label class="col-sm-2 control-label" for="control_id_vcs_host" translate="maven_repository"></label>
 				<div class="col-sm-10 label-group-content">
 					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							{{maven_repository_lookup[actionExtraction.mavenArtifact.mavenRepositoryId].name}} <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
@@ -63,9 +63,9 @@
 			</label-group>
 			</div>
 
-			<button type="button" ng-click="service.addExtraction(actionExtraction)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addExtraction' | translate}}</button>
+			<button type="button" ng-click="service.addExtraction(actionExtraction)" class="btn btn-light"><i class="fa fa-plus"></i> {{'addExtraction' | translate}}</button>
 
 		</div>
 	</div>
-	<button type="button" ng-click="service.addActionExtraction(entity)" class="btn btn-default"><i class="fa fa-plus"></i> {{'addActionExtraction' | translate}}</button>
+	<button type="button" ng-click="service.addActionExtraction(entity)" class="btn btn-light"><i class="fa fa-plus"></i> {{'addActionExtraction' | translate}}</button>
 </div>

@@ -30,7 +30,7 @@
 	<label-group label="{{'password_repeated' | translate}}" ng-class="{'has-error': form.passwordVerify.$touched && (form.passwordVerify.$error.equal || form.passwordVerify.$error.required)}">
 		<input type="password" class="form-control" ng-model="vm.vcs_host.passwordVerify" name="passwordVerify" equal="{{vm.vcs_host.password}}"/>
 	</label-group>
-	<button type="submit" ng-click="vm.save()" class="btn btn-default" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
+	<button type="submit" ng-click="vm.save()" class="btn btn-light" ng-disabled="form.$invalid"><i class="fa fa-floppy-o"></i> Save</button>
 </form>
 
 <div ng-show="vm.assigned_projects.length > 0">

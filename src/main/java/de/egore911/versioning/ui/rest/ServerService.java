@@ -72,17 +72,17 @@ public class ServerService
 	}
 
 	@Override
-	protected ServerEntity map(Server t) {
-		ServerEntity entity = super.map(t);
-		map(t, entity);
+	protected ServerEntity mapCreate(Server t) {
+		ServerEntity entity = super.mapCreate(t);
+		mapUpdate(t, entity);
 		return entity;
 	}
 
 	@Override
-	protected void map(Server t, ServerEntity entity) {
+	protected void mapUpdate(Server t, ServerEntity entity) {
 		List<ProjectEntity> previousConfiguredProjects = new ArrayList<>(
 				entity.getConfiguredProjects());
-		super.map(t, entity);
+		super.mapUpdate(t, entity);
 		for (ProjectEntity project : previousConfiguredProjects) {
 			if (!entity.getConfiguredProjects().contains(project)) {
 				project.getConfiguredServers().remove(entity);
